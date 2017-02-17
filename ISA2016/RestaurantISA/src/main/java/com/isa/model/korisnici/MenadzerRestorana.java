@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 @DiscriminatorValue("MENRES")
 public class MenadzerRestorana extends Korisnik{
 
+	//@ManyToOne(optional = true)
+	//private Set<Restoran> restoran;
+	
 	public MenadzerRestorana(){
 		
 	}

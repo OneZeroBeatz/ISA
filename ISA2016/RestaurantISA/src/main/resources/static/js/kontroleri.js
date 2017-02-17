@@ -3,4 +3,5 @@ var kontroleri = angular.module('restoranApp.kontroleri', ['restoranApp.registro
 															'restoranApp.gostGlavnaStranaKontroler',
 															'restoranApp.ponudjacKontroler',
 															'restoranApp.kuvarKontroler',
+															'restoranApp.menRestoranaKontroler',
 															'restoranApp.menSistemaKontroler']);

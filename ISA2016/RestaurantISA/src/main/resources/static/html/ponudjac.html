@@ -1,4 +1,3 @@
-
 <div ng-cloak ng-controller="ponudjacCtrl">
 	<div>
 		<h1>Ponudjac</h1>
@@ -38,6 +37,8 @@
 						<tr>
 					</table>
 					<button ng-click="izmeniPonudjaca()">Potvrdi izmene</button>
+					<button ng-click="izlistajPonude()">Izlistaj</button>
+					
 				</div>
 
 				<div>
@@ -45,7 +46,7 @@
 					<table>
 						<tr>
 							<td>Unesite staru lozinku:</td>
-							<td><input type=text ng-model="staraLozinka"></td>
+							<td><input type="password" ng-model="staraLozinka"></td>
 						<tr>
 						<tr>
 							<td>Unesite novu lozinku:</td>
@@ -59,10 +60,17 @@
 					<button ng-click="izmeniPonudjaca()">Sacuvaj lozinku</button>
 				</div>
 
+				<div>
+					<ul>
+       					<li ng-repeat="item in items"> {{item.cena}} {{item.rokIsporuke}} {{item.garancija}} <button ng-click="izmeniPonudu(item.id)">Izmeni</button>
+       					<div ng-show="isVisible(item.id)" ng-model="item.id">
+       						<h3>Ispis....</h3>
+       					</div>
+       					</li>
+    				</ul>
+				</div>
 			</div>
 		</div>
-
-	</div>
 
 	</div>
 

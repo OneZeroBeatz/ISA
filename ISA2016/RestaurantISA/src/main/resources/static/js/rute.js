@@ -19,5 +19,8 @@ app.config(function($routeProvider) {
     })
     .when("/menSistema", {
         templateUrl : "html/menadzerSistema.html"
+    })
+    .when("/menadzerRestorana", {
+        templateUrl : "html/menadzerRestorana.html"
     });
 });

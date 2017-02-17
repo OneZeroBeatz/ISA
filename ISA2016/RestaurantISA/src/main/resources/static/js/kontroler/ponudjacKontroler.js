@@ -32,6 +32,14 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 		}
 	};
 	
+	$scope.isVisible = function(id){
+		return $scope.izmeniP === id;
+	}
+	
+	$scope.izmeniPonudu = function(idPonude){		
+		$scope.izmeniP = idPonude;
+	}
+	
 	$scope.setTab(1);
 	
 	$scope.izmeniPonudjaca = function(){
@@ -52,6 +60,29 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 			alert("uspeo!");
 		}).error(function(data) {
 			alert("nisi uspeo!");
+		});
+	}
+	
+	
+	$scope.izlistajPonude = function(){
+		
+		var ponudjac = {
+			id : $scope.ulogovanKorisnik.id,
+			ime : $scope.imeIzmena,
+			prezime : $scope.prezimeIzmena,
+			email : $scope.emailIzmena,
+			sifra : $scope.staraLozinka
+			// DOPUNITI, PROVERITI...
+			//sifra : $scope.novaLozinka
+		}
+		
+		var str = JSON.stringify(ponudjac);
+		
+		ponudjacServisS.izlistaj(str).success(function(data) {
+			alert("uspeo izl!");
+			$scope.items = data;
+		}).error(function(data) {
+			alert("nisi uspeo izl!");
 		});
 	}
 	

@@ -44,6 +44,10 @@ public class Ponuda implements Serializable {
 		this.id = id;
 	}
 
+	public Ponudjac getPonudjac() {
+		return ponudjac;
+	}
+	
 	public float getCena() {
 		return cena;
 	}

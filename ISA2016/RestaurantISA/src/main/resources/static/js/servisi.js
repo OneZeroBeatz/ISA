@@ -3,4 +3,5 @@ var servisi = angular.module('restoranApp.servisi', ['restoranApp.registrovanjeS
 													 'restoranApp.gostGlavnaStranaServis',
 													 'restoranApp.ponudjacServis',
 													 'restoranApp.kuvarServis',
+													 'restoranApp.menRestoranaServis',
 													 'restoranApp.menSistemaServis']);

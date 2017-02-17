@@ -1,0 +1,99 @@
+<div ng-cloak ng-controller="menadzerRestoranaCtrl">
+	<div>
+		<h1>Pozdrav menadzere</h1>
+	</div>
+
+	<div>
+		<div>
+			<div id="tabs">
+				<ul>
+					<li ng-class="{active: isSet(0)}"><a ng-click="setTab(0)"
+						href=""><span>O restoranu</span></a></li>
+					<li ng-class="{active: isSet(1)}"><a ng-click="setTab(1)"
+						href=""><span>Zaposleni</span></a></li>
+					<li ng-class="{active: isSet(2)}"><a ng-click="setTab(2)"
+						href=""><span>Ponude i ponudjači</span></a></li>
+					<li ng-class="{active: isSet(3)}"><a ng-click="setTab(3)"
+						href=""><span>Izveštaj o poslovanju restorana</span></a></li>
+				</ul>
+			</div>
+
+			<div ng-show="isSet(0)">
+				<h2>Podaci o restoranu</h2>
+				<label>Naziv restorana: </label> <input type="text" ng-model="nazivRestorana"> </br>
+				<label>Opis restorana: </label> <input type="text" ng-model="opisRestorana"> </br>
+				<label>Jelovnik: </label> </br>
+				<li ng-repeat="jelo in jela"> {{jelo.naziv}} {{item.opis}} {{item.cena}} <a ng-click="izmenaJela(jelo.id)">Izmeni</a></li>
+				<button ng-click="dodajJelo()">Dodaj jelo</button>
+			</div>
+
+			<div ng-show="isSet(1)">
+				 <div>
+					<h2>Dodaj radnika</h2>
+					<table>
+						<tr>
+							<td>Tip:</td>
+							<td><select ng-model="tipRadnika">
+									<option selected="selected" value="konobar">Konobar</option>
+									<option value="kuvar">Kuvar</option>
+									<option value="sanker">Sanker</option>
+							</select></td>
+						<tr>
+						<tr>
+							<td>Ime:</td>
+							<td><input type=text ng-model="imeRadnika"></td>
+						<tr>
+						<tr>
+							<td>Prezime:</td>
+							<td><input type=text ng-model="prezimeRadnika"></td>
+						<tr>
+						<tr>
+							<td>Email:</td>
+							<td><input type=text ng-model="emailRadnika"></td>
+						<tr>
+						<tr>
+							<td>Lozinka:</td>
+							<td><input type=text ng-model="lozinkaRadnika"></td>
+						<tr>
+						<tr>
+							<td>Datum rođenja:</td>
+							<td><input type="date" ng-model="datumRadnika"></td>
+						<tr>
+						<tr>
+							<td>Konfekcijski broj:</td>
+							<td><input type=text ng-model="konfBrRadnika"></td>
+						<tr>
+						<tr>
+							<td>Veličina obuće:</td>
+							<td><input type=text ng-model="velObRadnika"></td>
+						<tr>
+					</table>
+					<button ng-click="dodajRadnika()">Dodaj</button>
+				</div>
+				
+				<div>
+					<h2>Raspored rada</h2>
+				</div>
+				
+				<div>
+					<h2>Dodela reona za konobare</h2>
+				</div>
+			</div>
+
+			<div ng-show="isSet(2)">
+				<h2>Dodaj ponudjaca</h2>
+				
+				<h2>Postavi ponudu</h2>
+				
+				<h2>Lista pristiglih ponuda</h2>
+			</div>
+
+			<div ng-show="isSet(3)">
+				<h2>Spisak prijatelja.</h2>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>

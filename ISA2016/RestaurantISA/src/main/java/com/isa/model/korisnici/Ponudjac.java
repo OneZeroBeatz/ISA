@@ -1,6 +1,5 @@
 package com.isa.model.korisnici;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
