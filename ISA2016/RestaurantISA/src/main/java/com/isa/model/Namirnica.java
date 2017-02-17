@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,6 +20,9 @@ public class Namirnica implements Serializable{
 	@Column(name = "naziv")
 	private String nazivNamirnice;
 
+	@ManyToOne(optional = false)
+	private PorudzbinaMenadzer porudzbinamenadzer;
+	
 	public Namirnica() {
 
 	}
@@ -39,4 +43,8 @@ public class Namirnica implements Serializable{
 		this.nazivNamirnice = nazivNamirnice;
 	}
 
+	public PorudzbinaMenadzer getPorudzbinaMenadzer() {
+		return porudzbinamenadzer;
+	}
+	
 }

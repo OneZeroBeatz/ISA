@@ -1,42 +1,76 @@
 package com.isa.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.isa.model.korisnici.MenadzerRestorana;
+
 @Entity
-@Table(name = "porudzbinaMenadzer")
+@Table(name = "porudzbina_menadzer")
 public class PorudzbinaMenadzer implements Serializable{
 
 	@Id
 	@GeneratedValue
 	private Long id;
 	
-	@Column(name = "od")
-	@Temporal(TemporalType.DATE)
+	@Column(name = "od", nullable=true)
+	//@Temporal(TemporalType.DATE)
 	private Date aktivnoOd;
 	
-	@Column(name = "do")
-	@Temporal(TemporalType.DATE)
+	@Column(name = "do", nullable=true)
+	//@Temporal(TemporalType.DATE)
 	private Date aktivnoDo;
 	
+	@ManyToOne(optional = false)
+	private MenadzerRestorana menadzerrestorana;
 	
-	// TODO: Srediti ovo.. DODATI NOVU TABELU!
-	//@OneToMany(fetch = FetchType.LAZY, mappedBy = "namirnica")
-	//private Set<Namirnica> listaNamirnica;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "porudzbinamenadzer")
+	private Set<Namirnica> listaNamirnica;
 	
-	//@OneToMany(fetch = FetchType.LAZY, mappedBy = "pice")
-	//private Set<Pice> listaPica;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "porudzbinamenadzer")
+	private Set<Pice> listaPica;
 	
 	public PorudzbinaMenadzer() {
 		
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Date getAktivnoOd() {
+		return aktivnoOd;
+	}
+
+	public void setAktivnoOd(Date aktivnoOd) {
+		this.aktivnoOd = aktivnoOd;
+	}
+
+	public Date getAktivnoDo() {
+		return aktivnoDo;
+	}
+
+	public void setAktivnoDo(Date aktivnoDo) {
+		this.aktivnoDo = aktivnoDo;
+	}
 	
+	public MenadzerRestorana getMenadzerRestorana() {
+		return menadzerrestorana;
+	}
 }

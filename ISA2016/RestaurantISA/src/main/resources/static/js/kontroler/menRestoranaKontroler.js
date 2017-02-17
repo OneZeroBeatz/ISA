@@ -1,6 +1,29 @@
 var menRestoranaKontroler = angular.module('restoranApp.menRestoranaKontroler', []);
 
-menRestoranaKontroler.controller('menadzerRestoranaCtrl', function($scope) {
+menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStranaServis, $scope, menRestoranaServisS) {
+	
+	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
+		if(data != ""){
+			var menRest = {
+				id : data.id,
+				ime : data.ime,
+				prezime : data.prezime,
+				email : data.email,
+				sifra : data.sifra
+			}
+			
+			var str = JSON.stringify(menRest);
+			
+			menRestoranaServisS.izlistajPonude(str).success(function(data) {
+				alert("uspeo!");
+				$scope.ponude = data;
+			}).error(function(data) {
+				alert("nisi uspeo!");
+			});
+		}else{
+			alert("Niko nije ulogovan");
+		}
+	});
 	
     $scope.setTab = function(newTab){
     	$scope.tab = newTab;
@@ -19,6 +42,7 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function($scope) {
 	};
 	
 	$scope.setTab(1);
+
 	
 	$scope.dodajRadnika = function(){
 		/*

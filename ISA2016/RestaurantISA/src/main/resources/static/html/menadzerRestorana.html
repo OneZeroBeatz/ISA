@@ -23,7 +23,9 @@
 				<label>Naziv restorana: </label> <input type="text" ng-model="nazivRestorana"> </br>
 				<label>Opis restorana: </label> <input type="text" ng-model="opisRestorana"> </br>
 				<label>Jelovnik: </label> </br>
+				<ul>
 				<li ng-repeat="jelo in jela"> {{jelo.naziv}} {{item.opis}} {{item.cena}} <a ng-click="izmenaJela(jelo.id)">Izmeni</a></li>
+				</ul>
 				<button ng-click="dodajJelo()">Dodaj jelo</button>
 			</div>
 
@@ -82,9 +84,30 @@
 
 			<div ng-show="isSet(2)">
 				<h2>Dodaj ponudjaca</h2>
+				<table>
+					<tr>
+						<td>Ime:</td>
+						<td><input type=text ng-model="imePonudjaca"></td>
+					<tr>
+					<tr>
+						<td>Prezime:</td>
+						<td><input type=text ng-model="prezimePonudjaca"></td>
+					<tr>
+					<tr>
+						<td>Email:</td>
+						<td><input type=text ng-model="emailPonudjaca"></td>
+					<tr>
+					<tr>
+						<td>Lozinka:</td>
+						<td><input type=text ng-model="lozinkaPonudjaca"></td>
+					<tr>
+				</table>
+				<button ng-click="dodajPonudjaca()">Dodaj</button>
 				
-				<h2>Postavi ponudu</h2>
-				
+				<h2>Moje ponude:</h2>
+				<ul>
+				<li ng-repeat="pon in ponude"> {{pon.aktivnoOd}} {{pon.aktivnoDo}} </li>
+				</ul>
 				<h2>Lista pristiglih ponuda</h2>
 			</div>
 

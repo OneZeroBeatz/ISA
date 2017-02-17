@@ -1,14 +1,17 @@
 package com.isa.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "pice")
-public class Pice {
+public class Pice implements Serializable{
 
 	@Id
 	@GeneratedValue
@@ -17,6 +20,9 @@ public class Pice {
 	@Column(name = "naziv")
 	private String nazivPica;
 
+	@ManyToOne(optional = false)
+	private PorudzbinaMenadzer porudzbinamenadzer;
+	
 	public Pice() {
 
 	}
@@ -37,4 +43,7 @@ public class Pice {
 		this.nazivPica = nazivPica;
 	}
 	
+	public PorudzbinaMenadzer getPorudzbinaMenadzer() {
+		return porudzbinamenadzer;
+	}
 }
