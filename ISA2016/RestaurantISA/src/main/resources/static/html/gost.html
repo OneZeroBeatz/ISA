@@ -1,0 +1,82 @@
+<div  ng-cloak ng-controller = "gostCtrl">
+
+	<div>
+		<h1>Pozdrav {{ulogovanGost.ime}} </h1>
+	</div>
+
+	<div>
+		<div>
+			<div id="tabs">
+				<ul>
+					<li ng-class="{active: isSet(0)}"><a ng-click="setTab(0)"
+						href=""><span>Istorija poseta</span></a></li>
+					<li ng-class="{active: isSet(1)}"><a ng-click="setTab(1)"
+						href=""><span>Rezervisi restoran</span></a></li>
+					<li ng-class="{active: isSet(2)}"><a ng-click="setTab(2)"
+						href=""><span>Licni podaci </span></a></li>
+					<li ng-class="{active: isSet(3)}"><a ng-click="setTab(3)"
+						href=""><span>Prijatelji</span></a></li>
+				</ul>
+			</div>
+			
+			<div ng-show="isSet(0)">
+				<h2>Istorija poseta restoranima.</h2>
+			</div>
+			
+			<div ng-show="isSet(1)">
+				<h2>Rezervacija restorana.</h2>
+			</div>
+
+			<div ng-show="isSet(2)">
+				<div>
+					<h2>Izmenite podatke:</h2>
+					<table>
+						<tr>
+							<td>Ime:</td>
+							<td><input type=text ng-model="imeIzmena"></td>
+						<tr>
+						<tr>
+							<td>Prezime:</td>
+							<td><input type=text ng-model="prezimeIzmena"></td>
+						<tr>
+						<tr>
+							<td>Email:</td>
+							<td><input type=text ng-model="emailIzmena"></td>
+						<tr>
+					</table>
+					<button ng-click="izmeniGostaPodaci()">Potvrdi izmene</button>
+				</div>
+
+				<div>
+					<h2>Izmenite lozinku:</h2>
+					<table>
+						<tr>
+							<td>Unesite staru lozinku:</td>
+							<td><input type=text ng-model="staraLozinka"></td>
+						<tr>
+						<tr>
+							<td>Unesite novu lozinku:</td>
+							<td><input type=text ng-model="novaLozinka"></td>
+						<tr>
+						<tr>
+							<td>Potvrdite novu lozinku:</td>
+							<td><input type=text ng-model="novaLozinkaPotvrda"></td>
+						<tr>
+					</table>
+					<button ng-click="izmeniGostaSifra">Sacuvaj lozinku</button>
+				</div>
+
+			</div>
+
+			<div ng-show="isSet(3)">
+				<h2>Spisak prijatelja.</h2>
+			</div>
+
+
+		</div>
+
+	</div>
+
+	</div>
+
+</div>

@@ -1,0 +1,69 @@
+
+<div ng-cloak ng-controller="ponudjacCtrl">
+	<div>
+		<h1>Ponudjac</h1>
+	</div>
+
+	<div>
+		<div>
+			<div id="tabs">
+				<ul>
+					<li ng-class="{active: isSet(0)}"><a ng-click="setTab(0)"
+						href=""><span>Porudzbine </span></a></li>
+					<li ng-class="{active: isSet(1)}"><a ng-click="setTab(1)"
+						href=""><span>Licni podaci</span></a></li>
+				</ul>
+			</div>
+
+			<div ng-show="isSet(0)">
+				<h2>Spisak porudzbine</h2>
+			</div>
+
+
+			<div ng-show="isSet(1)">
+				<div>
+					<h2>Izmenite podatke:</h2>
+					<table>
+						<tr>
+							<td>Ime:</td>
+							<td><input type=text ng-model="imeIzmena"></td>
+						<tr>
+						<tr>
+							<td>Prezime:</td>
+							<td><input type=text ng-model="prezimeIzmena"></td>
+						<tr>
+						<tr>
+							<td>Email:</td>
+							<td><input type=text ng-model="emailIzmena"></td>
+						<tr>
+					</table>
+					<button ng-click="izmeniPonudjaca()">Potvrdi izmene</button>
+				</div>
+
+				<div>
+					<h2>Izmenite lozinku:</h2>
+					<table>
+						<tr>
+							<td>Unesite staru lozinku:</td>
+							<td><input type=text ng-model="staraLozinka"></td>
+						<tr>
+						<tr>
+							<td>Unesite novu lozinku:</td>
+							<td><input type=text ng-model="novaLozinka"></td>
+						<tr>
+						<tr>
+							<td>Potvrdite novu lozinku:</td>
+							<td><input type=text ng-model="novaLozinkaPotvrda"></td>
+						<tr>
+					</table>
+					<button ng-click="izmeniPonudjaca()">Sacuvaj lozinku</button>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+	</div>
+
+</div>
