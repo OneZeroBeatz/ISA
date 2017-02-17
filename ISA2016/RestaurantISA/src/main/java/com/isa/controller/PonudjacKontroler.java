@@ -40,7 +40,6 @@ public class PonudjacKontroler {
 	
 	@RequestMapping(value = "/izlistajPonude", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Ponuda>> izlistajPonude(@RequestBody Ponudjac ponudjac) {
-
 		Page<Ponuda> ponude = ponudjacServis.izlistajPonude(ponudjac, new PageRequest(0, 10));
 
 		return new ResponseEntity<List<Ponuda>>(ponude.getContent(), HttpStatus.OK);

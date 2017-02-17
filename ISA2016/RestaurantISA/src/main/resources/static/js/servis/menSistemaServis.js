@@ -8,6 +8,14 @@ menSistemaServis.factory('menSistemaServis', function($http){
 		return $http.post ('/menSistemaKontroler/registrujRestoran', restoran);
 	}
 	
+	temp.izlistajRestorane = function(){
+		return $http.post ('/menSistemaKontroler/izlistajRestorane')
+	}
+	
+	temp.registrujMenadzeraRestorana = function (menadzer){
+		return $http.post ('/menSistemaKontroler/registrujMenadzeraRestorana', menadzer);
+	}
+	
 	return temp;
 	
 })

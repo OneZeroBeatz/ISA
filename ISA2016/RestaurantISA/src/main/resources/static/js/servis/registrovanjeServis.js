@@ -7,7 +7,6 @@ registrovanjeServis.factory('registrovanjeServis', function($http) {
 	temp.registrujKorisnika = function(korisnik) {
 		return $http.post('/contr/create', korisnik);
 	}
-	
 	return temp;
 	
 })
