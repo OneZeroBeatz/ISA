@@ -5,6 +5,16 @@ menSistemaKontroler.controller('menSistemaCtrl', function (gostGlavnaStranaServi
 	//za selektovanje tabova
 	
     $scope.setTab = function(newTab){
+    	if (newTab == 1){
+    		menSistemaServis.izlistajRestorane().success(function(data){
+    			$scope.items = data;
+    			if(data.length == 0){
+    				alert("Nema raspolozivih restorana");
+    			}
+    		}).error (function (data){
+    			alert("Neuspesno ucitavanje restorana");
+    		});
+    	}
     	$scope.tab = newTab;
     };
 
@@ -12,6 +22,39 @@ menSistemaKontroler.controller('menSistemaCtrl', function (gostGlavnaStranaServi
     	return $scope.tab === tabNum;
     };
     
-	$scope.setTab(1);
+	$scope.setTab(0);
+	
+	// REGISTROVANJE RESTORANA
+	$scope.registrujRestoran = function(){
+		var restoran = {
+			naziv: $scope.nazRes,
+			opis: $scope.opisRes
+		}
+		var str = JSON.stringify(restoran);
+		alert(str);
+		menSistemaServis.registrujRestoran(str);
+	}
+	// REGISTROVANJE MENADZERA RESTORANA
+		
+		
 
+	$scope.registrovanjeMenadzeraSistema = function(){
+		var korisnik = {
+			ime : $scope.imeMR,
+			prezime : $scope.prezimeMR,
+			email : $scope.emailMR,
+			sifra : $scope.sifraMR,
+		}
+		
+		var str = JSON.stringify(korisnik);
+		
+		menSistemaServis.registrujMenadzeraRestorana(str);
+		
+	}
+		
+
+	
+
+
+	
 });

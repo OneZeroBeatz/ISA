@@ -86,4 +86,5 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 		});
 	}
 	
+	
 });

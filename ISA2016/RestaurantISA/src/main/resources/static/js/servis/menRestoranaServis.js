@@ -1,7 +1,7 @@
 var menRestoranaServis = angular.module('restoranApp.menRestoranaServis', []);
 
 menRestoranaServis.factory('menRestoranaServisS', function($http) {
-	/*
+	
 	var temp = {};
 	
 	temp.dodajRadnika = function(radnik) {
@@ -9,5 +9,5 @@ menRestoranaServis.factory('menRestoranaServisS', function($http) {
 	}
 	
 	return temp;
-	*/
+	
 })
