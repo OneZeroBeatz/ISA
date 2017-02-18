@@ -31,30 +31,21 @@ menSistemaKontroler.controller('menSistemaCtrl', function (gostGlavnaStranaServi
 			opis: $scope.opisRes
 		}
 		var str = JSON.stringify(restoran);
-		alert(str);
 		menSistemaServis.registrujRestoran(str);
 	}
+	
 	// REGISTROVANJE MENADZERA RESTORANA
-		
-		
-
 	$scope.registrovanjeMenadzeraSistema = function(){
 		var korisnik = {
 			ime : $scope.imeMR,
 			prezime : $scope.prezimeMR,
 			email : $scope.emailMR,
 			sifra : $scope.sifraMR,
+			restoran : $scope.restoranMR
 		}
 		
 		var str = JSON.stringify(korisnik);
 		
-		menSistemaServis.registrujMenadzeraRestorana(str);
-		
+		menSistemaServis.registrujMenadzeraRestorana(str);		
 	}
-		
-
-	
-
-
-	
 });
