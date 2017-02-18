@@ -1,7 +1,8 @@
 package com.isa.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
+//import java.sql.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -26,11 +27,11 @@ public class PorudzbinaMenadzer implements Serializable{
 	private Long id;
 	
 	@Column(name = "od", nullable=true)
-	//@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	private Date aktivnoOd;
 	
 	@Column(name = "do", nullable=true)
-	//@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	private Date aktivnoDo;
 	
 	@ManyToOne(optional = false)

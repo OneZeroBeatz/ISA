@@ -3,12 +3,14 @@ package com.isa.model;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.isa.model.korisnici.MenadzerRestorana;
@@ -27,9 +29,9 @@ public class Restoran implements Serializable{
 	@Column(name = "opis")
 	private String opis;
 
-	// Jelovnik
-
-	// Karta pica
+	// Jelovnik - vise jela...
+	
+	// Karta pica - vise pica
 
 	// Konfiguracija sedenja
 
@@ -63,5 +65,5 @@ public class Restoran implements Serializable{
 	public void setOpis(String opis) {
 		this.opis = opis;
 	}
-
+	
 }

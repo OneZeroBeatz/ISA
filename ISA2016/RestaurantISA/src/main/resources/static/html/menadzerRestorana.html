@@ -12,21 +12,42 @@
 					<li ng-class="{active: isSet(1)}"><a ng-click="setTab(1)"
 						href=""><span>Zaposleni</span></a></li>
 					<li ng-class="{active: isSet(2)}"><a ng-click="setTab(2)"
-						href=""><span>Ponude i ponudjači</span></a></li>
+						href=""><span>Ponude i ponudjaci</span></a></li>
 					<li ng-class="{active: isSet(3)}"><a ng-click="setTab(3)"
-						href=""><span>Izveštaj o poslovanju restorana</span></a></li>
+						href=""><span>Izvestaj o poslovanju restorana</span></a></li>
 				</ul>
 			</div>
 
 			<div ng-show="isSet(0)">
 				<h2>Podaci o restoranu</h2>
-				<label>Naziv restorana: </label> <input type="text" ng-model="nazivRestorana"> </br>
-				<label>Opis restorana: </label> <input type="text" ng-model="opisRestorana"> </br>
+				<label>Naziv restorana: </label> <input type="text" ng-model="restoran.naziv"> </br>
+				
+				<label>Opis restorana: </label> <input type="text" ng-model="restoran.opis"> </br>
+				
 				<label>Jelovnik: </label> </br>
 				<ul>
-				<li ng-repeat="jelo in jela"> {{jelo.naziv}} {{item.opis}} {{item.cena}} <a ng-click="izmenaJela(jelo.id)">Izmeni</a></li>
+				<li ng-repeat="jelo in jela"> {{jelo.naziv}} {{jelo.opis}} {{jelo.cena}} <a ng-click="izmenaJela(jelo.id)">Izmeni</a> <a ng-click="odbrisiJelo(jelo.id)">Obrisi</a></li>
 				</ul>
-				<button ng-click="dodajJelo()">Dodaj jelo</button>
+				<label>Dodaj novo jelo: </label> </br>
+				<table>
+				<tr>
+					<td>Naziv:</td>
+					<td><input type=text ng-model="nazivJela"></td>
+				<tr>
+				<tr>
+					<td>Opis:</td>
+					<td><input type=text ng-model="opisJela"></td>
+				<tr>
+				<tr>
+					<td>Cena:</td>
+					<td><input type="number" ng-model="cenaJela"></td>
+				<tr>
+				</table>
+				<button ng-click="dodajJelo()">Dodaj</button>
+				
+				<label>Karta pica: </label> </br>
+				
+				<label>Konfiguracija sedenja: </label> </br>
 			</div>
 
 			<div ng-show="isSet(1)">
@@ -58,7 +79,7 @@
 							<td><input type=text ng-model="lozinkaRadnika"></td>
 						<tr>
 						<tr>
-							<td>Datum rođenja:</td>
+							<td>Datum roÄ‘enja:</td>
 							<td><input type="date" ng-model="datumRadnika"></td>
 						<tr>
 						<tr>
@@ -66,7 +87,7 @@
 							<td><input type=text ng-model="konfBrRadnika"></td>
 						<tr>
 						<tr>
-							<td>Veličina obuće:</td>
+							<td>VeliÄ�ina obuÄ‡e:</td>
 							<td><input type=text ng-model="velObRadnika"></td>
 						<tr>
 					</table>
@@ -105,9 +126,11 @@
 				<button ng-click="dodajPonudjaca()">Dodaj</button>
 				
 				<h2>Moje ponude:</h2>
-				<ul>
+				<label>Prikupljanje aktivno od: </label> <input type="date" ng-model="datumOd"> </br>
+				<label>Prikupljanje aktivno do: </label> <input type="date" ng-model="datumDo"> </br>
+				<!-- <ul>
 				<li ng-repeat="pon in ponude"> {{pon.aktivnoOd}} {{pon.aktivnoDo}} </li>
-				</ul>
+				</ul> -->
 				<h2>Lista pristiglih ponuda</h2>
 			</div>
 

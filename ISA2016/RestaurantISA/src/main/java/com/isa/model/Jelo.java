@@ -1,9 +1,29 @@
 package com.isa.model;
 
-public class Jelo {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-	//TODO implementirati klasu kako treba, i ko treba :p
+@Entity
+@Table(name = "jelo")
+public class Jelo {
+	
+	@Id
+	@GeneratedValue
+	private Long id;
+	
+	@Column(name = "naziv")
+	private String naziv;
+	
+	@Column(name = "opis")
+	private String opis;
+	
+	@Column(name = "cena")
+	private Float cena;
+	
 	public Jelo() {
-		// TODO Auto-generated constructor stub
+		
 	}
 }

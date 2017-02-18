@@ -15,13 +15,19 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 			var str = JSON.stringify(menRest);
 			
 			menRestoranaServisS.izlistajPonude(str).success(function(data) {
-				alert("uspeo!");
 				$scope.ponude = data;
 			}).error(function(data) {
-				alert("nisi uspeo!");
+			});
+			
+			menRestoranaServisS.izlistajRestoran(str).success(function(data) {
+				alert("uspeo restoran!");
+				$scope.restoran = data;
+			}).error(function(data) {
+				alert("nisi uspeo restoran!");
 			});
 		}else{
 			alert("Niko nije ulogovan");
+			// redirektuj!
 		}
 	});
 	
