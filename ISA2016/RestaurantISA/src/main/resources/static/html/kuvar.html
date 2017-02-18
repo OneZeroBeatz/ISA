@@ -1,18 +1,16 @@
 <div ng-cloak ng-controller="kuvarCtrl">
 	<div>
-		<h1>Kuvar</h1>
+		<h1>Kuvar11</h1>
 	</div>
 
 	<div>
 		<div>
 			<div id="tabs">
 				<ul>
-					<li ng-class="{active: isSet(0)}"><a ng-click="setTab(0)"
-						href=""><span>Kalendarski prikaz </span></a></li>
-					<li ng-class="{active: isSet(1)}"><a ng-click="setTab(1)"
-						href=""><span>Lista porudzbina</span></a></li>
-					<li ng-class="{active: isSet(2)}"><a ng-click="setTab(2)"
-						href=""><span>Izmeni podatke</span></a></li>
+					<li ng-class="{active: isSet(0)}"><a ng-click="setTab(0)" href=""><span>Kalendarski prikaz </span></a></li>
+					<li ng-class="{active: isSet(1)}"><a ng-click="setTab(1)" href=""><span>Lista porudzbina</span></a></li>
+					<li ng-class="{active: isSet(2)}"><a ng-click="setTab(2)" href=""><span>Izmeni podatke</span></a></li>
+					<li ng-class="{active: isSet(3)}"><a ng-click="setTab(3)" href=""><span>Promeni lozinku</span></a></li>
 				</ul>
 			</div>
 
@@ -41,9 +39,8 @@
 					</select>
 					<button ng-click="">Pice gotovo</button>
 				</div>
-
-
 			</div>
+
 
 			<div ng-show="isSet(2)">
 				<div>
@@ -64,7 +61,9 @@
 					</table>
 					<button ng-click="izmeniKuvaraPodaci()">Potvrdi izmene</button>
 				</div>
-
+			</div>
+			
+			<div ng-show="isSet(3)">
 				<div>
 					<h2>Izmenite lozinku:</h2>
 					<table>
@@ -83,10 +82,7 @@
 					</table>
 					<button ng-click="">Sacuvaj lozinku</button>
 				</div>
-
 			</div>
-
-
 		</div>
 	</div>
 

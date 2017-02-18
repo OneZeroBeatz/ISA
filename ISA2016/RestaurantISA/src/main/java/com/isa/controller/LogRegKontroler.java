@@ -51,7 +51,6 @@ public class LogRegKontroler {
 	
 	@RequestMapping(value = "/check", method = RequestMethod.POST)
 	public ResponseEntity<Korisnik> checkSession(){
-		System.out.println("usao u check");
 		Map<String,Object> map = modelAndView.getModel();
 		Korisnik kor = (Korisnik) map.get("ulogovanKorisnik");
 		System.out.println(kor.getIme());

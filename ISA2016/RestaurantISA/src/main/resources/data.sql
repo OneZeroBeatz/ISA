@@ -3,6 +3,7 @@ insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Sima', 'Si
 insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Djura', 'Djuric', 'djura123', 'G','djura@djura.com', 'GOST')
 insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Verka', 'Verkic', 'verka123', 'G','verka@verka.com', 'GOST')
 insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Kuvar', 'Kuvric', 'k', 'KUV','k', 'KUVAR')
+insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Kono', 'Konoric', 'ko', 'KN','ko', 'KONOBAR')
 
 insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Aca', 'aaa', 'a', 'PN','a@a.a', 'PONUDJAC')
 insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('B', 'bbb', 'b', 'PN','b', 'PONUDJAC')

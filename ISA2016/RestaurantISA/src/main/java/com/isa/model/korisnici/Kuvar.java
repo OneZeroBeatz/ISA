@@ -6,10 +6,11 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("KUV")
 public class Kuvar extends Korisnik{
-	
+
 	public Kuvar(){
 		
 	}
+
 
 	
 }

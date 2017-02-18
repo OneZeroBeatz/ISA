@@ -2,16 +2,16 @@ package com.isa.services;
 
 import java.util.List;
 
+import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Korisnik;
-import com.isa.model.korisnici.Kuvar;
 
-public interface KuvarServis {
+public interface KonobarServis {
 
 	List<Korisnik> findAll();
 
     Korisnik findOne(Long id);
 
-    Kuvar save(Kuvar kuvar);
+    Konobar save(Konobar konobar);
 
     Korisnik delete(Long id);
 
