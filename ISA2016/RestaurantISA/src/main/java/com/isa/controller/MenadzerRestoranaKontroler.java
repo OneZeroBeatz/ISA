@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.isa.model.Jelo;
+import com.isa.model.Pice;
 import com.isa.model.PorudzbinaMenadzer;
 import com.isa.model.Restoran;
 import com.isa.model.korisnici.MenadzerRestorana;
+import com.isa.model.korisnici.Ponudjac;
 import com.isa.services.MenadzerRestoranaServis;
 import com.isa.services.RestoranServis;
 
@@ -45,6 +48,74 @@ public class MenadzerRestoranaKontroler {
 		Restoran restoran = menadzerRestoranaServis.izlistajRestoran(tempMenadzerRestorana);
 		
 		return new ResponseEntity<Restoran>(restoran, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value = "/izlistajJela", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Jelo>> izlistajJela(@RequestBody Restoran restoran) {
+		
+		Page<Jelo> jela = restoranServirs.izlistajJelovnik(restoran, new PageRequest(0, 10));
+		
+		return new ResponseEntity<List<Jelo>>(jela.getContent(), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/izlistajPica", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Pice>> izlistajPica(@RequestBody Restoran restoran) {
+		
+		Page<Pice> pice = restoranServirs.izlistajKartuPica(restoran, new PageRequest(0, 10));
+		
+		return new ResponseEntity<List<Pice>>(pice.getContent(), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/dodajJelo", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Jelo> dodajJelo(@RequestBody Jelo jelo) {
+		
+		restoranServirs.save(jelo);
+		
+		return new ResponseEntity<Jelo>(jelo, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value = "/dodajPice", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Pice> dodajPice(@RequestBody Pice pice) {
+		
+		restoranServirs.save(pice);
+		
+		return new ResponseEntity<Pice>(pice, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value = "/izmeniNazivRestorana", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Restoran> izmeniNazivRestorana(@RequestBody Restoran restoran) {
+		Restoran originalRestoran = restoranServirs.findOne(restoran.getId());
+		
+		originalRestoran.setNaziv(restoran.getNaziv());
+		
+		restoranServirs.save(originalRestoran);
+		
+		return new ResponseEntity<Restoran>(originalRestoran, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/izmeniOpisRestorana", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Restoran> izmeniOpisRestorana(@RequestBody Restoran restoran) {
+		Restoran originalRestoran = restoranServirs.findOne(restoran.getId());
+		
+		originalRestoran.setOpis(restoran.getOpis());
+		
+		restoranServirs.save(originalRestoran);
+		
+		return new ResponseEntity<Restoran>(originalRestoran, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/izbrisiJelo", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void izbrisiJelo(@RequestBody Long id) {
+		
+		restoranServirs.izbrisiJelo(id);
+		
+		//return new ResponseEntity<Restoran>(originalRestoran, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/izbrisiPice", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void izbrisiPice(@RequestBody Long id) {	
+		restoranServirs.izbrisiPice(id);
+
 	}
 	
 }

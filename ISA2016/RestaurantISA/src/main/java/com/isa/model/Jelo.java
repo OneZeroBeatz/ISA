@@ -1,14 +1,17 @@
 package com.isa.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "jelo")
-public class Jelo {
+public class Jelo implements Serializable{
 	
 	@Id
 	@GeneratedValue
@@ -23,7 +26,47 @@ public class Jelo {
 	@Column(name = "cena")
 	private Float cena;
 	
+	@ManyToOne(optional = false)
+	private Restoran restoran;
+	
 	public Jelo() {
 		
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNaziv() {
+		return naziv;
+	}
+
+	public void setNaziv(String naziv) {
+		this.naziv = naziv;
+	}
+
+	public String getOpis() {
+		return opis;
+	}
+
+	public void setOpis(String opis) {
+		this.opis = opis;
+	}
+
+	public Float getCena() {
+		return cena;
+	}
+
+	public void setCena(Float cena) {
+		this.cena = cena;
+	}
+
+	public Restoran getRestoran() {
+		return restoran;
+	}
+	
 }

@@ -20,13 +20,16 @@
 
 			<div ng-show="isSet(0)">
 				<h2>Podaci o restoranu</h2>
-				<label>Naziv restorana: </label> <input type="text" ng-model="restoran.naziv"> </br>
+				</br>
+				<label>Naziv restorana: </label> <input type="text" ng-model="restoran.naziv"> </br>  <a ng-click="izmenaNazivaRestorana(restoran)" href="">Izmeni</a>
 				
-				<label>Opis restorana: </label> <input type="text" ng-model="restoran.opis"> </br>
+				</br>
+				<label>Opis restorana: </label> <input type="text" ng-model="restoran.opis"> </br>	  <a ng-click="izmenaOpisaRestorana(restoran)" href="">Izmeni</a>
 				
+				</br>
 				<label>Jelovnik: </label> </br>
 				<ul>
-				<li ng-repeat="jelo in jela"> {{jelo.naziv}} {{jelo.opis}} {{jelo.cena}} <a ng-click="izmenaJela(jelo.id)">Izmeni</a> <a ng-click="odbrisiJelo(jelo.id)">Obrisi</a></li>
+				<li ng-repeat="jelo in jela"> {{jelo.naziv}}  {{jelo.opis}}  {{jelo.cena}} <a ng-click="izmenaJela(jelo.id)" href="">Izmeni</a> <a ng-click="odbrisiJelo(jelo.id)" href="">Obrisi</a></li>
 				</ul>
 				<label>Dodaj novo jelo: </label> </br>
 				<table>
@@ -43,10 +46,31 @@
 					<td><input type="number" ng-model="cenaJela"></td>
 				<tr>
 				</table>
-				<button ng-click="dodajJelo()">Dodaj</button>
+				<button ng-click="dodajJelo(restoran)">Dodaj</button>
 				
+				</br>
 				<label>Karta pica: </label> </br>
+				<ul>
+				<li ng-repeat="pice in pica"> {{pice.naziv}}  {{pice.opis}}  {{pice.cena}} <a ng-click="izmenaPice(pice.id)" href="">Izmeni</a> <a ng-click="odbrisiPice(pice.id)" href="">Obrisi</a></li>
+				</ul>
+				<label>Dodaj novo pice: </label> </br>
+				<table>
+				<tr>
+					<td>Naziv:</td>
+					<td><input type=text ng-model="nazivPica"></td>
+				<tr>
+				<tr>
+					<td>Opis:</td>
+					<td><input type=text ng-model="opisPica"></td>
+				<tr>
+				<tr>
+					<td>Cena:</td>
+					<td><input type="number" ng-model="cenaPica"></td>
+				<tr>
+				</table>
+				<button ng-click="dodajPice(restoran)">Dodaj</button>
 				
+				</br>
 				<label>Konfiguracija sedenja: </label> </br>
 			</div>
 
@@ -79,7 +103,7 @@
 							<td><input type=text ng-model="lozinkaRadnika"></td>
 						<tr>
 						<tr>
-							<td>Datum roÄ‘enja:</td>
+							<td>Datum rodjenja:</td>
 							<td><input type="date" ng-model="datumRadnika"></td>
 						<tr>
 						<tr>
@@ -87,7 +111,7 @@
 							<td><input type=text ng-model="konfBrRadnika"></td>
 						<tr>
 						<tr>
-							<td>VeliÄ�ina obuÄ‡e:</td>
+							<td>Velicina obuce:</td>
 							<td><input type=text ng-model="velObRadnika"></td>
 						<tr>
 					</table>
@@ -135,7 +159,7 @@
 			</div>
 
 			<div ng-show="isSet(3)">
-				<h2>Spisak prijatelja.</h2>
+				<h2>Izvestaj....</h2>
 			</div>
 
 		</div>

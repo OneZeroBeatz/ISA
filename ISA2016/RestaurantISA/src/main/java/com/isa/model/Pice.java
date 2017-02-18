@@ -18,10 +18,19 @@ public class Pice implements Serializable{
 	private Long id;
 
 	@Column(name = "naziv")
-	private String nazivPica;
+	private String naziv;
+	
+	@Column(name = "opis")
+	private String opis;
+	
+	@Column(name = "cena")
+	private Float cena;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	private PorudzbinaMenadzer porudzbinamenadzer;
+	
+	@ManyToOne(optional = false)
+	private Restoran restoran;
 	
 	public Pice() {
 
@@ -34,16 +43,36 @@ public class Pice implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public String getNazivPica() {
-		return nazivPica;
-	}
-
-	public void setNazivPica(String nazivPica) {
-		this.nazivPica = nazivPica;
-	}
 	
+	public String getNaziv() {
+		return naziv;
+	}
+
+	public void setNaziv(String naziv) {
+		this.naziv = naziv;
+	}
+
+	public String getOpis() {
+		return opis;
+	}
+
+	public void setOpis(String opis) {
+		this.opis = opis;
+	}
+
+	public Float getCena() {
+		return cena;
+	}
+
+	public void setCena(Float cena) {
+		this.cena = cena;
+	}
+
 	public PorudzbinaMenadzer getPorudzbinaMenadzer() {
 		return porudzbinamenadzer;
+	}
+	
+	public Restoran getRestoran() {
+		return restoran;
 	}
 }
