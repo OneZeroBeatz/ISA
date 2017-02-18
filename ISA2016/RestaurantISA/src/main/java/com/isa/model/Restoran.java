@@ -17,10 +17,6 @@ import com.isa.model.korisnici.MenadzerRestorana;
 @Table(name = "restoran")
 public class Restoran implements Serializable{
 
-	
-
-
-	
 	@Id
 	@GeneratedValue
 	private Long id;

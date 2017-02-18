@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.isa.model.Restoran;
 import com.isa.model.korisnici.MenadzerRestorana;
+import com.isa.model.korisnici.MenadzerSistema;
 import com.isa.model.korisnici.TipKorisnika;
 import com.isa.services.MenadzerSistemaServis;
 
@@ -42,11 +43,19 @@ public class MenadzerSistemaKontroler {
 	
 	@RequestMapping(value = "/registrujMenadzeraRestorana", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<MenadzerRestorana> registrujMenadzeraRestorana(Model model, @RequestBody MenadzerRestorana menadzerRestorana) {
-		System.out.println("USAO u  reg menadzera");
 		menadzerRestorana.setTipKorisnika(TipKorisnika.MENADZER_RESTRORANA);
 		menSistemaServis.saveMenadzerRestorana(menadzerRestorana);
 		return new ResponseEntity<MenadzerRestorana>(menadzerRestorana, HttpStatus.CREATED);
 	}
+	
+	@RequestMapping(value = "/registrujMenadzeraSistema", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<MenadzerSistema> registrujMenadzeraSistema(Model model, @RequestBody MenadzerSistema menadzerSistema){
+		menadzerSistema.setTipKorisnika(TipKorisnika.MENADZER_SISTEMA);
+		menadzerSistema.setGlavni(false);
+		menSistemaServis.saveMenadzerSistema(menadzerSistema);
+		return new ResponseEntity<MenadzerSistema>(menadzerSistema, HttpStatus.CREATED);
+	}
+	
 	
 	
 }

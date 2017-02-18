@@ -5,12 +5,14 @@ import org.springframework.data.domain.Pageable;
 
 import com.isa.model.Restoran;
 import com.isa.model.korisnici.MenadzerRestorana;
+import com.isa.model.korisnici.MenadzerSistema;
 
 public interface MenadzerSistemaServis {
 
 	public Restoran saveRestoran(Restoran restoran);
 	public Page<Restoran> izlistajRestorane(Pageable pageable);
 	public MenadzerRestorana saveMenadzerRestorana(MenadzerRestorana menadzerRestorana);
+	public MenadzerSistema saveMenadzerSistema(MenadzerSistema menadzerSistema);
 	
 
 	

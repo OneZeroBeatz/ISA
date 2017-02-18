@@ -10,6 +10,7 @@ menSistemaKontroler.controller('menSistemaCtrl', function (gostGlavnaStranaServi
     			$scope.items = data;
     			if(data.length == 0){
     				alert("Nema raspolozivih restorana");
+    				$scope.setTab(0);
     			}
     		}).error (function (data){
     			alert("Neuspesno ucitavanje restorana");
@@ -35,7 +36,7 @@ menSistemaKontroler.controller('menSistemaCtrl', function (gostGlavnaStranaServi
 	}
 	
 	// REGISTROVANJE MENADZERA RESTORANA
-	$scope.registrovanjeMenadzeraSistema = function(){
+	$scope.registrovanjeMenadzeraRestorana = function(){
 		var korisnik = {
 			ime : $scope.imeMR,
 			prezime : $scope.prezimeMR,
@@ -47,5 +48,37 @@ menSistemaKontroler.controller('menSistemaCtrl', function (gostGlavnaStranaServi
 		var str = JSON.stringify(korisnik);
 		
 		menSistemaServis.registrujMenadzeraRestorana(str);		
+	}
+	
+
+	
+	
+	// REGISTROVANJE MENADZERA SISTEMA - POSEBNI
+	
+	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
+		if(data != ""){
+			$scope.ulogovanKorisnik = data;
+			$scope.jeGlavni = function (){
+				if ($scope.ulogovanKorisnik.glavni == true)
+					return true;
+				else 
+					return false;
+			}
+		}else{
+			alert("Niko nije ulogovan");
+		}
+	});
+	
+	$scope.registrovanjeMenadzeraSistema = function(){
+		var korisnik = {
+			ime : $scope.imeMS,
+			prezime : $scope.prezimeMS,
+			email : $scope.emailMS,
+			sifra : $scope.sifraMS,
+		}
+		
+		var str = JSON.stringify(korisnik);
+		
+		menSistemaServis.registrujMenadzeraSistema(str);		
 	}
 });
