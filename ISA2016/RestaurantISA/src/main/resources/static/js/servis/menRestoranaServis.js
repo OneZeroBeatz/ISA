@@ -9,6 +9,10 @@ menRestoranaServis.factory('menRestoranaServisS', function($http) {
 		return $http.post('/menadzerRestoranaKontroler/izlistajPonude', menRestorana);
 	}
 	
+	temp.izlistajRestoran = function(menRestorana) {
+		return $http.post('/menadzerRestoranaKontroler/izlistajRestoran', menRestorana);
+	}
+	
 	return temp;
 
 })

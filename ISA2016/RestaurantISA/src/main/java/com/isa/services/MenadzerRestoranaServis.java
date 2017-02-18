@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.isa.model.PorudzbinaMenadzer;
+import com.isa.model.Restoran;
 import com.isa.model.korisnici.MenadzerRestorana;
 
 public interface MenadzerRestoranaServis {
@@ -20,4 +21,5 @@ public interface MenadzerRestoranaServis {
 	
 	Page<PorudzbinaMenadzer> izlistajPorudzbineMenadzera(MenadzerRestorana menadzerRestorana, Pageable pageable);
 	
+	Restoran izlistajRestoran(MenadzerRestorana menadzerRestorana);
 }

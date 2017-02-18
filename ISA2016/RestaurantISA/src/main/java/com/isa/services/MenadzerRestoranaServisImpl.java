@@ -8,9 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.isa.model.PorudzbinaMenadzer;
+import com.isa.model.Restoran;
 import com.isa.model.korisnici.MenadzerRestorana;
 import com.isa.repository.MenadzerRestoranaSkladiste;
 import com.isa.repository.PorudzbineMenadzeraSkladiste;
+import com.isa.repository.RestoranSkladiste;
 
 @Service
 public class MenadzerRestoranaServisImpl implements MenadzerRestoranaServis{
@@ -20,6 +22,9 @@ public class MenadzerRestoranaServisImpl implements MenadzerRestoranaServis{
 	
 	@Autowired
 	private PorudzbineMenadzeraSkladiste porudzbinaMenadzeraSkladiste;
+	
+	@Autowired
+	private RestoranSkladiste restoranSkladiste;
 	
 	@Override
 	public List<MenadzerRestorana> findAll() {
@@ -46,6 +51,11 @@ public class MenadzerRestoranaServisImpl implements MenadzerRestoranaServis{
 			Pageable pageable) {
 		
 		return porudzbinaMenadzeraSkladiste.findByMenadzerrestorana(menadzerRestorana, pageable);
+	}
+
+	@Override
+	public Restoran izlistajRestoran(MenadzerRestorana menadzerRestorana) {
+		return restoranSkladiste.findByMenadzerrestorana(menadzerRestorana);
 	}
 
 }

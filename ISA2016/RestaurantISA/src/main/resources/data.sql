@@ -25,3 +25,6 @@ insert into namirnica(naziv, porudzbinamenadzer_id) values ('Nam 1', (select id 
 --insert into namirnica(naziv, porudzbinamenadzer_id) values ('Nam 2', (select id from porudzbina_menadzer where menadzerrestorana_id in (select id from korisnik where sifra='d' and email='d')))
 insert into pice(naziv, porudzbinamenadzer_id) values ('Pice 1', (select id from porudzbina_menadzer where od='2015-01-01' and do='2016-01-03'))
 
+insert into restoran(naziv, opis) values ('Restoran 1', 'Opis Restorana 1')
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values ('R', 'rrr', 'r', 'MENRES','r', 'MENADZER_RESTRORANA', (select id from restoran where naziv='Restoran 1'))
+
