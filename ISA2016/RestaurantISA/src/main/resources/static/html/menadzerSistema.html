@@ -7,9 +7,11 @@
 		<div id="tabs">
 			<ul>
 				<li ng-class="{active: isSet(0)}"><a ng-click="setTab(0)"
-					href=""><span>Registruj restoran</span></a></li>
+					href=""><span>Restorani</span></a></li>
 				<li ng-class="{active: isSet(1)}"><a ng-click="setTab(1)"
-					href=""><span>Registruj menadzera restorana</span></a></li>
+					href=""><span>Menadzeri restorana</span></a></li>
+				<li ng-show = jeGlavni() ng-class="{active: isSet(2)}"><a ng-click="setTab(2)"
+					href=""><span>Menadzeri sistema</span></a></li>
 			</ul>
 		</div>
 		
@@ -35,7 +37,7 @@
 		
 		<div ng-show="isSet(1)">
 			<div >
-				<h2>Unesite podatke o menadzeru restorana:</h2>
+				<h2> Unesite podatke o menadzeru restorana:</h2>
 				<table>
 					<tr>
 						<td> Ime:	</td>
@@ -60,6 +62,33 @@
 						<td>
 						<select ng-model="restoranMR" ng-options="x.naziv for x in items"></select> <td>
 						
+					</tr>
+				</table>
+				<button  ng-click="registrovanjeMenadzeraRestorana()">Registrujte menadzera </button>
+			</div>
+		</div>	
+		
+		<div ng-show="isSet(2)">
+			<div >
+				<h2>Unesite podatke o menadzeru sistema:</h2>
+				<table>
+					<tr>
+						<td> Ime:	</td>
+						<td><input type = text ng-model = "imeMS"></td>
+					<tr>
+					
+					<tr>
+						<td> Prezime:	</td>
+						<td><input type = text ng-model = "prezimeMS"></td>
+					<tr>
+					<tr>
+						<td> Email:	</td>
+						<td><input type = text ng-model = "emailMS"></td>
+					<tr>
+					
+					<tr>
+						<td> Sifra:	</td>
+						<td><input type = text ng-model = "sifraMS"></td>
 					</tr>
 				</table>
 				<button  ng-click="registrovanjeMenadzeraSistema()">Registrujte menadzera </button>

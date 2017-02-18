@@ -9,7 +9,7 @@ insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('B', 'bbb',
 insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('C', 'ccc', 'c', 'MENRES','c@c.c', 'MENADZER_RESTRORANA')
 insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('D', 'ddddd', 'd', 'MENRES','d', 'MENADZER_RESTRORANA')
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, glavni) values ('Kero', 'Kerica', 's', 'MENSIS','s', 'MENADZER_SISTEMA', true)
-
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, glavni) values ('Kero1', 'Kerica1', 'f', 'MENSIS','f', 'MENADZER_SISTEMA', false)
 
 insert into lista_prijatelja(id_gosta, id_prijatelja) values (1, 2)
 insert into lista_prijatelja(id_gosta, id_prijatelja) values (1, 3)
