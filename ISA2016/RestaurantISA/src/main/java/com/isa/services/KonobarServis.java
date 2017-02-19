@@ -2,6 +2,8 @@ package com.isa.services;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Korisnik;
 

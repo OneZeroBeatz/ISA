@@ -15,7 +15,7 @@ import com.isa.services.KuvarServis;
 @Controller
 @RequestMapping("/kuvarKontroler")
 public class KuvarKontroler {
-	
+
 	@Autowired
 	public KuvarServis kuvarServis;
 	
@@ -32,5 +32,6 @@ public class KuvarKontroler {
 		
 		return new ResponseEntity<Kuvar>(originalKuvar, HttpStatus.OK);
 	}
+	
 
 }
