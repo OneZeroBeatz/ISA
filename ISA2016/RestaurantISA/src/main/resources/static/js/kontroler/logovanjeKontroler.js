@@ -34,6 +34,8 @@ logovanjeKontroler.controller('logovanjeCtrl', function($location, $scope, logov
 					$location.path('/menadzerRestorana');
 				if(data.tipKorisnika == 'KONOBAR')
 					$location.path('/konobar');
+				if(data.tipKorisnika == 'SANKER')
+					$location.path('/sanker');
 			}else{
 				alert("else");
 				$scope.changeRoute('/');

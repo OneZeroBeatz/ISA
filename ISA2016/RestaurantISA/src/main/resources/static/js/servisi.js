@@ -5,4 +5,8 @@ var servisi = angular.module('restoranApp.servisi', ['restoranApp.registrovanjeS
 													 'restoranApp.kuvarServis',
 													 'restoranApp.menRestoranaServis',
 													 'restoranApp.menSistemaServis',
-													 'restoranApp.konobarServis']);
+													 'restoranApp.konobarServis',
+													 'restoranApp.sankerServis'
+													 
+													 
+													 ]);

@@ -25,5 +25,8 @@ app.config(function($routeProvider) {
     })    
     .when("/konobar", {
         templateUrl : "html/konobar.html"
+    })
+    .when("/sanker", {
+        templateUrl : "html/sanker.html"
     });
 });
