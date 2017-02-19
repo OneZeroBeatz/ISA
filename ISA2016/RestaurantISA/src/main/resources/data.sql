@@ -24,8 +24,15 @@ insert into porudzbina_menadzer(od, do, menadzerrestorana_id) values ('2005-06-0
 
 insert into namirnica(naziv, porudzbinamenadzer_id) values ('Nam 1', (select id from porudzbina_menadzer where od='2015-01-01' and do='2016-01-03'))
 --insert into namirnica(naziv, porudzbinamenadzer_id) values ('Nam 2', (select id from porudzbina_menadzer where menadzerrestorana_id in (select id from korisnik where sifra='d' and email='d')))
-insert into pice(naziv, porudzbinamenadzer_id) values ('Pice 1', (select id from porudzbina_menadzer where od='2015-01-01' and do='2016-01-03'))
+--insert into pice(naziv, porudzbinamenadzer_id) values ('Pice 1', (select id from porudzbina_menadzer where od='2015-01-01' and do='2016-01-03'))
 
 insert into restoran(naziv, opis) values ('Restoran 1', 'Opis Restorana 1')
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values ('R', 'rrr', 'r', 'MENRES','r', 'MENADZER_RESTRORANA', (select id from restoran where naziv='Restoran 1'))
 
+insert into restoran(naziv, opis) values ('Restoran 2', 'Opis Restorana 2')
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values ('Z', 'zzz', 'z', 'MENRES','z', 'MENADZER_RESTRORANA', (select id from restoran where naziv='Restoran 2'))
+
+
+insert into jelo(naziv, opis, cena, restoran_id) values ('Jelo 1', 'Opis Jela 1', 200, (select id from restoran where naziv='Restoran 1'))
+insert into jelo(naziv, opis, cena, restoran_id) values ('Jelo 2', 'Opis Jela 2', 250, (select id from restoran where naziv='Restoran 1'))
+insert into pice(naziv, opis, cena, restoran_id) values ('Pice 1', 'Opis Pica 1', 150, (select id from restoran where naziv='Restoran 1'))

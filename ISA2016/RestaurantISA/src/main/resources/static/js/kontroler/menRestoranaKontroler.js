@@ -20,18 +20,33 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 			});
 			
 			menRestoranaServisS.izlistajRestoran(str).success(function(data) {
-				alert("uspeo restoran!");
 				$scope.restoran = data;
+				menRestoranaServisS.izlistajJela(data).success(function(data) {
+					// TODO: Aca ~ Refesh
+					$scope.jela = data;
+				}).error(function(data) {
+					// TODO: Aca ~ Uraditi slucaj ako nema jela
+					alert("Neuspesno izlistavanje jelovnika!");
+				});
+				
+				menRestoranaServisS.izlistajPica(data).success(function(data) {
+					// TODO: Aca ~ Refesh
+					$scope.pica = data;
+				}).error(function(data) {
+					// TODO: Aca ~ Uraditi slucaj ako nema pica
+					alert("Neuspesno izlistavanje pica!");
+				});
 			}).error(function(data) {
-				alert("nisi uspeo restoran!");
+				alert("Neuspesno izlistavanje restorana!");
 			});
+			
 		}else{
 			alert("Niko nije ulogovan");
-			// redirektuj!
+			// TODO: Aca ~ Redirektuj!
 		}
 	});
 	
-    $scope.setTab = function(newTab){
+	$scope.setTab = function(newTab){
     	$scope.tab = newTab;
     };
 
@@ -48,28 +63,96 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 	};
 	
 	$scope.setTab(1);
-
 	
-	$scope.dodajRadnika = function(){
-		/*
-		var ponudjac = {
-			id : $scope.ulogovanKorisnik.id,
-			ime : $scope.imeIzmena,
-			prezime : $scope.prezimeIzmena,
-			email : $scope.emailIzmena,
-			sifra : $scope.staraLozinka
-			// DOPUNITI, PROVERITI...
-			//sifra : $scope.novaLozinka
+	$scope.dodajJelo = function(restoran){
+		// TODO: Aca ~ Uraditi validacuju
+		var jeloo = {
+			naziv : $scope.nazivJela,
+			opis : $scope.opisJela,
+			cena : $scope.cenaJela,
+			restoran : restoran
 		}
-		// neka pozove ocitavanje tabele ispod...(da doda novog radnika u listu)
-		var str = JSON.stringify(ponudjac);
 		
-		ponudjacServisS.izmeni(str).success(function(data) {
-			alert("uspeo!");
+		var str = JSON.stringify(jeloo);
+		menRestoranaServisS.dodajJelo(str).success(function(data) {
+			alert("Uspesno dodato jelo!");
 		}).error(function(data) {
-			alert("nisi uspeo!");
+			alert("Jelo nije dodato!");
 		});
-		*/
+	}
+	
+	$scope.dodajPice = function(restoran){
+		// TODO: Aca ~ Uraditi validacuju
+		var picee = {
+			naziv : $scope.nazivPica,
+			opis : $scope.opisPica,
+			cena : $scope.cenaPica,
+			restoran : restoran
+		}
+		
+		var str = JSON.stringify(picee);
+		menRestoranaServisS.dodajPice(str).success(function(data) {
+			alert("Uspesno dodato pice!");
+		}).error(function(data) {
+			alert("Pice nije dodato!");
+		});
+	}
+	
+	$scope.izmenaNazivaRestorana = function(restoran) {
+		// TODO: Aca ~ Uraditi validacuju
+		var rest = {
+			id : restoran.id,
+			naziv : restoran.naziv,
+
+		}
+		
+		var str = JSON.stringify(rest);
+		menRestoranaServisS.izmeniNazivRestorana(str).success(function(data) {
+			alert("Uspesno izmenjen naziv!");
+		}).error(function(data) {
+			alert("Naziv nije izmenjen!");
+		});
+	}
+	
+	$scope.izmenaOpisaRestorana = function(restoran) {
+		// TODO: Aca ~ Uraditi validacuju
+		var rest = {
+			id : restoran.id,
+			opis : restoran.opis,
+
+		}
+		
+		var str = JSON.stringify(rest);
+		menRestoranaServisS.izmeniOpisRestorana(str).success(function(data) {
+			alert("Uspesno izmenjen opis!");
+		}).error(function(data) {
+			alert("Opis nije izmenjen!");
+		});
+	}
+	
+	$scope.izmenaJela = function(jeloId){
+		//TODO: Tabelarno...
+	}
+	
+	$scope.odbrisiJelo = function(jeloId){
+
+		var str = JSON.stringify(jeloId);
+		menRestoranaServisS.izbrisiJelo(str).success(function(data) {
+			//RADI!
+			//alert("Jelo je obrisano!");
+		}).error(function(data) {
+			//alert("Jelo nije obrisano!");
+		});
+	}
+	
+	$scope.odbrisiPice = function(piceId){
+
+		var str = JSON.stringify(piceId);
+		menRestoranaServisS.izbrisiPice(str).success(function(data) {
+			//RADI!
+		}).error(function(data) {
+			
+		});
 	}
 	
 });

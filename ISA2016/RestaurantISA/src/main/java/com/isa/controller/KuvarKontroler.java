@@ -21,6 +21,7 @@ public class KuvarKontroler {
 	
 	@RequestMapping(value = "/izmeniKuvara", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Kuvar> izmeniPonudjaca(@RequestBody Kuvar gost) {
+		System.out.println("Usao u back kuvar kontroler");
 		Kuvar originalKuvar = (Kuvar) kuvarServis.findOne(gost.getId());
 		
 		originalKuvar.setIme(gost.getIme());

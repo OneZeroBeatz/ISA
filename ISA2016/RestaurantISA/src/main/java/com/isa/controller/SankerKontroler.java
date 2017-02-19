@@ -8,10 +8,10 @@ import com.isa.services.SankerServis;
 
 @Controller
 @RequestMapping("/sankerKontroler")
-
-
 public class SankerKontroler {
 
 	@Autowired
 	public SankerServis sankerServis;
+	
+	
 }

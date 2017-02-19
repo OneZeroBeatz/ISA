@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.Sanker;
 import com.isa.repository.SankerSkladiste;
+
 @Service
 public class SankerServisImpl implements SankerServis {
 	
