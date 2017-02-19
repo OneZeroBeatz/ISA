@@ -23,7 +23,7 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStr
 		    };
 			
 			$scope.setTab(0);
-			
+			// za izmeenu podataka
 			$scope.izmeniKuvaraPodaci = function(){
 				var gost = {
 					ime : $scope.imeIzmena,
@@ -32,12 +32,32 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStr
 					id : $scope.ulogovanKuvar.id,
 				}
 				var str = JSON.stringify(gost);
-				var uspeo = false;
 				izmeniKuvarServis.izmeni(str).success(function(data) {
+						//TODO: doznaka i clear
 						$location.path('/kuvar');
 					}).error(function(data) {
 						alert("Neuspesne izmene!");
 					});
+			}
+			// za izmenu lozinke
+			
+			$scope.izmeniLozinku = function (){
+				if($scope.novaLozinka == $scope.novaLozinkaPotvrda){
+					var gost = {
+						id : $scope.ulogovanKuvar.id,
+						sifra : $scope.novaLozinkaPotvrda
+					}
+					var str = JSON.stringify(gost);
+					izmeniKuvarServis.izmeniLozinku(str).success(function (data){
+						//TODO: doznaka i clear
+						$location.path('/kuvar');
+					}).error(function (data){
+						alert("Neuspesne izmene!");
+					});
+				} else {
+					alert ("Ne podudaraju se nove lozinke")
+				}
+				
 			}
 		}else{
 			alert("Morate se prvo ulogovati");

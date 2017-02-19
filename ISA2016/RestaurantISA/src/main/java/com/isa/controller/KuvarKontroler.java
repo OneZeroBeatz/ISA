@@ -18,21 +18,5 @@ public class KuvarKontroler {
 
 	@Autowired
 	public KuvarServis kuvarServis;
-	
-	@RequestMapping(value = "/izmeniKuvara", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Kuvar> izmeniPonudjaca(@RequestBody Kuvar gost) {
-		System.out.println("Usao u back kuvar kontroler");
-		Kuvar originalKuvar = (Kuvar) kuvarServis.findOne(gost.getId());
-		
-		originalKuvar.setIme(gost.getIme());
-		originalKuvar.setPrezime(gost.getPrezime());
-		originalKuvar.setEmail(gost.getEmail());
-		originalKuvar.setSifra(gost.getSifra());
-		
-		originalKuvar = kuvarServis.save(originalKuvar);
-		
-		return new ResponseEntity<Kuvar>(originalKuvar, HttpStatus.OK);
-	}
-	
 
 }

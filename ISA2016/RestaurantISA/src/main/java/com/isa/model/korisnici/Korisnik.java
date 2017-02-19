@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Table(name = "korisnik")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="ctype", discriminatorType=DiscriminatorType.STRING)
-public abstract class Korisnik{
+public class Korisnik{
 
 	@Id
 	@GeneratedValue
