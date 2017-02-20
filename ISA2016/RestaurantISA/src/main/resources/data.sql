@@ -2,9 +2,6 @@ insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Pera', 'Pe
 insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Sima', 'Simic', 'sima123', 'G','sima@sima.com', 'GOST')
 insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Djura', 'Djuric', 'djura123', 'G','djura@djura.com', 'GOST')
 insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Verka', 'Verkic', 'verka123', 'G','verka@verka.com', 'GOST')
-insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Kuvar', 'Kuvric', 'k', 'KUV','k', 'KUVAR')
-insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Kono', 'Konoric', 'ko', 'KN','ko', 'KONOBAR')
-insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Sano', 'Sankic', 'sa', 'SNK','sa', 'SANKER')
 
 insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Aca', 'aaa', 'a', 'PN','a@a.a', 'PONUDJAC')
 insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('B', 'bbb', 'b', 'PN','b', 'PONUDJAC')
@@ -37,3 +34,8 @@ insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values
 insert into jelo(naziv, opis, cena, restoran_id) values ('Jelo 1', 'Opis Jela 1', 200, (select id from restoran where naziv='Restoran 1'))
 insert into jelo(naziv, opis, cena, restoran_id) values ('Jelo 2', 'Opis Jela 2', 250, (select id from restoran where naziv='Restoran 1'))
 insert into pice(naziv, opis, cena, restoran_id) values ('Pice 1', 'Opis Pica 1', 150, (select id from restoran where naziv='Restoran 1'))
+insert into pice(naziv, opis, cena, restoran_id) values ('Pice 2', 'Opis Pica 2', 159, (select id from restoran where naziv='Restoran 1'))
+
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values ('Kuvar', 'Kuvric', 'k', 'KUV','k', 'KUVAR', (select id from restoran where naziv='Restoran 1'))
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values ('Kono', 'Konoric', 'ko', 'KN','ko', 'KONOBAR', (select id from restoran where naziv='Restoran 1'))
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values ('Sano', 'Sankic', 'sa', 'SNK','sa', 'SANKER', (select id from restoran where naziv='Restoran 1'))

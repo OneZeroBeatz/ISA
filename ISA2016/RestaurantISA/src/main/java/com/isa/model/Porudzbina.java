@@ -1,100 +1,62 @@
 package com.isa.model;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.Set;
 
-import com.isa.model.korisnici.Konobar;
-import com.isa.model.korisnici.Kuvar;
-import com.isa.model.korisnici.Sanker;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-// TODO Nisam cackao to sa bazom, mada msm da bi negde trebalo cuvati spisak porudzbina. :p
-public class Porudzbina {
+import org.hibernate.annotations.Type;
 
-	private Konobar konobarPrimio; // NULL ako nije primljena
-	private Konobar konobarNaplatio; // NULL ako nije naplacena
-	private Konobar konobarPripisana; // Konobar kome je pripisana podudzbina
+@Entity
+@Table(name = "porudzbina")
+public class Porudzbina  {
 	
-	private ArrayList<Kuvar> kuvari; // kuvari na porudzbini
-	private ArrayList<Kuvar> kuvariZavrsili; // kuvar koji je zavrsio ubacim u listu
 	
-	private Sanker sanker; // sanker koji preuzima deo porudzbine vezan za pice
+	@Id
+	@GeneratedValue
+	private Long id;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "porudzbina")
+	private Set<JeloUPorudzbini> jelovnik;
 	
-	private Date vremePrimanja; 
-	private Date vremeNaplate;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "porudzbina")
+	private Set<PiceUPorudzbini> picovnik;
 	
-	private ArrayList<Jelo> jela; //sva jela iz porudzbine
-	private ArrayList<Pice> pica; //sva pica iz porudzbine
+	//TODO: Ubaciti i sto za koji vazi ponuda
 	
-	private Sto sto;
+	@Column(name = "vremePrimanja")
+//	@Type(type="date")
+	private String vremePrimanja; 
+
+	//TODO: Sacuvati datume kao datum a ne string
 	
-	public Porudzbina(Konobar primio, Sto sto, Sanker sanker) {
-		vremePrimanja = new Date();
-		konobarPrimio = primio;
-		this.sto = sto;
-		this.sanker = sanker;
+	@Column(name = "vremeNaplata")
+//	@Type(type="date")
+	private String vremeNaplate;
+	
+	public Porudzbina() {
+		
 	}
-	
-	public Konobar getKonobarNaplatio() {
-		return konobarNaplatio;
-	}
-	public Konobar getKonobarPrimio() {
-		return konobarPrimio;
-	}
-	public ArrayList<Kuvar> getKuvari() {
-		return kuvari;
-	}
-	public ArrayList<Kuvar> getKuvariZavrsili() {
-		return kuvariZavrsili;
-	}
-	public Sanker getSanker() {
-		return sanker;
-	}
-	
-	public Date getVremeNaplate() {
+
+	public String getVremeNaplate() {
 		return vremeNaplate;
 	}
-	public Date getVremePrimanja() {
+	
+	public String getVremePrimanja() {
 		return vremePrimanja;
 	}
-	public Konobar getKonobarPripisana() {
-		return konobarPripisana;
-	}
-	public void setKonobarNaplatio(Konobar konobarNaplatio) {
-		this.konobarNaplatio = konobarNaplatio;
-	}
-	public void setKonobarPrimio(Konobar konobarPrimio) {
-		this.konobarPrimio = konobarPrimio;
-	}
-	public void setKonobarPripisana(Konobar konobarPripisana) {
-		this.konobarPripisana = konobarPripisana;
-	}
-	public void setKuvari(ArrayList<Kuvar> kuvari) {
-		this.kuvari = kuvari;
-	}
-	public void setKuvariZavrsili(ArrayList<Kuvar> kuvariZavrsili) {
-		this.kuvariZavrsili = kuvariZavrsili;
-	}
-	public void setSanker(Sanker sanker) {
-		this.sanker = sanker;
-	}
-	public void setVremeNaplate(Date vremeNaplate) {
+	
+	public void setVremeNaplate(String vremeNaplate) {
 		this.vremeNaplate = vremeNaplate;
 	}
-	public void setVremePrimanja(Date vremePrimanja) {
-		this.vremePrimanja = vremePrimanja;
-	}
-	public ArrayList<Jelo> getJela() {
-		return jela;
-	}
-	public ArrayList<Pice> getPica() {
-		return pica;
-	}
 	
-	public Sto getSto() {
-		return sto;
-	}
-	public void setSto(Sto sto) {
-		this.sto = sto;
+	public void setVremePrimanja(String vremePrimanja) {
+		this.vremePrimanja = vremePrimanja;
 	}
 	
 }
