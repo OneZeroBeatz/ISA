@@ -69,7 +69,10 @@
 			</div>
 
 			<div ng-show="isSet(3)">
-				<h2>Spisak prijatelja.</h2>
+				<h2>Spisak prijatelja:</h2>
+				<ul>
+				<li ng-repeat="prij in prijateljiNeprijatelji"> {{prij.ime}} {{prij.prezime}} <a ng-click="ukloniPrijatelja(prij.id)" href="">Ukloni</a> </li>
+				</ul>
 			</div>
 
 

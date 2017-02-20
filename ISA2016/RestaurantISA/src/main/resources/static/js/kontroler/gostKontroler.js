@@ -8,6 +8,22 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 				$scope.imeIzmena = data.ime;
 				$scope.prezimeIzmena = data.prezime;
 				$scope.emailIzmena = data.email;
+				
+				var gost = {
+						id : data.id,
+						ime : data.ime,
+						prezime : data.prezime,
+						email : data.email,
+						sifra : data.sifra
+					}
+				
+				var str = JSON.stringify(gost);
+				
+				izmeniGostaServis.izlistajPrijateljeNeprijatelje(gost).success(function(data){
+					$scope.prijateljiNeprijatelji = data;
+				}).error(function(data) {
+				});
+				
 			}else{
 				alert("Niko nije ulogovan");
 			}
@@ -40,5 +56,14 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 					alert("Neuspesne izmene!");
 				});
 		}
-	
+		
+		$scope.ukloniPrijatelja = function(id){
+
+			var str = JSON.stringify(id);
+			izmeniGostaServis.ukloniPrijatelja(str).success(function(data) {
+				//RADI!
+			}).error(function(data) {
+				
+			});
+		}
 })

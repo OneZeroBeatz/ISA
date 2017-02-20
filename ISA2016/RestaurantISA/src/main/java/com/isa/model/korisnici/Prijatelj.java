@@ -14,32 +14,35 @@ public class Prijatelj {
 	@GeneratedValue
 	private Long id;
 	
-	@Column(name = "idGosta")
-	private Long idGosta;
+	@Column(name = "emailGosta")
+	private String emailGosta;
 	
-	@Column(name = "idPrijatelja")
-	private Long idPrijatelja;
+	@Column(name = "emailPrijatelja")
+	private String emailPrijatelj;
 
-	public Prijatelj(Long idGosta, Long idPrijatelja) {
+	public Prijatelj(){
+	}
+	
+	public Prijatelj(String emailGosta, String emailPrijatelja) {
 		super();
-		this.idGosta = idGosta;
-		this.idPrijatelja = idPrijatelja;
+		this.emailGosta = emailGosta;
+		this.emailPrijatelj = emailPrijatelja;
 	}
 	
-	public Long getIdGosta() {
-		return idGosta;
+	public String getEmailGosta() {
+		return emailGosta;
 	}
 	
-	public void setIdGosta(Long idGosta) {
-		this.idGosta = idGosta;
+	public void setEmailGosta(String emailGosta) {
+		this.emailGosta = emailGosta;
 	}
 	
-	public Long getIdPrijatelja() {
-		return idPrijatelja;
+	public String getEmailPrijatelj() {
+		return emailPrijatelj;
 	}
 	
-	public void setIdPrijatelja(Long idPrijatelja) {
-		this.idPrijatelja = idPrijatelja;
+	public void setEmailPrijatelj(String emailPrijatelj) {
+		this.emailPrijatelj = emailPrijatelj;
 	}
 
 }

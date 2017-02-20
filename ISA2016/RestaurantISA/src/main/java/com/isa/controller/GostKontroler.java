@@ -1,6 +1,13 @@
 package com.isa.controller;
 
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.isa.model.korisnici.Gost;
-import com.isa.model.korisnici.Ponudjac;
+import com.isa.model.korisnici.Korisnik;
+import com.isa.model.korisnici.Prijatelj;
 import com.isa.services.GostServis;
 
 @Controller
@@ -33,15 +41,29 @@ public class GostKontroler {
 		
 		return new ResponseEntity<Gost>(originalGost, HttpStatus.OK);
 	}
-	
-	@RequestMapping(value = "/sviPrijatelji", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Gost> sviPrijatelji(@RequestBody Gost gost) {
-		System.out.println("USAO IZMENI");
+
+	@RequestMapping(value = "/izlistajPrijateljeNeprijatelje", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Korisnik>> izlistajPrijateljeNeprijatelje(@RequestBody Gost gost) {
+
 		Gost originalGost = (Gost) gostServis.findOne(gost.getId());
 		
+		Page<Prijatelj> prijatelji = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 10));
 		
+		List<Korisnik> korisnici = new ArrayList<>();
 		
-		return new ResponseEntity<Gost>(originalGost, HttpStatus.OK);
+		Iterator<Prijatelj> itr = prijatelji.iterator();
+		
+		while(itr.hasNext()){
+			korisnici.add(gostServis.findByEmail(itr.next().getEmailPrijatelj())); 
+		}
+		
+		return new ResponseEntity<List<Korisnik>>(korisnici, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/ukloniPrijatelja", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void izbrisiJelo(@RequestBody Long id) {
+		
+		gostServis.delete(id);
 	}
 
 }
