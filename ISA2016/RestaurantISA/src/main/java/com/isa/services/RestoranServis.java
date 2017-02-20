@@ -1,5 +1,6 @@
 package com.isa.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import com.isa.model.Jelo;
 import com.isa.model.Pice;
 import com.isa.model.Restoran;
+import com.isa.model.Sto;
 
 public interface RestoranServis {
 
@@ -31,6 +33,7 @@ public interface RestoranServis {
 
 	void izbrisiPice(Long id);
 
+	Page<Sto> kreirajStolove(Restoran restoran, ArrayList<Integer> oznake, Pageable pageable);
 
 	
 }

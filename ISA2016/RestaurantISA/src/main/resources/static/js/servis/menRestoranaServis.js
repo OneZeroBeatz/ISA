@@ -45,6 +45,10 @@ menRestoranaServis.factory('menRestoranaServisS', function($http) {
 		return $http.post('/menadzerRestoranaKontroler/izmeniOpisRestorana', restoran);
 	}
 	
+	temp.napraviStolove = function(nizStolova) {
+		return $http.post('/menadzerRestoranaKontroler/napraviStolove', nizStolova);
+	}
+	
 	return temp;
 
 })
