@@ -14,6 +14,8 @@ public interface PorudzbinaSkladiste extends JpaRepository<Porudzbina, Serializa
 	Porudzbina save(Porudzbina namirnica);
 
 	Page<Porudzbina> findByRestoran(Restoran restoran, Pageable pageable);
+
+	Porudzbina findById(Long id);
 	
 	
 }

@@ -1,6 +1,11 @@
+<html>
+<head>
+
+
+</head>
 <div ng-cloak ng-controller="sankerCtrl">
 	<div>
-		<h1>Sanker</h1>
+		<h1>Sanker: {{ulogovanSanker.ime}} id: {{ulogovanSanker.id}}</h1>
 	</div>
 
 	<div>
@@ -19,23 +24,25 @@
 			</div>
 
 
-			<div ng-show="isSet(1)">
+			<div id = "div1" ng-show="isSet(1)">
+
+
 				<h2>lista porudzbina</h2>
 				
-				<table>
-					<tr>
-						<th>Sifra</th>
-						<th>Vreme porudzbine</th>
-						<th>Broj stola</th>
+				<table ng-show = "!item.spremna" ng-repeat = "item in porudzbine">
+					<tr >
+						<td>Vreme : {{item.vremePrimanja}}</td>
+						<td>BR Stola :</td>
+						<td><button ng-click = "kliknuoNaDetalji(item)">Detalji</td>
+						<td><button type = "button" id = "btn_click" ng-show = "item.sanker == null" ng-click = "prihvati(item)">Prihvati</td>
+						<td><button ng-show = "item.sanker.id == ulogovanSanker.id" ng-click = "zavrsi(item)">Zavrsi</td>
+					
 					</tr>
-					<tr ng-repeat = "item in porudzbine">
-						<td>{{item.id}}</td>
-						<td>{{item.vremePrimanja}}</td>
-						<td>BR Stola</td>
-						<td><button ng-click = "kliknuoNaDetalji(item.id)">Detalji</td>
-						<td><button ng-model = "item.id" ng-click = "oznaciKaoSpremno(item.id)">Oznaci kao spremno</td>
-						
+					<tr  ng-show = "show == item.id" ng-repeat = "item1 in picaKliknutePorudzbine">
+						<td>{{item1.pice.naziv}}</td>
+						<td>{{item1.kolicina}}</td>
 					</tr>
+					<hr/>
 				</table>
 			</div>
 
@@ -84,6 +91,8 @@
 	</div>
 
 </div>
+
+</html>
 
 
 

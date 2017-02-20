@@ -4,13 +4,16 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.isa.model.PiceUPorudzbini;
 import com.isa.model.Porudzbina;
 import com.isa.model.Restoran;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.Sanker;
+import com.isa.repository.PiceUPorudzbiniSkladiste;
 import com.isa.repository.PorudzbinaSkladiste;
 import com.isa.repository.SankerSkladiste;
 
@@ -23,7 +26,9 @@ public class SankerServisImpl implements SankerServis {
 	
 	@Autowired
 	private PorudzbinaSkladiste porudzbineSkladiste;
-	
+
+	@Autowired
+	private PiceUPorudzbiniSkladiste piceUPorudzbiniSkladiste;
 	
 	@Override
 	public List<Korisnik> findAll() {
@@ -64,6 +69,12 @@ public class SankerServisImpl implements SankerServis {
 	public Page<Porudzbina> izlistajPorudzbine(Restoran restoran,
 			Pageable pageable) {
 		return porudzbineSkladiste.findByRestoran(restoran, pageable);
+	}
+
+	@Override
+	public Page<PiceUPorudzbini> izlistajPicaPorudzbine(Porudzbina porudzbina,
+			Pageable pageable) {
+		return piceUPorudzbiniSkladiste.findByPorudzbina(porudzbina, pageable);
 	}
 
 

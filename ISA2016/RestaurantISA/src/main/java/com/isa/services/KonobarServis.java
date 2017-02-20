@@ -31,9 +31,13 @@ public interface KonobarServis {
     
     Pice pronadjiPice(Long i);
 
+	Porudzbina pronadjiPorudzbinu(Long id);
+	
 	void saveJeloUPorudzbini(JeloUPorudzbini jeloUPorudzbini);
 
 	void savePiceUPorudzbini(PiceUPorudzbini piceUPorudzbini);
+
+
 
     
     
