@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -27,15 +28,18 @@ public class Porudzbina  {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "porudzbina")
 	private Set<PiceUPorudzbini> picovnik;
 	
+	@ManyToOne(optional = true)
+	private Restoran restoran;
+	
 	//TODO: Ubaciti i sto za koji vazi ponuda
 	
-	@Column(name = "vremePrimanja")
+	@Column(name = "vremeprimanja")
 //	@Type(type="date")
 	private String vremePrimanja; 
 
 	//TODO: Sacuvati datume kao datum a ne string
 	
-	@Column(name = "vremeNaplata")
+	@Column(name = "vremenaplate")
 //	@Type(type="date")
 	private String vremeNaplate;
 	
@@ -58,5 +62,17 @@ public class Porudzbina  {
 	public void setVremePrimanja(String vremePrimanja) {
 		this.vremePrimanja = vremePrimanja;
 	}
+	
+	public Restoran getRestoran() {
+		return restoran;
+	}
+	public void setRestoran(Restoran restoran) {
+		this.restoran = restoran;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+	
 	
 }

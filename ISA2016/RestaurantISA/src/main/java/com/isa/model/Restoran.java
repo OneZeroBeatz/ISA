@@ -43,6 +43,10 @@ public class Restoran implements Serializable{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restoran")
 	private Set<Sanker> sanker;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restoran")
+	private Set<Porudzbina> porudzbina;
+	
+	
 	// Karta pica - vise pica
 
 	// Konfiguracija sedenja

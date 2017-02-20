@@ -100,15 +100,10 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 	    	
 		    	var jelaPica = {
 		    		svaJela : $scope.dodataJelaId,
-		    		svaPica : $scope.dodataPicaId		
+		    		svaPica : $scope.dodataPicaId,
+		    		konobar : $scope.ulogovanKonobar
 		    	};
-		    	
-
-				
-		    	
-		    	console.log(" JELA " + JSON.stringify($scope.dodataJelaId));
-		    	console.log(" PICA " + JSON.stringify($scope.dodataPicaId));
-		    	
+		    	    	
 		    	var jelaPicaStr = JSON.stringify(jelaPica);
 				console.log(jelaPicaStr);
 				

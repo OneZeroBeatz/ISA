@@ -20,7 +20,23 @@
 
 
 			<div ng-show="isSet(1)">
-				<h2>lista stolova</h2>
+				<h2>lista porudzbina</h2>
+				
+				<table>
+					<tr>
+						<th>Sifra</th>
+						<th>Vreme porudzbine</th>
+						<th>Broj stola</th>
+					</tr>
+					<tr ng-repeat = "item in porudzbine">
+						<td>{{item.id}}</td>
+						<td>{{item.vremePrimanja}}</td>
+						<td>BR Stola</td>
+						<td><button ng-click = "kliknuoNaDetalji(item.id)">Detalji</td>
+						<td><button ng-model = "item.id" ng-click = "oznaciKaoSpremno(item.id)">Oznaci kao spremno</td>
+						
+					</tr>
+				</table>
 			</div>
 
 			<div ng-show="isSet(2)">

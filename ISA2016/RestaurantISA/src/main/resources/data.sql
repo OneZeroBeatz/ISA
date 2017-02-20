@@ -39,3 +39,11 @@ insert into pice(naziv, opis, cena, restoran_id) values ('Pice 2', 'Opis Pica 2'
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values ('Kuvar', 'Kuvric', 'k', 'KUV','k', 'KUVAR', (select id from restoran where naziv='Restoran 1'))
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values ('Kono', 'Konoric', 'ko', 'KN','ko', 'KONOBAR', (select id from restoran where naziv='Restoran 1'))
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values ('Sano', 'Sankic', 'sa', 'SNK','sa', 'SANKER', (select id from restoran where naziv='Restoran 1'))
+
+insert into porudzbina(vremeprimanja, vremenaplate, restoran_id) values ("2014-01-12 11:39:11", "2014-01-12 11:42:11", (select id from restoran where naziv='Restoran 1'))
+insert into porudzbina(vremeprimanja, vremenaplate, restoran_id) values ("2014-02-12 11:49:34", "2014-01-12 11:45:12", (select id from restoran where naziv='Restoran 1'))
+
+insert into piceuporudzbini(kolicina, porudzbina_id, pice_id) values (2,1,1)
+insert into piceuporudzbini(kolicina, porudzbina_id, pice_id) values (3,2,1)
+insert into piceuporudzbini(kolicina, porudzbina_id, pice_id) values (8,2,2)
+

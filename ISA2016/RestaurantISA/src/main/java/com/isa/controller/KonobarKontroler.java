@@ -65,10 +65,12 @@ public class KonobarKontroler {
 		
 		// Dodata porudzbina
 		Porudzbina porudzbina = new Porudzbina();
+		Restoran restoran = jelaPica.getKonobar().getRestoran();
 		java.util.Date dt = new java.util.Date();
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = sdf.format(dt);
 		porudzbina.setVremePrimanja(currentTime);
+		porudzbina.setRestoran(restoran);
 		konobarServis.savePorudzbina(porudzbina);
 		
 		
@@ -90,13 +92,11 @@ public class KonobarKontroler {
 		
 		// KREIRANJE SVIH JELA U PORUDZBINI
 		Set<Jelo> uniqueSetJela = new HashSet<Jelo>(jelaL);
-		System.out.println("**** SPISAK JELA ******");
 		for (Jelo temp : uniqueSetJela) {
 			JeloUPorudzbini jeloUPorudzbini = new JeloUPorudzbini();
 			jeloUPorudzbini.setKolicina(Collections.frequency(jelaL, temp));
 			jeloUPorudzbini.setJelo(temp);
 			jeloUPorudzbini.setPorudzbina(porudzbina);
-			System.out.println(temp.getNaziv() + " " + Collections.frequency(jelaL, temp) + " komada");
 			
 			konobarServis.saveJeloUPorudzbini(jeloUPorudzbini);	
 			
@@ -104,10 +104,7 @@ public class KonobarKontroler {
 		
 		// KREIRANJE SVIH JELA U PORUDZBINI
 		Set<Pice> uniqueSetPica = new HashSet<Pice>(picaL);
-		System.out.println("DODATO JE "+ uniqueSetPica.size() + " razlicitih pica");
-		System.out.println("DODATO JE "+ uniqueSetPica.size() + " razlicitih pica");
 		for (Pice temp : uniqueSetPica) {
-			System.out.println(temp + " ovo pice ispisi kakvo je");
 			PiceUPorudzbini piceUPorudzbini = new PiceUPorudzbini();
 			piceUPorudzbini.setKolicina(Collections.frequency(picaL, temp));
 			piceUPorudzbini.setPice(temp);
@@ -117,12 +114,6 @@ public class KonobarKontroler {
 
 		return new ResponseEntity<Porudzbina>(HttpStatus.OK);
 	}
-	
-	
-
-	
-	
-	
 }
 
 

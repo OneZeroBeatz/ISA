@@ -31,5 +31,6 @@ public interface RestoranServis {
 
 	void izbrisiPice(Long id);
 
+
 	
 }
