@@ -39,6 +39,7 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStr
 						alert("Neuspesne izmene!");
 					});
 			}
+			
 			// za izmenu lozinke
 			
 			$scope.izmeniLozinku = function (){
@@ -48,6 +49,7 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStr
 						sifra : $scope.novaLozinkaPotvrda
 					}
 					var str = JSON.stringify(gost);
+					
 					izmeniKuvarServis.izmeniLozinku(str).success(function (data){
 						//TODO: doznaka i clear
 						$location.path('/kuvar');

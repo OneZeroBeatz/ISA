@@ -9,6 +9,8 @@ import com.isa.model.Restoran;
 
 public interface JeloSkladiste extends JpaRepository<Jelo, Long> {
 
+	Jelo findById (long id);
+	
 	Page<Jelo> findByRestoran(Restoran restoran, Pageable pageable);
 	
 	Jelo save(Jelo jelo);

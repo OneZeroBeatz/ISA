@@ -1,132 +1,104 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Angular</title>
+<div ng-cloak ng-controller="sankerCtrl">
+	<div>
+		<h1>Sanker</h1>
+	</div>
 
-<link rel="stylesheet" type="text/css" href="../css/index.css">
-<link rel="stylesheet" type="text/css" href="../css/style.css">
-	
-<script src="../lib/angular.js"></script>		
-<script src="http://ngmaterial.assets.s3.amazonaws.com/svg-assets-cache.js"></script>
-<script src="../js/app.js"></script>
-<script src="../js/kontroleri.js"></script>
-<script src="../js/kontroler/registrovanjeKontroler.js"></script>
-<script src="../js/kontroler/kuvarKontroler.js"></script>	
-<script src="../js/kontroler/konobarKontroler.js"></script>	
-<script src="../js/kontroler/sankerKontroler.js"></script>	
-<script src="../js/servisi.js"></script>
-<script src="../js/servis/registrovanjeServis.js"></script>
+	<div>
+		<div>
+			<div id="tabs">
+				<ul>
+					<li ng-class="{active: isSet(0)}"><a ng-click="setTab(0)" href=""><span>Kalendarski prikaz </span></a></li>
+					<li ng-class="{active: isSet(1)}"><a ng-click="setTab(1)" href=""><span>Lista porudzbina</span></a></li>
+					<li ng-class="{active: isSet(2)}"><a ng-click="setTab(2)" href=""><span>Izmeni podatke</span></a></li>
+					<li ng-class="{active: isSet(3)}"><a ng-click="setTab(3)" href=""><span>Promeni lozinku</span></a></li>
+				</ul>
+			</div>
 
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
-<meta name="format-detection" content="telephone=no">
-<meta name="msapplication-tap-highlight" content="no">
-<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+			<div ng-show="isSet(0)">
+				<h2>Kalendarski prikaz</h2>
+			</div>
 
-</head>
 
-<body  ng-app = "sankerKontroler" ng-controller = "sankerCtrl">
-			<div>
-				<h1> Sanker </h1> 
+			<div ng-show="isSet(1)">
+				<h2>lista porudzbina</h2>
+				
+				<table>
+					<tr>
+						<th>Sifra</th>
+						<th>Vreme porudzbine</th>
+						<th>Broj stola</th>
+					</tr>
+					<tr ng-repeat = "item in porudzbine">
+						<td>{{item.id}}</td>
+						<td>{{item.vremePrimanja}}</td>
+						<td>BR Stola</td>
+						<td><button ng-click = "kliknuoNaDetalji(item.id)">Detalji</td>
+						<td><button ng-model = "item.id" ng-click = "oznaciKaoSpremno(item.id)">Oznaci kao spremno</td>
+						
+					</tr>
+				</table>
+			</div>
+
+			<div ng-show="isSet(2)">
+				<div>
+					<h2>Izmenite podatke:</h2>
+					<table>
+						<tr>
+							<td>Ime:</td>
+							<td><input type=text ng-model="imeIzmena"></td>
+						<tr>
+						<tr>
+							<td>Prezime:</td>
+							<td><input type=text ng-model="prezimeIzmena"></td>
+						<tr>
+						<tr>
+							<td>Email:</td>
+							<td><input type=text ng-model="emailIzmena"></td>
+						<tr>
+					</table>
+					<button ng-click="izmeniSankeraPodaci()">Potvrdi izmene</button>
+				</div>
 			</div>
 			
-			<div >
+			<div ng-show="isSet(3)">
 				<div>
-					<div id="tabs">
-						<ul>
-							<li ng-class = "{active: isSet(0)}"><a ng-click = "setTab(0)" href=""><span>Kalendarski prikaz </span></a></li>
-							<li ng-class = "{active: isSet(1)}"><a ng-click = "setTab(1)" href=""><span>Lista porudzbina</span></a></li>
-							<li ng-class = "{active: isSet(2)}"><a ng-click = "setTab(2)" href=""><span>Izmeni podatke</span></a></li>
-							<li ng-class = "{active: isSet(3)}"><a ng-click = "setTab(3)" href=""><span>Izmeni lozinku</span></a></li>
-						</ul>
-					</div>
-				
-					<div ng-show = "isSet(0)">
-						<h2>Kalendarski prikaz</h2>
-					</div>
-					
-					
-					<div ng-show = "isSet(1)">
-						<h2>Lista porudzbina</h2>
-						<div name = "listaPorudzbinaSanker">
-							<p> Spisak porudzbina</p>
-							<select name="Spisak porudzbina" size="5">
-							  <option>Porudzbina 1</option>
-							  <option>Porudzbina 2</option>
-							  <option>Porudzbina 3</option>
-							</select>
-						</div>
-						
-						<div name = "listaPica">
-							<p> Spisak pica</p>
-							<select name="Prihvacena pica" size="5">
-							  <option>Pice 1</option>
-							  <option>Pice 2</option>
-							  <option>Pice 3</option>
-							</select>
-							<button  ng-click=""> Pice gotovo</button>
-						</div>
-						
-						
-					</div>
-					
-					<div ng-show = "isSet(2)">
-						<div>
-							<h2>Izmenite podatke:</h2>
-							<table>
-								<tr>
-									<td> Ime:	</td>
-									<td><input type = text ng-model = "imeIzmena"></td>
-								<tr>
-								
-								<tr>
-									<td> Prezime:	</td>
-									<td><input type = text ng-model = "prezimeIzmena"></td>
-								<tr>
-								<tr>
-									<td> Email:	</td>
-									<td><input type = text ng-model = "emailIzmena"></td>
-								<tr>			
-							</table>
-							<button  ng-click=""> Potvrdi izmene </button>
-						</div>						
-					</div>
-					
-					<div ng-show = "isSet(3)">
-						<div>
-							<h2>Izmenite lozinku:</h2>
-							<table>
-								<tr>
-									<td> Unesite staru lozinku:	</td>
-									<td><input type = text ng-model = "staraLozinka"></td>
-								<tr>
-								
-								<tr>
-									<td> Unesite novu lozinku:	</td>
-									<td><input type = text ng-model = "novaLozinka"></td>
-								<tr>
-								<tr>
-									<td> Potvrdite novu lozinku:	</td>
-									<td><input type = text ng-model = "novaLozinkaPotvrda"></td>
-								<tr>			
-							</table>
-							<button  ng-click="">Sacuvaj lozinku </button>
-						</div>
-					
-					
-					</div>
-					
-					
+					<h2>Izmenite lozinku:</h2>
+					<table>
+						<tr>
+							<td>Unesite staru lozinku:</td>
+							<td><input type=text ng-model="staraLozinka"></td>
+						<tr>
+						<tr>
+							<td>Unesite novu lozinku:</td>
+							<td><input type=text ng-model="novaLozinka"></td>
+						<tr>
+						<tr>
+							<td>Potvrdite novu lozinku:</td>
+							<td><input type=text ng-model="novaLozinkaPotvrda"></td>
+						<tr>
+					</table>
+					<button ng-click="izmeniLozinku()">Sacuvaj lozinku</button>
 				</div>
-				
 			</div>
+		</div>
+	</div>
+
+</div>
 
 
-	<script type="text/javascript" src="../js/angular-animate.js"></script>
-	<script type="text/javascript" src="../js/angular-aria.js"></script>
-	<script type="text/javascript" src="../js/angular-material.js"></script>
-	<script type="text/javascript" src="../js/angular-messages.js"></script>
-	<script type="text/javascript" src="../js/index.js"></script>
 
-</body>
-</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

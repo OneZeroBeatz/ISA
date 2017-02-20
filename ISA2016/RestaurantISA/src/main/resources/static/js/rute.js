@@ -22,5 +22,11 @@ app.config(function($routeProvider) {
     })
     .when("/menadzerRestorana", {
         templateUrl : "html/menadzerRestorana.html"
+    })    
+    .when("/konobar", {
+        templateUrl : "html/konobar.html"
+    })
+    .when("/sanker", {
+        templateUrl : "html/sanker.html"
     });
 });

@@ -1,12 +1,15 @@
 package com.isa.model;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -28,6 +31,10 @@ public class Jelo implements Serializable{
 	
 	@ManyToOne(optional = false)
 	private Restoran restoran;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "jelo")
+	private Set<JeloUPorudzbini> jelovnik;
+	
 	
 	public Jelo() {
 		
