@@ -61,6 +61,20 @@ sankerKontroler.controller('sankerCtrl', function($scope, $location, gostGlavnaS
 				}
 				
 			}
+			
+			
+			// UCITAVANJE PORUDZBINA
+			
+			izmeniSankerServis.ucitajPorudzbine($scope.ulogovanSanker).success(function(data) {
+				$scope.porudzbine = data;
+				if ($scope.porudzbine.length == 0){
+					alert("Nema raspolozivih porudzbina");
+					$scope.setTab(0);
+				}
+				alert("uspesno ucitao porudzbine");
+			}).error(function (data){
+				alert("Neuspelo ucitavanje porudzbina");
+			});
 		}else{
 			alert("Morate se prvo ulogovati");
 			window.location.href = "logovanje.html";

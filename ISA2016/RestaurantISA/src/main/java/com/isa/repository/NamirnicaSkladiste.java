@@ -11,6 +11,6 @@ public interface NamirnicaSkladiste extends JpaRepository<Namirnica, Long>{
 
 	Page<Namirnica> findByPorudzbinaMenadzer(PorudzbinaMenadzer porudzbinaMenadzer, Pageable pageable);
 	
-	Namirnica save(Namirnica namirnica);
+	Namirnica save(Namirnica porudzbina);
 	
 }

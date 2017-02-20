@@ -3,10 +3,15 @@ package com.isa.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.isa.model.Porudzbina;
+import com.isa.model.Restoran;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.Sanker;
+import com.isa.repository.PorudzbinaSkladiste;
 import com.isa.repository.SankerSkladiste;
 
 @Service
@@ -15,6 +20,10 @@ public class SankerServisImpl implements SankerServis {
 
 	@Autowired
 	private SankerSkladiste sankerSkladiste;
+	
+	@Autowired
+	private PorudzbinaSkladiste porudzbineSkladiste;
+	
 	
 	@Override
 	public List<Korisnik> findAll() {
@@ -49,6 +58,12 @@ public class SankerServisImpl implements SankerServis {
 		}catch(Exception e){
 			return null;
 		}
+	}
+
+	@Override
+	public Page<Porudzbina> izlistajPorudzbine(Restoran restoran,
+			Pageable pageable) {
+		return porudzbineSkladiste.findByRestoran(restoran, pageable);
 	}
 
 

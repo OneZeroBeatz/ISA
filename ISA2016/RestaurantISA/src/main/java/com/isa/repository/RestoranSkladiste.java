@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.isa.model.Restoran;
+import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.MenadzerRestorana;
 
 @Repository
@@ -18,4 +19,5 @@ public interface RestoranSkladiste extends JpaRepository<Restoran,Long> {
 	List<Restoran> findById(Long gid);
 	Page<Restoran> findAll(Pageable pageable);
 	Restoran findByMenadzerrestorana(MenadzerRestorana menadzerRestorana);
+	Restoran findByKonobar(Konobar konobar);
 }

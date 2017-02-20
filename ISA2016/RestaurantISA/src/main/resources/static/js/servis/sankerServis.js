@@ -12,6 +12,10 @@ sankerServis.factory('izmeniSankerServis', function($http) {
 		return $http.post('/korisnikKontroler/izmeniLozinkuKorisnika', gost);
 	}
 	
+	temp.ucitajPorudzbine = function(sanker){
+		return $http.post('/sankerKontroler/ucitajPorudzbine', sanker);
+	}
+	
 	return temp;
 	
 })

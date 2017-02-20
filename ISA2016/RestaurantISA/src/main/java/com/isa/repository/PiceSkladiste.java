@@ -15,5 +15,7 @@ public interface PiceSkladiste extends JpaRepository<Pice, Long>{
 	Pice save(Pice pice);
 
 	Page<Pice> findByRestoran(Restoran restoran, Pageable pageable);
+
+	Pice findById(Long i);
 	
 }

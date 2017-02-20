@@ -1,5 +1,6 @@
 package com.isa.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import com.isa.model.Jelo;
 import com.isa.model.Pice;
 import com.isa.model.PorudzbinaMenadzer;
 import com.isa.model.Restoran;
+import com.isa.model.Sto;
 import com.isa.model.korisnici.MenadzerRestorana;
 import com.isa.model.korisnici.Ponudjac;
 import com.isa.services.MenadzerRestoranaServis;
@@ -118,4 +120,17 @@ public class MenadzerRestoranaKontroler {
 
 	}
 	
+	@RequestMapping(value = "/napraviStolove", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Sto>> napraviStolove(@RequestBody int[] oznakeStolova) {	
+		System.out.println(oznakeStolova[0]);
+		Restoran restoran = restoranServirs.findOne((long)oznakeStolova[0]);
+		System.out.println(restoran);
+		ArrayList<Integer> oznake = new ArrayList<>();
+		for(int i=1; i<oznakeStolova.length; i++){
+			oznake.add(oznakeStolova[i]);
+		}
+		Page<Sto> stolovi = restoranServirs.kreirajStolove(restoran, oznake, new PageRequest(0, 10));
+		
+		return new ResponseEntity<List<Sto>>(stolovi.getContent(), HttpStatus.OK);
+	}
 }

@@ -9,7 +9,7 @@
 				<ul>
 					<li ng-class="{active: isSet(0)}"><a ng-click="setTab(0)" href=""><span>Kalendarski prikaz </span></a></li>
 					<li ng-class="{active: isSet(1)}"><a ng-click="setTab(1)" href=""><span>Raspored stolova</span></a></li>
-					<li ng-class="{active: isSet(2)}"><a ng-click="setTab(2)" href=""><span>Nova porudzbina</span></a></li>
+					<li ng-class="{active: isSet(2)}"><a ng-click="setTab(2)" href=""><span>Porudzbine</span></a></li>
 					<li ng-class="{active: isSet(3)}"><a ng-click="setTab(3)" href=""><span>Izmeni podatke</span></a></li>
 					<li ng-class="{active: isSet(4)}"><a ng-click="setTab(4)" href=""><span>Promeni lozinku</span></a></li>
 				</ul>
@@ -25,7 +25,58 @@
 			</div>
 
 			<div ng-show="isSet(2)">
-				<h2>Nova porudzbina</h2>
+				<h2>Porudzbine</h2>
+				<div>
+					<div>
+						<table>
+						<tr>
+							<td>Odaberite jelo</td>
+							<td><select ng-model="jelo" ng-options="x.naziv for x in jela"></select></td>
+							<td><button ng-click="dodajJelo()">Dodaj jelo</button></td>
+						<tr>
+						</table>
+					</div>
+					<div>						
+					<table>
+						<tr>
+							<td>Odaberite pice</td>
+							<td><select ng-model="pice" ng-options="x.naziv for x in pica"></select></td>
+							<td><button ng-click="dodajPice()">Dodaj pice</button></td>
+						<tr>
+						</table>
+					</div>
+					<hr/>
+					<div>
+						<h3>Porudzbina</h3>
+						<div ng-show = "dodataPica.length != 0">
+							<h4>Spisak pica</h4>
+							<table>
+								<tr ng-repeat="x in dodataPica">
+							    	<td>{{ x.pic.naziv }}</td>
+							    	<td><a href = "" ng-click = "obrisiPice(x)" >obrisi</a></td>
+							  	</tr>
+							</table>
+						</div>
+						<div ng-show = "dodataJela.length != 0">
+							<h4>Spisak jela</h4>
+							<table>
+								<tr ng-repeat = "x in dodataJela">
+							    	<td>{{ x.jel.naziv }}</td>
+							    	<td><a href = "" ng-click = "obrisiJelo(x)" >obrisi</a></td>
+							  	</tr>
+							</table>
+						</div>							
+						<div>
+							<table>
+								<tr>
+									<td>Odaberite sto</td>
+									<td><select ng-model="Sto" ng-options="x.naziv for x in Sto"></select></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<button ng-click="dodajPorudzbinu()">Dodaj novu porudzbinu</button>
+				</div>
 			</div>
 
 			<div ng-show="isSet(3)">

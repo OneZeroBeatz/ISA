@@ -4,15 +4,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.isa.model.Jelo;
 import com.isa.model.Restoran;
+import com.isa.model.Sto;
 
-public interface JeloSkladiste extends JpaRepository<Jelo, Long> {
+public interface StoSkladiste extends JpaRepository<Sto, Long>{
 
-	Jelo findById (long id);
+	Page<Sto> findByRestoran(Restoran restoran, Pageable pageable);
 	
-	Page<Jelo> findByRestoran(Restoran restoran, Pageable pageable);
-	
-	Jelo save(Jelo jelo);
+	Sto save(Sto jelo);
 	
 }

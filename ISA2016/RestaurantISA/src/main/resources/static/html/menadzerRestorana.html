@@ -21,10 +21,10 @@
 			<div ng-show="isSet(0)">
 				<h2>Podaci o restoranu</h2>
 				</br>
-				<label>Naziv restorana: </label> <input type="text" ng-model="restoran.naziv"> </br>  <a ng-click="izmenaNazivaRestorana(restoran)" href="">Izmeni</a>
+				<label>Naziv restorana: </label> <input type="text" ng-model="restoran.naziv"> <a ng-click="izmenaNazivaRestorana(restoran)" href="">Izmeni</a>
 				
 				</br>
-				<label>Opis restorana: </label> <input type="text" ng-model="restoran.opis"> </br>	  <a ng-click="izmenaOpisaRestorana(restoran)" href="">Izmeni</a>
+				<label>Opis restorana: </label> <input type="text" ng-model="restoran.opis"> <a ng-click="izmenaOpisaRestorana(restoran)" href="">Izmeni</a>
 				
 				</br>
 				<label>Jelovnik: </label> </br>
@@ -71,7 +71,35 @@
 				<button ng-click="dodajPice(restoran)">Dodaj</button>
 				
 				</br>
-				<label>Konfiguracija sedenja: </label> </br>
+				<label>Konfiguracija sedenja: </label> </br></br>
+				
+				<h2>Stolovi po redu/koloni:</h2>
+				<table>
+					<tr>
+						<td>Broj redova:</td>
+						<td><input type="number" ng-model="brojRedova"></td>
+					</tr>
+					
+					<tr>
+						<td>Broj kolona:</td>
+						<td><input type="number" ng-model="brojKolona"></td>
+					</tr>
+				</table>
+				<button ng-click="napraviKonfiguraciju(restoran)">Kreiraj</button>
+				
+				<div>
+					<h2>Raspored stolova:</h2>
+					<table border="1">
+						<tr ng-repeat="n1 in brRedova">
+							<td ng-repeat="n2 in brKolona">
+								<button ng-click="prikaziInformacije(n1*n1+n2)">{{n1}}-{{n2}}</button>
+							</td>
+						</tr>
+					</table>
+					<!--<div ng-show="isVisible(sto.oznaka)" ng-model="sto.oznaka">
+       					<h2>dasdsdasdadasdasd {{sto.oznaka}}</h2>
+       				</div> -->
+				</div>
 			</div>
 
 			<div ng-show="isSet(1)">
@@ -149,12 +177,15 @@
 				</table>
 				<button ng-click="dodajPonudjaca()">Dodaj</button>
 				
-				<h2>Moje ponude:</h2>
+				</br>
+				<h2>Moje ponude:</h2></br>
 				<label>Prikupljanje aktivno od: </label> <input type="date" ng-model="datumOd"> </br>
 				<label>Prikupljanje aktivno do: </label> <input type="date" ng-model="datumDo"> </br>
 				<!-- <ul>
 				<li ng-repeat="pon in ponude"> {{pon.aktivnoOd}} {{pon.aktivnoDo}} </li>
 				</ul> -->
+				
+				</br>
 				<h2>Lista pristiglih ponuda</h2>
 			</div>
 
