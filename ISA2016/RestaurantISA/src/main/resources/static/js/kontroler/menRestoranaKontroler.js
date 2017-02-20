@@ -3,6 +3,8 @@ var menRestoranaKontroler = angular.module('restoranApp.menRestoranaKontroler', 
 menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStranaServis, $scope, menRestoranaServisS) {
 	
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
+		$scope.brRedova = [];
+		$scope.brKolona = [];
 		if(data != ""){
 			var menRest = {
 				id : data.id,
@@ -135,24 +137,55 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 	}
 	
 	$scope.odbrisiJelo = function(jeloId){
-
 		var str = JSON.stringify(jeloId);
 		menRestoranaServisS.izbrisiJelo(str).success(function(data) {
-			//RADI!
-			//alert("Jelo je obrisano!");
 		}).error(function(data) {
-			//alert("Jelo nije obrisano!");
 		});
 	}
 	
 	$scope.odbrisiPice = function(piceId){
-
 		var str = JSON.stringify(piceId);
 		menRestoranaServisS.izbrisiPice(str).success(function(data) {
-			//RADI!
-		}).error(function(data) {
-			
+		}).error(function(data) {	
 		});
+	}
+	
+	$scope.napraviKonfiguraciju = function(restoran) {
+		$scope.brRedova = [];
+		$scope.brKolona = [];
+		for(i=0; i<$scope.brojRedova; i++){
+			$scope.brRedova.push(i);
+		}
+		for(i=0; i<$scope.brojKolona; i++){
+			$scope.brKolona.push(i);
+		}
+		
+		var tempStolovi = [];
+		tempStolovi[0] = restoran.id;
+		for(i=0; i<$scope.brojRedova; i++){
+			for(j=0; j<$scope.brojKolona; j++){
+				tempStolovi[i*i + j + 1] = i*i + j;
+			}
+		}
+		
+		var str = JSON.stringify(tempStolovi);
+		menRestoranaServisS.napraviStolove(str).success(function(data) {
+			$scope.stolovi = data;
+			alert("stolovi napravljeni");
+		}).error(function(data) {
+			alert("stolovi nisu napravljeni");
+		});
+		
+	}
+	
+	$scope.isVisible = function(oznaka){
+		return $scope.prikaziDetalje === oznaka;
+	}
+	
+	$scope.prikaziInformacije = function(oznaka){
+		alert(oznaka)
+		$scope.prikaziDetalje = oznaka;
+		$scope.sto.oznaka = oznaka;
 	}
 	
 });
