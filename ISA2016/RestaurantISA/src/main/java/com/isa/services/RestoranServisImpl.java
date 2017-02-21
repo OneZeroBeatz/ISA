@@ -87,11 +87,19 @@ public class RestoranServisImpl implements RestoranServis{
 		for(Integer i : oznake){
 			Sto s = new Sto();
 			s.setOznaka(i);
+			s.setBrojmesta(0);
+			s.setSegemnt("nijesto");
+			s.setZauzet(false);
 			s.setRestoran(restoran);
 			stoSkladiste.save(s);
 		}
 		
 		return stoSkladiste.findByRestoran(restoran, pageable);
+	}
+
+	@Override
+	public Sto izlistajSto(Sto sto) {
+		return stoSkladiste.findByRestoranAndOznaka(sto.getRestoran(), sto.getOznaka());
 	}
 
 }

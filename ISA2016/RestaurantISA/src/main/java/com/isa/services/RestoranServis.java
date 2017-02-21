@@ -35,5 +35,7 @@ public interface RestoranServis {
 
 	Page<Sto> kreirajStolove(Restoran restoran, ArrayList<Integer> oznake, Pageable pageable);
 
+	Sto izlistajSto(Sto sto);
+
 	
 }

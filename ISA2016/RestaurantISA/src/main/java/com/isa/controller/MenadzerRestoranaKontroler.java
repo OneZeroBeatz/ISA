@@ -133,4 +133,18 @@ public class MenadzerRestoranaKontroler {
 		
 		return new ResponseEntity<List<Sto>>(stolovi.getContent(), HttpStatus.OK);
 	}
+	/*
+	@RequestMapping(value = "/izlistajStolove", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Sto>> izlistajStolove(@RequestBody Restoran restoran) {
+		
+		Page<Sto> stolovi = restoranServirs.izlistajStolove(restoran, new PageRequest(0, 10));
+		
+		return new ResponseEntity<List<Sto>>(stolovi.getContent(), HttpStatus.OK);
+	}
+	*/
+	@RequestMapping(value = "/izlistajSto", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Sto> izlistajSto(@RequestBody Sto sto) {	
+		Sto s = restoranServirs.izlistajSto(sto);	
+		return new ResponseEntity<Sto>(s, HttpStatus.OK);
+	}
 }

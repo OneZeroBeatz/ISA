@@ -11,6 +11,9 @@ public interface StoSkladiste extends JpaRepository<Sto, Long>{
 
 	Page<Sto> findByRestoran(Restoran restoran, Pageable pageable);
 	
-	Sto save(Sto jelo);
+	//Sto findById(Long id);
+	Sto findByRestoranAndOznaka(Restoran restoran, int oznaka);
+	
+	Sto save(Sto sto);
 	
 }

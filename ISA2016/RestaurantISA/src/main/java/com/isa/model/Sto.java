@@ -9,8 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.isa.model.korisnici.Konobar;
-
 @Entity
 @Table(name = "sto")
 public class Sto implements Serializable {
@@ -21,7 +19,16 @@ public class Sto implements Serializable {
 
 	@Column(name = "oznaka")
 	private int oznaka;
-
+	
+	@Column(name = "segment")
+	private String segemnt;
+	
+	@Column(name = "zauzetost")
+	private Boolean zauzet;
+	
+	@Column(name = "brojmesta")
+	private int brojmesta;
+	
 	@ManyToOne(optional = false)
 	private Restoran restoran;
 
@@ -46,7 +53,31 @@ public class Sto implements Serializable {
 	public void setOznaka(int oznaka) {
 		this.oznaka = oznaka;
 	}
+	
+	public String getSegemnt() {
+		return segemnt;
+	}
 
+	public void setSegemnt(String segemnt) {
+		this.segemnt = segemnt;
+	}
+	
+	public Boolean getZauzet() {
+		return zauzet;
+	}
+	
+	public void setZauzet(Boolean zauzet) {
+		this.zauzet = zauzet;
+	}
+	
+	public int getBrojmesta() {
+		return brojmesta;
+	}
+	
+	public void setBrojmesta(int brojmesta) {
+		this.brojmesta = brojmesta;
+	}
+	
 	public Restoran getRestoran() {
 		return restoran;
 	}
@@ -54,5 +85,4 @@ public class Sto implements Serializable {
 	public void setRestoran(Restoran restoran) {
 		this.restoran = restoran;
 	}
-
 }

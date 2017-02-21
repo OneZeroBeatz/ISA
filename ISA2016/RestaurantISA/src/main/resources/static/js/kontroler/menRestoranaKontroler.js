@@ -164,7 +164,7 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 		tempStolovi[0] = restoran.id;
 		for(i=0; i<$scope.brojRedova; i++){
 			for(j=0; j<$scope.brojKolona; j++){
-				tempStolovi[i*i + j + 1] = i*i + j;
+				tempStolovi[i*$scope.brojRedova + j + 1] = i*i + j;
 			}
 		}
 		
@@ -178,14 +178,26 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 		
 	}
 	
-	$scope.isVisible = function(oznaka){
-		return $scope.prikaziDetalje === oznaka;
+	$scope.prikaz = false;
+	
+	$scope.isVisible = function(){	// Proveriti da li treba oznaka...
+		return $scope.prikaz;
 	}
 	
-	$scope.prikaziInformacije = function(oznaka){
-		alert(oznaka)
-		$scope.prikaziDetalje = oznaka;
-		$scope.sto.oznaka = oznaka;
+	$scope.prikaziInformacije = function(oznaka, restoran){
+		$scope.prikaz = true;
+		
+		var sto = {
+			oznaka : oznaka,
+			restoran : restoran
+
+		}
+		var str = JSON.stringify(sto);
+		menRestoranaServisS.izlistajSto(str).success(function(data) {
+			$scope.sto = data;
+			$scope.segmentStola = $scope.sto.segemnt;
+		}).error(function(data) {
+		});
 	}
 	
 });

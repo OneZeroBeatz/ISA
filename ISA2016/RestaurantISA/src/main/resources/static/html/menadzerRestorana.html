@@ -92,13 +92,30 @@
 					<table border="1">
 						<tr ng-repeat="n1 in brRedova">
 							<td ng-repeat="n2 in brKolona">
-								<button ng-click="prikaziInformacije(n1*n1+n2)">{{n1}}-{{n2}}</button>
+								<button ng-click="prikaziInformacije(n1*brojKolona+n2, restoran)">{{n1}}-{{n2}}</button>
 							</td>
 						</tr>
 					</table>
-					<!--<div ng-show="isVisible(sto.oznaka)" ng-model="sto.oznaka">
-       					<h2>dasdsdasdadasdasd {{sto.oznaka}}</h2>
-       				</div> -->
+					<div ng-show="isVisible(prikaz)" ng-model="prikaz">
+       					<h2>Sto sa oznakom {{sto.oznaka}}</h2>
+       					<table>
+	       					<tr>
+	       						<td>Odaberite segment: </td>
+								<td>
+									<select ng-model="segmentStola">
+										<option value="nijesto">Nije sto</option>
+										<option value="unutrasnji">Unutrasnji deo</option>
+										<option value="nepusaci">Deo za nepusace</option>
+										<option value="bastaO">Basta (otvorena)</option>
+										<option value="bastaZ">Basta (zatvorena)</option>
+									</select>
+								</td>
+								
+								<td>Broj mesta: </td>
+								<td><input type="number" ng-model="sto.brojmesta"></td>
+							</tr>
+						</table>
+       				</div>
 				</div>
 			</div>
 
