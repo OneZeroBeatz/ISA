@@ -2,6 +2,7 @@ package com.isa.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,7 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
+import com.isa.model.korisnici.Kuvar;
+import com.isa.model.korisnici.Sanker;
 
 @Entity
 @Table(name = "porudzbina")
@@ -30,6 +32,13 @@ public class Porudzbina  {
 	
 	@ManyToOne(optional = true)
 	private Restoran restoran;
+	
+	@ManyToOne(optional = true, cascade = CascadeType.ALL)
+	private Sanker sanker;
+	
+	
+	@Column(name = "spremna")
+	private boolean spremna;
 	
 	//TODO: Ubaciti i sto za koji vazi ponuda
 	
@@ -74,5 +83,17 @@ public class Porudzbina  {
 		return id;
 	}
 	
+	public Sanker getSanker() {
+		return sanker;
+	}
+	public void setSanker(Sanker sanker) {
+		this.sanker = sanker;
+	}
 	
+	public boolean isSpremna() {
+		return spremna;
+	}
+	public void setSpremna(boolean spremna) {
+		this.spremna = spremna;
+	}
 }

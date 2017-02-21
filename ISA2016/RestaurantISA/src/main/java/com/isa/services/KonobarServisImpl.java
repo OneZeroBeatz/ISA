@@ -104,5 +104,10 @@ public class KonobarServisImpl implements KonobarServis {
 		piceUPorudzbiniSkladiste.save(piceUPorudzbini);
 	}
 
+	@Override
+	public Porudzbina pronadjiPorudzbinu(Long id) {
+		return porudzbinaSkladiste.findById(id);
+	}
+
 	
 }

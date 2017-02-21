@@ -1,12 +1,14 @@
 var sankerKontroler = angular.module('restoranApp.sankerKontroler', []);
 
-sankerKontroler.controller('sankerCtrl', function($scope, $location, gostGlavnaStranaServis, izmeniSankerServis){
+sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, gostGlavnaStranaServis, izmeniSankerServis){
 	
 	$scope.osveziPrikazZaIzmenu = function (sanker){
 		$scope.imeIzmena = sanker.ime;
 		$scope.prezimeIzmena = sanker.prezime
 		$scope.emailIzmena = sanker.email
 	}
+	
+	//TODO: Kada porudzbina nema pica ne prikazati je
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 		if(data != ""){
 			//TODO mora da se uloguje opet da bi skontao podatke
@@ -64,17 +66,60 @@ sankerKontroler.controller('sankerCtrl', function($scope, $location, gostGlavnaS
 			
 			
 			// UCITAVANJE PORUDZBINA
-			
+			$scope.porudzbine = [];
 			izmeniSankerServis.ucitajPorudzbine($scope.ulogovanSanker).success(function(data) {
 				$scope.porudzbine = data;
 				if ($scope.porudzbine.length == 0){
 					alert("Nema raspolozivih porudzbina");
 					$scope.setTab(0);
 				}
-				alert("uspesno ucitao porudzbine");
+				
 			}).error(function (data){
 				alert("Neuspelo ucitavanje porudzbina");
 			});
+			
+			$scope.picaKliknutePorudzbine = [];
+			// Kliknuce na detalji
+
+			$scope.kliknuoNaDetalji = function (porudzbina){
+
+				izmeniSankerServis.ucitajPicaPorudzbine(porudzbina).success(function(data){
+					$scope.picaKliknutePorudzbine = data;
+					if ($scope.show == porudzbina.id)
+						$scope.show = -1;
+					else
+						$scope.show = porudzbina.id;
+					
+				}).error(function (data){
+					alert("Neuspelo ucitavanje detalja");
+				});
+			}
+			
+			// Kliknuo prihvati
+			$scope.prihvati = function (porudzbina){
+				var sanKon = {
+						sanker: $scope.ulogovanSanker,
+						porudzbina: porudzbina
+						
+				}
+				izmeniSankerServis.prihvatiPorudzbinu(sanKon).success(function(data){
+					$scope.porudzbine = data;
+				}).error(function(data){
+					alert("Neuspesno prihvacena ponuda.");
+				});
+
+			}
+			
+			$scope.zavrsi = function (porudzbina){
+				izmeniSankerServis.zavrsiPorudzbinu(porudzbina).success(function(data){
+					$scope.porudzbine = data;
+				}).error(function(data){
+					alert("PorudzbinaNeuspesnoZavrsena")
+				});
+				
+			}
+			
+			
 		}else{
 			alert("Morate se prvo ulogovati");
 			window.location.href = "logovanje.html";

@@ -3,8 +3,10 @@ package com.isa.services;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import com.isa.model.PiceUPorudzbini;
 import com.isa.model.Porudzbina;
 import com.isa.model.Restoran;
 import com.isa.model.korisnici.Korisnik;
@@ -23,6 +25,12 @@ public interface SankerServis {
     Korisnik findByEmail(String email);
     
 	Page<Porudzbina> izlistajPorudzbine(Restoran restoran, Pageable pageable);
+
+	Page<PiceUPorudzbini> izlistajPicaPorudzbine(Porudzbina porudzbina,
+			Pageable pageable);
+
+
+
 
     
     

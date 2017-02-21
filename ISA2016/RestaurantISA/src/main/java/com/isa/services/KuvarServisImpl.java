@@ -3,11 +3,15 @@ package com.isa.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.isa.model.korisnici.Gost;
+import com.isa.model.JeloUPorudzbini;
+import com.isa.model.Porudzbina;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.Kuvar;
+import com.isa.repository.JeloUPorudzbiniSkladiste;
 import com.isa.repository.KuvarSkladiste;
 
 @Service
@@ -15,6 +19,11 @@ public class KuvarServisImpl implements KuvarServis{
 
 	@Autowired
 	private KuvarSkladiste kuvarSkladiste;
+	
+	@Autowired
+	private JeloUPorudzbiniSkladiste jeloUPorudzbiniSkladiste;
+	
+	
 	
 	@Override
 	public List<Korisnik> findAll() {
@@ -51,6 +60,17 @@ public class KuvarServisImpl implements KuvarServis{
 		}catch(Exception e){
 			return null;
 		}
+	}
+
+	@Override
+	public Page<JeloUPorudzbini> izlistajJelaPorudzbine(Porudzbina porudzbina,
+			Pageable pageable) {
+		return jeloUPorudzbiniSkladiste.findByPorudzbina(porudzbina, pageable);
+	}
+
+	@Override
+	public void sacuvajJeloUPorudzbini(JeloUPorudzbini jeloUPorudzbini) {
+		jeloUPorudzbiniSkladiste.save(jeloUPorudzbini);
 	}
 
 }

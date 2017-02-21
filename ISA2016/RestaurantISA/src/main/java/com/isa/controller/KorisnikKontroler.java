@@ -21,7 +21,6 @@ public class KorisnikKontroler {
 	
 	@RequestMapping(value = "/izmeniKorisnika", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Korisnik> izmeniKorisnika(@RequestBody Korisnik gost) {
-		System.out.println("uso sa podatkom o " + gost.getIme());
 		Korisnik originalKorisnik = (Korisnik) korisnikServis.findOne(gost.getId());	
 		originalKorisnik.setIme(gost.getIme());
 		originalKorisnik.setPrezime(gost.getPrezime());

@@ -5,12 +5,16 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.isa.model.korisnici.TipKuvara;
 
 @Entity
 @Table(name = "jelo")
@@ -35,6 +39,10 @@ public class Jelo implements Serializable{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "jelo")
 	private Set<JeloUPorudzbini> jelovnik;
 	
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "tipkuvara")
+	private TipKuvara tipKuvara;
 	
 	public Jelo() {
 		
@@ -75,5 +83,13 @@ public class Jelo implements Serializable{
 	public Restoran getRestoran() {
 		return restoran;
 	}
+	
+	public TipKuvara getTipKuvara() {
+		return tipKuvara;
+	}
+	public void setTipKuvara(TipKuvara tipKuvara) {
+		this.tipKuvara = tipKuvara;
+	}
+	
 	
 }

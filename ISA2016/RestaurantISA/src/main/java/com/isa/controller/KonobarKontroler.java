@@ -71,6 +71,8 @@ public class KonobarKontroler {
 		String currentTime = sdf.format(dt);
 		porudzbina.setVremePrimanja(currentTime);
 		porudzbina.setRestoran(restoran);
+		porudzbina.setSanker(null);
+		porudzbina.setSpremna(false);
 		konobarServis.savePorudzbina(porudzbina);
 		
 		

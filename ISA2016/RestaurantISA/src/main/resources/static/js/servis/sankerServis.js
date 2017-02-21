@@ -13,8 +13,22 @@ sankerServis.factory('izmeniSankerServis', function($http) {
 	}
 	
 	temp.ucitajPorudzbine = function(sanker){
+		console.log("poslao sankera za ucitavanje porudzbina");
 		return $http.post('/sankerKontroler/ucitajPorudzbine', sanker);
 	}
+	
+	temp.ucitajPicaPorudzbine = function (porudzbina){
+		return $http.post('/sankerKontroler/ucitajPicaPorudzbine', porudzbina);
+	}
+	temp.prihvatiPorudzbinu = function (sankon){
+		return $http.post('/sankerKontroler/prihvatiPorudzbinu', sankon);
+	}
+	
+	temp.zavrsiPorudzbinu = function (porudzbina){
+		return $http.post('/sankerKontroler/zavrsiPorudzbinu', porudzbina);
+	}
+	
+	
 	
 	return temp;
 	
