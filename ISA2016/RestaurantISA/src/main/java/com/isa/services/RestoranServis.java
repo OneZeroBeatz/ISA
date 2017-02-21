@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import com.isa.model.Jelo;
@@ -25,6 +26,8 @@ public interface RestoranServis {
 
 	Page<Pice> izlistajKartuPica(Restoran restoran, Pageable pageable);
 
+	Page<Sto> izlistajStolove (Restoran restoran, Pageable pageable);
+
 	void save(Jelo jelo);
 
 	void save(Pice pice);
@@ -37,5 +40,6 @@ public interface RestoranServis {
 
 	Sto izlistajSto(Sto sto);
 
+	
 	
 }

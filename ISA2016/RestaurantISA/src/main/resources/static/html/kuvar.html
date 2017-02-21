@@ -25,7 +25,7 @@
 				<table ng-show = "!item.spremna" ng-repeat = "item in porudzbine">
 					<tr >
 						<td>Vreme : {{item.vremePrimanja}}</td>
-						<td>BR Stola :</td>
+						<td>Oznaka stola : {{item.sto.oznaka}}</td>
 						<td><button ng-click = "kliknuoNaDetalji(item)">Detalji</td>
 						<td><button ng-click = "prihvati(item)">Prihvati</td>
 						<td><button ng-click = "zavrsi(item)">Zavrsi</td>

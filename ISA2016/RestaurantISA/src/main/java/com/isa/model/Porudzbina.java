@@ -33,6 +33,9 @@ public class Porudzbina  {
 	@ManyToOne(optional = true)
 	private Restoran restoran;
 	
+	@ManyToOne(optional = true, cascade = CascadeType.MERGE)
+	private Sto sto;
+	
 	@ManyToOne(optional = true, cascade = CascadeType.ALL)
 	private Sanker sanker;
 	
@@ -40,7 +43,6 @@ public class Porudzbina  {
 	@Column(name = "spremna")
 	private boolean spremna;
 	
-	//TODO: Ubaciti i sto za koji vazi ponuda
 	
 	@Column(name = "vremeprimanja")
 //	@Type(type="date")
@@ -95,5 +97,12 @@ public class Porudzbina  {
 	}
 	public void setSpremna(boolean spremna) {
 		this.spremna = spremna;
+	}
+	
+	public Sto getSto() {
+		return sto;
+	}
+	public void setSto(Sto sto) {
+		this.sto = sto;
 	}
 }

@@ -41,7 +41,6 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStr
 			}
 			
 			// za izmenu lozinke
-			
 			$scope.izmeniLozinku = function (){
 				if($scope.novaLozinka == $scope.novaLozinkaPotvrda){
 					var gost = {

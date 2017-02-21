@@ -11,7 +11,6 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 		if(data != ""){
 			//TODO mora da se uloguje opet da bi skontao podatke
 			$scope.ulogovanKonobar = data;
-			
 			// Ucitaj jela u kombobox
 			
 			$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
@@ -29,7 +28,11 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 					}).error (function(data){
 						alert("Neuspesno ucitana pica");
 					});
-					
+					izmeniKonobarServis.izlistajStolove($scope.ulogovanKonobar).success(function(data){
+						$scope.stolovi = data;
+					}).error (function(data){
+						alert("Neuspesno ucitana pica");
+					});					
 				}
 		    	$scope.tab = newTab;
 		    };
@@ -101,7 +104,8 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 		    	var jelaPica = {
 		    		svaJela : $scope.dodataJelaId,
 		    		svaPica : $scope.dodataPicaId,
-		    		konobar : $scope.ulogovanKonobar
+		    		konobar : $scope.ulogovanKonobar,
+		    		sto : $scope.sto
 		    	};
 		    	    	
 		    	var jelaPicaStr = JSON.stringify(jelaPica);

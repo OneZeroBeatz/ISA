@@ -23,6 +23,7 @@ import com.isa.model.Pice;
 import com.isa.model.PiceUPorudzbini;
 import com.isa.model.Porudzbina;
 import com.isa.model.Restoran;
+import com.isa.model.Sto;
 import com.isa.model.korisnici.Konobar;
 import com.isa.pomocni.JelaPica;
 import com.isa.services.KonobarServis;
@@ -39,9 +40,6 @@ public class KonobarKontroler {
 	@Autowired
 	public RestoranServis restoranServis;	
 
-	
-
-	
 	@RequestMapping(value = "/ucitajJelaKonobara", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Jelo>> ucitajJelaKonobara(@RequestBody Konobar konobar) {
 
@@ -72,7 +70,9 @@ public class KonobarKontroler {
 		porudzbina.setVremePrimanja(currentTime);
 		porudzbina.setRestoran(restoran);
 		porudzbina.setSanker(null);
+		porudzbina.setSto(jelaPica.getSto());
 		porudzbina.setSpremna(false);
+		
 		konobarServis.savePorudzbina(porudzbina);
 		
 		
@@ -115,6 +115,15 @@ public class KonobarKontroler {
 		}
 
 		return new ResponseEntity<Porudzbina>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/izlistajStolove", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Sto>> ucitajStoloveKonobara(@RequestBody Konobar konobar) {
+
+		Restoran restoran = konobarServis.izlistajRestoran(konobar);
+		Page<Sto> stolovi = restoranServis.izlistajStolove(restoran, new PageRequest(0, 10));
+		
+		return new ResponseEntity<List<Sto>>(stolovi.getContent(), HttpStatus.OK);
 	}
 }
 
