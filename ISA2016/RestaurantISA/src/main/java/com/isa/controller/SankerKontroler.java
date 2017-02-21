@@ -29,12 +29,7 @@ public class SankerKontroler {
 	
 	@Autowired
 	public KonobarServis konobarServis;
-	
-	
-	
-	
-	
-	
+
 	@RequestMapping(value = "/ucitajPorudzbine", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Porudzbina>> ucitajPorudzbine(@RequestBody Sanker sanker){
 		Restoran restoran = sanker.getRestoran();

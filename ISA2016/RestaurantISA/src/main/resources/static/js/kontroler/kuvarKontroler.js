@@ -61,6 +61,68 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStr
 				}
 				
 			}
+			
+			// UCITAVANJE PORUDZBINA
+			$scope.porudzbine = [];
+			izmeniKuvarServis.ucitajPorudzbine($scope.ulogovanKuvar).success(function(data) {
+				
+				$scope.porudzbine = data;
+				if ($scope.porudzbine.length == 0){
+					alert("Nema raspolozivih porudzbina");
+					$scope.setTab(0);
+				}
+				
+			}).error(function (data){
+				alert("Neuspelo ucitavanje porudzbina");
+			});
+			
+			// Kliknuce na detalji
+			$scope.jelaKliknutePorudzbine = [];
+			$scope.kliknuoNaDetalji = function (porudzbina){
+				var porKur = {
+					porudzbina: porudzbina,
+					kuvar: $scope.ulogovanKuvar
+				}
+				
+				izmeniKuvarServis.ucitajJelaPorudzbine(porKur).success(function(data){
+					$scope.picaKliknutePorudzbine = data;
+					if ($scope.show == porudzbina.id)
+						$scope.show = -1;
+					else
+						$scope.show = porudzbina.id;
+					
+				}).error(function (data){
+					alert("Neuspelo ucitavanje detalja");
+				});
+			}
+			
+			/// Kliknuo prihvati
+			$scope.prihvati = function (porudzbina){
+				var sanKuv = {
+						kuvar: $scope.ulogovanKuvar,
+						porudzbina: porudzbina	
+				}
+				izmeniKuvarServis.prihvatiPorudzbinu(sanKuv).success(function(data){
+					$scope.porudzbine = data;
+				}).error(function(data){
+					alert("Nemoguce preuzeti ponudu.");
+				});
+
+			}
+			
+			$scope.zavrsi = function (porudzbina){
+				var sanKuv = {
+						kuvar: $scope.ulogovanKuvar,
+						porudzbina: porudzbina	
+				}
+				izmeniKuvarServis.zavrsiPorudzbinu(sanKuv).success(function(data){
+					$scope.porudzbine = data;
+				}).error(function(data){
+					alert("Nemoguce zavrsiti porudzbinu");
+				});
+				// TODO: Regulisati visible dugmadi i tako dalje
+			}
+			
 		}else{
 			alert("Morate se prvo ulogovati");
 			window.location.href = "logovanje.html";

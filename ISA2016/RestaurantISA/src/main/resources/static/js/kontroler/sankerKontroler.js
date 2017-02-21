@@ -7,6 +7,8 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, gos
 		$scope.prezimeIzmena = sanker.prezime
 		$scope.emailIzmena = sanker.email
 	}
+	
+	//TODO: Kada porudzbina nema pica ne prikazati je
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 		if(data != ""){
 			//TODO mora da se uloguje opet da bi skontao podatke
@@ -75,17 +77,25 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, gos
 			}).error(function (data){
 				alert("Neuspelo ucitavanje porudzbina");
 			});
+			
 			$scope.picaKliknutePorudzbine = [];
 			// Kliknuce na detalji
+
 			$scope.kliknuoNaDetalji = function (porudzbina){
-				$scope.show = porudzbina.id;
+
 				izmeniSankerServis.ucitajPicaPorudzbine(porudzbina).success(function(data){
 					$scope.picaKliknutePorudzbine = data;
+					if ($scope.show == porudzbina.id)
+						$scope.show = -1;
+					else
+						$scope.show = porudzbina.id;
+					
 				}).error(function (data){
 					alert("Neuspelo ucitavanje detalja");
 				});
 			}
 			
+			// Kliknuo prihvati
 			$scope.prihvati = function (porudzbina){
 				var sanKon = {
 						sanker: $scope.ulogovanSanker,
@@ -108,6 +118,8 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, gos
 				});
 				
 			}
+			
+			
 		}else{
 			alert("Morate se prvo ulogovati");
 			window.location.href = "logovanje.html";

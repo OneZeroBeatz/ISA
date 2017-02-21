@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.isa.model.korisnici.Kuvar;
+
 @Entity
 @Table(name = "jelouporudzbini")
 public class JeloUPorudzbini {
@@ -16,14 +18,18 @@ public class JeloUPorudzbini {
 	
 	@ManyToOne(optional = false)
 	private Jelo jelo;
-	
 
+	@ManyToOne(optional = true)
+	private Kuvar kuvar;	
+	
 	@ManyToOne(optional = false)
 	private Porudzbina porudzbina;
 	
 	@Column(name = "kolicina")
 	private int kolicina;
-	
+
+	@Column(name = "spremno")
+	private boolean spremno;
 	
 	public int getKolicina() {
 		return kolicina;
@@ -47,5 +53,19 @@ public class JeloUPorudzbini {
 	public void setPorudzbina(Porudzbina porudzbina) {
 		this.porudzbina = porudzbina;
 	}
+	
+	public Kuvar getKuvar() {
+		return kuvar;
+	}
+	public void setKuvar(Kuvar kuvar) {
+		this.kuvar = kuvar;
+	}
+	public boolean isSpremno() {
+		return spremno;
+	}
+	public void setSpremno(boolean spremno) {
+		this.spremno = spremno;
+	}
+
 
 }

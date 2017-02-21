@@ -30,11 +30,11 @@
 				<h2>lista porudzbina</h2>
 				
 				<table ng-show = "!item.spremna" ng-repeat = "item in porudzbine">
-					<tr >
+					<tr>
 						<td>Vreme : {{item.vremePrimanja}}</td>
 						<td>BR Stola :</td>
 						<td><button ng-click = "kliknuoNaDetalji(item)">Detalji</td>
-						<td><button type = "button" id = "btn_click" ng-show = "item.sanker == null" ng-click = "prihvati(item)">Prihvati</td>
+						<td><button ng-show = "item.sanker == null" ng-click = "prihvati(item)">Prihvati</td>
 						<td><button ng-show = "item.sanker.id == ulogovanSanker.id" ng-click = "zavrsi(item)">Zavrsi</td>
 					
 					</tr>

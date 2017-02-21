@@ -20,25 +20,23 @@
 
 
 			<div ng-show="isSet(1)">
-				<h2>Lista porudzbina</h2>
-				<div name="listaPorudzbinaKuvar">
-					<p>Spisak porudzbina</p>
-					<select name="Spisak porudzbina" size="5">
-						<option>Porudzbina 1</option>
-						<option>Porudzbina 2</option>
-						<option>Porudzbina 3</option>
-					</select>
-				</div>
-
-				<div name="listaPrihvacenihPica">
-					<p>Prihvacena pica</p>
-					<select name="Prihvacena jela" size="5">
-						<option>Pice 1</option>
-						<option>Pice 2</option>
-						<option>Pice 3</option>
-					</select>
-					<button ng-click="">Pice gotovo</button>
-				</div>
+			<h2>lista porudzbina</h2>
+				
+				<table ng-show = "!item.spremna" ng-repeat = "item in porudzbine">
+					<tr >
+						<td>Vreme : {{item.vremePrimanja}}</td>
+						<td>BR Stola :</td>
+						<td><button ng-click = "kliknuoNaDetalji(item)">Detalji</td>
+						<td><button ng-click = "prihvati(item)">Prihvati</td>
+						<td><button ng-click = "zavrsi(item)">Zavrsi</td>
+					
+					</tr>
+					<tr  ng-show = "show == item.id" ng-repeat = "item1 in picaKliknutePorudzbine">
+						<td>{{item1.jelo.naziv}}</td>
+						<td>{{item1.kolicina}}</td>
+					</tr>
+					<hr/>
+				</table>
 			</div>
 
 

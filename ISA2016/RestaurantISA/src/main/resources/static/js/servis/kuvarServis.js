@@ -12,6 +12,23 @@ kuvarServis.factory('izmeniKuvarServis', function($http) {
 		return $http.post('/korisnikKontroler/izmeniLozinkuKorisnika', gost);
 	}
 	
+	temp.ucitajPorudzbine = function(kuvar){
+		return $http.post('/kuvarKontroler/ucitajPorudzbine', kuvar);
+	}
+	
+	temp.ucitajJelaPorudzbine = function(porKuv){
+		return $http.post('/kuvarKontroler/ucitajJelaPorudzbine', porKuv);
+	}
+	
+	temp.prihvatiPorudzbinu = function (porKuv){
+		return $http.post('/kuvarKontroler/prihvatiPorudzbinu', porKuv);
+	}
+	
+	temp.zavrsiPorudzbinu = function (porKuv){
+		return $http.post('/kuvarKontroler/zavrsiPorudzbinu', porKuv);
+	}
+
+	
 	return temp;
 	
 })

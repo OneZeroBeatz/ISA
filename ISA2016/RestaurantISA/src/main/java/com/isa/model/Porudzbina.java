@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.isa.model.korisnici.Kuvar;
 import com.isa.model.korisnici.Sanker;
 
 @Entity
@@ -95,5 +96,4 @@ public class Porudzbina  {
 	public void setSpremna(boolean spremna) {
 		this.spremna = spremna;
 	}
-
 }
