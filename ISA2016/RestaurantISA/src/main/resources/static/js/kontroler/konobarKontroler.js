@@ -32,7 +32,15 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 						$scope.stolovi = data;
 					}).error (function(data){
 						alert("Neuspesno ucitana pica");
-					});					
+					});		
+					
+					// UCITAVANJE PORUDZBINA
+					$scope.porudzbine = [];
+					izmeniKonobarServis.ucitajPorudzbine($scope.ulogovanKonobar).success(function(data) {
+						$scope.porudzbine = data;
+					}).error(function (data){
+						alert("Neuspelo ucitavanje porudzbina");
+					});
 				}
 		    	$scope.tab = newTab;
 		    };
@@ -84,7 +92,10 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 		    };
 			
 		    $scope.dodajPorudzbinu = function (){
-
+		    	if ($scope.sto == null){
+		    		alert("Niste odabrali sto");
+		    		return;
+		    	}
 		    	for (var i = 0 ; i< $scope.dodataJela.length ; i++){
 		    		var jelo1 = {
 				    	id : i+1, 
@@ -112,8 +123,8 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 				console.log(jelaPicaStr);
 				
 		    	izmeniKonobarServis.dodajPorudzbinu(jelaPicaStr).success(function (data){
-		    		alert("Dodata porudzbine");
-		    		
+		    		$scope.porudzbine = data;
+		    		alert("Dodata porudzbina");
 		    	}).error (function (data){
 		    		alert("Neuspasno dodavanje porudzbine");	
 		    	});	

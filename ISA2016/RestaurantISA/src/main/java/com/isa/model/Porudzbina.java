@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.isa.model.korisnici.Kuvar;
+import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Sanker;
 
 @Entity
@@ -32,6 +32,9 @@ public class Porudzbina  {
 	
 	@ManyToOne(optional = true)
 	private Restoran restoran;
+	
+	@ManyToOne(optional = true, cascade = CascadeType.MERGE)
+	private Konobar konobar;
 	
 	@ManyToOne(optional = true, cascade = CascadeType.MERGE)
 	private Sto sto;
@@ -104,5 +107,12 @@ public class Porudzbina  {
 	}
 	public void setSto(Sto sto) {
 		this.sto = sto;
+	}
+	
+	public Konobar getKonobar() {
+		return konobar;
+	}
+	public void setKonobar(Konobar konobar) {
+		this.konobar = konobar;
 	}
 }

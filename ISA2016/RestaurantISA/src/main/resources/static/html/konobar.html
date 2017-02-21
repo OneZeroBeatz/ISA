@@ -27,22 +27,23 @@
 			<div ng-show="isSet(2)">
 				<h2>Porudzbine</h2>
 				<div>
+					<h3>Nova porudzbina</h3>
 					<div>
 						<table>
-						<tr>
-							<td>Odaberite jelo</td>
-							<td><select ng-model="jelo" ng-options="x.naziv for x in jela"></select></td>
-							<td><button ng-click="dodajJelo()">Dodaj jelo</button></td>
-						<tr>
+							<tr>
+								<td>Odaberite jelo</td>
+								<td><select ng-model="jelo" ng-options="x.naziv for x in jela"></select></td>
+								<td><button ng-click="dodajJelo()">Dodaj jelo</button></td>
+							<tr>
 						</table>
 					</div>
 					<div>						
-					<table>
-						<tr>
-							<td>Odaberite pice</td>
-							<td><select ng-model="pice" ng-options="x.naziv for x in pica"></select></td>
-							<td><button ng-click="dodajPice()">Dodaj pice</button></td>
-						<tr>
+						<table>
+							<tr>
+								<td>Odaberite pice</td>
+								<td><select ng-model="pice" ng-options="x.naziv for x in pica"></select></td>
+								<td><button ng-click="dodajPice()">Dodaj pice</button></td>
+							<tr>
 						</table>
 					</div>
 					<hr/>
@@ -76,6 +77,33 @@
 						</div>
 					</div>
 					<button ng-click="dodajPorudzbinu()">Dodaj novu porudzbinu</button>
+				</div>
+
+				<div>
+					<div ng-show = "porudzbine.length != 0">
+					<hr/>
+					<h2>Lista porudzbina</h2>
+						<table ng-show = "!item.spremna" ng-repeat = "item in porudzbine">
+							<tr >
+								<td>Vreme : {{item.vremePrimanja}}</td>
+								<td>Oznaka stola : {{item.sto.oznaka}}</td>
+								
+								<td><button ng-click = "izmeni(item)">Izmeni</td>
+								<td><button ng-click = "zavrsi(item)">Zavrsi</td>
+					
+							</tr>
+							<tr  ng-show = "show == item.id" ng-repeat = "item1 in picaKliknutePorudzbine">
+								<td>{{item1.jelo.naziv}}</td>
+								<td>{{item1.kolicina}}</td>
+							</tr>
+							<tr  ng-show = "show == item.id" ng-repeat = "item1 in jelaKliknutePorudzbine">
+								<td>{{item1.pice.naziv}}</td>
+								<td>{{item1.kolicina}}</td>
+							</tr>
+						</table>
+
+
+					</div>				
 				</div>
 			</div>
 

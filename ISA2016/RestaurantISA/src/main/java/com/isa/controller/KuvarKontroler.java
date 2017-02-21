@@ -34,9 +34,6 @@ public class KuvarKontroler {
 	@Autowired
 	public KonobarServis konobarServis;
 	
-	
-
-	
 	@RequestMapping(value = "/ucitajPorudzbine", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Porudzbina>> ucitajPorudzbine(@RequestBody Kuvar kuvar){
 		Restoran restoran = kuvar.getRestoran();
