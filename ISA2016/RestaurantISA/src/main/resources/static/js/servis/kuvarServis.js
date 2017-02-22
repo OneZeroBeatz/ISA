@@ -16,6 +16,10 @@ kuvarServis.factory('izmeniKuvarServis', function($http) {
 		return $http.post('/kuvarKontroler/ucitajPorudzbine', kuvar);
 	}
 	
+	temp.ucitajPorudzbineKlasifikovane = function(kuvar){
+		return $http.post('/kuvarKontroler/ucitajPorudzbineKlasifikovane', kuvar);
+	}
+	
 	temp.ucitajJelaPorudzbine = function(porKuv){
 		return $http.post('/kuvarKontroler/ucitajJelaPorudzbine', porKuv);
 	}
@@ -27,6 +31,8 @@ kuvarServis.factory('izmeniKuvarServis', function($http) {
 	temp.zavrsiPorudzbinu = function (porKuv){
 		return $http.post('/kuvarKontroler/zavrsiPorudzbinu', porKuv);
 	}
+	
+	
 
 	
 	return temp;

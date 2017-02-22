@@ -112,9 +112,6 @@ public class SankerKontroler {
 				}
 			}
 		}
-		
-		//TODO: Kad se kreira i menja porudzbina, ako nema pica, staviti da su spremna
-
 		MogucePrihvacene moPri = new MogucePrihvacene();
 		moPri.setPrihvacenePorudzbine(listaPrihvacenihPorudzbina);
 		moPri.setMogucePorudzbine(listaMogucihPorudzbina);

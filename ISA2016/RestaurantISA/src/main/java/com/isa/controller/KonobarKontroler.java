@@ -72,8 +72,7 @@ public class KonobarKontroler {
 		porudzbina.setSanker(null);
 		porudzbina.setKonobar((Konobar)konobarServis.findOne(jelaPica.getKonobar().getId()));
 		porudzbina.setSto(jelaPica.getSto());
-		porudzbina.setSpremnaJela(false);
-		porudzbina.setSpremnaPica(false);
+
 		
 		konobarServis.savePorudzbina(porudzbina);
 		
@@ -87,6 +86,19 @@ public class KonobarKontroler {
 		for (int i = 0; i< jelaPica.getSvaPica().length; i++){
 			picaL.add(konobarServis.pronadjiPice(jelaPica.getSvaPica()[i].getPic()));
 		}
+		
+		if (jelaL.isEmpty()){
+			porudzbina.setSpremnaJela(true);			
+		} else {
+			porudzbina.setSpremnaJela(false);
+		}
+
+		if(picaL.isEmpty()){
+			porudzbina.setSpremnaPica(true);		
+		} else {
+			porudzbina.setSpremnaPica(false);		
+		}
+		
 
 		// KREIRANJE SVIH JELA U PORUDZBINI
 		Set<Jelo> uniqueSetJela = new HashSet<Jelo>(jelaL);

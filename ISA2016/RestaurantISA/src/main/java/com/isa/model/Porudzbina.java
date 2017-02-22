@@ -113,7 +113,6 @@ public class Porudzbina  {
 		this.spremnaPica = spremnaPica;
 	}
 	
-	
 	public Sto getSto() {
 		return sto;
 	}
