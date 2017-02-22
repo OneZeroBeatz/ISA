@@ -23,13 +23,11 @@
 				<h2>Kalendarski prikaz</h2>
 			</div>
 
-
 			<div id = "div1" ng-show="isSet(1)">
-
-
-				<h2>lista porudzbina</h2>
+				
 				
 				<table ng-show = "!item.spremnaPica" ng-repeat = "item in porudzbine">
+				<h2>Lista porudzbina</h2>
 					<tr>
 						<td>Vreme : {{item.vremePrimanja}}</td>
 						<td>Oznaka stola : {{item.sto.oznaka}}</td>
@@ -42,7 +40,36 @@
 						<td>{{item1.pice.naziv}}</td>
 						<td>{{item1.kolicina}}</td>
 					</tr>
-					<hr/>
+					
+				</table>
+
+				
+				<table ng-repeat = "item in klasifikovanePorudzbine.mogucePorudzbine">
+					<h2>Lista mogucih porudzbina</h2>
+					<tr>
+						<td>Vreme : {{item.vremePrimanja}}</td>
+						<td>Oznaka stola : {{item.sto.oznaka}}</td>
+						<td><button ng-click = "kliknuoNaDetaljiMoguce(item)">Detalji</td>
+						<td><button ng-click = "prihvati(item)">Prihvati</td>
+					</tr>
+					<tr  ng-show = "showMoguce == item.id" ng-repeat = "item1 in picaKliknuteMogucePorudzbine">
+						<td>{{item1.pice.naziv}}</td>
+						<td>{{item1.kolicina}}</td>
+					</tr>
+				</table>
+				
+				<table ng-repeat = "item in klasifikovanePorudzbine.prihvacenePorudzbine">
+					<h2>Lista prihvacenih porudzbina</h2>
+					<tr>
+						<td>Vreme : {{item.vremePrimanja}}</td>
+						<td>Oznaka stola : {{item.sto.oznaka}}</td>
+						<td><button ng-click = "kliknuoNaDetaljiPrihvacene(item)">Detalji</td>
+						<td><button ng-click = "zavrsi(item)">Zavrsi</td>
+					</tr>
+					<tr  ng-show = "showPrihvacene == item.id" ng-repeat = "item1 in picaKliknutePrihvacenePorudzbine">
+						<td>{{item1.pice.naziv}}</td>
+						<td>{{item1.kolicina}}</td>
+					</tr>
 				</table>
 			</div>
 

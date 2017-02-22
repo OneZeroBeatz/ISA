@@ -78,11 +78,18 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, gos
 				alert("Neuspelo ucitavanje porudzbina");
 			});
 			
+			// UCITAVANJE MOGUCIH PORUDZBINA
+			$scope.klasifikovanePorudzbine = [];
+			izmeniSankerServis.ucitajPorudzbineKlasifikovane($scope.ulogovanSanker).success(function(data) {
+				$scope.klasifikovanePorudzbine = data;	
+				//TODO: Hendluj ako je prazna neka od lista
+			}).error(function (data){
+				alert("Neuspelo ucitavanje mogucih porudzbina");
+			});
+			
+			// Kliknuce na detalji			
 			$scope.picaKliknutePorudzbine = [];
-			// Kliknuce na detalji
-
 			$scope.kliknuoNaDetalji = function (porudzbina){
-
 				izmeniSankerServis.ucitajPicaPorudzbine(porudzbina).success(function(data){
 					$scope.picaKliknutePorudzbine = data;
 					if ($scope.show == porudzbina.id)
@@ -95,6 +102,36 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, gos
 				});
 			}
 			
+			// Kliknuce na detalji moguce		
+			$scope.picaKliknuteMogucePorudzbine = [];
+			$scope.kliknuoNaDetaljiMoguce = function (porudzbina){
+				izmeniSankerServis.ucitajPicaPorudzbine(porudzbina).success(function(data){
+					$scope.picaKliknuteMogucePorudzbine = data;
+					if ($scope.showMoguce == porudzbina.id)
+						$scope.showMoguce = -1;
+					else
+						$scope.showMoguce = porudzbina.id;
+					
+				}).error(function (data){
+					alert("Neuspelo ucitavanje detalja");
+				});
+			}
+
+			// Kliknuce na detalji prihvacene		
+			$scope.picaKliknutePrihvacenePorudzbine = [];
+			$scope.kliknuoNaDetaljiPrihvacene = function (porudzbina){
+				izmeniSankerServis.ucitajPicaPorudzbine(porudzbina).success(function(data){
+					$scope.picaKliknutePrihvacenePorudzbine = data;
+					if ($scope.showPrihvacene == porudzbina.id)
+						$scope.showPrihvacene = -1;
+					else
+						$scope.showPrihvacene = porudzbina.id;
+					
+				}).error(function (data){
+					alert("Neuspelo ucitavanje detalja");
+				});
+			}
+
 			// Kliknuo prihvati
 			$scope.prihvati = function (porudzbina){
 				var sanKon = {
@@ -103,16 +140,16 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, gos
 						
 				}
 				izmeniSankerServis.prihvatiPorudzbinu(sanKon).success(function(data){
-					$scope.porudzbine = data;
+					$scope.klasifikovanePorudzbine = data;	
 				}).error(function(data){
 					alert("Neuspesno prihvacena ponuda.");
 				});
 
 			}
-			
+			// kliknuo zavrsi
 			$scope.zavrsi = function (porudzbina){
 				izmeniSankerServis.zavrsiPorudzbinu(porudzbina).success(function(data){
-					$scope.porudzbine = data;
+					$scope.klasifikovanePorudzbine = data;	
 				}).error(function(data){
 					alert("PorudzbinaNeuspesnoZavrsena")
 				});
