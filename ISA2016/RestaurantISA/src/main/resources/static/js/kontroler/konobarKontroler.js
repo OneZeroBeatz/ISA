@@ -41,6 +41,28 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 					}).error(function (data){
 						alert("Neuspelo ucitavanje porudzbina");
 					});
+					
+					// Kliknuce na detalji
+					$scope.jelaKliknutePorudzbine = [];
+					$scope.picaKliknutePorudzbine = [];
+					$scope.show = -1;
+					$scope.kliknuoNaDetalji = function (porudzbina){
+						izmeniKonobarServis.ucitajJelaPorudzbine(porudzbina).success(function(data){
+							$scope.jelaKliknutePorudzbine = data;
+						}).error(function (data){
+							alert("Neuspelo ucitavanje detalja");
+						});
+						
+						izmeniKonobarServis.ucitajPicaPorudzbine(porudzbina).success(function(data){
+							$scope.picaKliknutePorudzbine = data;
+							if ($scope.show == porudzbina.id)
+								$scope.show = -1;
+							else
+								$scope.show = porudzbina.id
+						}).error(function (data){
+							alert("Neuspelo ucitavanje detalja");
+						});
+					}
 				}
 		    	$scope.tab = newTab;
 		    };

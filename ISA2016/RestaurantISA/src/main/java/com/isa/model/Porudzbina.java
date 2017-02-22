@@ -42,9 +42,11 @@ public class Porudzbina  {
 	@ManyToOne(optional = true, cascade = CascadeType.ALL)
 	private Sanker sanker;
 	
+	@Column(name = "spremna_jela")
+	private boolean spremnaJela; 
 	
-	@Column(name = "spremna")
-	private boolean spremna;
+	@Column(name = "spremna_pica")
+	private boolean spremnaPica; 
 	
 	
 	@Column(name = "vremeprimanja")
@@ -94,13 +96,23 @@ public class Porudzbina  {
 	public void setSanker(Sanker sanker) {
 		this.sanker = sanker;
 	}
+
+	public boolean isSpremnaJela() {
+		return spremnaJela;
+	}
 	
-	public boolean isSpremna() {
-		return spremna;
+	public boolean isSpremnaPica() {
+		return spremnaPica;
 	}
-	public void setSpremna(boolean spremna) {
-		this.spremna = spremna;
+	
+	public void setSpremnaJela(boolean spremnaJela) {
+		this.spremnaJela = spremnaJela;
 	}
+	
+	public void setSpremnaPica(boolean spremnaPica) {
+		this.spremnaPica = spremnaPica;
+	}
+	
 	
 	public Sto getSto() {
 		return sto;
@@ -115,4 +127,5 @@ public class Porudzbina  {
 	public void setKonobar(Konobar konobar) {
 		this.konobar = konobar;
 	}
+	
 }

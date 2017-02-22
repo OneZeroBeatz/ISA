@@ -87,17 +87,17 @@
 							<tr >
 								<td>Vreme : {{item.vremePrimanja}}</td>
 								<td>Oznaka stola : {{item.sto.oznaka}}</td>
-								
+								<td><button ng-click = "kliknuoNaDetalji(item)">Detalji</td>
 								<td><button ng-click = "izmeni(item)">Izmeni</td>
 								<td><button ng-click = "zavrsi(item)">Zavrsi</td>
-					
+								<td ng-show = "item.spremnaPica && item.spremnaJela"><img src="../images/spremna.png" height="20" width="20"></td>
 							</tr>
 							<tr  ng-show = "show == item.id" ng-repeat = "item1 in picaKliknutePorudzbine">
-								<td>{{item1.jelo.naziv}}</td>
+								<td>{{item1.pice.naziv}}</td>
 								<td>{{item1.kolicina}}</td>
 							</tr>
 							<tr  ng-show = "show == item.id" ng-repeat = "item1 in jelaKliknutePorudzbine">
-								<td>{{item1.pice.naziv}}</td>
+								<td>{{item1.jelo.naziv}}</td>
 								<td>{{item1.kolicina}}</td>
 							</tr>
 						</table>

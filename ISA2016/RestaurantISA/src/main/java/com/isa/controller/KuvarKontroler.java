@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.isa.model.JeloUPorudzbini;
+import com.isa.model.PiceUPorudzbini;
 import com.isa.model.Porudzbina;
 import com.isa.model.Restoran;
 import com.isa.model.korisnici.Kuvar;
@@ -39,7 +40,6 @@ public class KuvarKontroler {
 		Restoran restoran = kuvar.getRestoran();
 		// Uzeo sam ovde sankera jer je vec implementirano
 		
-		System.out.println("usao u ucitaj");
 		Page<Porudzbina> porudzbine = sankerServis.izlistajPorudzbine(restoran, new PageRequest(0, 10));
 		
 		
@@ -55,7 +55,6 @@ public class KuvarKontroler {
 		List<JeloUPorudzbini> picaLista = jelaUPorudzbini.getContent();
 		for (int i = 0; i < picaLista.size(); i++){
 			if(picaLista.get(i).getJelo().getTipKuvara().equals(porudzbinaKuvar.getKuvar().getTipKuvara())){
-				System.out.println("usao, i tip je " + porudzbinaKuvar.getKuvar().getTipKuvara());
 				retVal.add(picaLista.get(i));
 			}
 		}
@@ -91,8 +90,6 @@ public class KuvarKontroler {
 		Restoran restoran = poSa.getKuvar().getRestoran();
 		
 		Page<Porudzbina> porudzbine = sankerServis.izlistajPorudzbine(restoran, new PageRequest(0, 10));
-		
-		
 		return new ResponseEntity<List<Porudzbina>> (porudzbine.getContent(), HttpStatus.OK);
 	}
 	
@@ -100,7 +97,7 @@ public class KuvarKontroler {
 	public ResponseEntity<List<Porudzbina>> zavrsiPorudzbinu(@RequestBody PorudzbinaKuvar poKu){
 
 		Porudzbina porudzbina = konobarServis.pronadjiPorudzbinu(poKu.getPorudzbina().getId());
-		Page<JeloUPorudzbini> jelaUPorudzbini = kuvarServis.izlistajJelaPorudzbine(poKu.getPorudzbina(), new PageRequest(0, 10));
+		Page<JeloUPorudzbini> jelaUPorudzbini = kuvarServis.izlistajJelaPorudzbine(porudzbina, new PageRequest(0, 10));
 		List<JeloUPorudzbini> listaNjegovih = new ArrayList<JeloUPorudzbini>();
 		
 		List<JeloUPorudzbini> jelaLista = jelaUPorudzbini.getContent();
@@ -116,10 +113,26 @@ public class KuvarKontroler {
 			}
 		}
 		
+		porudzbina.setSpremnaJela(jelaSpremna(porudzbina));
+		konobarServis.savePorudzbina(porudzbina);
+		
 		Restoran restoran = poKu.getKuvar().getRestoran();
 		Page<Porudzbina> porudzbine = sankerServis.izlistajPorudzbine(restoran, new PageRequest(0, 10));
+
 		return new ResponseEntity<List<Porudzbina>> (porudzbine.getContent(), HttpStatus.OK);
 	}
 	
+	private boolean jelaSpremna (Porudzbina porudzbina){
+		Page<JeloUPorudzbini> jela = kuvarServis.izlistajJelaPorudzbine(porudzbina, new PageRequest(0, 10));
+		List<JeloUPorudzbini> jelaLista = jela.getContent();
+		for(int i = 0; i < jelaLista.size(); i++){
+			if (jelaLista.get(i).isSpremno() == false){
+				return false;
+			}
+		}
+		
+		return true;
+	}
 	
+
 }

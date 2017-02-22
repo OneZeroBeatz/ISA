@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.isa.model.JeloUPorudzbini;
 import com.isa.model.PiceUPorudzbini;
 import com.isa.model.Porudzbina;
 import com.isa.model.Restoran;
@@ -34,16 +35,14 @@ public class SankerKontroler {
 	public ResponseEntity<List<Porudzbina>> ucitajPorudzbine(@RequestBody Sanker sanker){
 		Restoran restoran = sanker.getRestoran();
 		Page<Porudzbina> porudzbine = sankerServis.izlistajPorudzbine(restoran, new PageRequest(0, 10));
-		
-		
+
 		return new ResponseEntity<List<Porudzbina>> (porudzbine.getContent(), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/ucitajPicaPorudzbine", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PiceUPorudzbini>> ucitajPicaPorudzbine(@RequestBody Porudzbina porudzbina){
 		Page<PiceUPorudzbini> picaUPorudzbini = sankerServis.izlistajPicaPorudzbine(porudzbina, new PageRequest(0, 10));
-		
-		
+
 		return new ResponseEntity<List<PiceUPorudzbini>> (picaUPorudzbini.getContent(), HttpStatus.OK);
 	}
 	
@@ -69,15 +68,14 @@ public class SankerKontroler {
 	public ResponseEntity<List<Porudzbina>> zavrsiPorudzbinu(@RequestBody Porudzbina porudzbina1){
 
 		Porudzbina porudzbina = konobarServis.pronadjiPorudzbinu(porudzbina1.getId());
-		porudzbina.setSpremna(true);
-		konobarServis.savePorudzbina(porudzbina);
-		
-		
+		porudzbina.setSpremnaPica(true);
+		konobarServis.savePorudzbina(porudzbina);	
 		Restoran restoran = porudzbina.getRestoran();
 		Page<Porudzbina> porudzbine = sankerServis.izlistajPorudzbine(restoran, new PageRequest(0, 10));
-		
+
 		return new ResponseEntity<List<Porudzbina>> (porudzbine.getContent(), HttpStatus.OK);
 	}
+	
 	
 	
 }

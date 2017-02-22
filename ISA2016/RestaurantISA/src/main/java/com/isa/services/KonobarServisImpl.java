@@ -117,5 +117,17 @@ public class KonobarServisImpl implements KonobarServis {
 		return porudzbinaSkladiste.findByKonobar(konobar, pageable);
 	}
 
+	@Override
+	public Page<JeloUPorudzbini> izlistajJelaPorudzbine(Porudzbina porudzbina,
+			Pageable pageable) {
+		return jeloUPorudzbiniSkladiste.findByPorudzbina(porudzbina, pageable);
+	}
+
+	@Override
+	public Page<PiceUPorudzbini> izlistajPicaPorudzbine(Porudzbina porudzbina,
+			Pageable pageable) {
+		return piceUPorudzbiniSkladiste.findByPorudzbina(porudzbina, pageable);
+	}
+
 	
 }

@@ -29,9 +29,18 @@ konobarServis.factory('izmeniKonobarServis', function($http) {
 		return $http.post('/konobarKontroler/dodajPorudzbinu', jelaPica);
 	}
 	
+	temp.ucitajJelaPorudzbine = function(porudzbina){
+		return $http.post('/konobarKontroler/ucitajJelaPorudzbine', porudzbina);
+	}
+
+	temp.ucitajPicaPorudzbine = function(porudzbina){
+		return $http.post('/konobarKontroler/ucitajPicaPorudzbine', porudzbina);
+	}
+	
 	temp.ucitajPorudzbine = function(konobar){
 		return $http.post('/konobarKontroler/ucitajPorudzbine', konobar);
 	}
+	
 	
 	
 	return temp;

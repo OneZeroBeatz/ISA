@@ -9,8 +9,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +25,6 @@ import com.isa.model.Porudzbina;
 import com.isa.model.Restoran;
 import com.isa.model.Sto;
 import com.isa.model.korisnici.Konobar;
-import com.isa.model.korisnici.Kuvar;
 import com.isa.pomocni.JelaPica;
 import com.isa.services.KonobarServis;
 import com.isa.services.RestoranServis;
@@ -42,7 +39,7 @@ public class KonobarKontroler {
 	public KonobarServis konobarServis;
 	@Autowired
 	public RestoranServis restoranServis;	
-
+	
 	@RequestMapping(value = "/ucitajJelaKonobara", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Jelo>> ucitajJelaKonobara(@RequestBody Konobar konobar) {
 
@@ -75,14 +72,14 @@ public class KonobarKontroler {
 		porudzbina.setSanker(null);
 		porudzbina.setKonobar((Konobar)konobarServis.findOne(jelaPica.getKonobar().getId()));
 		porudzbina.setSto(jelaPica.getSto());
-		porudzbina.setSpremna(false);
+		porudzbina.setSpremnaJela(false);
+		porudzbina.setSpremnaPica(false);
 		
 		konobarServis.savePorudzbina(porudzbina);
 		
 		ArrayList<Jelo> jelaL = new ArrayList<Jelo>();
 		ArrayList<Pice> picaL = new ArrayList<Pice>();
 		
-		System.out.println( " ID OVI JELA ");
 		for (int i = 0; i< jelaPica.getSvaJela().length; i++){
 			jelaL.add(konobarServis.pronadjiJelo(jelaPica.getSvaJela()[i].getJel()));
 		}
@@ -114,8 +111,11 @@ public class KonobarKontroler {
 		}
 		Page<Porudzbina> porudzbine = konobarServis.izlistajPorudzbine((Konobar)konobarServis.findOne(jelaPica.getKonobar().getId()), new PageRequest(0, 10));
 
+		
 		return new ResponseEntity<List<Porudzbina>>(porudzbine.getContent(), HttpStatus.OK);
 	}
+	
+	
 	
 	@RequestMapping(value = "/izlistajStolove", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Sto>> ucitajStoloveKonobara(@RequestBody Konobar konobar) {
@@ -129,11 +129,24 @@ public class KonobarKontroler {
 	
 	@RequestMapping(value = "/ucitajPorudzbine", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Porudzbina>> ucitajPorudzbine(@RequestBody Konobar konobar){		
-		System.out.println("usao u ucitaj");
 		Page<Porudzbina> porudzbine = konobarServis.izlistajPorudzbine(konobar, new PageRequest(0, 10));
+		System.out.println("Ucitao porudzbina " + porudzbine.getContent().size());
 		
 		return new ResponseEntity<List<Porudzbina>> (porudzbine.getContent(), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/ucitajJelaPorudzbine", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<JeloUPorudzbini>> ucitajJelaPorudzbine(@RequestBody Porudzbina porudzbina){
+		Page<JeloUPorudzbini> jelaUPorudzbini = konobarServis.izlistajJelaPorudzbine(porudzbina, new PageRequest(0, 10));
+		return new ResponseEntity<List<JeloUPorudzbini>> (jelaUPorudzbini.getContent(), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/ucitajPicaPorudzbine", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<PiceUPorudzbini>> ucitajPicaPorudzbine(@RequestBody Porudzbina porudzbina){
+		Page<PiceUPorudzbini> picaUPorudzbini = konobarServis.izlistajPicaPorudzbine(porudzbina, new PageRequest(0, 10));
+		return new ResponseEntity<List<PiceUPorudzbini>> (picaUPorudzbini.getContent(), HttpStatus.OK);
+	}
+	
 }
 
 
