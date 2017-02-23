@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.isa.model.Namirnica;
-import com.isa.model.Pice;
 import com.isa.model.PorudzbinaMenadzer;
 import com.isa.repository.NamirnicaSkladiste;
 import com.isa.repository.PiceSkladiste;
@@ -50,10 +49,10 @@ public class PorudzbinaMenadzeraServisImpl implements PorudzbinaMenadzeraServis{
 	public Page<Namirnica> izlistajNamirnice(PorudzbinaMenadzer ponudjac, Pageable pageable) {
 		return namirnicaSkladiste.findByPorudzbinaMenadzer(ponudjac, pageable);
 	}
-
+/*
 	@Override
 	public Page<Pice> izlistajPica(PorudzbinaMenadzer ponudjac, Pageable pageable) {
 		return piceSkladiste.findByPorudzbinaMenadzer(ponudjac, pageable);
 	}
-
+*/
 }

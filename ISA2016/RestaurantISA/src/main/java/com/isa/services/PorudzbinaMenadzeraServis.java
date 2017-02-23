@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.isa.model.Namirnica;
-import com.isa.model.Pice;
 import com.isa.model.PorudzbinaMenadzer;
 
 public interface PorudzbinaMenadzeraServis {
@@ -21,6 +20,6 @@ public interface PorudzbinaMenadzeraServis {
 	
 	Page<Namirnica> izlistajNamirnice(PorudzbinaMenadzer ponudjac, Pageable pageable);
 	
-	Page<Pice> izlistajPica(PorudzbinaMenadzer ponudjac, Pageable pageable);
+	//Page<Pice> izlistajPica(PorudzbinaMenadzer ponudjac, Pageable pageable);
 	
 }

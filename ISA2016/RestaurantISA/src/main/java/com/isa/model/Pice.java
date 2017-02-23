@@ -29,14 +29,17 @@ public class Pice implements Serializable{
 	@Column(name = "cena")
 	private Float cena;
 
-	@ManyToOne(optional = true)
-	private PorudzbinaMenadzer porudzbinamenadzer;
+	//@ManyToOne(optional = true)
+	//private PorudzbinaMenadzer porudzbinamenadzer;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pice")
 	private Set<PiceUPorudzbini> picovnik;
 	
 	@ManyToOne(optional = false)
 	private Restoran restoran;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pice")
+	private Set<StavkaPorudzbineMenadzera> listastavki;
 	
 	public Pice() {
 
@@ -73,11 +76,15 @@ public class Pice implements Serializable{
 	public void setCena(Float cena) {
 		this.cena = cena;
 	}
-
+/*
 	public PorudzbinaMenadzer getPorudzbinaMenadzer() {
 		return porudzbinamenadzer;
 	}
 	
+	public void setPorudzbinamenadzer(PorudzbinaMenadzer porudzbinamenadzer) {
+		this.porudzbinamenadzer = porudzbinamenadzer;
+	}
+*/
 	public Restoran getRestoran() {
 		return restoran;
 	}

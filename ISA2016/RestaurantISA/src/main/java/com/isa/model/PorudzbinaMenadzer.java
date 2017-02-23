@@ -38,11 +38,14 @@ public class PorudzbinaMenadzer implements Serializable{
 	private MenadzerRestorana menadzerrestorana;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "porudzbinamenadzer")
+	private Set<StavkaPorudzbineMenadzera> listastavki;
+	/*
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "porudzbinamenadzer")
 	private Set<Namirnica> listaNamirnica;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "porudzbinamenadzer")
 	private Set<Pice> listaPica;
-	
+	*/
 	public PorudzbinaMenadzer() {
 		
 	}
@@ -73,5 +76,9 @@ public class PorudzbinaMenadzer implements Serializable{
 	
 	public MenadzerRestorana getMenadzerRestorana() {
 		return menadzerrestorana;
+	}
+	
+	public void setMenadzerrestorana(MenadzerRestorana menadzerrestorana) {
+		this.menadzerrestorana = menadzerrestorana;
 	}
 }

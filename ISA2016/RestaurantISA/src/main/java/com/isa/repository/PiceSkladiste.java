@@ -1,16 +1,19 @@
 package com.isa.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.isa.model.Pice;
-import com.isa.model.PorudzbinaMenadzer;
 import com.isa.model.Restoran;
 
 public interface PiceSkladiste extends JpaRepository<Pice, Long>{
 
-	Page<Pice> findByPorudzbinaMenadzer(PorudzbinaMenadzer porudzbinaMenadzer, Pageable pageable);
+	List<Pice> findAll();
+	
+	//Page<Pice> findByPorudzbinaMenadzer(PorudzbinaMenadzer porudzbinaMenadzer, Pageable pageable);
 	
 	Pice save(Pice pice);
 

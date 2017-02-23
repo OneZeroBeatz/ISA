@@ -68,3 +68,4 @@ insert into jelouporudzbini(kolicina, porudzbina_id, jelo_id, spremno) values (4
 insert into jelouporudzbini(kolicina, porudzbina_id, jelo_id, spremno) values (5,2,5, false)
 insert into jelouporudzbini(kolicina, porudzbina_id, jelo_id, spremno) values (6,2,6, false)
 
+--insert into sto(oznaka, segment, zauzetost, brojmesta, restoran_id) values (33, 'segment 1', false, 6, (select id from restoran where naziv='Restoran 1'))

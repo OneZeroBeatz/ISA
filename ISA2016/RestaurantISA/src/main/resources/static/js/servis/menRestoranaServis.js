@@ -53,6 +53,18 @@ menRestoranaServis.factory('menRestoranaServisS', function($http) {
 		return $http.post('/menadzerRestoranaKontroler/izlistajSto', sto);
 	}
 	
+	temp.izlistajSveNamirnice = function() {
+		return $http.post('/menadzerRestoranaKontroler/izlistajSveNamirnice');
+	}
+	
+	temp.izlistajSvaPica = function() {
+		return $http.post('/menadzerRestoranaKontroler/izlistajSvaPica');
+	}
+	
+	temp.dodajStavke = function(porudzbina) {
+		return $http.post('/menadzerRestoranaKontroler/dodajStavke', porudzbina);
+	}
+	
 	return temp;
 
 })

@@ -81,7 +81,7 @@ public class Sto implements Serializable {
 	public Restoran getRestoran() {
 		return restoran;
 	}
-
+	
 	public void setRestoran(Restoran restoran) {
 		this.restoran = restoran;
 	}

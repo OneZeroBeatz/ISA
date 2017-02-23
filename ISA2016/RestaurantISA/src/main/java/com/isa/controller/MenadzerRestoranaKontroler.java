@@ -15,12 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.isa.model.Jelo;
+import com.isa.model.Namirnica;
 import com.isa.model.Pice;
 import com.isa.model.PorudzbinaMenadzer;
 import com.isa.model.Restoran;
 import com.isa.model.Sto;
 import com.isa.model.korisnici.MenadzerRestorana;
-import com.isa.model.korisnici.Ponudjac;
+import com.isa.pomocni.ListaStavki;
 import com.isa.services.MenadzerRestoranaServis;
 import com.isa.services.RestoranServis;
 
@@ -146,5 +147,29 @@ public class MenadzerRestoranaKontroler {
 	public ResponseEntity<Sto> izlistajSto(@RequestBody Sto sto) {	
 		Sto s = restoranServirs.izlistajSto(sto);	
 		return new ResponseEntity<Sto>(s, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/izlistajSveNamirnice", method = RequestMethod.POST)
+	public ResponseEntity<List<Namirnica>> izlistajSveNamirnice() {	
+		
+		List<Namirnica> namirnice = menadzerRestoranaServis.izlistajSveNamirnice();
+		
+		return new ResponseEntity<List<Namirnica>>(namirnice, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/izlistajSvaPica", method = RequestMethod.POST)
+	public ResponseEntity<List<Pice>> izlistajSvaPica() {	
+	
+		List<Pice> pice = menadzerRestoranaServis.izlistajSvaPica();
+		
+		return new ResponseEntity<List<Pice>>(pice, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/dodajStavke", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void dodajStavke(@RequestBody ListaStavki listaStavki) {	
+	
+		System.out.println(listaStavki);
+		menadzerRestoranaServis.dodajPorudzbinu(listaStavki.getPorudzbinaMenadzer(), listaStavki.getStavke());
+
 	}
 }

@@ -2,9 +2,12 @@ var menRestoranaKontroler = angular.module('restoranApp.menRestoranaKontroler', 
 
 menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStranaServis, $scope, menRestoranaServisS) {
 	
+	
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 		$scope.brRedova = [];
 		$scope.brKolona = [];
+		$scope.listaStavki = [];
+		
 		if(data != ""){
 			var menRest = {
 				id : data.id,
@@ -41,6 +44,34 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 			}).error(function(data) {
 				alert("Neuspesno izlistavanje restorana!");
 			});
+			
+			menRestoranaServisS.izlistajSveNamirnice().success(function(data) {
+				$scope.listaNamirnica = data;
+			}).error(function(data) {
+				alert("Nece namirnice!");
+			});
+			
+			menRestoranaServisS.izlistajSvaPica().success(function(data) {
+				$scope.listaPica = data;
+			}).error(function(data) {
+				alert("Nece pica!");
+			});
+			
+			$scope.objaviPorudzbinu = function(){
+				var porMen = {
+					menadzerrestorana : data,
+					aktivnoOd : $scope.datumOd,
+					aktivnoDo : $scope.datumDo
+				}
+				
+				var stav = {
+					porudzbinaMenadzer : porMen,
+					stavke : $scope.listaStavki
+				}
+				var str = JSON.stringify(stav);
+				menRestoranaServisS.dodajStavke(str).success(function(data) {
+				});
+			}
 			
 		}else{
 			alert("Niko nije ulogovan");
@@ -133,7 +164,7 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 	}
 	
 	$scope.izmenaJela = function(jeloId){
-		//TODO: Tabelarno...
+		// TODO: Tabelarno...
 	}
 	
 	$scope.odbrisiJelo = function(jeloId){
@@ -164,7 +195,7 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 		tempStolovi[0] = restoran.id;
 		for(i=0; i<$scope.brojRedova; i++){
 			for(j=0; j<$scope.brojKolona; j++){
-				tempStolovi[i*$scope.brojRedova + j + 1] = i*i + j;
+				tempStolovi[i*$scope.brojKolona + j + 1] = i*$scope.brojKolona + j;
 			}
 		}
 		
@@ -195,9 +226,25 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 		var str = JSON.stringify(sto);
 		menRestoranaServisS.izlistajSto(str).success(function(data) {
 			$scope.sto = data;
-			$scope.segmentStola = $scope.sto.segemnt;
+			// $scope.segmentStola = $scope.sto.segemnt;
 		}).error(function(data) {
 		});
+	}
+	
+	$scope.dodajStavkuNamirnicu = function(){
+		var stavka = {
+			kolicina : $scope.kolNamirnica,
+			pice : $scope.namirnicaStavka
+		}
+		$scope.listaStavki.push(stavka);
+	}
+	
+	$scope.dodajStavkuPice = function(){
+		var stavka = {
+			kolicina : $scope.kolPica,
+			pice : $scope.piceStavka
+		}
+		$scope.listaStavki.push(stavka);
 	}
 	
 });

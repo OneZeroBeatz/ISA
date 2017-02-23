@@ -40,8 +40,6 @@ public class KonobarKontroler {
 	public RestoranServis restoranServis;	
 
 	
-
-	
 	@RequestMapping(value = "/ucitajJelaKonobara", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Jelo>> ucitajJelaKonobara(@RequestBody Konobar konobar) {
 

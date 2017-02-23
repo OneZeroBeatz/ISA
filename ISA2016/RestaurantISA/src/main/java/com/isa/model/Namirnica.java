@@ -1,12 +1,15 @@
 package com.isa.model;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -18,10 +21,13 @@ public class Namirnica implements Serializable{
 	private Long id;
 
 	@Column(name = "naziv")
-	private String nazivNamirnice;
+	private String naziv;
 
 	@ManyToOne(optional = false)
 	private PorudzbinaMenadzer porudzbinamenadzer;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "namirnica")
+	private Set<StavkaPorudzbineMenadzera> listastavki;
 	
 	public Namirnica() {
 
@@ -36,11 +42,11 @@ public class Namirnica implements Serializable{
 	}
 
 	public String getNazivNamirnice() {
-		return nazivNamirnice;
+		return naziv;
 	}
 
-	public void setNazivNamirnice(String nazivNamirnice) {
-		this.nazivNamirnice = nazivNamirnice;
+	public void setNazivNamirnice(String naziv) {
+		this.naziv = naziv;
 	}
 
 	public PorudzbinaMenadzer getPorudzbinaMenadzer() {

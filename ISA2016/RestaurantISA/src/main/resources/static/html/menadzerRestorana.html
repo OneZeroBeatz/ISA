@@ -110,7 +110,8 @@
 										<option value="bastaZ">Basta (zatvorena)</option>
 									</select>
 								</td>
-								
+							</tr>
+							<tr>
 								<td>Broj mesta: </td>
 								<td><input type="number" ng-model="sto.brojmesta"></td>
 							</tr>
@@ -196,12 +197,31 @@
 				
 				</br>
 				<h2>Moje ponude:</h2></br>
-				<label>Prikupljanje aktivno od: </label> <input type="date" ng-model="datumOd"> </br>
-				<label>Prikupljanje aktivno do: </label> <input type="date" ng-model="datumDo"> </br>
-				<!-- <ul>
-				<li ng-repeat="pon in ponude"> {{pon.aktivnoOd}} {{pon.aktivnoDo}} </li>
-				</ul> -->
-				
+				<table>
+					<tr>
+						<td>Prikupljanje aktivno od:</td>
+						<td><input type="date" ng-model="datumOd"></td>
+					<tr>
+					<tr>
+						<td>Prikupljanje aktivno do:</td>
+						<td><input type="date" ng-model="datumDo"></td>
+					<tr>
+				</table>
+				<table>
+					<tr>
+						<td>Namirnice: </td>
+						<td><select ng-model="namirnicaStavka" ng-options="x.naziv for x in listaNamirnica"></select></td>
+						<td><input type="number" ng-model="kolNamirnica"></td>
+						<td><button ng-click="dodajStavkuNamirnicu()">Dodaj</button></td>
+					<tr>
+					<tr>
+						<td>Pice: </td>
+						<td><select ng-model="piceStavka" ng-options="x.naziv for x in listaPica"></select></td>
+						<td><input type="number" ng-model="kolPica"></td>
+						<td><button ng-click="dodajStavkuPice()">Dodaj</button></td>
+					<tr>
+				</table>
+				<button ng-click="objaviPorudzbinu()">Objavi</button>
 				</br>
 				<h2>Lista pristiglih ponuda</h2>
 			</div>
