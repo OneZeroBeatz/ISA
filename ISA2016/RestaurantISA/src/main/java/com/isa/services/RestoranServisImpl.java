@@ -102,4 +102,9 @@ public class RestoranServisImpl implements RestoranServis{
 		return stoSkladiste.findByRestoranAndOznaka(sto.getRestoran(), sto.getOznaka());
 	}
 
+	@Override
+	public Page<Sto> izlistajStolove(Restoran restoran, Pageable pageable) {
+		return stoSkladiste.findByRestoran(restoran, pageable);
+	}
+
 }

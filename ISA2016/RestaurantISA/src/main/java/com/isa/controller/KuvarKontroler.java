@@ -18,6 +18,7 @@ import com.isa.model.JeloUPorudzbini;
 import com.isa.model.Porudzbina;
 import com.isa.model.Restoran;
 import com.isa.model.korisnici.Kuvar;
+import com.isa.pomocni.MogucePrihvacene;
 import com.isa.pomocni.PorudzbinaKuvar;
 import com.isa.services.KonobarServis;
 import com.isa.services.KuvarServis;
@@ -34,19 +35,26 @@ public class KuvarKontroler {
 	@Autowired
 	public KonobarServis konobarServis;
 	
-	
-
-	
 	@RequestMapping(value = "/ucitajPorudzbine", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Porudzbina>> ucitajPorudzbine(@RequestBody Kuvar kuvar){
 		Restoran restoran = kuvar.getRestoran();
 		// Uzeo sam ovde sankera jer je vec implementirano
 		
-		System.out.println("usao u ucitaj");
 		Page<Porudzbina> porudzbine = sankerServis.izlistajPorudzbine(restoran, new PageRequest(0, 10));
 		
 		
 		return new ResponseEntity<List<Porudzbina>> (porudzbine.getContent(), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/ucitajPorudzbineKlasifikovane", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<MogucePrihvacene> ucitajPorudzbineKlasifikovane(@RequestBody Kuvar kuvar){
+		Restoran restoran = kuvar.getRestoran();
+		// Uzeo sam ovde sankera jer je vec implementirano
+		
+		Page<Porudzbina> porudzbine = sankerServis.izlistajPorudzbine(restoran, new PageRequest(0, 10));
+		
+		
+		return new ResponseEntity<MogucePrihvacene> (vratiPorudzbine(porudzbine, kuvar), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/ucitajJelaPorudzbine", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -55,11 +63,10 @@ public class KuvarKontroler {
 		
 		List<JeloUPorudzbini> retVal = new ArrayList<JeloUPorudzbini>();
 		
-		List<JeloUPorudzbini> picaLista = jelaUPorudzbini.getContent();
-		for (int i = 0; i < picaLista.size(); i++){
-			if(picaLista.get(i).getJelo().getTipKuvara().equals(porudzbinaKuvar.getKuvar().getTipKuvara())){
-				System.out.println("usao, i tip je " + porudzbinaKuvar.getKuvar().getTipKuvara());
-				retVal.add(picaLista.get(i));
+		List<JeloUPorudzbini> jelaLista = jelaUPorudzbini.getContent();
+		for (int i = 0; i < jelaLista.size(); i++){
+			if(jelaLista.get(i).getJelo().getTipKuvara().equals(porudzbinaKuvar.getKuvar().getTipKuvara())){
+				retVal.add(jelaLista.get(i));
 			}
 		}
 		
@@ -68,23 +75,23 @@ public class KuvarKontroler {
 	}
 	
 	@RequestMapping(value = "/prihvatiPorudzbinu", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Porudzbina>> prihvatiPorudzbinu(@RequestBody PorudzbinaKuvar poSa){
+	public ResponseEntity<MogucePrihvacene> prihvatiPorudzbinu(@RequestBody PorudzbinaKuvar poSa){
 
 		Porudzbina porudzbina = konobarServis.pronadjiPorudzbinu(poSa.getPorudzbina().getId());
 		Page<JeloUPorudzbini> jelaUPorudzbini = kuvarServis.izlistajJelaPorudzbine(poSa.getPorudzbina(), new PageRequest(0, 10));
 		
 		List<JeloUPorudzbini> listaNjegovih = new ArrayList<JeloUPorudzbini>();
 		
-		List<JeloUPorudzbini> picaLista = jelaUPorudzbini.getContent();
-		for (int i = 0; i < picaLista.size(); i++){
-			if(picaLista.get(i).getJelo().getTipKuvara().equals(poSa.getKuvar().getTipKuvara())){
-				listaNjegovih.add(picaLista.get(i));
+		List<JeloUPorudzbini> jelaLista = jelaUPorudzbini.getContent();
+		for (int i = 0; i < jelaLista.size(); i++){
+			if(jelaLista.get(i).getJelo().getTipKuvara().equals(poSa.getKuvar().getTipKuvara())){
+				listaNjegovih.add(jelaLista.get(i));
 			}
 		}
 
 		for (int i = 0; i<listaNjegovih.size(); i++){
 			if (listaNjegovih.get(i).getKuvar() != null){
-				return new ResponseEntity<List<Porudzbina>> (HttpStatus.NOT_MODIFIED);
+				return new ResponseEntity<MogucePrihvacene> (HttpStatus.NOT_MODIFIED);
 			} else {
 				listaNjegovih.get(i).setKuvar(poSa.getKuvar());
 				kuvarServis.sacuvajJeloUPorudzbini(listaNjegovih.get(i));
@@ -94,16 +101,14 @@ public class KuvarKontroler {
 		Restoran restoran = poSa.getKuvar().getRestoran();
 		
 		Page<Porudzbina> porudzbine = sankerServis.izlistajPorudzbine(restoran, new PageRequest(0, 10));
-		
-		
-		return new ResponseEntity<List<Porudzbina>> (porudzbine.getContent(), HttpStatus.OK);
+		return new ResponseEntity<MogucePrihvacene> (vratiPorudzbine(porudzbine, poSa.getKuvar()), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/zavrsiPorudzbinu", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Porudzbina>> zavrsiPorudzbinu(@RequestBody PorudzbinaKuvar poKu){
+	public ResponseEntity<MogucePrihvacene> zavrsiPorudzbinu(@RequestBody PorudzbinaKuvar poKu){
 
 		Porudzbina porudzbina = konobarServis.pronadjiPorudzbinu(poKu.getPorudzbina().getId());
-		Page<JeloUPorudzbini> jelaUPorudzbini = kuvarServis.izlistajJelaPorudzbine(poKu.getPorudzbina(), new PageRequest(0, 10));
+		Page<JeloUPorudzbini> jelaUPorudzbini = kuvarServis.izlistajJelaPorudzbine(porudzbina, new PageRequest(0, 10));
 		List<JeloUPorudzbini> listaNjegovih = new ArrayList<JeloUPorudzbini>();
 		
 		List<JeloUPorudzbini> jelaLista = jelaUPorudzbini.getContent();
@@ -113,16 +118,89 @@ public class KuvarKontroler {
 			}
 		}
 		for (int i = 0; i<listaNjegovih.size(); i++){
-			if (listaNjegovih.get(i).getKuvar().getId() == poKu.getKuvar().getId()){
+			// TODO: Za slucaj da je izmena sam sklonio if, videti da li radi
+			//if (listaNjegovih.get(i).getKuvar().getId() == poKu.getKuvar().getId()){
 				listaNjegovih.get(i).setSpremno(true);
 				kuvarServis.sacuvajJeloUPorudzbini(listaNjegovih.get(i));			
-			}
+			//}
 		}
+		
+		porudzbina.setSpremnaJela(jelaSpremna(porudzbina));
+		konobarServis.savePorudzbina(porudzbina);
 		
 		Restoran restoran = poKu.getKuvar().getRestoran();
 		Page<Porudzbina> porudzbine = sankerServis.izlistajPorudzbine(restoran, new PageRequest(0, 10));
-		return new ResponseEntity<List<Porudzbina>> (porudzbine.getContent(), HttpStatus.OK);
+
+		return new ResponseEntity<MogucePrihvacene> (vratiPorudzbine(porudzbine, poKu.getKuvar()), HttpStatus.OK);
 	}
 	
+	private boolean jelaSpremna (Porudzbina porudzbina){
+		Page<JeloUPorudzbini> jela = kuvarServis.izlistajJelaPorudzbine(porudzbina, new PageRequest(0, 10));
+		List<JeloUPorudzbini> jelaLista = jela.getContent();
+		for(int i = 0; i < jelaLista.size(); i++){
+			if (jelaLista.get(i).isSpremno() == false){
+				return false;
+			}
+		}
+		
+		return true;
+	}
 	
+	private MogucePrihvacene vratiPorudzbine (Page<Porudzbina> porudzbine, Kuvar kuvar){
+		List<Porudzbina> listaSvihPorudzbina = porudzbine.getContent();
+		ArrayList<Porudzbina> listaPrihvacenihPorudzbina = new ArrayList<Porudzbina>();
+		ArrayList<Porudzbina> listaMogucihPorudzbina = new ArrayList<Porudzbina>();
+		
+		for(int i = 0; i < listaSvihPorudzbina.size(); i++){
+			List<JeloUPorudzbini> jelaUPorudzbini = konobarServis.izlistajJelaPorudzbine(listaSvihPorudzbina.get(i),new PageRequest(0, 10)).getContent();
+			if(!jelaUPorudzbini.isEmpty()){
+				boolean imaZaOvog = false;
+				if(!listaSvihPorudzbina.get(i).isSpremnaJela()){
+					for (int j = 0; j < jelaUPorudzbini.size(); j++){
+						if(jelaUPorudzbini.get(j).getJelo().getTipKuvara().equals(kuvar.getTipKuvara())){
+							if(!jelaUPorudzbini.get(j).isSpremno()){
+								if(jelaUPorudzbini.get(j).getKuvar() != null){
+									if(jelaUPorudzbini.get(j).getKuvar().getId() == kuvar.getId()){
+										imaZaOvog = true;
+									}
+								}
+							}
+						}
+					}
+					if (imaZaOvog){
+						if(!listaSvihPorudzbina.get(i).isSpremnaJela()){
+							listaPrihvacenihPorudzbina.add(listaSvihPorudzbina.get(i));
+						}
+					}
+				}
+			}
+		}
+		
+		for(int i = 0; i < listaSvihPorudzbina.size(); i++){
+			List<JeloUPorudzbini> jelaUPorudzbini = konobarServis.izlistajJelaPorudzbine(listaSvihPorudzbina.get(i),new PageRequest(0, 10)).getContent();
+			if(!jelaUPorudzbini.isEmpty()){
+				boolean imaZaOvog = false;
+				for (int j = 0; j < jelaUPorudzbini.size(); j++){
+					if(jelaUPorudzbini.get(j).getJelo().getTipKuvara().equals(kuvar.getTipKuvara())){
+						if(jelaUPorudzbini.get(j).getKuvar() == null){
+							imaZaOvog = true;
+						}
+					}
+				}
+				if (imaZaOvog){
+					if(!listaSvihPorudzbina.get(i).isSpremnaJela()){
+						listaMogucihPorudzbina.add(listaSvihPorudzbina.get(i));
+					}
+				}
+			}
+		}
+		
+		MogucePrihvacene moPri = new MogucePrihvacene();
+		moPri.setPrihvacenePorudzbine(listaPrihvacenihPorudzbina);
+		moPri.setMogucePorudzbine(listaMogucihPorudzbina);
+		
+		return moPri;
+	}
+	
+
 }

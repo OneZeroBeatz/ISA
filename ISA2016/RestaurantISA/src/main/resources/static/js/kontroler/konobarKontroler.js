@@ -11,7 +11,6 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 		if(data != ""){
 			//TODO mora da se uloguje opet da bi skontao podatke
 			$scope.ulogovanKonobar = data;
-			
 			// Ucitaj jela u kombobox
 			
 			$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
@@ -29,7 +28,41 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 					}).error (function(data){
 						alert("Neuspesno ucitana pica");
 					});
+					izmeniKonobarServis.izlistajStolove($scope.ulogovanKonobar).success(function(data){
+						$scope.stolovi = data;
+					}).error (function(data){
+						alert("Neuspesno ucitana pica");
+					});		
 					
+					// UCITAVANJE PORUDZBINA
+					$scope.porudzbine = [];
+					izmeniKonobarServis.ucitajPorudzbine($scope.ulogovanKonobar).success(function(data) {
+						$scope.porudzbine = data;
+					}).error(function (data){
+						alert("Neuspelo ucitavanje porudzbina");
+					});
+					
+					// Kliknuce na detalji
+					$scope.jelaKliknutePorudzbine = [];
+					$scope.picaKliknutePorudzbine = [];
+					$scope.show = -1;
+					$scope.kliknuoNaDetalji = function (porudzbina){
+						izmeniKonobarServis.ucitajJelaPorudzbine(porudzbina).success(function(data){
+							$scope.jelaKliknutePorudzbine = data;
+						}).error(function (data){
+							alert("Neuspelo ucitavanje detalja");
+						});
+						
+						izmeniKonobarServis.ucitajPicaPorudzbine(porudzbina).success(function(data){
+							$scope.picaKliknutePorudzbine = data;
+							if ($scope.show == porudzbina.id)
+								$scope.show = -1;
+							else
+								$scope.show = porudzbina.id
+						}).error(function (data){
+							alert("Neuspelo ucitavanje detalja");
+						});
+					}
 				}
 		    	$scope.tab = newTab;
 		    };
@@ -81,7 +114,10 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 		    };
 			
 		    $scope.dodajPorudzbinu = function (){
-
+		    	if ($scope.sto == null){
+		    		alert("Niste odabrali sto");
+		    		return;
+		    	}
 		    	for (var i = 0 ; i< $scope.dodataJela.length ; i++){
 		    		var jelo1 = {
 				    	id : i+1, 
@@ -101,15 +137,16 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 		    	var jelaPica = {
 		    		svaJela : $scope.dodataJelaId,
 		    		svaPica : $scope.dodataPicaId,
-		    		konobar : $scope.ulogovanKonobar
+		    		konobar : $scope.ulogovanKonobar,
+		    		sto : $scope.sto
 		    	};
 		    	    	
 		    	var jelaPicaStr = JSON.stringify(jelaPica);
 				console.log(jelaPicaStr);
 				
 		    	izmeniKonobarServis.dodajPorudzbinu(jelaPicaStr).success(function (data){
-		    		alert("Dodata porudzbine");
-		    		
+		    		$scope.porudzbine = data;
+		    		alert("Dodata porudzbina");
 		    	}).error (function (data){
 		    		alert("Neuspasno dodavanje porudzbine");	
 		    	});	

@@ -2,6 +2,10 @@ package com.isa.services;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 import com.isa.model.Jelo;
 import com.isa.model.JeloUPorudzbini;
 import com.isa.model.Pice;
@@ -36,6 +40,13 @@ public interface KonobarServis {
 	void saveJeloUPorudzbini(JeloUPorudzbini jeloUPorudzbini);
 
 	void savePiceUPorudzbini(PiceUPorudzbini piceUPorudzbini);
+
+	Page<Porudzbina> izlistajPorudzbine(Konobar konobar, Pageable pageable);
+
+	Page<JeloUPorudzbini> izlistajJelaPorudzbine(Porudzbina porudzbina, Pageable pageable);
+
+	Page<PiceUPorudzbini> izlistajPicaPorudzbine(Porudzbina porudzbina, Pageable pageable);
+
 
 
 

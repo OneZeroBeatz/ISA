@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.isa.model.korisnici.Kuvar;
+import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Sanker;
 
 @Entity
@@ -33,14 +33,21 @@ public class Porudzbina  {
 	@ManyToOne(optional = true)
 	private Restoran restoran;
 	
+	@ManyToOne(optional = true, cascade = CascadeType.MERGE)
+	private Konobar konobar;
+	
+	@ManyToOne(optional = true, cascade = CascadeType.MERGE)
+	private Sto sto;
+	
 	@ManyToOne(optional = true, cascade = CascadeType.ALL)
 	private Sanker sanker;
 	
+	@Column(name = "spremna_jela")
+	private boolean spremnaJela; 
 	
-	@Column(name = "spremna")
-	private boolean spremna;
+	@Column(name = "spremna_pica")
+	private boolean spremnaPica; 
 	
-	//TODO: Ubaciti i sto za koji vazi ponuda
 	
 	@Column(name = "vremeprimanja")
 //	@Type(type="date")
@@ -89,11 +96,35 @@ public class Porudzbina  {
 	public void setSanker(Sanker sanker) {
 		this.sanker = sanker;
 	}
+
+	public boolean isSpremnaJela() {
+		return spremnaJela;
+	}
 	
-	public boolean isSpremna() {
-		return spremna;
+	public boolean isSpremnaPica() {
+		return spremnaPica;
 	}
-	public void setSpremna(boolean spremna) {
-		this.spremna = spremna;
+	
+	public void setSpremnaJela(boolean spremnaJela) {
+		this.spremnaJela = spremnaJela;
 	}
+	
+	public void setSpremnaPica(boolean spremnaPica) {
+		this.spremnaPica = spremnaPica;
+	}
+	
+	public Sto getSto() {
+		return sto;
+	}
+	public void setSto(Sto sto) {
+		this.sto = sto;
+	}
+	
+	public Konobar getKonobar() {
+		return konobar;
+	}
+	public void setKonobar(Konobar konobar) {
+		this.konobar = konobar;
+	}
+	
 }

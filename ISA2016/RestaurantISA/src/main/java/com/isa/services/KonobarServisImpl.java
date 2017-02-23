@@ -3,6 +3,8 @@ package com.isa.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.isa.model.Jelo;
@@ -107,6 +109,24 @@ public class KonobarServisImpl implements KonobarServis {
 	@Override
 	public Porudzbina pronadjiPorudzbinu(Long id) {
 		return porudzbinaSkladiste.findById(id);
+	}
+
+	@Override
+	public Page<Porudzbina> izlistajPorudzbine(Konobar konobar,
+			Pageable pageable) {
+		return porudzbinaSkladiste.findByKonobar(konobar, pageable);
+	}
+
+	@Override
+	public Page<JeloUPorudzbini> izlistajJelaPorudzbine(Porudzbina porudzbina,
+			Pageable pageable) {
+		return jeloUPorudzbiniSkladiste.findByPorudzbina(porudzbina, pageable);
+	}
+
+	@Override
+	public Page<PiceUPorudzbini> izlistajPicaPorudzbine(Porudzbina porudzbina,
+			Pageable pageable) {
+		return piceUPorudzbiniSkladiste.findByPorudzbina(porudzbina, pageable);
 	}
 
 	

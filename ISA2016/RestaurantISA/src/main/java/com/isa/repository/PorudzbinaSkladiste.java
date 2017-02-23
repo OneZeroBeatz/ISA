@@ -8,14 +8,20 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.isa.model.Porudzbina;
 import com.isa.model.Restoran;
+import com.isa.model.korisnici.Konobar;
 
 public interface PorudzbinaSkladiste extends JpaRepository<Porudzbina, Serializable>{
 
+	Porudzbina findById(Long id);
+	
 	Porudzbina save(Porudzbina namirnica);
 
 	Page<Porudzbina> findByRestoran(Restoran restoran, Pageable pageable);
 
-	Porudzbina findById(Long id);
+	Page<Porudzbina> findByKonobar(Konobar konobar, Pageable pageable);
+
+
+
 	
 	
 }

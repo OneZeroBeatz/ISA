@@ -20,9 +20,27 @@ konobarServis.factory('izmeniKonobarServis', function($http) {
 	temp.izlistajPica = function (konobar){
 		return $http.post('/konobarKontroler/ucitajPicaKonobara', konobar);
 	}
+	
+	temp.izlistajStolove = function (konobar){
+		return $http.post('/konobarKontroler/izlistajStolove', konobar);
+	}
+	
 	temp.dodajPorudzbinu = function (jelaPica){
 		return $http.post('/konobarKontroler/dodajPorudzbinu', jelaPica);
 	}
+	
+	temp.ucitajJelaPorudzbine = function(porudzbina){
+		return $http.post('/konobarKontroler/ucitajJelaPorudzbine', porudzbina);
+	}
+
+	temp.ucitajPicaPorudzbine = function(porudzbina){
+		return $http.post('/konobarKontroler/ucitajPicaPorudzbine', porudzbina);
+	}
+	
+	temp.ucitajPorudzbine = function(konobar){
+		return $http.post('/konobarKontroler/ucitajPorudzbine', konobar);
+	}
+	
 	
 	
 	return temp;

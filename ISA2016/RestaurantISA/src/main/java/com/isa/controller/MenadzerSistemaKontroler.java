@@ -36,7 +36,6 @@ public class MenadzerSistemaKontroler {
 	
 	@RequestMapping(value = "/izlistajRestorane", method = RequestMethod.POST)
 	public ResponseEntity<List<Restoran>> izlistajRestorane() {
-		//TODO STA JE BRE OVO NEW PAGE REQUEST
 		Page<Restoran> restorani = menSistemaServis.izlistajRestorane(new PageRequest(0, 10));
 		return new ResponseEntity<List<Restoran>>(restorani.getContent(), HttpStatus.OK);
 	}

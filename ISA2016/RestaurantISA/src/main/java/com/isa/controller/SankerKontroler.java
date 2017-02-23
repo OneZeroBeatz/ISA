@@ -1,4 +1,5 @@
 package com.isa.controller;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import com.isa.model.PiceUPorudzbini;
 import com.isa.model.Porudzbina;
 import com.isa.model.Restoran;
 import com.isa.model.korisnici.Sanker;
+import com.isa.pomocni.MogucePrihvacene;
 import com.isa.pomocni.PorudzbinaSanker;
 import com.isa.services.KonobarServis;
 import com.isa.services.SankerServis;
@@ -34,26 +36,32 @@ public class SankerKontroler {
 	public ResponseEntity<List<Porudzbina>> ucitajPorudzbine(@RequestBody Sanker sanker){
 		Restoran restoran = sanker.getRestoran();
 		Page<Porudzbina> porudzbine = sankerServis.izlistajPorudzbine(restoran, new PageRequest(0, 10));
-		
-		
+
 		return new ResponseEntity<List<Porudzbina>> (porudzbine.getContent(), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/ucitajPorudzbineKlasifikovane", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<MogucePrihvacene> ucitajPorudzbineKlasifikovane(@RequestBody Sanker sanker){
+		Restoran restoran = sanker.getRestoran();
+		Page<Porudzbina> porudzbine = sankerServis.izlistajPorudzbine(restoran, new PageRequest(0, 10));
+
+		return new ResponseEntity<MogucePrihvacene> (vratiPorudzbine(porudzbine, sanker), HttpStatus.OK);
+	}
+	
 	
 	@RequestMapping(value = "/ucitajPicaPorudzbine", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PiceUPorudzbini>> ucitajPicaPorudzbine(@RequestBody Porudzbina porudzbina){
 		Page<PiceUPorudzbini> picaUPorudzbini = sankerServis.izlistajPicaPorudzbine(porudzbina, new PageRequest(0, 10));
-		
-		
+
 		return new ResponseEntity<List<PiceUPorudzbini>> (picaUPorudzbini.getContent(), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/prihvatiPorudzbinu", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Porudzbina>> prihvatiPorudzbinu(@RequestBody PorudzbinaSanker poSa){
+	public ResponseEntity<MogucePrihvacene> prihvatiPorudzbinu(@RequestBody PorudzbinaSanker poSa){
 
 		Porudzbina porudzbina = konobarServis.pronadjiPorudzbinu(poSa.getPorudzbina().getId());
 		if(porudzbina.getSanker()!= null){
-			System.out.println("vec setovan");
-			return new ResponseEntity<List<Porudzbina>> (HttpStatus.NOT_MODIFIED);
+			return new ResponseEntity<MogucePrihvacene> (HttpStatus.NOT_MODIFIED);
 		}
 		porudzbina.setSanker(poSa.getSanker());
 		konobarServis.savePorudzbina(porudzbina);
@@ -62,21 +70,53 @@ public class SankerKontroler {
 		Restoran restoran = poSa.getSanker().getRestoran();
 		Page<Porudzbina> porudzbine = sankerServis.izlistajPorudzbine(restoran, new PageRequest(0, 10));
 		
-		return new ResponseEntity<List<Porudzbina>> (porudzbine.getContent(), HttpStatus.OK);
+		return new ResponseEntity<MogucePrihvacene> (vratiPorudzbine(porudzbine, poSa.getSanker()), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/zavrsiPorudzbinu", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Porudzbina>> zavrsiPorudzbinu(@RequestBody Porudzbina porudzbina1){
-
+	public ResponseEntity<MogucePrihvacene> zavrsiPorudzbinu(@RequestBody Porudzbina porudzbina1){
 		Porudzbina porudzbina = konobarServis.pronadjiPorudzbinu(porudzbina1.getId());
-		porudzbina.setSpremna(true);
-		konobarServis.savePorudzbina(porudzbina);
-		
-		
+		porudzbina.setSpremnaPica(true);
+		konobarServis.savePorudzbina(porudzbina);	
 		Restoran restoran = porudzbina.getRestoran();
 		Page<Porudzbina> porudzbine = sankerServis.izlistajPorudzbine(restoran, new PageRequest(0, 10));
+		return new ResponseEntity<MogucePrihvacene> (vratiPorudzbine(porudzbine, porudzbina.getSanker()), HttpStatus.OK);
+	}
+	
+	private MogucePrihvacene vratiPorudzbine (Page<Porudzbina> porudzbine, Sanker sanker){
+
+		List<Porudzbina> listaSvihPorudzbina = porudzbine.getContent();
+		ArrayList<Porudzbina> listaPrihvacenihPorudzbina = new ArrayList<Porudzbina>();
+		ArrayList<Porudzbina> listaMogucihPorudzbina = new ArrayList<Porudzbina>();
 		
-		return new ResponseEntity<List<Porudzbina>> (porudzbine.getContent(), HttpStatus.OK);
+		for(int i = 0; i < listaSvihPorudzbina.size(); i++){
+			List<PiceUPorudzbini> picaUPorudzbini = konobarServis.izlistajPicaPorudzbine(listaSvihPorudzbina.get(i),new PageRequest(0, 10)).getContent();
+			if (!picaUPorudzbini.isEmpty()) {
+				if (listaSvihPorudzbina.get(i).getSanker() != null) {
+					if (listaSvihPorudzbina.get(i).getSanker().getId() == sanker.getId()) {
+						if (listaSvihPorudzbina.get(i).isSpremnaPica() == false) {
+							listaPrihvacenihPorudzbina.add(listaSvihPorudzbina.get(i));
+						}
+					}
+				}
+			}
+		}
+		
+		for (int i = 0; i < listaSvihPorudzbina.size(); i++) {
+			List<PiceUPorudzbini> picaUPorudzbini = konobarServis.izlistajPicaPorudzbine(listaSvihPorudzbina.get(i),new PageRequest(0, 10)).getContent();
+			if (!picaUPorudzbini.isEmpty()) {
+				if (listaSvihPorudzbina.get(i).getSanker() == null) {
+					if (listaSvihPorudzbina.get(i).isSpremnaPica() == false) {
+						listaMogucihPorudzbina.add(listaSvihPorudzbina.get(i));
+					}
+				}
+			}
+		}
+		MogucePrihvacene moPri = new MogucePrihvacene();
+		moPri.setPrihvacenePorudzbine(listaPrihvacenihPorudzbina);
+		moPri.setMogucePorudzbine(listaMogucihPorudzbina);
+		
+		return moPri;
 	}
 	
 	

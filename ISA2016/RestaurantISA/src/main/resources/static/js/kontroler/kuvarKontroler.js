@@ -41,7 +41,6 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStr
 			}
 			
 			// za izmenu lozinke
-			
 			$scope.izmeniLozinku = function (){
 				if($scope.novaLozinka == $scope.novaLozinkaPotvrda){
 					var gost = {
@@ -61,6 +60,7 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStr
 				}
 				
 			}
+			//TODO: Obrisati funkcije koje su visak iz sanker kontrolera i servisa
 			
 			// UCITAVANJE PORUDZBINA
 			$scope.porudzbine = [];
@@ -72,6 +72,14 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStr
 					$scope.setTab(0);
 				}
 				
+			}).error(function (data){
+				alert("Neuspelo ucitavanje porudzbina");
+			});
+			
+			// UCITAVANJE KLAS PORUDZBINA
+			$scope.klasifikovanePorudzbine = [];
+			izmeniKuvarServis.ucitajPorudzbineKlasifikovane($scope.ulogovanKuvar).success(function(data) {
+				$scope.klasifikovanePorudzbine = data;	
 			}).error(function (data){
 				alert("Neuspelo ucitavanje porudzbina");
 			});
@@ -96,6 +104,26 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStr
 				});
 			}
 			
+			// Kliknuce na detalji moguce
+			$scope.jelaKliknuteMogucePorudzbine = [];
+			$scope.kliknuoNaDetaljiMoguce = function (porudzbina){
+				var porKur = {
+					porudzbina: porudzbina,
+					kuvar: $scope.ulogovanKuvar
+				}
+				
+				izmeniKuvarServis.ucitajJelaPorudzbine(porKur).success(function(data){
+					$scope.picaKliknuteMogucePorudzbine = data;
+					if ($scope.showMoguce == porudzbina.id)
+						$scope.showMoguce = -1;
+					else
+						$scope.showMoguce = porudzbina.id;
+					
+				}).error(function (data){
+					alert("Neuspelo ucitavanje detalja");
+				});
+			}
+			
 			/// Kliknuo prihvati
 			$scope.prihvati = function (porudzbina){
 				var sanKuv = {
@@ -103,11 +131,10 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStr
 						porudzbina: porudzbina	
 				}
 				izmeniKuvarServis.prihvatiPorudzbinu(sanKuv).success(function(data){
-					$scope.porudzbine = data;
+					$scope.klasifikovanePorudzbine = data;	
 				}).error(function(data){
 					alert("Nemoguce preuzeti ponudu.");
 				});
-
 			}
 			
 			$scope.zavrsi = function (porudzbina){
@@ -116,7 +143,7 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStr
 						porudzbina: porudzbina	
 				}
 				izmeniKuvarServis.zavrsiPorudzbinu(sanKuv).success(function(data){
-					$scope.porudzbine = data;
+					$scope.klasifikovanePorudzbine = data;	
 				}).error(function(data){
 					alert("Nemoguce zavrsiti porudzbinu");
 				});
