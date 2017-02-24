@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 import com.isa.model.Jelo;
 import com.isa.model.JeloUPorudzbini;
@@ -47,9 +48,8 @@ public interface KonobarServis {
 
 	Page<PiceUPorudzbini> izlistajPicaPorudzbine(Porudzbina porudzbina, Pageable pageable);
 
+	Page<JeloUPorudzbini> izlistajJelaPorudzbineIJela(Porudzbina porudzbina, Jelo jelo, Pageable pageable);
 
+	Page<PiceUPorudzbini> izlistajPicaPorudzbineIPica(Porudzbina porudzbina, Pice pice, Pageable pageable);
 
-
-    
-    
 }

@@ -27,22 +27,23 @@
 			<div ng-show="isSet(2)">
 				<h2>Porudzbine</h2>
 				<div>
-					<h3>Nova porudzbina</h3>
+					<h3 ng-show = "izmena == false">Nova porudzbina</h3>
+					<h3 ng-show = "izmena == true">Izmeni porudzbinu</h3>
 					<div>
 						<table>
-							<tr>
+							<tr ng-show = "smeDaDodaJela === true">
 								<td>Odaberite jelo</td>
 								<td><select ng-model="jelo" ng-options="x.naziv for x in jela"></select></td>
-								<td><button ng-click="dodajJelo()">Dodaj jelo</button></td>
+								<td><button ng-click="dodajJelo(jelo)">Dodaj jelo</button></td>
 							<tr>
 						</table>
 					</div>
 					<div>						
 						<table>
-							<tr>
+							<tr ng-show = "smeDaDodaPica == true">
 								<td>Odaberite pice</td>
 								<td><select ng-model="pice" ng-options="x.naziv for x in pica"></select></td>
-								<td><button ng-click="dodajPice()">Dodaj pice</button></td>
+								<td><button ng-click="dodajPice(pice)">Dodaj pice</button></td>
 							<tr>
 						</table>
 					</div>
@@ -67,7 +68,7 @@
 							  	</tr>
 							</table>
 						</div>							
-						<div>
+						<div ng-show = "izmena != true">
 							<table>
 								<tr>
 									<td>Odaberite sto</td>
@@ -76,7 +77,13 @@
 							</table>
 						</div>
 					</div>
-					<button ng-click="dodajPorudzbinu()">Dodaj novu porudzbinu</button>
+					<button ng-show = "izmena != true" ng-click="dodajPorudzbinu()">Dodaj novu porudzbinu</button>
+					<table>
+						<tr>
+							<td><button ng-show = "izmena == true" ng-click="dodajPorudzbinuIzmena()">Potvrdi izmene</button><td>
+							<td><button ng-show = "izmena == true" ng-click="vratiNaDodavanje()">Dodaj novu porudzbinu</button><td>
+						</tr>
+					</table>
 				</div>
 
 				<div>
@@ -88,7 +95,7 @@
 								<td>Vreme : {{item.vremePrimanja}}</td>
 								<td>Oznaka stola : {{item.sto.oznaka}}</td>
 								<td><button ng-click = "kliknuoNaDetalji(item)">Detalji</td>
-								<td><button ng-click = "izmeni(item)">Izmeni</td>
+								<td ng-show = "!item.spremnaPica || !item.spremnoJednoJelo"><button ng-click = "izmeni(item)">Izmeni</td>
 								<td ng-show = "item.spremnaPica && item.spremnaJela"><button ng-click = "zavrsi(item)">Zavrsi</td>
 								<td ng-show = "item.spremnaPica && item.spremnaJela"><img src="../images/spremna.png" height="20" width="20"></td>
 							</tr>

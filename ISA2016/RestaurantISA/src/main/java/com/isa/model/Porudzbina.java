@@ -45,6 +45,10 @@ public class Porudzbina  {
 	@Column(name = "spremna_jela")
 	private boolean spremnaJela; 
 	
+	@Column(name = "spremno_bar_jedno_jelo")
+	private boolean spremnoJednoJelo; 
+	
+	
 	@Column(name = "spremna_pica")
 	private boolean spremnaPica; 
 	
@@ -126,5 +130,13 @@ public class Porudzbina  {
 	public void setKonobar(Konobar konobar) {
 		this.konobar = konobar;
 	}
+	
+	public void setSpremnoJednoJelo(boolean spremnoJednoJelo) {
+		this.spremnoJednoJelo = spremnoJednoJelo;
+	}
+	public boolean isSpremnoJednoJelo() {
+		return spremnoJednoJelo;
+	}
+	
 	
 }

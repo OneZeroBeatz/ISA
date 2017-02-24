@@ -25,6 +25,8 @@ import com.isa.model.Porudzbina;
 import com.isa.model.Restoran;
 import com.isa.model.Sto;
 import com.isa.model.korisnici.Konobar;
+import com.isa.pomocni.IzmeniPorudzbinuIzmeni;
+import com.isa.pomocni.IzmeniPorudzbinuPrikaz;
 import com.isa.pomocni.JelaPica;
 import com.isa.services.KonobarServis;
 import com.isa.services.RestoranServis;
@@ -127,7 +129,449 @@ public class KonobarKontroler {
 		return new ResponseEntity<List<Porudzbina>>(porudzbine.getContent(), HttpStatus.OK);
 	}
 	
-	
+	@RequestMapping(value = "/potvrdiIzmene", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Porudzbina>> potvrdiIzmene(@RequestBody IzmeniPorudzbinuIzmeni parametar)  {
+		System.out.println("sme da brise jela = " + parametar.isSmeDaBriseJela());
+		System.out.println("sme da brise pica = " + parametar.isSmeDaBrisePica());
+		System.out.println("sme da doda jela = " + parametar.isSmeDaDodaJela());
+		System.out.println("sme da doda pica = " + parametar.isSmeDaDodaPica());
+		// Slucaj kad sve sme
+		if(parametar.isSmeDaBriseJela() && parametar.isSmeDaBrisePica() &&
+				parametar.isSmeDaDodaJela() && parametar.isSmeDaDodaPica()){
+			
+			ArrayList<Jelo> jelaL = new ArrayList<Jelo>();
+			ArrayList<Pice> picaL = new ArrayList<Pice>();
+			
+			for (int i = 0; i< parametar.getSvaJela().length; i++){
+				jelaL.add(konobarServis.pronadjiJelo(parametar.getSvaJela()[i].getJel()));
+			}
+
+			for (int i = 0; i< parametar.getSvaPica().length; i++){
+				picaL.add(konobarServis.pronadjiPice(parametar.getSvaPica()[i].getPic()));
+			}
+			
+			if (jelaL.isEmpty()){
+				parametar.getPorudzbina().setSpremnaJela(true);			
+			} else {
+				parametar.getPorudzbina().setSpremnaJela(false);
+			}
+
+			if(picaL.isEmpty()){
+				parametar.getPorudzbina().setSpremnaPica(true);		
+			} else {
+				parametar.getPorudzbina().setSpremnaPica(false);		
+			}
+			
+			// BRISEM STARA
+			List<JeloUPorudzbini> jela = konobarServis.izlistajJelaPorudzbine(parametar.getPorudzbina(), new PageRequest(0, 10)).getContent();
+			List<PiceUPorudzbini> pica = konobarServis.izlistajPicaPorudzbine(parametar.getPorudzbina(), new PageRequest(0, 10)).getContent();		
+			
+			for (int i = 0; i< jela.size(); i++){
+				System.out.println("usao da obrise jelo jednom");
+				restoranServis.izbrisiJeloUPorudzbini(jela.get(i).getId());
+			}
+			for (int i = 0; i< pica.size(); i++){
+				System.out.println("usao da obrise pice jednom");
+				restoranServis.izbrisiPiceUPorudzbini(pica.get(i).getId());
+			}
+			
+			// KREIRANJE SVIH JELA
+			Set<Jelo> uniqueSetJela = new HashSet<Jelo>(jelaL);
+			for (Jelo temp : uniqueSetJela) {
+				JeloUPorudzbini jeloUPorudzbini = new JeloUPorudzbini();
+				jeloUPorudzbini.setKolicina(Collections.frequency(jelaL, temp));
+				jeloUPorudzbini.setJelo(temp);
+				jeloUPorudzbini.setPorudzbina(parametar.getPorudzbina());
+				
+				List<JeloUPorudzbini> svaJelaUP = konobarServis.izlistajJelaPorudzbine(parametar.getPorudzbina(), new PageRequest(0,10)).getContent();
+
+				for (int i = 0; i < svaJelaUP.size(); i++){
+					if(svaJelaUP.get(i).getJelo().getTipKuvara().equals(jeloUPorudzbini.getJelo().getTipKuvara())){
+						jeloUPorudzbini.setKuvar(svaJelaUP.get(i).getKuvar());
+					}
+				}
+
+				parametar.getPorudzbina().setSpremnaJela(false);
+				System.out.println("sacuvao jelo puta " + jeloUPorudzbini.getKolicina());
+				konobarServis.saveJeloUPorudzbini(jeloUPorudzbini);	
+				
+			}
+			
+			// KREIRANJE SVIH PICA U PORUDZBINI
+			Set<Pice> uniqueSetPica = new HashSet<Pice>(picaL);
+			for (Pice temp : uniqueSetPica) {
+				PiceUPorudzbini piceUPorudzbini = new PiceUPorudzbini();
+				piceUPorudzbini.setKolicina(Collections.frequency(picaL, temp));
+				piceUPorudzbini.setPice(temp);
+				piceUPorudzbini.setPorudzbina(parametar.getPorudzbina());
+
+				System.out.println("sacuvao pice puta " + piceUPorudzbini.getKolicina());
+				konobarServis.savePiceUPorudzbini(piceUPorudzbini);
+				parametar.getPorudzbina().setSpremnaPica(false);
+				
+			}
+			// SLUCAJ KAD SME SAMO DA DODA JELA I BRISE PICa
+		} else if(!parametar.isSmeDaBriseJela() && parametar.isSmeDaBrisePica() &&
+				parametar.isSmeDaDodaJela() && parametar.isSmeDaDodaPica()){
+			
+			ArrayList<Jelo> jelaL = new ArrayList<Jelo>();
+			ArrayList<Pice> picaL = new ArrayList<Pice>();
+			
+			for (int i = 0; i< parametar.getSvaJela().length; i++){
+				jelaL.add(konobarServis.pronadjiJelo(parametar.getSvaJela()[i].getJel()));
+			}
+
+			for (int i = 0; i< parametar.getSvaPica().length; i++){
+				picaL.add(konobarServis.pronadjiPice(parametar.getSvaPica()[i].getPic()));
+			}
+			
+			if(picaL.isEmpty()){
+				parametar.getPorudzbina().setSpremnaPica(true);		
+			} else {
+				parametar.getPorudzbina().setSpremnaPica(false);		
+			}
+			
+			// BRISEM STARA
+			List<PiceUPorudzbini> pica = konobarServis.izlistajPicaPorudzbine(parametar.getPorudzbina(), new PageRequest(0, 10)).getContent();
+					
+			for (int i = 0; i< pica.size(); i++){
+				System.out.println("usao da obrise pice jednom");
+				restoranServis.izbrisiPiceUPorudzbini(pica.get(i).getId());
+			}
+			
+			// KREIRANJE SVIH JELA
+			Set<Jelo> uniqueSetJela = new HashSet<Jelo>(jelaL);
+			for (Jelo temp : uniqueSetJela) {
+				JeloUPorudzbini jeloUPorudzbini = new JeloUPorudzbini();
+				jeloUPorudzbini.setKolicina(Collections.frequency(jelaL, temp));
+				jeloUPorudzbini.setJelo(temp);
+				jeloUPorudzbini.setPorudzbina(parametar.getPorudzbina());
+			
+				// TODO: Signalizacija kuvaru koji je prihvatio da je doslo do izmene
+
+				List<JeloUPorudzbini> svaJelaUP = konobarServis.izlistajJelaPorudzbine(parametar.getPorudzbina(), new PageRequest(0,10)).getContent();
+
+				for (int i = 0; i < svaJelaUP.size(); i++){
+					if(svaJelaUP.get(i).getJelo().getTipKuvara().equals(jeloUPorudzbini.getJelo().getTipKuvara())){
+						jeloUPorudzbini.setKuvar(svaJelaUP.get(i).getKuvar());
+					}
+				}
+
+				List<JeloUPorudzbini> jelaUP = konobarServis.izlistajJelaPorudzbineIJela(parametar.getPorudzbina(),jeloUPorudzbini.getJelo(), new PageRequest(0,10)).getContent();
+				if(!jelaUP.isEmpty()){
+					jelaUP.get(0).setKolicina(jelaUP.get(0).getKolicina() + jeloUPorudzbini.getKolicina());
+					konobarServis.saveJeloUPorudzbini(jelaUP.get(0));	
+				} else {
+					konobarServis.saveJeloUPorudzbini(jeloUPorudzbini);	
+				}
+				parametar.getPorudzbina().setSpremnaJela(false);
+				
+			}
+			
+			// KREIRANJE SVIH PICA U PORUDZBINI
+			Set<Pice> uniqueSetPica = new HashSet<Pice>(picaL);
+			for (Pice temp : uniqueSetPica) {
+				PiceUPorudzbini piceUPorudzbini = new PiceUPorudzbini();
+				piceUPorudzbini.setKolicina(Collections.frequency(picaL, temp));
+				piceUPorudzbini.setPice(temp);
+				piceUPorudzbini.setPorudzbina(parametar.getPorudzbina());
+
+				System.out.println("sacuvao pice puta " + piceUPorudzbini.getKolicina());
+				konobarServis.savePiceUPorudzbini(piceUPorudzbini);
+				parametar.getPorudzbina().setSpremnaPica(false);
+				
+			}	
+			// SLUCAJ KAD SME SAMO DA DODA PICA I BRISE JELA
+		} else if(parametar.isSmeDaBriseJela() && !parametar.isSmeDaBrisePica() &&
+				parametar.isSmeDaDodaJela() && parametar.isSmeDaDodaPica()){
+			
+			ArrayList<Jelo> jelaL = new ArrayList<Jelo>();
+			ArrayList<Pice> picaL = new ArrayList<Pice>();
+			
+			for (int i = 0; i< parametar.getSvaJela().length; i++){
+				jelaL.add(konobarServis.pronadjiJelo(parametar.getSvaJela()[i].getJel()));
+			}
+
+			for (int i = 0; i< parametar.getSvaPica().length; i++){
+				picaL.add(konobarServis.pronadjiPice(parametar.getSvaPica()[i].getPic()));
+			}
+			
+			if (jelaL.isEmpty()){
+				parametar.getPorudzbina().setSpremnaJela(true);			
+			} else {
+				parametar.getPorudzbina().setSpremnaJela(false);
+			}
+			
+			// BRISEM STARA
+			List<JeloUPorudzbini> jela = konobarServis.izlistajJelaPorudzbine(parametar.getPorudzbina(), new PageRequest(0, 10)).getContent();
+
+			for (int i = 0; i< jela.size(); i++){
+				System.out.println("usao da obrise jelo jednom");
+				restoranServis.izbrisiJeloUPorudzbini(jela.get(i).getId());
+			}
+			
+			// KREIRANJE SVIH JELA
+			Set<Jelo> uniqueSetJela = new HashSet<Jelo>(jelaL);
+			for (Jelo temp : uniqueSetJela) {
+				JeloUPorudzbini jeloUPorudzbini = new JeloUPorudzbini();
+				jeloUPorudzbini.setKolicina(Collections.frequency(jelaL, temp));
+				jeloUPorudzbini.setJelo(temp);
+				jeloUPorudzbini.setPorudzbina(parametar.getPorudzbina());
+				
+				List<JeloUPorudzbini> svaJelaUP = konobarServis.izlistajJelaPorudzbine(parametar.getPorudzbina(), new PageRequest(0,10)).getContent();
+
+				for (int i = 0; i < svaJelaUP.size(); i++){
+					if(svaJelaUP.get(i).getJelo().getTipKuvara().equals(jeloUPorudzbini.getJelo().getTipKuvara())){
+						jeloUPorudzbini.setKuvar(svaJelaUP.get(i).getKuvar());
+					}
+				}
+				
+				System.out.println("sacuvao jelo puta " + jeloUPorudzbini.getKolicina());
+				konobarServis.saveJeloUPorudzbini(jeloUPorudzbini);	
+				parametar.getPorudzbina().setSpremnaJela(false);
+				
+			}
+			
+			// KREIRANJE SVIH PICA U PORUDZBINI
+			Set<Pice> uniqueSetPica = new HashSet<Pice>(picaL);
+			for (Pice temp : uniqueSetPica) {
+				PiceUPorudzbini piceUPorudzbini = new PiceUPorudzbini();
+				piceUPorudzbini.setKolicina(Collections.frequency(picaL, temp));
+				piceUPorudzbini.setPice(temp);
+				piceUPorudzbini.setPorudzbina(parametar.getPorudzbina());
+				
+				// TODO: DA SIGNALIZIRAM SANKERU DA JE DOSLO DO PROMENE, AKO MOGU DA INKREMENTUJEM AKO VEC IMA
+				
+				List<PiceUPorudzbini> picaUP = konobarServis.izlistajPicaPorudzbineIPica(parametar.getPorudzbina(),piceUPorudzbini.getPice(), new PageRequest(0,10)).getContent();
+				if(!picaUP.isEmpty()){
+					picaUP.get(0).setKolicina(picaUP.get(0).getKolicina() + piceUPorudzbini.getKolicina());
+					konobarServis.savePiceUPorudzbini(picaUP.get(0));	
+				} else {
+					konobarServis.savePiceUPorudzbini(piceUPorudzbini);	
+				}
+				parametar.getPorudzbina().setSpremnaPica(false);
+			}
+			// SLUCAJ DA NE SME SAMO DA DODA JELA I PICA
+		} else if(!parametar.isSmeDaBriseJela() && !parametar.isSmeDaBrisePica() &&
+				parametar.isSmeDaDodaJela() && parametar.isSmeDaDodaPica()){
+
+			ArrayList<Jelo> jelaL = new ArrayList<Jelo>();
+			ArrayList<Pice> picaL = new ArrayList<Pice>();
+			
+			for (int i = 0; i< parametar.getSvaJela().length; i++){
+				jelaL.add(konobarServis.pronadjiJelo(parametar.getSvaJela()[i].getJel()));
+			}
+
+			for (int i = 0; i< parametar.getSvaPica().length; i++){
+				picaL.add(konobarServis.pronadjiPice(parametar.getSvaPica()[i].getPic()));
+			}
+			
+			// KREIRANJE SVIH JELA
+			Set<Jelo> uniqueSetJela = new HashSet<Jelo>(jelaL);
+			for (Jelo temp : uniqueSetJela) {
+				JeloUPorudzbini jeloUPorudzbini = new JeloUPorudzbini();
+				jeloUPorudzbini.setKolicina(Collections.frequency(jelaL, temp));
+				jeloUPorudzbini.setJelo(temp);
+				jeloUPorudzbini.setPorudzbina(parametar.getPorudzbina());
+				
+				List<JeloUPorudzbini> svaJelaUP = konobarServis.izlistajJelaPorudzbine(parametar.getPorudzbina(), new PageRequest(0,10)).getContent();
+
+				for (int i = 0; i < svaJelaUP.size(); i++){
+					if(svaJelaUP.get(i).getJelo().getTipKuvara().equals(jeloUPorudzbini.getJelo().getTipKuvara())){
+						jeloUPorudzbini.setKuvar(svaJelaUP.get(i).getKuvar());
+					}
+				}
+
+				List<JeloUPorudzbini> jelaUP = konobarServis.izlistajJelaPorudzbineIJela(parametar.getPorudzbina(),jeloUPorudzbini.getJelo(), new PageRequest(0,10)).getContent();
+				if(!jelaUP.isEmpty()){
+					jelaUP.get(0).setKolicina(jelaUP.get(0).getKolicina() + jeloUPorudzbini.getKolicina());
+					konobarServis.saveJeloUPorudzbini(jelaUP.get(0));	
+				} else {
+					konobarServis.saveJeloUPorudzbini(jeloUPorudzbini);	
+				}	
+				parametar.getPorudzbina().setSpremnaJela(false);
+				
+				
+			}
+			
+			// KREIRANJE SVIH PICA U PORUDZBINI
+			Set<Pice> uniqueSetPica = new HashSet<Pice>(picaL);
+			for (Pice temp : uniqueSetPica) {
+				PiceUPorudzbini piceUPorudzbini = new PiceUPorudzbini();
+				piceUPorudzbini.setKolicina(Collections.frequency(picaL, temp));
+				piceUPorudzbini.setPice(temp);
+				piceUPorudzbini.setPorudzbina(parametar.getPorudzbina());
+				
+				// TODO: DA SIGNALIZIRAM SANKERU DA JE DOSLO DO PROMENE, AKO MOGU DA INKREMENTUJEM AKO VEC IMA
+				
+				List<PiceUPorudzbini> picaUP = konobarServis.izlistajPicaPorudzbineIPica(parametar.getPorudzbina(),piceUPorudzbini.getPice(), new PageRequest(0,10)).getContent();
+				if(!picaUP.isEmpty()){
+					picaUP.get(0).setKolicina(picaUP.get(0).getKolicina() + piceUPorudzbini.getKolicina());
+					konobarServis.savePiceUPorudzbini(picaUP.get(0));	
+				} else {
+					konobarServis.savePiceUPorudzbini(piceUPorudzbini);	
+				}
+				parametar.getPorudzbina().setSpremnaPica(false);
+			}
+			// SMEM SAMO DA DODAM PICA
+		}else if(!parametar.isSmeDaBriseJela() && !parametar.isSmeDaBrisePica() &&
+				!parametar.isSmeDaDodaJela() && parametar.isSmeDaDodaPica()){
+
+			ArrayList<Pice> picaL = new ArrayList<Pice>();
+
+
+			for (int i = 0; i< parametar.getSvaPica().length; i++){
+				picaL.add(konobarServis.pronadjiPice(parametar.getSvaPica()[i].getPic()));
+			}
+			
+			// KREIRANJE SVIH PICA U PORUDZBINI
+			Set<Pice> uniqueSetPica = new HashSet<Pice>(picaL);
+			for (Pice temp : uniqueSetPica) {
+				PiceUPorudzbini piceUPorudzbini = new PiceUPorudzbini();
+				piceUPorudzbini.setKolicina(Collections.frequency(picaL, temp));
+				piceUPorudzbini.setPice(temp);
+				piceUPorudzbini.setPorudzbina(parametar.getPorudzbina());
+				
+				// TODO: DA SIGNALIZIRAM SANKERU DA JE DOSLO DO PROMENE, AKO MOGU DA INKREMENTUJEM AKO VEC IMA
+				
+				List<PiceUPorudzbini> picaUP = konobarServis.izlistajPicaPorudzbineIPica(parametar.getPorudzbina(),piceUPorudzbini.getPice(), new PageRequest(0,10)).getContent();
+				if(!picaUP.isEmpty()){
+					picaUP.get(0).setKolicina(picaUP.get(0).getKolicina() + piceUPorudzbini.getKolicina());
+					konobarServis.savePiceUPorudzbini(picaUP.get(0));	
+				} else {
+					konobarServis.savePiceUPorudzbini(piceUPorudzbini);	
+				}
+				
+				parametar.getPorudzbina().setSpremnaPica(false);
+			}
+			// SMEM SAMO DA DODAM JELA
+		} else if(!parametar.isSmeDaBriseJela() && !parametar.isSmeDaBrisePica() &&
+				parametar.isSmeDaDodaJela() && !parametar.isSmeDaDodaPica()){
+
+			ArrayList<Jelo> jelaL = new ArrayList<Jelo>();
+			
+			for (int i = 0; i< parametar.getSvaJela().length; i++){
+				jelaL.add(konobarServis.pronadjiJelo(parametar.getSvaJela()[i].getJel()));
+			}
+			
+			// KREIRANJE SVIH JELA
+			Set<Jelo> uniqueSetJela = new HashSet<Jelo>(jelaL);
+			for (Jelo temp : uniqueSetJela) {
+				JeloUPorudzbini jeloUPorudzbini = new JeloUPorudzbini();
+				jeloUPorudzbini.setKolicina(Collections.frequency(jelaL, temp));
+				jeloUPorudzbini.setJelo(temp);
+				jeloUPorudzbini.setPorudzbina(parametar.getPorudzbina());
+				
+				List<JeloUPorudzbini> svaJelaUP = konobarServis.izlistajJelaPorudzbine(parametar.getPorudzbina(), new PageRequest(0,10)).getContent();
+
+				for (int i = 0; i < svaJelaUP.size(); i++){
+					if(svaJelaUP.get(i).getJelo().getTipKuvara().equals(jeloUPorudzbini.getJelo().getTipKuvara())){
+						jeloUPorudzbini.setKuvar(svaJelaUP.get(i).getKuvar());
+					}
+				}
+
+				List<JeloUPorudzbini> jelaUP = konobarServis.izlistajJelaPorudzbineIJela(parametar.getPorudzbina(),jeloUPorudzbini.getJelo(), new PageRequest(0,10)).getContent();
+				if(!jelaUP.isEmpty()){
+					jelaUP.get(0).setKolicina(jelaUP.get(0).getKolicina() + jeloUPorudzbini.getKolicina());
+					konobarServis.saveJeloUPorudzbini(jelaUP.get(0));	
+				} else {
+					konobarServis.saveJeloUPorudzbini(jeloUPorudzbini);	
+				}
+				parametar.getPorudzbina().setSpremnaJela(false);
+				
+				
+			}	
+			// SMEM SAMO DA BRISEM I DODAJEM PICA
+		} else if(!parametar.isSmeDaBriseJela() && parametar.isSmeDaBrisePica() &&
+				!parametar.isSmeDaDodaJela() && parametar.isSmeDaDodaPica()){
+			
+			ArrayList<Pice> picaL = new ArrayList<Pice>();
+
+			for (int i = 0; i< parametar.getSvaPica().length; i++){
+				picaL.add(konobarServis.pronadjiPice(parametar.getSvaPica()[i].getPic()));
+			}
+
+			if(picaL.isEmpty()){
+				parametar.getPorudzbina().setSpremnaPica(true);		
+			} else {
+				parametar.getPorudzbina().setSpremnaPica(false);		
+			}
+			
+			// BRISEM STARA
+			List<PiceUPorudzbini> pica = konobarServis.izlistajPicaPorudzbine(parametar.getPorudzbina(), new PageRequest(0, 10)).getContent();
+				
+			for (int i = 0; i< pica.size(); i++){
+				System.out.println("usao da obrise pice jednom");
+				restoranServis.izbrisiPiceUPorudzbini(pica.get(i).getId());
+			}
+			
+			// KREIRANJE SVIH PICA U PORUDZBINI
+			Set<Pice> uniqueSetPica = new HashSet<Pice>(picaL);
+			for (Pice temp : uniqueSetPica) {
+				PiceUPorudzbini piceUPorudzbini = new PiceUPorudzbini();
+				piceUPorudzbini.setKolicina(Collections.frequency(picaL, temp));
+				piceUPorudzbini.setPice(temp);
+				piceUPorudzbini.setPorudzbina(parametar.getPorudzbina());
+
+				System.out.println("sacuvao pice puta " + piceUPorudzbini.getKolicina());
+				konobarServis.savePiceUPorudzbini(piceUPorudzbini);
+				parametar.getPorudzbina().setSpremnaPica(false);
+			}
+			// SLUCAJ KAD SME SAMO DA BRISE I DODAJE JELA
+		} else if(parametar.isSmeDaBriseJela() && !parametar.isSmeDaBrisePica() &&
+				parametar.isSmeDaDodaJela() && !parametar.isSmeDaDodaPica()){
+			
+			ArrayList<Jelo> jelaL = new ArrayList<Jelo>();
+			
+			for (int i = 0; i< parametar.getSvaJela().length; i++){
+				jelaL.add(konobarServis.pronadjiJelo(parametar.getSvaJela()[i].getJel()));
+			}
+
+			if (jelaL.isEmpty()){
+				parametar.getPorudzbina().setSpremnaJela(true);			
+			} else {
+				parametar.getPorudzbina().setSpremnaJela(false);
+			}
+			
+			// BRISEM STARA
+			List<JeloUPorudzbini> jela = konobarServis.izlistajJelaPorudzbine(parametar.getPorudzbina(), new PageRequest(0, 10)).getContent();
+					
+			for (int i = 0; i< jela.size(); i++){
+				System.out.println("usao da obrise jelo jednom");
+				restoranServis.izbrisiJeloUPorudzbini(jela.get(i).getId());
+			}
+			// KREIRANJE SVIH JELA
+			Set<Jelo> uniqueSetJela = new HashSet<Jelo>(jelaL);
+			for (Jelo temp : uniqueSetJela) {
+				JeloUPorudzbini jeloUPorudzbini = new JeloUPorudzbini();
+				jeloUPorudzbini.setKolicina(Collections.frequency(jelaL, temp));
+				jeloUPorudzbini.setJelo(temp);
+				jeloUPorudzbini.setPorudzbina(parametar.getPorudzbina());
+				
+				List<JeloUPorudzbini> svaJelaUP = konobarServis.izlistajJelaPorudzbine(parametar.getPorudzbina(), new PageRequest(0,10)).getContent();
+
+				parametar.getPorudzbina().setSpremnaJela(false);
+				
+				for (int i = 0; i < svaJelaUP.size(); i++){
+					if(svaJelaUP.get(i).getJelo().getTipKuvara().equals(jeloUPorudzbini.getJelo().getTipKuvara())){
+						jeloUPorudzbini.setKuvar(svaJelaUP.get(i).getKuvar());
+					}
+				}
+
+				System.out.println("sacuvao jelo puta " + jeloUPorudzbini.getKolicina());
+				konobarServis.saveJeloUPorudzbini(jeloUPorudzbini);	
+				parametar.getPorudzbina().setSpremnaJela(false);
+				
+			}
+			// SLUCAJ ELSE - NE SME NISTA
+		} else {
+			Page<Porudzbina> porudzbine = konobarServis.izlistajPorudzbine((Konobar)konobarServis.findOne(parametar.getPorudzbina().getKonobar().getId()), new PageRequest(0, 10));
+			return new ResponseEntity<List<Porudzbina>> (HttpStatus.NOT_MODIFIED);	
+		}
+		konobarServis.savePorudzbina(parametar.getPorudzbina());
+		Page<Porudzbina> porudzbine = konobarServis.izlistajPorudzbine((Konobar)konobarServis.findOne(parametar.getPorudzbina().getKonobar().getId()), new PageRequest(0, 10));
+		return new ResponseEntity<List<Porudzbina>>(porudzbine.getContent(), HttpStatus.OK);
+	}
 	
 	@RequestMapping(value = "/izlistajStolove", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Sto>> ucitajStoloveKonobara(@RequestBody Konobar konobar) {
@@ -157,6 +601,61 @@ public class KonobarKontroler {
 	public ResponseEntity<List<PiceUPorudzbini>> ucitajPicaPorudzbine(@RequestBody Porudzbina porudzbina){
 		Page<PiceUPorudzbini> picaUPorudzbini = konobarServis.izlistajPicaPorudzbine(porudzbina, new PageRequest(0, 10));
 		return new ResponseEntity<List<PiceUPorudzbini>> (picaUPorudzbini.getContent(), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/izmeniPorudzbinu", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<IzmeniPorudzbinuPrikaz> izmeniPorudzbinu(@RequestBody Porudzbina porudzbina){
+		IzmeniPorudzbinuPrikaz retVal = new IzmeniPorudzbinuPrikaz();
+		
+		List<JeloUPorudzbini> listaNjegovih = new ArrayList<JeloUPorudzbini>();
+		
+		List<PiceUPorudzbini> svaPica = konobarServis.izlistajPicaPorudzbine(porudzbina, new PageRequest(0, 10)).getContent();
+		List<JeloUPorudzbini> svaJela = konobarServis.izlistajJelaPorudzbine(porudzbina, new PageRequest(0, 10)).getContent();
+		
+		ArrayList<PiceUPorudzbini> svaPicaBack = new ArrayList<PiceUPorudzbini>();
+		ArrayList<JeloUPorudzbini> svaJelaBack = new ArrayList<JeloUPorudzbini>();
+		
+		boolean smePicaDaBrise = true;
+		boolean smeJelaDaBrise = true;
+
+		boolean smePicaDaDoda = true;
+		boolean smeJelaDaDoda = true;
+
+		
+		if(konobarServis.pronadjiPorudzbinu(porudzbina.getId()).getSanker() != null){
+			smePicaDaBrise = false;
+			if(konobarServis.pronadjiPorudzbinu(porudzbina.getId()).isSpremnaPica()){
+				smePicaDaDoda = false;
+			}
+		} 
+
+		for (int i = 0; i<svaJela.size(); i++){
+			if (svaJela.get(i).getKuvar() != null){
+				smeJelaDaBrise = false;
+				if(svaJela.get(i).isSpremno() == true){
+					smeJelaDaDoda = false;
+				}
+			}
+		}
+
+		for (int i = 0; i < svaJela.size(); i++){
+			svaJelaBack.add(svaJela.get(i));
+		}
+		
+		for (int i = 0; i < svaPica.size(); i++){
+			svaPicaBack.add(svaPica.get(i));
+		}
+
+		retVal.setDodataJela(svaJelaBack);
+		retVal.setDodataPica(svaPicaBack);
+		
+		retVal.setSmeDaBriseJela(smeJelaDaBrise);
+		retVal.setSmeDaBrisePica(smePicaDaBrise);
+
+		retVal.setSmeDaDodaJela(smeJelaDaDoda);
+		retVal.setSmeDaDodaPica(smePicaDaDoda);
+		
+		return new ResponseEntity<IzmeniPorudzbinuPrikaz> (retVal, HttpStatus.OK);
 	}
 	
 }

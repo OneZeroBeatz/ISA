@@ -66,6 +66,15 @@ public class JeloUPorudzbini {
 	public void setSpremno(boolean spremno) {
 		this.spremno = spremno;
 	}
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 
 
 }

@@ -121,6 +121,7 @@ public class KuvarKontroler {
 			// TODO: Za slucaj da je izmena sam sklonio if, videti da li radi
 			//if (listaNjegovih.get(i).getKuvar().getId() == poKu.getKuvar().getId()){
 				listaNjegovih.get(i).setSpremno(true);
+				porudzbina.setSpremnoJednoJelo(true);
 				kuvarServis.sacuvajJeloUPorudzbini(listaNjegovih.get(i));			
 			//}
 		}

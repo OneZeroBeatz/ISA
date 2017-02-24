@@ -35,7 +35,11 @@ public interface RestoranServis {
 	void izbrisiJelo(Long id);
 
 	void izbrisiPice(Long id);
-
+	
+	void izbrisiPiceUPorudzbini(Long id);
+	
+	void izbrisiJeloUPorudzbini(Long id);
+	
 	Page<Sto> kreirajStolove(Restoran restoran, ArrayList<Integer> oznake, Pageable pageable);
 
 	Sto izlistajSto(Sto sto);

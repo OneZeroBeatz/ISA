@@ -13,7 +13,9 @@ import com.isa.model.Pice;
 import com.isa.model.Restoran;
 import com.isa.model.Sto;
 import com.isa.repository.JeloSkladiste;
+import com.isa.repository.JeloUPorudzbiniSkladiste;
 import com.isa.repository.PiceSkladiste;
+import com.isa.repository.PiceUPorudzbiniSkladiste;
 import com.isa.repository.RestoranSkladiste;
 import com.isa.repository.StoSkladiste;
 
@@ -31,6 +33,12 @@ public class RestoranServisImpl implements RestoranServis{
 	
 	@Autowired
 	StoSkladiste stoSkladiste;
+
+	@Autowired
+	JeloUPorudzbiniSkladiste jeloUPorudzbiniSkladiste;
+	
+	@Autowired
+	PiceUPorudzbiniSkladiste piceUPorudzbiniSkladiste;
 	
 	@Override
 	public List<Restoran> findAll() {
@@ -105,6 +113,16 @@ public class RestoranServisImpl implements RestoranServis{
 	@Override
 	public Page<Sto> izlistajStolove(Restoran restoran, Pageable pageable) {
 		return stoSkladiste.findByRestoran(restoran, pageable);
+	}
+
+	@Override
+	public void izbrisiPiceUPorudzbini(Long id) {
+		piceUPorudzbiniSkladiste.deleteById(id);
+	}
+
+	@Override
+	public void izbrisiJeloUPorudzbini(Long id) {
+		jeloUPorudzbiniSkladiste.deleteById(id);
 	}
 
 }
