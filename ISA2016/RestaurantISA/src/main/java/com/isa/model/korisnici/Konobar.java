@@ -20,6 +20,10 @@ public class Konobar extends Korisnik{
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "konobar")
 	private Set<Porudzbina> porudzbine;
+
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "konobar")
+	private Set<Porudzbina> porudzbine1;
 	
 	public Konobar() {
 	}
@@ -27,4 +31,18 @@ public class Konobar extends Korisnik{
 	public Restoran getRestoran() {
 		return restoran;
 	}
+	public Set<Porudzbina> getPorudzbine() {
+		return porudzbine;
+	}
+	public Set<Porudzbina> getPorudzbine1() {
+		return porudzbine1;
+	}
+	
+	public void setPorudzbine(Set<Porudzbina> porudzbine) {
+		this.porudzbine = porudzbine;
+	}
+	public void setPorudzbine1(Set<Porudzbina> porudzbine1) {
+		this.porudzbine1 = porudzbine1;
+	}
+	
 }

@@ -12,6 +12,7 @@ import com.isa.model.JeloUPorudzbini;
 import com.isa.model.Pice;
 import com.isa.model.PiceUPorudzbini;
 import com.isa.model.Porudzbina;
+import com.isa.model.RacunKonobar;
 import com.isa.model.Restoran;
 import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Korisnik;
@@ -51,5 +52,7 @@ public interface KonobarServis {
 	Page<JeloUPorudzbini> izlistajJelaPorudzbineIJela(Porudzbina porudzbina, Jelo jelo, Pageable pageable);
 
 	Page<PiceUPorudzbini> izlistajPicaPorudzbineIPica(Porudzbina porudzbina, Pice pice, Pageable pageable);
+
+	void saveRacun(RacunKonobar racun);
 
 }

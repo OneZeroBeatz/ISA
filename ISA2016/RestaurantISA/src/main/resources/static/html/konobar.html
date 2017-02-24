@@ -17,6 +17,7 @@
 
 			<div ng-show="isSet(0)">
 				<h2>Kalendarski prikaz</h2>
+
 			</div>
 
 
@@ -29,6 +30,7 @@
 				<div>
 					<h3 ng-show = "izmena == false">Nova porudzbina</h3>
 					<h3 ng-show = "izmena == true">Izmeni porudzbinu</h3>
+					<h3 ng-show = "!smeDaDodaJela && !smeDaDodaPica">Ne mozete izmeniti ovu porudzbinu</h3>
 					<div>
 						<table>
 							<tr ng-show = "smeDaDodaJela === true">
@@ -48,9 +50,9 @@
 						</table>
 					</div>
 					<hr/>
-					<div>
+					<div ng-show = "dodataPica.length != 0 || dodataJela.length != 0">
 						<h3>Porudzbina</h3>
-						<div ng-show = "dodataPica.length != 0">
+						<div ng-show = "dodataPica.length != 0" >
 							<h4>Spisak pica</h4>
 							<table>
 								<tr ng-repeat="x in dodataPica">
@@ -76,11 +78,11 @@
 								</tr>
 							</table>
 						</div>
+						<button ng-show = "izmena != true" ng-click="dodajPorudzbinu()">Dodaj novu porudzbinu</button>
 					</div>
-					<button ng-show = "izmena != true" ng-click="dodajPorudzbinu()">Dodaj novu porudzbinu</button>
-					<table>
+					<table >
 						<tr>
-							<td><button ng-show = "izmena == true" ng-click="dodajPorudzbinuIzmena()">Potvrdi izmene</button><td>
+							<td ng-show = "smeDaDodaJela || smeDaDodaPica"><button ng-show = "izmena == true" ng-click="dodajPorudzbinuIzmena()">Potvrdi izmene</button><td>
 							<td><button ng-show = "izmena == true" ng-click="vratiNaDodavanje()">Dodaj novu porudzbinu</button><td>
 						</tr>
 					</table>
@@ -88,16 +90,24 @@
 
 				<div>
 					<div ng-show = "porudzbine.length != 0">
-					<hr/>
+					<hr ng-show = "smeDaDodaJela || smeDaDodaPica"/>
 					<h2>Lista porudzbina</h2>
 						<table ng-show = "!item.spremna" ng-repeat = "item in porudzbine">
 							<tr >
 								<td>Vreme : {{item.vremePrimanja}}</td>
 								<td>Oznaka stola : {{item.sto.oznaka}}</td>
-								<td><button ng-click = "kliknuoNaDetalji(item)">Detalji</td>
-								<td ng-show = "!item.spremnaPica || !item.spremnoJednoJelo"><button ng-click = "izmeni(item)">Izmeni</td>
-								<td ng-show = "item.spremnaPica && item.spremnaJela"><button ng-click = "zavrsi(item)">Zavrsi</td>
-								<td ng-show = "item.spremnaPica && item.spremnaJela"><img src="../images/spremna.png" height="20" width="20"></td>
+								<td>
+									<button ng-click = "kliknuoNaDetalji(item)">Detalji</button>
+								</td>
+								<td>
+									<button ng-click = "izmeni(item)">Izmeni</button>
+								</td>
+								<td ng-show = "item.spremnaPica && item.spremnaJela">
+									<button ng-click = "zavrsi(item)">Zavrsi</button>
+								</td>
+								<td ng-show = "item.spremnaPica && item.spremnaJela">
+									<img src="../images/spremna.png" height="20" width="20">
+								</td>
 							</tr>
 							<tr  ng-show = "show == item.id" ng-repeat = "item1 in picaKliknutePorudzbine">
 								<td>{{item1.pice.naziv}}</td>
@@ -106,6 +116,40 @@
 							<tr  ng-show = "show == item.id" ng-repeat = "item1 in jelaKliknutePorudzbine">
 								<td>{{item1.jelo.naziv}}</td>
 								<td>{{item1.kolicina}}</td>
+							</tr>
+							
+							<tr ng-show = "racun == item.id">
+								<td>Naziv</td>
+								<td>Kolicina</td>
+								<td>Cena</td>
+								
+							</tr>
+							<tr ng-show = "racun == item.id">
+								<td colspan = 5>
+									<hr/>
+								</td>
+							</tr> 
+							<tr  ng-show = "racun == item.id" ng-repeat = "item1 in picaKliknutePorudzbine">
+								<td>{{item1.pice.naziv}}</td>
+								<td>{{item1.kolicina}}</td>
+								<td>{{item1.pice.cena * item1.kolicina}}</td>
+							</tr>
+							<tr  ng-show = "racun == item.id" ng-repeat = "item1 in jelaKliknutePorudzbine">
+								<td>{{item1.jelo.naziv}}</td>
+								<td>{{item1.kolicina}}</td>
+								<td>{{item1.jelo.cena * item1.kolicina}}</td>
+							</tr>
+							
+							<tr ng-show = "racun == item.id">
+								<td colspan = 5>
+									<hr/>
+								</td>
+							</tr>
+							
+							<tr ng-show = "racun == item.id">
+								<td colspan = 2>Ukupna cena</td>
+								<td>{{ukupnoRacunKliknute}}</td>
+								<td><button ng-click = "zavrsiIKreiraj(item)">Zavrsi i kreiraj racun</button></td>
 							</tr>
 						</table>
 

@@ -60,11 +60,66 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 						alert("Neuspelo ucitavanje porudzbina");
 					});
 					
+					// Kliknuce na zavrsi i kreiraj racun
+					$scope.zavrsiIKreiraj = function (item){
+						var konPor = {
+								konobar : $scope.ulogovanKonobar,
+								porudzbina : item
+							}
+						
+						izmeniKonobarServis.kreiraj(konPor).success(function (data){
+				    		$scope.porudzbine = data;	
+				    		alert("Uspesno kreiran racun - Porudzbina naplacena");
+						}).error(function(data){
+							alert("Nemoguce kreirati racun");
+						});
+
+						$scope.racun = -1;
+					}
+					
+					// Kliknuce na zavrsi
+					$scope.racun = -1;
+					$scope.ukupnoRacunKliknute = 0;
+					$scope.zavrsi = function(porudzbina){
+						$scope.jelaKliknutePorudzbine = [];
+						$scope.picaKliknutePorudzbine = [];
+						$scope.show = -1;
+						izmeniKonobarServis.ucitajJelaPorudzbine(porudzbina).success(function(data){
+							$scope.jelaKliknutePorudzbine = data;
+						}).error(function (data){
+							alert("Neuspela operacija");
+						});
+						
+						izmeniKonobarServis.ucitajPicaPorudzbine(porudzbina).success(function(data){
+							$scope.picaKliknutePorudzbine = data;
+							if ($scope.racun == porudzbina.id)
+								$scope.racun = -1;
+							else
+								$scope.racun = porudzbina.id
+						}).error(function (data){
+							alert("Neuspela operacija");
+						});
+						
+						var konPor = {
+							konobar : $scope.ulogovanKonobar,
+							porudzbina : porudzbina
+						}
+						
+						izmeniKonobarServis.kreirajRacun(konPor).success(function (data){
+							$scope.ukupnoRacunKliknute = data.ukupno;
+						}).error(function (data){
+							alert("Nemoguce kreirati racun");
+						});
+							
+					}					
 					// Kliknuce na detalji
 					$scope.jelaKliknutePorudzbine = [];
 					$scope.picaKliknutePorudzbine = [];
 					$scope.show = -1;
 					$scope.kliknuoNaDetalji = function (porudzbina){
+						$scope.jelaKliknutePorudzbine = [];
+						$scope.picaKliknutePorudzbine = [];
+						$scope.racun = -1;
 						izmeniKonobarServis.ucitajJelaPorudzbine(porudzbina).success(function(data){
 							$scope.jelaKliknutePorudzbine = data;
 						}).error(function (data){
@@ -102,10 +157,8 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 		    	} else {
 		    		$scope.dodataJela.push(jelo1);
 		    	}
-		    	
 	    	}
 	    
-
 		    $scope.dodajPice = function (pice){
 		    	var pice1 = {
 			    		id : $scope.dodataPica.length+1, 
@@ -116,9 +169,7 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 		    	} else {
 		    		$scope.dodataPica.push(pice1);
 		    	}
-		    	
 		    }
-		    
 		    
 		    $scope.obrisiPice = function (pice){
 		    	var index = $scope.dodataPica.indexOf(pice);
@@ -216,7 +267,6 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 				izmeniKonobarServis.potvrdiIzmene(izmeniPorudzbinuPrikaz).success(function (data){
 		    		$scope.porudzbine = data;
 		    		$scope.show = -1;
-		    		alert("Izvrsene izmene");
 		    	}).error (function (data){
 		    		alert("Neuspesna operacija");	
 		    	});	

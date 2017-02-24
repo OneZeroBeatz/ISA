@@ -22,12 +22,14 @@ import com.isa.model.JeloUPorudzbini;
 import com.isa.model.Pice;
 import com.isa.model.PiceUPorudzbini;
 import com.isa.model.Porudzbina;
+import com.isa.model.RacunKonobar;
 import com.isa.model.Restoran;
 import com.isa.model.Sto;
 import com.isa.model.korisnici.Konobar;
 import com.isa.pomocni.IzmeniPorudzbinuIzmeni;
 import com.isa.pomocni.IzmeniPorudzbinuPrikaz;
 import com.isa.pomocni.JelaPica;
+import com.isa.pomocni.PorudzbinaKonobar;
 import com.isa.services.KonobarServis;
 import com.isa.services.RestoranServis;
 
@@ -125,8 +127,15 @@ public class KonobarKontroler {
 		}
 		Page<Porudzbina> porudzbine = konobarServis.izlistajPorudzbine((Konobar)konobarServis.findOne(jelaPica.getKonobar().getId()), new PageRequest(0, 10));
 
+		List<Porudzbina> retVal = new ArrayList<Porudzbina>();
 		
-		return new ResponseEntity<List<Porudzbina>>(porudzbine.getContent(), HttpStatus.OK);
+		for (int i = 0; i<porudzbine.getContent().size(); i++){
+			if(porudzbine.getContent().get(i).getRacun() == null){
+				retVal.add(porudzbine.getContent().get(i));
+			}
+		}
+		
+		return new ResponseEntity<List<Porudzbina>>(retVal, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/potvrdiIzmene", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -565,12 +574,24 @@ public class KonobarKontroler {
 			}
 			// SLUCAJ ELSE - NE SME NISTA
 		} else {
-			Page<Porudzbina> porudzbine = konobarServis.izlistajPorudzbine((Konobar)konobarServis.findOne(parametar.getPorudzbina().getKonobar().getId()), new PageRequest(0, 10));
 			return new ResponseEntity<List<Porudzbina>> (HttpStatus.NOT_MODIFIED);	
 		}
-		konobarServis.savePorudzbina(parametar.getPorudzbina());
-		Page<Porudzbina> porudzbine = konobarServis.izlistajPorudzbine((Konobar)konobarServis.findOne(parametar.getPorudzbina().getKonobar().getId()), new PageRequest(0, 10));
-		return new ResponseEntity<List<Porudzbina>>(porudzbine.getContent(), HttpStatus.OK);
+		Porudzbina porudz = konobarServis.pronadjiPorudzbinu(parametar.getPorudzbina().getId());
+		porudz.setSpremnaJela(parametar.getPorudzbina().isSpremnaJela());
+		porudz.setSpremnaPica(parametar.getPorudzbina().isSpremnaPica());
+		konobarServis.savePorudzbina(porudz);
+		Page<Porudzbina> porudzbine = konobarServis.izlistajPorudzbine((Konobar)konobarServis.findOne(porudz.getKonobar().getId()), new PageRequest(0, 10));
+		
+		
+		List<Porudzbina> retVal = new ArrayList<Porudzbina>();
+		
+		for (int i = 0; i<porudzbine.getContent().size(); i++){
+			if(porudzbine.getContent().get(i).getRacun() == null){
+				retVal.add(porudzbine.getContent().get(i));
+			}
+		}
+		
+		return new ResponseEntity<List<Porudzbina>>(retVal, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/izlistajStolove", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -586,9 +607,15 @@ public class KonobarKontroler {
 	@RequestMapping(value = "/ucitajPorudzbine", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Porudzbina>> ucitajPorudzbine(@RequestBody Konobar konobar){		
 		Page<Porudzbina> porudzbine = konobarServis.izlistajPorudzbine(konobar, new PageRequest(0, 10));
-		System.out.println("Ucitao porudzbina " + porudzbine.getContent().size());
+		List<Porudzbina> retVal = new ArrayList<Porudzbina>();
 		
-		return new ResponseEntity<List<Porudzbina>> (porudzbine.getContent(), HttpStatus.OK);
+		for (int i = 0; i<porudzbine.getContent().size(); i++){
+			if(porudzbine.getContent().get(i).getRacun() == null){
+				retVal.add(porudzbine.getContent().get(i));
+			}
+		}
+		
+		return new ResponseEntity<List<Porudzbina>>(retVal, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/ucitajJelaPorudzbine", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -620,7 +647,16 @@ public class KonobarKontroler {
 
 		boolean smePicaDaDoda = true;
 		boolean smeJelaDaDoda = true;
+		
+		if(svaPica.isEmpty() && porudzbina.isSpremnoJednoJelo()){
+			smePicaDaBrise = false;
+			smePicaDaDoda = false;
+		}
 
+		if(svaJela.isEmpty() && porudzbina.isSpremnaPica()){
+			smeJelaDaBrise = false;
+			smeJelaDaDoda = false;
+		}
 		
 		if(konobarServis.pronadjiPorudzbinu(porudzbina.getId()).getSanker() != null){
 			smePicaDaBrise = false;
@@ -628,6 +664,7 @@ public class KonobarKontroler {
 				smePicaDaDoda = false;
 			}
 		} 
+		
 
 		for (int i = 0; i<svaJela.size(); i++){
 			if (svaJela.get(i).getKuvar() != null){
@@ -637,6 +674,8 @@ public class KonobarKontroler {
 				}
 			}
 		}
+		
+		
 
 		for (int i = 0; i < svaJela.size(); i++){
 			svaJelaBack.add(svaJela.get(i));
@@ -657,7 +696,72 @@ public class KonobarKontroler {
 		
 		return new ResponseEntity<IzmeniPorudzbinuPrikaz> (retVal, HttpStatus.OK);
 	}
-	
+
+	@RequestMapping(value = "/kreirajRacun", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<RacunKonobar> kreirajRacun(@RequestBody PorudzbinaKonobar porKon){
+		Page<PiceUPorudzbini> picaUPorudzbini = konobarServis.izlistajPicaPorudzbine(porKon.getPorudzbina(), new PageRequest(0, 10));
+		Page<JeloUPorudzbini> jelaUPorudzbini = konobarServis.izlistajJelaPorudzbine(porKon.getPorudzbina(), new PageRequest(0, 10));
+			
+		float ukupno = 0;
+		
+		for (int i = 0; i < picaUPorudzbini.getContent().size(); i++){
+			ukupno += picaUPorudzbini.getContent().get(i).getKolicina() * picaUPorudzbini.getContent().get(i).getPice().getCena();
+		}
+		
+		for (int i = 0; i < jelaUPorudzbini.getContent().size(); i++){
+			ukupno += jelaUPorudzbini.getContent().get(i).getKolicina() * jelaUPorudzbini.getContent().get(i).getJelo().getCena();
+		}		
+		
+		RacunKonobar racun = new RacunKonobar();
+		racun.setUkupno(ukupno);
+		
+		return new ResponseEntity<RacunKonobar> (racun, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/kreiraj", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Porudzbina>> kreirajKrajnji(@RequestBody PorudzbinaKonobar porKon){
+		Page<PiceUPorudzbini> picaUPorudzbini = konobarServis.izlistajPicaPorudzbine(porKon.getPorudzbina(), new PageRequest(0, 10));
+		Page<JeloUPorudzbini> jelaUPorudzbini = konobarServis.izlistajJelaPorudzbine(porKon.getPorudzbina(), new PageRequest(0, 10));
+			
+		float ukupno = 0;
+		
+		for (int i = 0; i < picaUPorudzbini.getContent().size(); i++){
+			ukupno += picaUPorudzbini.getContent().get(i).getKolicina() * picaUPorudzbini.getContent().get(i).getPice().getCena();
+		}
+		
+		for (int i = 0; i < jelaUPorudzbini.getContent().size(); i++){
+			ukupno += jelaUPorudzbini.getContent().get(i).getKolicina() * jelaUPorudzbini.getContent().get(i).getJelo().getCena();
+		}		
+		
+		RacunKonobar racun = new RacunKonobar();
+		racun.setUkupno(ukupno);
+		
+		//TODO skontati koji je konobar pa uraditi na osnovu onog kriterijuma sto su dali
+		
+		java.util.Date dt = new java.util.Date();
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String currentTime = sdf.format(dt);
+		Porudzbina porudz = konobarServis.pronadjiPorudzbinu(porKon.getPorudzbina().getId());
+		porudz.setVremeNaplate(currentTime);
+		porudz.setKonobar1(porKon.getKonobar());		
+		
+		racun.setPorudzbina(porudz);
+		porudz.setRacun(racun);
+		
+		konobarServis.saveRacun(racun);
+		konobarServis.savePorudzbina(porudz);
+		
+		Page<Porudzbina> porudzbine = konobarServis.izlistajPorudzbine(porKon.getKonobar(), new PageRequest(0, 10));
+		List<Porudzbina> retVal = new ArrayList<Porudzbina>();
+		
+		for (int i = 0; i<porudzbine.getContent().size(); i++){
+			if(porudzbine.getContent().get(i).getRacun() == null){
+				retVal.add(porudzbine.getContent().get(i));
+			}
+		}
+		
+		return new ResponseEntity<List<Porudzbina>>(retVal, HttpStatus.OK);
+	}
 }
 
 

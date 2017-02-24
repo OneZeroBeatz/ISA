@@ -32,7 +32,15 @@ konobarServis.factory('izmeniKonobarServis', function($http) {
 	temp.potvrdiIzmene = function(jelaPica){
 		return $http.post('/konobarKontroler/potvrdiIzmene', jelaPica);
 	}
+
+	temp.kreirajRacun = function(porKon){
+		return $http.post('/konobarKontroler/kreirajRacun', porKon);
+	}
 	
+	temp.kreiraj = function(porKon){
+		return $http.post('/konobarKontroler/kreiraj', porKon);
+	}
+
 	temp.ucitajJelaPorudzbine = function(porudzbina){
 		return $http.post('/konobarKontroler/ucitajJelaPorudzbine', porudzbina);
 	}

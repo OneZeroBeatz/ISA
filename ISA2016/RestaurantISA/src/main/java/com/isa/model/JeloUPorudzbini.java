@@ -25,6 +25,8 @@ public class JeloUPorudzbini {
 	@ManyToOne(optional = false)
 	private Porudzbina porudzbina;
 	
+
+	
 	@Column(name = "kolicina")
 	private int kolicina;
 
@@ -74,7 +76,7 @@ public class JeloUPorudzbini {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 
 
 }
