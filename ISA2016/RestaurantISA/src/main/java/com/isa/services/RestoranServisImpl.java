@@ -14,8 +14,10 @@ import com.isa.model.Restoran;
 import com.isa.model.Sto;
 import com.isa.model.korisnici.Ponudjac;
 import com.isa.repository.JeloSkladiste;
+import com.isa.repository.JeloUPorudzbiniSkladiste;
 import com.isa.repository.PiceSkladiste;
 import com.isa.repository.PonudjacSkladiste;
+import com.isa.repository.PiceUPorudzbiniSkladiste;
 import com.isa.repository.RestoranSkladiste;
 import com.isa.repository.StoSkladiste;
 
@@ -33,6 +35,12 @@ public class RestoranServisImpl implements RestoranServis{
 	
 	@Autowired
 	StoSkladiste stoSkladiste;
+
+	@Autowired
+	JeloUPorudzbiniSkladiste jeloUPorudzbiniSkladiste;
+	
+	@Autowired
+	PiceUPorudzbiniSkladiste piceUPorudzbiniSkladiste;
 	
 	@Autowired
 	PonudjacSkladiste ponudjacSkladiste;
@@ -146,6 +154,16 @@ public class RestoranServisImpl implements RestoranServis{
 	@Override
 	public Ponudjac save(Ponudjac ponudjac) {
 		return ponudjacSkladiste.save(ponudjac);
+	}
+	
+	@Override
+	public void izbrisiPiceUPorudzbini(Long id) {
+		piceUPorudzbiniSkladiste.deleteById(id);
+	}
+
+	@Override
+	public void izbrisiJeloUPorudzbini(Long id) {
+		jeloUPorudzbiniSkladiste.deleteById(id);
 	}
 
 }

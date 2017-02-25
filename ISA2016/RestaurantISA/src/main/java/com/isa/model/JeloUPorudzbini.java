@@ -25,6 +25,8 @@ public class JeloUPorudzbini {
 	@ManyToOne(optional = false)
 	private Porudzbina porudzbina;
 	
+
+	
 	@Column(name = "kolicina")
 	private int kolicina;
 
@@ -66,6 +68,15 @@ public class JeloUPorudzbini {
 	public void setSpremno(boolean spremno) {
 		this.spremno = spremno;
 	}
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 
 
 }
