@@ -343,8 +343,112 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, logovanje
 					});
 			}
 			
-			// za izmenu lozinke
+			// Kliknuo na detalje kalendar
 			
+			$scope.danasnjiDatum = new Date();
+			$scope.danasnjiDan = $scope.danasnjiDatum.getDay();
+			
+			$scope.prikaziDan = -1;
+			$scope.prikaziSmene = function(index){
+				if ($scope.prikaziDan == index){
+					$scope.prikaziDan = -1;
+				} else {
+					$scope.prikaziDan = index;
+				}
+				
+			}
+			
+			$scope.stringuj = function(s){
+				return s.getDate() + "-" + (s.getMonth()+1) + "-"+ s.getFullYear();
+			}
+			
+			$scope.setuj = function (){
+				$scope.datumPonedeljakStr = $scope.stringuj($scope.datumPonedeljak);
+				$scope.datumUtorakStr = $scope.stringuj($scope.datumUtorak);
+				$scope.datumSredaStr = $scope.stringuj($scope.datumSreda);
+				$scope.datumCetvrtakStr = $scope.stringuj($scope.datumCetvrtak);
+				$scope.datumPetakStr = $scope.stringuj($scope.datumPetak);
+				$scope.datumSubotaStr = $scope.stringuj($scope.datumSubota);
+				$scope.datumNedeljaStr = $scope.stringuj($scope.datumNedelja);
+			}
+			
+			var tomorrow = new Date();
+			$scope.datumNedelja = new Date();
+			$scope.datumSubota = new Date();
+			$scope.datumPetak = new Date();
+			$scope.datumCetvrtak = new Date();
+			$scope.datumSreda = new Date();
+			$scope.datumUtorak = new Date();
+			$scope.datumPonedeljak = new Date();
+			
+			
+			if ($scope.danasnjiDan == 1){
+				$scope.datumPonedeljak = $scope.danasnjiDatum;
+				$scope.datumUtorak.setDate($scope.danasnjiDatum.getDate() + 1);
+				$scope.datumSreda.setDate($scope.danasnjiDatum.getDate() + 2);
+				$scope.datumCetvrtak.setDate($scope.danasnjiDatum.getDate() + 3);
+				$scope.datumPetak.setDate($scope.danasnjiDatum.getDate() + 4);
+				$scope.datumSubota.setDate($scope.danasnjiDatum.getDate() + 5);
+				$scope.datumNedelja.setDate($scope.danasnjiDatum.getDate() + 6);
+				$scope.setuj();
+			} else if ($scope.danasnjiDan == 2){
+				$scope.datumUtorak = $scope.danasnjiDatum;
+				$scope.datumSreda.setDate($scope.danasnjiDatum.getDate() + 1);
+				$scope.datumCetvrtak.setDate($scope.danasnjiDatum.getDate() + 2);
+				$scope.datumPetak.setDate($scope.danasnjiDatum.getDate() + 3);
+				$scope.datumSubota.setDate($scope.danasnjiDatum.getDate() + 4);
+				$scope.datumNedelja.setDate($scope.danasnjiDatum.getDate() + 5);
+				$scope.datumPonedeljak.setDate($scope.danasnjiDatum.getDate() + 6);
+				$scope.setuj();
+			} else if ($scope.danasnjiDan == 3){
+				$scope.datumSreda = $scope.danasnjiDatum;
+				$scope.datumCetvrtak.setDate($scope.danasnjiDatum.getDate() + 1);
+				$scope.datumPetak.setDate($scope.danasnjiDatum.getDate() + 2);
+				$scope.datumSubota.setDate($scope.danasnjiDatum.getDate() + 3);
+				$scope.datumNedelja.setDate($scope.danasnjiDatum.getDate() + 4);
+				$scope.datumPonedeljak.setDate($scope.danasnjiDatum.getDate() + 5);
+				$scope.datumUtorak.setDate($scope.danasnjiDatum.getDate() + 6);
+				$scope.setuj();
+			} else if ($scope.danasnjiDan == 4){
+				$scope.datumCetvrtak = $scope.danasnjiDatum;
+				$scope.datumPetak.setDate($scope.danasnjiDatum.getDate() + 1);
+				$scope.datumSubota.setDate($scope.danasnjiDatum.getDate() + 2);
+				$scope.datumNedelja.setDate($scope.danasnjiDatum.getDate() + 3);
+				$scope.datumPonedeljak.setDate($scope.danasnjiDatum.getDate() + 4);
+				$scope.datumUtorak.setDate($scope.danasnjiDatum.getDate() + 5);
+				$scope.datumSreda.setDate($scope.danasnjiDatum.getDate() + 6);
+				$scope.setuj();
+			} else if ($scope.danasnjiDan == 5){
+				$scope.datumPetak = $scope.danasnjiDatum;
+				$scope.datumSubota.setDate($scope.danasnjiDatum.getDate() + 1);
+				$scope.datumNedelja.setDate($scope.danasnjiDatum.getDate() + 2);
+				$scope.datumPonedeljak.setDate($scope.danasnjiDatum.getDate() + 3);
+				$scope.datumUtorak.setDate($scope.danasnjiDatum.getDate() + 4);
+				$scope.datumSreda.setDate($scope.danasnjiDatum.getDate() + 5);
+				$scope.datumCetvrtak.setDate($scope.danasnjiDatum.getDate() + 6);
+				$scope.setuj();
+			} else if ($scope.danasnjiDan == 6){
+				$scope.datumSubota = $scope.danasnjiDatum;
+				$scope.datumNedelja.setDate($scope.danasnjiDatum.getDate() + 1);
+				$scope.datumPonedeljak.setDate($scope.danasnjiDatum.getDate() + 2);
+				$scope.datumUtorak.setDate($scope.danasnjiDatum.getDate() + 3);
+				$scope.datumSreda.setDate($scope.danasnjiDatum.getDate() + 4);
+				$scope.datumCetvrtak.setDate($scope.danasnjiDatum.getDate() + 5);
+				$scope.datumPetak.setDate($scope.danasnjiDatum.getDate() + 6);
+				$scope.setuj();
+			} else if ($scope.danasnjiDan == 7){
+				$scope.datumNedelja = $scope.danasnjiDatum;
+				$scope.datumPonedeljak.setDate($scope.danasnjiDatum.getDate() + 1);
+				$scope.datumUtorak.setDate($scope.danasnjiDatum.getDate() + 2);
+				$scope.datumSreda.setDate($scope.danasnjiDatum.getDate() + 3);
+				$scope.datumCetvrtak.setDate($scope.danasnjiDatum.getDate() + 4);
+				$scope.datumPetak.setDate($scope.danasnjiDatum.getDate() + 5);
+				$scope.datumSubota.setDate($scope.danasnjiDatum.getDate() + 6);
+				$scope.setuj();
+			} 
+			
+			
+			// za izmenu lozinke
 			$scope.izmeniLozinku = function (){
 				if($scope.novaLozinka == $scope.novaLozinkaPotvrda){
 					var gost = {

@@ -166,6 +166,9 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, log
 			}
 			
 			
+			
+			
+			
 		}else{
 			alert("Morate se prvo ulogovati");
 			window.location.href = "logovanje.html";

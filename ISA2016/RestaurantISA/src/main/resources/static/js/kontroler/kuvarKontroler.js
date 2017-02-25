@@ -162,8 +162,9 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, logovanjeServ
 				}).error(function(data){
 					alert("Nemoguce zavrsiti porudzbinu");
 				});
-				// TODO: Regulisati visible dugmadi i tako dalje
 			}
+			
+			
 			
 		}else{
 			alert("Morate se prvo ulogovati");
