@@ -1,7 +1,5 @@
 package com.isa.services;
 
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.isa.model.korisnici.Gost;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.Prijatelj;
+import com.isa.pomocni.GostPrijatelj;
 import com.isa.repository.GostSkladiste;
 import com.isa.repository.PrijateljSkladiste;
 
@@ -40,10 +39,11 @@ public class GostServisImp implements GostServis {
 	}
 
 	@Override
-	public void delete(Long id) {
-		Korisnik gost = gostSkladiste.findOne(id);
-		if(gost != null){
-			gostSkladiste.delete(gost);
+	public void delete(GostPrijatelj gostPrij) {
+
+		if(gostPrij != null){
+			prijSkladiste.deleteGostPrij(gostPrij.getGost().getEmail(), gostPrij.getPrijatelj().getEmail());
+			prijSkladiste.deletePrijGost(gostPrij.getPrijatelj().getEmail(), gostPrij.getGost().getEmail());
 		}
 	}
 
@@ -63,6 +63,12 @@ public class GostServisImp implements GostServis {
 		}catch(Exception ex){
 			return null;			
 		}
+	}
+
+	@Override
+	public void delete(Long id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

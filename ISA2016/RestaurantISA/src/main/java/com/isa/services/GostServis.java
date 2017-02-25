@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import com.isa.model.korisnici.Gost;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.Prijatelj;
+import com.isa.pomocni.GostPrijatelj;
 
 
 public interface GostServis {
@@ -23,5 +24,7 @@ public interface GostServis {
     Korisnik findByEmail(String email);
     
     Page<Prijatelj> izlistajPrijatelje(Gost gost, Pageable pageable);
+
+	void delete(GostPrijatelj gostPrij);
     
 }

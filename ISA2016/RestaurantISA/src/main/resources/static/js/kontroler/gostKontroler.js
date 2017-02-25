@@ -57,13 +57,24 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 				});
 		}
 		
-		$scope.ukloniPrijatelja = function(id){
+		$scope.ukloniPrijatelja = function(prij){
 
-			var str = JSON.stringify(id);
-			izmeniGostaServis.ukloniPrijatelja(str).success(function(data) {
-				//RADI!
-			}).error(function(data) {
-				
+			gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
+				if(data != ""){
+					var parameter = {
+							gost: data,
+							prijatelj: prij 
+						}
+						
+						//var str = JSON.stringify(patameter);
+						izmeniGostaServis.ukloniPrijatelja(parameter).success(function(data) {
+							//RADI!
+						}).error(function(data) {
+							
+						});
+				}
 			});
 		}
+			
+			
 })
