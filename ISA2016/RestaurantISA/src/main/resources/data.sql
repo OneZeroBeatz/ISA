@@ -63,5 +63,4 @@ insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values ('Sano', 'Sankic', 'sa', 'SNK','sa', 'SANKER', (select id from restoran where naziv='Restoran 1'))
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values ('Sanos', 'Sas', 'ss', 'SNK','ss', 'SANKER', (select id from restoran where naziv='Restoran 1'))
 
-
-insert into smena(vremeod, vremedo) values ('2016-10-10 11:11:11', '2016-12-12 11:12:11')
+--insert into smena(vremeod, vremedo) values ('2016-10-10 11:11:11', '2016-12-12 11:12:11')

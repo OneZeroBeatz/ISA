@@ -3,7 +3,10 @@ var ponudjacKontroler = angular.module('restoranApp.ponudjacKontroler', []);
 
 ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $scope, ponudjacServisS) {
 	
+	
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
+		$scope.cenaA = {};
+		$scope.garancijaA = {};
 		if(data != ""){
 			$scope.ulogovanKorisnik = data;
 			$scope.imeIzmena = data.ime;
@@ -33,12 +36,15 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 			}
 			
 			$scope.slanjePonude = function(porudzbina){
+				var aa = 'cena'+porudzbina.id;
+				//var model = $parse(aa);
+				
 				var pon = {
 					porudzbinamenadzer : porudzbina,
 					ponudjac : data,
-					cena : 'cena'+$scope.porudzbina.id,//$scope.cenaPonude,
-					rokisporuke : $scope.rokIsporuke,
-					garancija : $scope.garancija
+					cena : $scope.aa,
+					//rokisporuke : 'rokIsporuke'+$scope.porudzbina.id,
+					//garancija : 'garancija'+$scope.porudzbina.id
 				}
 				var str = JSON.stringify(pon);
 				ponudjacServisS.posaljiPonudu(str);
