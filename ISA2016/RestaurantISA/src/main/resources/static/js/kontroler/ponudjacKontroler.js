@@ -11,19 +11,13 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 			$scope.emailIzmena = data.email;
 			$scope.staraLozinka = data.sifra;
 			
-			
+			// AKTIVNE PORUDZBINE
+			// Ponudjac nije slao ponudu:
 			ponudjacServisS.izlistajPorudzbineBezPonude(data).success(function(data) {
 				$scope.porudzbineMen = data;
 				
 			}).error(function(data) {
 			});
-			
-			/*	//TODO: Kasnije
-			ponudjacServisS.izlistajPorudzbineSaPonudom(str).success(function(data) {
-				$scope.porudzbineMen = data;
-			}).error(function(data) {
-			});
-			*/
 			
 			$scope.prikaziDetalje = function(porudzbina){
 				ponudjacServisS.izlistajStavkePorudzbine(porudzbina).success(function(data) {
@@ -39,7 +33,53 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 			}
 			
 			$scope.slanjePonude = function(porudzbina){
-				//ponudjacServisS.posaljiPonudu(porudzbina);
+				var pon = {
+					porudzbinamenadzer : porudzbina,
+					ponudjac : data,
+					cena : 'cena'+$scope.porudzbina.id,//$scope.cenaPonude,
+					rokisporuke : $scope.rokIsporuke,
+					garancija : $scope.garancija
+				}
+				var str = JSON.stringify(pon);
+				ponudjacServisS.posaljiPonudu(str);
+			}
+			
+			// Ponudjac je poslao ponudu ali je moguca izmena:
+			
+			ponudjacServisS.izlistajPorudzbineSaPonudom(data).success(function(data) {
+				$scope.ponudePonudjaca = data;
+			}).error(function(data) {
+			});
+			
+			$scope.prikaziDetaljePon = function(porudzbina){
+				ponudjacServisS.izlistajStavkePorudzbine(porudzbina).success(function(data) {
+					$scope.stavkePon = data;
+				}).error(function(data) {
+				});
+				
+				$scope.selektovanaPorudzbinaPonId = porudzbina.id;
+			}
+			
+			$scope.vidljivosPorudzbinePon = function(id){
+				return $scope.selektovanaPorudzbinaPonId === id;
+			}
+			
+			$scope.izmenaPonude = function(ponuda){
+				var pon = {
+					porudzbinamenadzer : ponuda.porudzbinamenadzer,
+					ponudjac : ponuda.ponudjac,
+					cena : ponuda.cena,
+					rokisporuke : ponuda.rokisporuke,
+					garancija : ponuda.garancija
+					
+					/*
+					cena : $scope.cenaPonude,
+					rokisporuke : $scope.rokIsporuke,
+					garancija : $scope.garancija
+					*/
+				}
+				var str = JSON.stringify(pon);
+				ponudjacServisS.izmeniPonudu(str);
 			}
 		}else{
 			alert("Niko nije ulogovan");

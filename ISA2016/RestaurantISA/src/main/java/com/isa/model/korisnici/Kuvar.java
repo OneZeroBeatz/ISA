@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import com.isa.model.JeloUPorudzbini;
 import com.isa.model.Porudzbina;
 import com.isa.model.Restoran;
+import com.isa.model.SmenaUDanu;
 
 @Entity
 @DiscriminatorValue("KUV")
@@ -29,6 +30,8 @@ public class Kuvar extends Korisnik{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "kuvar")
 	private Set<JeloUPorudzbini> jelovnik;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "kuvar")
+	private Set<SmenaUDanu> smenaudanu;
 	
 	public Kuvar(){
 		

@@ -19,7 +19,7 @@
 				<div>
 					<h3>Niste poslali ponudu:</h3>
 					<ul>
-       					<li ng-repeat="por in porudzbineMen"> {{por.menadzerRestorana.restoran.naziv}}   {{por.aktivnoOd}} {{por.aktivnoDo}} <button ng-click="prikaziDetalje(por)">Detalji</button>
+       					<li ng-repeat="por in porudzbineMen"> {{por.menadzerrestorana.restoran.naziv}}   {{por.aktivnoOd}} {{por.aktivnoDo}} <button ng-click="prikaziDetalje(por)">Detalji</button>
        					<div ng-show="vidljivosPorudzbine(por.id)" ng-model="por.id">
        						<h3>Sadrzaj porudzbine:</h3>
 							<table border="1px">
@@ -35,7 +35,7 @@
 							<table>
 								<tr>
 									<td>Cena</td>
-									<td><input type=number ng-model="cenaPonude"></td>
+									<td><input type=number ng-model="cena"{{por.id}}></td>
 								<tr>
 								<tr>
 									<td>Rok isporuke</td>
@@ -53,6 +53,38 @@
     				<br><br>
     				<h3>Poslali ste ponudu</h3>
     				<!--Isto kao i gore, samo popuniti inpute... -->
+    				<ul>
+       					<li ng-repeat="pon in ponudePonudjaca"> {{pon.porudzbinamenadzer.menadzerrestorana.restoran.naziv}}   {{pon.porudzbinamenadzer.aktivnoOd}} {{pon.porudzbinamenadzer.aktivnoDo}} <button ng-click="prikaziDetaljePon(pon.porudzbinamenadzer)">Detalji</button>
+       					<div ng-show="vidljivosPorudzbinePon(pon.porudzbinamenadzer.id)" ng-model="pon.porudzbinamenadzer.id">
+       						<h3>Sadrzaj porudzbine:</h3>
+							<table border="1px">
+								<tr>
+									<th>Naziv</th>
+									<th>Kolicina</th>
+								</tr>
+								<tr ng-repeat="stavka in stavkePon">
+									<td>{{stavkePon.naziv}}</td> <!-- Proveravati da li je pice ili namirnica, dodati i tip -->
+									<td>{{stavkePon.kolicina}}</td>
+								<tr>
+							</table>
+							<table>
+								<tr>
+									<td>Cena</td>
+									<td><input type=number ng-model="pon.cena"></td>
+								<tr>
+								<tr>
+									<td>Rok isporuke</td>
+									<td><input type=number ng-model="pon.rokisporuke"></td>
+								<tr>
+								<tr>
+									<td>Garancija</td>
+									<td><input type=text ng-model="pon.garancija"></td>
+								<tr>
+							</table>
+							<button ng-click="izmenaPonude(pon)">Izmeni ponudu</button>
+       					</div>
+       					</li>
+    				</ul>
 				</div>
 			</div>
 			

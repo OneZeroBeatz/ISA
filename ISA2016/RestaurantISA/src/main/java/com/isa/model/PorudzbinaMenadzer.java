@@ -73,7 +73,7 @@ public class PorudzbinaMenadzer implements Serializable {
 		this.aktivnoDo = aktivnoDo;
 	}
 
-	public MenadzerRestorana getMenadzerRestorana() {
+	public MenadzerRestorana getMenadzerrestorana() {
 		return menadzerrestorana;
 	}
 
