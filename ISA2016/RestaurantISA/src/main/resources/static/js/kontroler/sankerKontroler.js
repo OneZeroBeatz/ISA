@@ -1,6 +1,6 @@
 var sankerKontroler = angular.module('restoranApp.sankerKontroler', []);
 
-sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, gostGlavnaStranaServis, izmeniSankerServis){
+sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, logovanjeServis, gostGlavnaStranaServis, izmeniSankerServis){
 	
 	$scope.osveziPrikazZaIzmenu = function (sanker){
 		$scope.imeIzmena = sanker.ime;
@@ -35,7 +35,12 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, gos
 				}
 				var str = JSON.stringify(gost);
 				izmeniSankerServis.izmeni(str).success(function(data) {
-						//TODO: doznaka i clear
+					logovanjeServis.ulogujKorisnika(data).success(function(data) {
+						$scope.ulogovanKonobar = data;
+						$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
+
+						});
+					//TODO: doznaka i clear
 						$location.path('/sanker');
 					}).error(function(data) {
 						alert("Neuspesne izmene!");
@@ -48,12 +53,16 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, gos
 				if($scope.novaLozinka == $scope.novaLozinkaPotvrda){
 					var gost = {
 						id : $scope.ulogovanSanker.id,
+						sifraStara : $scope.staraLozinka,
 						sifra : $scope.novaLozinkaPotvrda
 					}
 					var str = JSON.stringify(gost);
 					
 					izmeniSankerServis.izmeniLozinku(str).success(function (data){
-						//TODO: doznaka i clear
+						$scope.staraLozinka = "";
+						$scope.novaLozinka = "";
+						$scope.novaLozinkaPotvrda = "";
+						alert("Uspesno promenjena lozinka");
 						$location.path('/sanker');
 					}).error(function (data){
 						alert("Neuspesne izmene!");

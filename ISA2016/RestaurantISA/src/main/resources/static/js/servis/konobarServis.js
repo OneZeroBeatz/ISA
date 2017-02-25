@@ -5,7 +5,6 @@ konobarServis.factory('izmeniKonobarServis', function($http) {
 	var temp = {};
 	
 	temp.izmeni = function(konobar) {
-		console.log(konobar);
 		return $http.post('/korisnikKontroler/izmeniKorisnika', konobar);
 	}
 	

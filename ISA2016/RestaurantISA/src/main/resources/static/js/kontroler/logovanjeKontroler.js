@@ -37,7 +37,7 @@ logovanjeKontroler.controller('logovanjeCtrl', function($location, $scope, logov
 				if(data.tipKorisnika == 'SANKER')
 					$location.path('/sanker');
 			}else{
-				alert("else");
+				alert("Neuspesno logovanje");
 				$scope.changeRoute('/');
 			}
 		});

@@ -1,11 +1,12 @@
 var konobarKontroler = angular.module('restoranApp.konobarKontroler', []);
 
-konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavnaStranaServis, izmeniKonobarServis){
+konobarKontroler.controller('konobarCtrl', function($scope, $location, logovanjeServis, gostGlavnaStranaServis, izmeniKonobarServis){
 	
 	$scope.osveziPrikazZaIzmenu = function (konobar){
 		$scope.imeIzmena = konobar.ime;
 		$scope.prezimeIzmena = konobar.prezime
 		$scope.emailIzmena = konobar.email
+		
 	}
 	
 	$scope.vratiNaDodavanje = function(){
@@ -24,10 +25,8 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 	
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 		if(data != ""){
-			//TODO mora da se uloguje opet da bi skontao podatke
+
 			$scope.ulogovanKonobar = data;
-			// Ucitaj jela u kombobox
-			
 			$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
 			
 			$scope.izmena = false;
@@ -332,7 +331,12 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 				}
 				var str = JSON.stringify(gost);
 				izmeniKonobarServis.izmeni(str).success(function(data) {
-						//TODO: doznaka i clear
+					// TODO: ispravljeno ovo, ali mi je malo sumnjivo
+					logovanjeServis.ulogujKorisnika(data).success(function(data) {
+						$scope.ulogovanKonobar = data;
+						$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
+
+						});
 						$location.path('/konobar');
 					}).error(function(data) {
 						alert("Neuspesne izmene!");
@@ -345,12 +349,16 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, gostGlavn
 				if($scope.novaLozinka == $scope.novaLozinkaPotvrda){
 					var gost = {
 						id : $scope.ulogovanKonobar.id,
+						sifraStara : $scope.staraLozinka,
 						sifra : $scope.novaLozinkaPotvrda
 					}
 					var str = JSON.stringify(gost);
 					
 					izmeniKonobarServis.izmeniLozinku(str).success(function (data){
-						//TODO: doznaka i clear
+						$scope.staraLozinka = "";
+						$scope.novaLozinka = "";
+						$scope.novaLozinkaPotvrda = "";
+						alert("Uspesno promenjena lozinka");
 						$location.path('/konobar');
 					}).error(function (data){
 						alert("Neuspesne izmene!");
