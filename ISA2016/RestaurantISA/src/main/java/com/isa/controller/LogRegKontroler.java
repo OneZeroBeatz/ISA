@@ -2,9 +2,8 @@ package com.isa.controller;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,15 +18,16 @@ import org.springframework.web.servlet.ModelAndView;
 import com.isa.model.korisnici.Gost;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.TipKorisnika;
-import com.isa.services.GostServisImp;
+import com.isa.services.GostServis;
 
 @Controller
+@Scope("session")
 @SessionAttributes("ulogovanKorisnik")
 @RequestMapping("/contr")
 public class LogRegKontroler {
 
 	@Autowired
-	public GostServisImp servis;
+	public GostServis servis;
 	
 	private ModelAndView modelAndView;
 	
@@ -54,10 +54,9 @@ public class LogRegKontroler {
 		Map<String,Object> map = modelAndView.getModel();
 		Korisnik kor = (Korisnik) map.get("ulogovanKorisnik");
 		System.out.println(kor.getIme());
-		if(kor != null){
+		{
 			return new ResponseEntity<Korisnik>(kor, HttpStatus.ACCEPTED);
-		}else{
-			return null;
-		}	
+		}
+			
 	}
 }

@@ -22,10 +22,10 @@ public class Namirnica implements Serializable{
 
 	@Column(name = "naziv")
 	private String naziv;
-
+/*
 	@ManyToOne(optional = false)
 	private PorudzbinaMenadzer porudzbinamenadzer;
-	
+*/
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "namirnica")
 	private Set<StavkaPorudzbineMenadzera> listastavki;
 	
@@ -48,9 +48,9 @@ public class Namirnica implements Serializable{
 	public void setNazivNamirnice(String naziv) {
 		this.naziv = naziv;
 	}
-
+/*
 	public PorudzbinaMenadzer getPorudzbinaMenadzer() {
 		return porudzbinamenadzer;
 	}
-	
+*/	
 }

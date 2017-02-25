@@ -12,6 +12,7 @@ import com.isa.model.JeloUPorudzbini;
 import com.isa.model.Pice;
 import com.isa.model.PiceUPorudzbini;
 import com.isa.model.Porudzbina;
+import com.isa.model.RacunKonobar;
 import com.isa.model.Restoran;
 import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Korisnik;
@@ -21,6 +22,7 @@ import com.isa.repository.KonobarSkladiste;
 import com.isa.repository.PiceSkladiste;
 import com.isa.repository.PiceUPorudzbiniSkladiste;
 import com.isa.repository.PorudzbinaSkladiste;
+import com.isa.repository.RacunSkladiste;
 import com.isa.repository.RestoranSkladiste;
 
 @Service
@@ -40,6 +42,8 @@ public class KonobarServisImpl implements KonobarServis {
 	private PiceUPorudzbiniSkladiste piceUPorudzbiniSkladiste;
 	@Autowired
 	private JeloUPorudzbiniSkladiste jeloUPorudzbiniSkladiste;
+	@Autowired
+	private RacunSkladiste racunSkladiste;
 	
 	@Override
 	public List<Korisnik> findAll() {
@@ -129,5 +133,18 @@ public class KonobarServisImpl implements KonobarServis {
 		return piceUPorudzbiniSkladiste.findByPorudzbina(porudzbina, pageable);
 	}
 
+	@Override
+	public Page<JeloUPorudzbini> izlistajJelaPorudzbineIJela(Porudzbina porudzbina, Jelo jelo, Pageable pageable) {
+		return jeloUPorudzbiniSkladiste.findByPorudzbinaAndJelo(porudzbina, jelo, pageable);
+	}
 	
+	@Override
+	public Page<PiceUPorudzbini> izlistajPicaPorudzbineIPica(Porudzbina porudzbina, Pice pice, Pageable pageable) {
+		return piceUPorudzbiniSkladiste.findByPorudzbinaAndPice(porudzbina, pice, pageable);
+	}
+
+	@Override
+	public void saveRacun(RacunKonobar racun) {
+		racunSkladiste.save(racun);
+	}
 }

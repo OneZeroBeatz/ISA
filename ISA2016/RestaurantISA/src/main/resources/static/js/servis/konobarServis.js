@@ -5,7 +5,6 @@ konobarServis.factory('izmeniKonobarServis', function($http) {
 	var temp = {};
 	
 	temp.izmeni = function(konobar) {
-		console.log(konobar);
 		return $http.post('/korisnikKontroler/izmeniKorisnika', konobar);
 	}
 	
@@ -29,6 +28,18 @@ konobarServis.factory('izmeniKonobarServis', function($http) {
 		return $http.post('/konobarKontroler/dodajPorudzbinu', jelaPica);
 	}
 	
+	temp.potvrdiIzmene = function(jelaPica){
+		return $http.post('/konobarKontroler/potvrdiIzmene', jelaPica);
+	}
+
+	temp.kreirajRacun = function(porKon){
+		return $http.post('/konobarKontroler/kreirajRacun', porKon);
+	}
+	
+	temp.kreiraj = function(porKon){
+		return $http.post('/konobarKontroler/kreiraj', porKon);
+	}
+
 	temp.ucitajJelaPorudzbine = function(porudzbina){
 		return $http.post('/konobarKontroler/ucitajJelaPorudzbine', porudzbina);
 	}
@@ -40,9 +51,16 @@ konobarServis.factory('izmeniKonobarServis', function($http) {
 	temp.ucitajPorudzbine = function(konobar){
 		return $http.post('/konobarKontroler/ucitajPorudzbine', konobar);
 	}
+
+
+	temp.ucitajPorudzbine = function(konobar){
+		return $http.post('/konobarKontroler/ucitajPorudzbine', konobar);
+	}
 	
 	
-	
+	temp.izmeniPorudzbinu = function(izmeniPorudzbinuPrikaz){
+		return $http.post('/konobarKontroler/izmeniPorudzbinu', izmeniPorudzbinuPrikaz);
+	}	
 	return temp;
 	
 })

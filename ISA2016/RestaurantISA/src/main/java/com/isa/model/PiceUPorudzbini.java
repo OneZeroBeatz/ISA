@@ -19,8 +19,8 @@ public class PiceUPorudzbini {
 	
 	@ManyToOne(optional = false)
 	private Porudzbina porudzbina;
-	
-	
+
+		
 	@Column(name = "kolicina")
 	private int kolicina;
 	
@@ -46,4 +46,13 @@ public class PiceUPorudzbini {
 	public void setKolicina(int kolicina) {
 		this.kolicina = kolicina;
 	}
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 }

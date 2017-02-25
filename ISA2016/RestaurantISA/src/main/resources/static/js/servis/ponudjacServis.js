@@ -12,6 +12,14 @@ ponudjacServis.factory('ponudjacServisS', function($http) {
 		return $http.post('/ponudjacKontroler/izlistajPonude', ponudjac);
 	}
 	
+	temp.izlistajPorudzbineBezPonude = function(ponudjac) {
+		return $http.post('/ponudjacKontroler/izlistajPorudzbineBezPonude', ponudjac);
+	}
+	
+	temp.izlistajStavkePorudzbine = function(porudzbina) {
+		return $http.post('/ponudjacKontroler/izlistajStavkePorudzbine', porudzbina);
+	}
+	
 	return temp;
 	
 })

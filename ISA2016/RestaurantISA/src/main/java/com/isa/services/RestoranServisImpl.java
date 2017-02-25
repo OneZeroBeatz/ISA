@@ -12,8 +12,12 @@ import com.isa.model.Jelo;
 import com.isa.model.Pice;
 import com.isa.model.Restoran;
 import com.isa.model.Sto;
+import com.isa.model.korisnici.Ponudjac;
 import com.isa.repository.JeloSkladiste;
+import com.isa.repository.JeloUPorudzbiniSkladiste;
 import com.isa.repository.PiceSkladiste;
+import com.isa.repository.PonudjacSkladiste;
+import com.isa.repository.PiceUPorudzbiniSkladiste;
 import com.isa.repository.RestoranSkladiste;
 import com.isa.repository.StoSkladiste;
 
@@ -31,6 +35,15 @@ public class RestoranServisImpl implements RestoranServis{
 	
 	@Autowired
 	StoSkladiste stoSkladiste;
+
+	@Autowired
+	JeloUPorudzbiniSkladiste jeloUPorudzbiniSkladiste;
+	
+	@Autowired
+	PiceUPorudzbiniSkladiste piceUPorudzbiniSkladiste;
+	
+	@Autowired
+	PonudjacSkladiste ponudjacSkladiste;
 	
 	@Override
 	public List<Restoran> findAll() {
@@ -88,7 +101,7 @@ public class RestoranServisImpl implements RestoranServis{
 			Sto s = new Sto();
 			s.setOznaka(i);
 			s.setBrojmesta(0);
-			s.setSegemnt("nijesto");
+			s.setSegment("nijesto");
 			s.setZauzet(false);
 			s.setRestoran(restoran);
 			stoSkladiste.save(s);
@@ -105,6 +118,52 @@ public class RestoranServisImpl implements RestoranServis{
 	@Override
 	public Page<Sto> izlistajStolove(Restoran restoran, Pageable pageable) {
 		return stoSkladiste.findByRestoran(restoran, pageable);
+	}
+
+	@Override
+	public void dodajRedoveIKolone(Restoran rest) {
+		restoranSkladiste.save(rest);
+		
+	}
+
+	@Override
+	public List<Ponudjac> izlistajPonudjaceVanRestorana(Restoran restoran) {
+		List<Ponudjac> sviPonudjaci = ponudjacSkladiste.findAll();
+		List<Ponudjac> restoranoviPonudjaci = ponudjacSkladiste.findByRestoran(restoran);
+		for(Ponudjac pon : restoranoviPonudjaci){
+			if(sviPonudjaci.contains(pon)){
+				sviPonudjaci.remove(pon);
+			}
+		}
+		
+		return sviPonudjaci;
+	}
+
+	@Override
+	public void dodajPonudjacaURestoran(Restoran restoran, Ponudjac ponudjac) {
+		/*List<Ponudjac> ponudjaci = ponudjacSkladiste.findByRestoran(restoran);
+		if(ponudjaci == null)
+			ponudjaci = new ArrayList<>();
+		
+		ponudjaci.add(ponudjac);
+		*/
+		restoran.getPonudjac().add(ponudjac);
+		restoranSkladiste.save(restoran);
+	}
+
+	@Override
+	public Ponudjac save(Ponudjac ponudjac) {
+		return ponudjacSkladiste.save(ponudjac);
+	}
+	
+	@Override
+	public void izbrisiPiceUPorudzbini(Long id) {
+		piceUPorudzbiniSkladiste.deleteById(id);
+	}
+
+	@Override
+	public void izbrisiJeloUPorudzbini(Long id) {
+		jeloUPorudzbiniSkladiste.deleteById(id);
 	}
 
 }

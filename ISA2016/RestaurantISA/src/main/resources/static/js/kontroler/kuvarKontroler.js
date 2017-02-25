@@ -1,6 +1,6 @@
 var kuvarKontroler = angular.module('restoranApp.kuvarKontroler', []);
 
-kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStranaServis, izmeniKuvarServis){
+kuvarKontroler.controller('kuvarCtrl', function($scope, $location, logovanjeServis, gostGlavnaStranaServis, izmeniKuvarServis){
 	
 	$scope.osveziPrikazZaIzmenu = function (kuvar){
 		$scope.imeIzmena = kuvar.ime;
@@ -22,6 +22,10 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStr
 		    	return $scope.tab === tabNum;
 		    };
 			
+		    
+		    // KLIKNUO NA DETALJI PRIHVACENE
+		    
+		    
 			$scope.setTab(0);
 			// za izmeenu podataka
 			$scope.izmeniKuvaraPodaci = function(){
@@ -34,7 +38,12 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStr
 				var str = JSON.stringify(gost);
 				izmeniKuvarServis.izmeni(str).success(function(data) {
 						//TODO: doznaka i clear
-						$location.path('/kuvar');
+					logovanjeServis.ulogujKorisnika(data).success(function(data) {
+						$scope.ulogovanKonobar = data;
+						$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
+
+						});	
+					$location.path('/kuvar');
 					}).error(function(data) {
 						alert("Neuspesne izmene!");
 					});
@@ -45,12 +54,16 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStr
 				if($scope.novaLozinka == $scope.novaLozinkaPotvrda){
 					var gost = {
 						id : $scope.ulogovanKuvar.id,
+						sifraStara : $scope.staraLozinka,
 						sifra : $scope.novaLozinkaPotvrda
 					}
 					var str = JSON.stringify(gost);
 					
 					izmeniKuvarServis.izmeniLozinku(str).success(function (data){
-						//TODO: doznaka i clear
+						$scope.staraLozinka = "";
+						$scope.novaLozinka = "";
+						$scope.novaLozinkaPotvrda = "";
+						alert("Uspesno promenjena lozinka");
 						$location.path('/kuvar');
 					}).error(function (data){
 						alert("Neuspesne izmene!");
@@ -84,25 +97,6 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStr
 				alert("Neuspelo ucitavanje porudzbina");
 			});
 			
-			// Kliknuce na detalji
-			$scope.jelaKliknutePorudzbine = [];
-			$scope.kliknuoNaDetalji = function (porudzbina){
-				var porKur = {
-					porudzbina: porudzbina,
-					kuvar: $scope.ulogovanKuvar
-				}
-				
-				izmeniKuvarServis.ucitajJelaPorudzbine(porKur).success(function(data){
-					$scope.picaKliknutePorudzbine = data;
-					if ($scope.show == porudzbina.id)
-						$scope.show = -1;
-					else
-						$scope.show = porudzbina.id;
-					
-				}).error(function (data){
-					alert("Neuspelo ucitavanje detalja");
-				});
-			}
 			
 			// Kliknuce na detalji moguce
 			$scope.jelaKliknuteMogucePorudzbine = [];
@@ -123,6 +117,27 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, gostGlavnaStr
 					alert("Neuspelo ucitavanje detalja");
 				});
 			}
+			
+			// Kliknuce na detalji prihvacene
+			$scope.jelaKliknutePrihvacenePorudzbine = [];
+			$scope.kliknuoNaDetaljiPrihvacene = function (porudzbina){
+				var porKur = {
+					porudzbina: porudzbina,
+					kuvar: $scope.ulogovanKuvar
+				}
+				
+				izmeniKuvarServis.ucitajJelaPorudzbine(porKur).success(function(data){
+					$scope.picaKliknutePrihvacenePorudzbine = data;
+					if ($scope.showPrihvacene == porudzbina.id)
+						$scope.showPrihvacene = -1;
+					else
+						$scope.showPrihvacene = porudzbina.id;
+					
+				}).error(function (data){
+					alert("Neuspelo ucitavanje detalja");
+				});
+			}
+			
 			
 			/// Kliknuo prihvati
 			$scope.prihvati = function (porudzbina){
