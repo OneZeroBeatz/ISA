@@ -12,13 +12,19 @@ import com.isa.model.Jelo;
 import com.isa.model.Pice;
 import com.isa.model.Restoran;
 import com.isa.model.Sto;
+import com.isa.model.korisnici.Konobar;
+import com.isa.model.korisnici.Kuvar;
 import com.isa.model.korisnici.Ponudjac;
+import com.isa.model.korisnici.Sanker;
 import com.isa.repository.JeloSkladiste;
 import com.isa.repository.JeloUPorudzbiniSkladiste;
+import com.isa.repository.KonobarSkladiste;
+import com.isa.repository.KuvarSkladiste;
 import com.isa.repository.PiceSkladiste;
-import com.isa.repository.PonudjacSkladiste;
 import com.isa.repository.PiceUPorudzbiniSkladiste;
+import com.isa.repository.PonudjacSkladiste;
 import com.isa.repository.RestoranSkladiste;
+import com.isa.repository.SankerSkladiste;
 import com.isa.repository.StoSkladiste;
 
 @Service
@@ -32,10 +38,16 @@ public class RestoranServisImpl implements RestoranServis{
 	
 	@Autowired
 	PiceSkladiste piceSkladiste;
+
+	@Autowired
+	KuvarSkladiste kuvarSkladiste;
 	
 	@Autowired
 	StoSkladiste stoSkladiste;
 
+	@Autowired
+	KonobarSkladiste konobarSkladiste;
+	
 	@Autowired
 	JeloUPorudzbiniSkladiste jeloUPorudzbiniSkladiste;
 	
@@ -44,6 +56,12 @@ public class RestoranServisImpl implements RestoranServis{
 	
 	@Autowired
 	PonudjacSkladiste ponudjacSkladiste;
+	
+	@Autowired
+	SankerSkladiste sankerSkladiste;
+	
+	
+	
 	
 	@Override
 	public List<Restoran> findAll() {
@@ -164,6 +182,21 @@ public class RestoranServisImpl implements RestoranServis{
 	@Override
 	public void izbrisiJeloUPorudzbini(Long id) {
 		jeloUPorudzbiniSkladiste.deleteById(id);
+	}
+
+	@Override
+	public List<Konobar> izlistajKonobare(Restoran restoran) {
+		return konobarSkladiste.findByRestoran(restoran);
+	}
+
+	@Override
+	public List<Kuvar> izlistajKuvare(Restoran restoran) {
+		return kuvarSkladiste.findByRestoran(restoran);
+	}
+
+	@Override
+	public List<Sanker> izlistajSankere(Restoran restoran) {
+		return sankerSkladiste.findByRestoran(restoran);
 	}
 
 }

@@ -61,6 +61,12 @@ konobarServis.factory('izmeniKonobarServis', function($http) {
 	temp.izmeniPorudzbinu = function(izmeniPorudzbinuPrikaz){
 		return $http.post('/konobarKontroler/izmeniPorudzbinu', izmeniPorudzbinuPrikaz);
 	}	
+	
+	temp.ucitajKonobareRestorana = function(konobar){
+		return $http.post('/konobarKontroler/ucitajKonobareRestorana', konobar);
+	}	
+	
+	
 	return temp;
 	
 })

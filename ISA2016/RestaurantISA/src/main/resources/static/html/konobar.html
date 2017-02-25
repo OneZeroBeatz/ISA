@@ -18,6 +18,17 @@
 				<h2>Raspored rada</h2>
 				<table>
 					<tr>
+						<td>
+							Odaberi konobara:
+						</td>
+						<td>
+							<select ng-model = "selektovaniKonobar" ng-options = "x.ime for x in konobariRestorana" ng-change = "promenjenKonobar()"></select>
+						</td>
+						
+					</tr>
+				</table>
+				<table>
+					<tr>
 						<th style = "width:70px">Dan</th>
 						<th style = "width:90px">Datum</th>
 						
@@ -119,7 +130,19 @@
 
 
 			<div ng-show="isSet(1)">
-				<h2>Raspored stolova</h2>
+				<div>
+					<h2>Raspored stolova:</h2>
+					<table border="1">
+						<tr ng-repeat="n1 in brRedova">
+							<td ng-repeat="n2 in brKolona">
+								<div ng-show = "jeSto(n1*brojKolona+n2) == true" style = "background-color:black">
+									{{n1}}-{{n2}} {{jeSto(n1*brojKolona+n2)}}
+								</div>					
+								<!--<button ng-click="prikaziInformacije(n1*brojKolona+n2, restoran)">{{n1}}-{{n2}}</button>-->
+							</td>
+						</tr>
+					</table>
+				</div>
 			</div>
 
 			<div ng-show="isSet(2)">

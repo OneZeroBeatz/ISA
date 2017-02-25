@@ -21,7 +21,6 @@ public class Konobar extends Korisnik{
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "konobar")
 	private Set<Porudzbina> porudzbine;
-
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "konobar")
 	private Set<Porudzbina> porudzbine1;

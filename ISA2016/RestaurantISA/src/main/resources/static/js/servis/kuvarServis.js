@@ -32,7 +32,9 @@ kuvarServis.factory('izmeniKuvarServis', function($http) {
 		return $http.post('/kuvarKontroler/zavrsiPorudzbinu', porKuv);
 	}
 	
-	
+	temp.ucitajKuvareRestorana = function(kuvar){
+		return $http.post('/kuvarKontroler/ucitajKuvareRestorana', kuvar);
+	}	
 
 	
 	return temp;

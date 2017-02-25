@@ -1,6 +1,6 @@
 var konobarKontroler = angular.module('restoranApp.konobarKontroler', []);
 
-konobarKontroler.controller('konobarCtrl', function($scope, $location, logovanjeServis, gostGlavnaStranaServis, izmeniKonobarServis){
+konobarKontroler.controller('konobarCtrl', function($scope, $location, menRestoranaServisS, logovanjeServis, gostGlavnaStranaServis, izmeniKonobarServis){
 	
 	$scope.osveziPrikazZaIzmenu = function (konobar){
 		$scope.imeIzmena = konobar.ime;
@@ -9,6 +9,7 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, logovanje
 		
 	}
 	
+
 	$scope.vratiNaDodavanje = function(){
 		$scope.izmena = false;
 		$scope.smeDaBriseJela = true;
@@ -58,6 +59,7 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, logovanje
 					}).error(function (data){
 						alert("Neuspelo ucitavanje porudzbina");
 					});
+
 					
 					// Kliknuce na zavrsi i kreiraj racun
 					$scope.zavrsiIKreiraj = function (item){
@@ -110,7 +112,8 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, logovanje
 							alert("Nemoguce kreirati racun");
 						});
 							
-					}					
+					}		
+					
 					// Kliknuce na detalji
 					$scope.jelaKliknutePorudzbine = [];
 					$scope.picaKliknutePorudzbine = [];
@@ -157,6 +160,10 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, logovanje
 		    		$scope.dodataJela.push(jelo1);
 		    	}
 	    	}
+		    
+		    
+
+
 	    
 		    $scope.dodajPice = function (pice){
 		    	var pice1 = {
@@ -446,7 +453,56 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, logovanje
 				$scope.datumSubota.setDate($scope.danasnjiDatum.getDate() + 6);
 				$scope.setuj();
 			} 
+			// PROMENJEN KONOBAR
+		    $scope.promenjenKonobar = function(){
+		    	$scope.odabranKonobar = $scope.selektovaniKonobar;
+		    	alert($scope.selektovaniKonobar.ime);
+		    }
 			
+			// UCITAJ KONOBARE RESTORANA
+			$scope.konobariRestorana = [];
+			izmeniKonobarServis.ucitajKonobareRestorana($scope.ulogovanKonobar).success(function(data) {
+
+				$scope.konobariRestorana = data;
+				}).error(function (data){
+				alert("Neuspelo ucitavanje konobara");
+			});
+			
+			/// UCITAJ BROJ REDOVA
+			$scope.brRedova = [];
+			$scope.brKolona = [];
+			if($scope.ulogovanKonobar.restoran.brojredova != null && $scope.ulogovanKonobar.restoran.brojkolona != null){
+				menRestoranaServisS.izlistajStolove($scope.ulogovanKonobar.restoran).success(function(data) {
+					$scope.stolovi = data;
+					$scope.jeSto = function (oznaka){
+						for (var i = 0; i < $scope.stolovi.length; i++){
+							if ($scope.stolovi[i].oznaka === oznaka){
+								if($scope.stolovi[i].segment != "o"){
+									return false;
+								}
+							}
+						}
+						return true;
+						
+					}
+					
+				}).error(function(data) {
+					alert("Nema stolova...!");
+				});
+				$scope.brojRedova = $scope.ulogovanKonobar.restoran.brojredova;
+				$scope.brojKolona = $scope.ulogovanKonobar.restoran.brojkolona;
+				
+				for(i=0; i<$scope.brojRedova; i++){
+					$scope.brRedova.push(i);
+				}
+				for(i=0; i<$scope.brojKolona; i++){
+					$scope.brKolona.push(i);
+				}
+				
+
+			}
+			
+
 			
 			// za izmenu lozinke
 			$scope.izmeniLozinku = function (){
@@ -471,12 +527,7 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, logovanje
 					alert ("Ne podudaraju se nove lozinke")
 				}
 			}
-			
 
-			
-			
-			
-			
 		}else{
 			alert("Morate se prvo ulogovati");
 			window.location.href = "logovanje.html";

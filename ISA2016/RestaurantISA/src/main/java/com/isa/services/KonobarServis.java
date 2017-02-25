@@ -19,7 +19,7 @@ import com.isa.model.korisnici.Korisnik;
 
 public interface KonobarServis {
 
-	List<Korisnik> findAll();
+	List<Konobar> findAll();
 
     Korisnik findOne(Long id);
 
@@ -54,5 +54,6 @@ public interface KonobarServis {
 	Page<PiceUPorudzbini> izlistajPicaPorudzbineIPica(Porudzbina porudzbina, Pice pice, Pageable pageable);
 
 	void saveRacun(RacunKonobar racun);
+
 
 }
