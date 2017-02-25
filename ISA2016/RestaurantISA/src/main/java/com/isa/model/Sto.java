@@ -3,14 +3,20 @@ package com.isa.model;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.isa.model.korisnici.Ponudjac;
 
 @Entity
 @Table(name = "sto")
@@ -38,10 +44,9 @@ public class Sto implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sto")
 	private Set<Porudzbina> porudzbine;
 	
-
-	
-	
-	//private Konobar konobar;
+	@ManyToMany(targetEntity = SmenaUDanu.class, cascade = {CascadeType.ALL})
+	@JoinTable(name="smenadan_sto", joinColumns = {@JoinColumn(name = "sto_id")}, inverseJoinColumns = {@JoinColumn(name = "smenaudanu_id")})
+	private Set<SmenaUDanu> smenaudanu;
 	
 	public Sto() {
 

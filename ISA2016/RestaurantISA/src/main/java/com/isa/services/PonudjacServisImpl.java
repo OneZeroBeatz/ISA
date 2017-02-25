@@ -81,4 +81,30 @@ public class PonudjacServisImpl implements PonudjacServis{
 		}
 		return null;
 	}
+
+	@Override
+	public void dodajPonudu(Ponuda ponuda) {
+		ponudaSkladiste.save(ponuda);
+	}
+
+	@Override
+	public List<Ponuda> izlistajPorudzbineSaPonude(Ponudjac ponudjac) {
+		List<Ponuda> ponude = ponudaSkladiste.findByPonudjac(ponudjac);
+		for(Ponuda ponuda : ponude){
+			if(!ponuda.getPorudzbinamenadzer().getAktivna() || Calendar.getInstance().getTime().after(ponuda.getPorudzbinamenadzer().getAktivnoDo())){
+				ponude.remove(ponuda);
+			}
+		}
+		
+		return ponude;
+	}
+
+	@Override
+	public void izmenaPonude(Ponuda ponuda) {
+		Ponuda pon = ponudaSkladiste.findOne(ponuda.getId());
+		pon.setCena(ponuda.getCena());
+		pon.setGarancija(ponuda.getGarancija());
+		pon.setRokisporuke(ponuda.getRokisporuke());
+		ponudaSkladiste.save(pon);
+	}
 }

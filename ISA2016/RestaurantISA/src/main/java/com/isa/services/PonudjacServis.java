@@ -23,4 +23,10 @@ public interface PonudjacServis {
 	Page<Ponuda> izlistajPonude(Ponudjac ponudjac, Pageable pageable);
 
 	List<PorudzbinaMenadzer> izlistajPorudzbineBezPonude(Ponudjac ponudjac);
+
+	void dodajPonudu(Ponuda ponuda);
+
+	List<Ponuda> izlistajPorudzbineSaPonude(Ponudjac ponudjac);
+
+	void izmenaPonude(Ponuda ponuda);
 }

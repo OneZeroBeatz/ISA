@@ -70,6 +70,9 @@ public class Restoran implements Serializable {
 	@JoinTable(name="restoran_ponudjac", joinColumns = {@JoinColumn(name = "restoran_id")}, inverseJoinColumns = {@JoinColumn(name = "ponudjac_id")})
 	private Set<Ponudjac> ponudjac;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restoran")
+	private Set<SmenaUDanu> smenaudanu;
+	
 	public Restoran() {
 
 	}
