@@ -7,12 +7,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.isa.model.ZahtevZaPrijateljstvo;
 import com.isa.model.korisnici.Gost;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.Prijatelj;
 import com.isa.pomocni.GostPrijatelj;
 import com.isa.repository.GostSkladiste;
 import com.isa.repository.PrijateljSkladiste;
+import com.isa.repository.ZahteviZaPrijSkladiste;
 
 @Service
 public class GostServisImp implements GostServis {
@@ -22,6 +24,9 @@ public class GostServisImp implements GostServis {
 	
 	@Autowired
 	private PrijateljSkladiste prijSkladiste;
+	
+	@Autowired
+	private ZahteviZaPrijSkladiste zahtevSkladiste;
 	
 	@Override
 	public List<Korisnik> findAll() {
@@ -69,6 +74,37 @@ public class GostServisImp implements GostServis {
 	public void delete(Long id) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Page<ZahtevZaPrijateljstvo> izlistajZahteveZaPrij(Gost originalGost, Pageable pageable) {
+		try{
+			return zahtevSkladiste.findByEmailGosta(originalGost.getEmail(), pageable);
+		}catch(Exception ex){
+			return null;			
+		}
+	}
+
+	@Override
+	public void addPrijateljstvo(GostPrijatelj gostPrij) {
+		try{
+			Prijatelj prij1 = new Prijatelj(gostPrij.getGost().getEmail(), gostPrij.getPrijatelj().getEmail());
+			Prijatelj prij2 = new Prijatelj(gostPrij.getPrijatelj().getEmail(), gostPrij.getGost().getEmail());
+			prijSkladiste.save(prij1);
+			prijSkladiste.save(prij2);
+			//prijSkladiste.addGostPrij(gostPrij.getGost().getEmail(), gostPrij.getPrijatelj().getEmail());
+		}catch(Exception ex){
+			
+		}
+	}
+
+	@Override
+	public void removeZahtevZaPrijateljstvo(GostPrijatelj gostPrij) {
+		try{
+			zahtevSkladiste.deleteZahtev(gostPrij.getGost().getEmail(), gostPrij.getPrijatelj().getEmail());
+		}catch(Exception ex){
+			
+		}
 	}
 
 }

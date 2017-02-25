@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.isa.model.ZahtevZaPrijateljstvo;
 import com.isa.model.korisnici.Gost;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.Prijatelj;
@@ -61,10 +62,36 @@ public class GostKontroler {
 		return new ResponseEntity<List<Korisnik>>(korisnici, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/izlistajZahteveZaPrijateljstvo", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Korisnik>> izlistajZahteveZaPrijateljstvo(@RequestBody Gost gost) {
+
+		Gost originalGost = (Gost) gostServis.findOne(gost.getId());
+		
+		Page<ZahtevZaPrijateljstvo> prijatelji = gostServis.izlistajZahteveZaPrij(originalGost, new PageRequest(0, 10));
+		
+		List<Korisnik> korisnici = new ArrayList<>();
+		
+		Iterator<ZahtevZaPrijateljstvo> itr = prijatelji.iterator();
+		
+		while(itr.hasNext()){
+			korisnici.add(gostServis.findByEmail(itr.next().getEmailPrijatelj())); 
+		}
+		
+		return new ResponseEntity<List<Korisnik>>(korisnici, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/ukloniPrijatelja", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void izbrisiJelo(@RequestBody GostPrijatelj gostPrij) {
+	public void izbrisiPrijatelja(@RequestBody GostPrijatelj gostPrij) {
 		
 		gostServis.delete(gostPrij);
 	}
+	
+	@RequestMapping(value = "/prihvatiZahtev", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void prihvatiZahtev(@RequestBody GostPrijatelj gostPrij) {
+		
+		gostServis.addPrijateljstvo(gostPrij);
+		gostServis.removeZahtevZaPrijateljstvo(gostPrij);	
+	}
+	
 
 }

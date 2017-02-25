@@ -20,13 +20,22 @@ gostServis.factory('izmeniGostaServis', function($http) {
 		return $http.post('/gostKontroler/izmeniGosta', gost);
 	}
 	
+	temp.izlistajZahteveZaPrij = function(gost) {
+		return $http.post('/gostKontroler/izlistajZahteveZaPrijateljstvo', gost);
+	}
+	
 	temp.izlistajPrijateljeNeprijatelje = function(gost) {
 		return $http.post('/gostKontroler/izlistajPrijateljeNeprijatelje', gost);
 	}
 	
 	temp.ukloniPrijatelja = function(id) {
-		return $http.post('/gostKontroler/ukloniPrijatelja', id)
+		return $http.post('/gostKontroler/ukloniPrijatelja', id);
 	}
+	
+	temp.prihvatiZahtev = function(id) {
+		return $http.post('/gostKontroler/prihvatiZahtev', id);
+	}
+	
 	
 	return temp;	
 })

@@ -19,10 +19,17 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 				
 				var str = JSON.stringify(gost);
 				
+				izmeniGostaServis.izlistajZahteveZaPrij(gost).success(function(data){
+					$scope.zahteviZaPrijateljstvo = data;
+					console.log(data);
+				}).error(function(data) {
+				});
+				
 				izmeniGostaServis.izlistajPrijateljeNeprijatelje(gost).success(function(data){
 					$scope.prijateljiNeprijatelji = data;
 				}).error(function(data) {
 				});
+				
 				
 			}else{
 				alert("Niko nije ulogovan");
@@ -68,6 +75,25 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 						
 						//var str = JSON.stringify(patameter);
 						izmeniGostaServis.ukloniPrijatelja(parameter).success(function(data) {
+							//RADI!
+						}).error(function(data) {
+							
+						});
+				}
+			});
+		}
+		
+		$scope.prihvatiZahtev = function(prij){
+
+			gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
+				if(data != ""){
+					var parameter = {
+							gost: data,
+							prijatelj: prij 
+						}
+						
+						//var str = JSON.stringify(patameter);
+						izmeniGostaServis.prihvatiZahtev(parameter).success(function(data) {
 							//RADI!
 						}).error(function(data) {
 							

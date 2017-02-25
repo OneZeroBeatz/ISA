@@ -30,4 +30,11 @@ public interface PrijateljSkladiste extends JpaRepository<Prijatelj, Long> {
 	@Transactional
 	@Query("delete from Prijatelj where email_gosta = :pEmail and email_prijatelja = :gEmail")
 	void deletePrijGost(@Param("pEmail") String pEmail, @Param("gEmail") String gEmail);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "insert into Prijatelj (email_gosta, email_prijatelja) values (:gEmail, :pEmail)", nativeQuery = true)
+	void addGostPrij(@Param("gEmail") String gEmail, @Param("pEmail") String pEmail);
+	
+	
 }

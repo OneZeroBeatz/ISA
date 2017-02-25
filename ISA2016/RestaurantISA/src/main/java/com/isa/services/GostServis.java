@@ -3,8 +3,10 @@ package com.isa.services;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import com.isa.model.ZahtevZaPrijateljstvo;
 import com.isa.model.korisnici.Gost;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.Prijatelj;
@@ -26,5 +28,11 @@ public interface GostServis {
     Page<Prijatelj> izlistajPrijatelje(Gost gost, Pageable pageable);
 
 	void delete(GostPrijatelj gostPrij);
+
+	Page<ZahtevZaPrijateljstvo> izlistajZahteveZaPrij(Gost originalGost, Pageable pageable);
+	
+	void addPrijateljstvo(GostPrijatelj gostPrij);
+	
+	void removeZahtevZaPrijateljstvo(GostPrijatelj gostPrij);
     
 }
