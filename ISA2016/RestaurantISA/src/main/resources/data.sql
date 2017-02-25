@@ -19,13 +19,13 @@ insert into lista_prijatelja(email_gosta, email_prijatelja) values ('pera@pera.c
 insert into lista_prijatelja(email_gosta, email_prijatelja) values ('pera@pera.com', 'djura@djura.com')
 insert into lista_prijatelja(email_gosta, email_prijatelja) values ('djura@djura.com', 'verka@verka.com')
 
-insert into ponuda(cena, rok_isporuke, garancija, ponudjac_id) values (50, 5, 'garan123', (select id from korisnik where sifra='b' and email='b'))
-insert into ponuda(cena, rok_isporuke, garancija, ponudjac_id) values (25, 3, 'garan1', (select id from korisnik where sifra='b' and email='b'))
+--insert into ponuda(cena, rok_isporuke, garancija, ponudjac_id) values (50, 5, 'garan123', (select id from korisnik where sifra='b' and email='b'))
+--insert into ponuda(cena, rok_isporuke, garancija, ponudjac_id) values (25, 3, 'garan1', (select id from korisnik where sifra='b' and email='b'))
 
-insert into porudzbina_menadzer(od, do, menadzerrestorana_id) values ('2015-01-01', '2016-01-03', (select id from korisnik where sifra='d' and email='d'))
-insert into porudzbina_menadzer(od, do, menadzerrestorana_id) values ('2005-06-03', '2016-08-03', (select id from korisnik where sifra='d' and email='d'))
+--insert into porudzbina_menadzer(od, do, menadzerrestorana_id) values ('2015-01-01', '2016-01-03', (select id from korisnik where sifra='d' and email='d'))
+--insert into porudzbina_menadzer(od, do, menadzerrestorana_id) values ('2005-06-03', '2016-08-03', (select id from korisnik where sifra='d' and email='d'))
 
-insert into namirnica(naziv, porudzbinamenadzer_id) values ('Nam 1', (select id from porudzbina_menadzer where od='2015-01-01' and do='2016-01-03'))
+--insert into namirnica(naziv, porudzbinamenadzer_id) values ('Nam 1', (select id from porudzbina_menadzer where od='2015-01-01' and do='2016-01-03'))
 --insert into namirnica(naziv, porudzbinamenadzer_id) values ('Nam 2', (select id from porudzbina_menadzer where menadzerrestorana_id in (select id from korisnik where sifra='d' and email='d')))
 --insert into pice(naziv, porudzbinamenadzer_id) values ('Pice 1', (select id from porudzbina_menadzer where od='2015-01-01' and do='2016-01-03'))
 
@@ -58,23 +58,23 @@ insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values ('Sano', 'Sankic', 'sa', 'SNK','sa', 'SANKER', (select id from restoran where naziv='Restoran 1'))
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values ('Sanos', 'Sas', 'ss', 'SNK','ss', 'SANKER', (select id from restoran where naziv='Restoran 1'))
 
-insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (11, 'segment 1', false, 6, (select id from restoran where naziv='Restoran 1'))
-insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (12, 'segment 2', false, 6, (select id from restoran where naziv='Restoran 1'))
-insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (13, 'segment 3', false, 6, (select id from restoran where naziv='Restoran 1'))
-insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (13, 'segment 4', false, 6, (select id from restoran where naziv='Restoran 1'))
-insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (12, 'segment 5', false, 6, (select id from restoran where naziv='Restoran 1'))
-insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (21, 'segment 6', false, 6, (select id from restoran where naziv='Restoran 1'))
-
-insert into porudzbina(vremeprimanja, vremenaplate, restoran_id, spremna_jela,spremna_pica, sto_id) values ("2014-01-12 11:39:11", "2014-01-12 11:42:11", (select id from restoran where naziv='Restoran 1'), false, false, 1)
-insert into porudzbina(vremeprimanja, vremenaplate, restoran_id, spremna_jela,spremna_pica, sto_id) values ("2014-02-12 11:49:34", "2014-01-12 11:45:12", (select id from restoran where naziv='Restoran 1'), false, false, 2)
-
-insert into piceuporudzbini(kolicina, porudzbina_id, pice_id) values (2,1,1)
-insert into piceuporudzbini(kolicina, porudzbina_id, pice_id) values (3,2,1)
-insert into piceuporudzbini(kolicina, porudzbina_id, pice_id) values (8,2,2)
-
-insert into jelouporudzbini(kolicina, porudzbina_id, jelo_id, spremno) values (1,1,1, false)
-insert into jelouporudzbini(kolicina, porudzbina_id, jelo_id, spremno) values (2,1,2, false)
-insert into jelouporudzbini(kolicina, porudzbina_id, jelo_id, spremno) values (3,1,3, false)
-insert into jelouporudzbini(kolicina, porudzbina_id, jelo_id, spremno) values (4,2,4, false)
-insert into jelouporudzbini(kolicina, porudzbina_id, jelo_id, spremno) values (5,2,5, false)
-insert into jelouporudzbini(kolicina, porudzbina_id, jelo_id, spremno) values (6,2,6, false)
+--insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (11, 'segment 1', false, 6, (select id from restoran where naziv='Restoran 1'))
+--insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (12, 'segment 2', false, 6, (select id from restoran where naziv='Restoran 1'))
+--insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (13, 'segment 3', false, 6, (select id from restoran where naziv='Restoran 1'))
+--insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (13, 'segment 4', false, 6, (select id from restoran where naziv='Restoran 1'))
+--insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (12, 'segment 5', false, 6, (select id from restoran where naziv='Restoran 1'))
+--insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (21, 'segment 6', false, 6, (select id from restoran where naziv='Restoran 1'))
+--
+--insert into porudzbina(vremeprimanja, vremenaplate, restoran_id, spremna_jela,spremna_pica, sto_id) values ("2014-01-12 11:39:11", "2014-01-12 11:42:11", (select id from restoran where naziv='Restoran 1'), false, false, 1)
+--insert into porudzbina(vremeprimanja, vremenaplate, restoran_id, spremna_jela,spremna_pica, sto_id) values ("2014-02-12 11:49:34", "2014-01-12 11:45:12", (select id from restoran where naziv='Restoran 1'), false, false, 2)
+--
+--insert into piceuporudzbini(kolicina, porudzbina_id, pice_id) values (2,1,1)
+--insert into piceuporudzbini(kolicina, porudzbina_id, pice_id) values (3,2,1)
+--insert into piceuporudzbini(kolicina, porudzbina_id, pice_id) values (8,2,2)
+--
+--insert into jelouporudzbini(kolicina, porudzbina_id, jelo_id, spremno) values (1,1,1, false)
+--insert into jelouporudzbini(kolicina, porudzbina_id, jelo_id, spremno) values (2,1,2, false)
+--insert into jelouporudzbini(kolicina, porudzbina_id, jelo_id, spremno) values (3,1,3, false)
+--insert into jelouporudzbini(kolicina, porudzbina_id, jelo_id, spremno) values (4,2,4, false)
+--insert into jelouporudzbini(kolicina, porudzbina_id, jelo_id, spremno) values (5,2,5, false)
+--insert into jelouporudzbini(kolicina, porudzbina_id, jelo_id, spremno) values (6,2,6, false)

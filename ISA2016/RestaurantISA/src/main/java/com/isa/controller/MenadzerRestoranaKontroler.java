@@ -21,7 +21,10 @@ import com.isa.model.PorudzbinaMenadzer;
 import com.isa.model.Restoran;
 import com.isa.model.Sto;
 import com.isa.model.korisnici.MenadzerRestorana;
+import com.isa.model.korisnici.Ponudjac;
+import com.isa.model.korisnici.TipKorisnika;
 import com.isa.pomocni.ListaStavki;
+import com.isa.pomocni.RestoranPonudjac;
 import com.isa.services.MenadzerRestoranaServis;
 import com.isa.services.RestoranServis;
 
@@ -123,9 +126,7 @@ public class MenadzerRestoranaKontroler {
 	
 	@RequestMapping(value = "/napraviStolove", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Sto>> napraviStolove(@RequestBody int[] oznakeStolova) {	
-		System.out.println(oznakeStolova[0]);
 		Restoran restoran = restoranServirs.findOne((long)oznakeStolova[0]);
-		System.out.println(restoran);
 		ArrayList<Integer> oznake = new ArrayList<>();
 		for(int i=1; i<oznakeStolova.length; i++){
 			oznake.add(oznakeStolova[i]);
@@ -134,15 +135,15 @@ public class MenadzerRestoranaKontroler {
 		
 		return new ResponseEntity<List<Sto>>(stolovi.getContent(), HttpStatus.OK);
 	}
-	/*
+	
 	@RequestMapping(value = "/izlistajStolove", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Sto>> izlistajStolove(@RequestBody Restoran restoran) {
 		
-		Page<Sto> stolovi = restoranServirs.izlistajStolove(restoran, new PageRequest(0, 10));
+		Page<Sto> stolovi = restoranServirs.izlistajStolove(restoran, new PageRequest(0, 100));
 		
 		return new ResponseEntity<List<Sto>>(stolovi.getContent(), HttpStatus.OK);
 	}
-	*/
+	
 	@RequestMapping(value = "/izlistajSto", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Sto> izlistajSto(@RequestBody Sto sto) {	
 		Sto s = restoranServirs.izlistajSto(sto);	
@@ -169,7 +170,40 @@ public class MenadzerRestoranaKontroler {
 	public void dodajStavke(@RequestBody ListaStavki listaStavki) {	
 	
 		System.out.println(listaStavki);
+		listaStavki.getPorudzbinaMenadzer().setAktivna(true);
 		menadzerRestoranaServis.dodajPorudzbinu(listaStavki.getPorudzbinaMenadzer(), listaStavki.getStavke());
+
+	}
+	
+	@RequestMapping(value = "/brojeviRedovaIKolona", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void brojeviRedovaIKolona(@RequestBody Restoran restoran) {	
+	
+		Restoran rest = restoranServirs.findOne(restoran.getId());
+		rest.setBrojredova(restoran.getBrojredova());
+		rest.setBrojkolona(restoran.getBrojkolona());
+		restoranServirs.dodajRedoveIKolone(rest);
+
+	}
+	
+	@RequestMapping(value = "/izlistajDostupnePonudjace", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Ponudjac>> izlistajDostupnePonudjace(@RequestBody Restoran restoran) {	
+	
+		List<Ponudjac> ponudjac = restoranServirs.izlistajPonudjaceVanRestorana(restoran);
+		
+		return new ResponseEntity<List<Ponudjac>>(ponudjac, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/dodajPonudjaca", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void dodajPonudjaca(@RequestBody RestoranPonudjac restPon) {	
+		restoranServirs.dodajPonudjacaURestoran(restPon.getRestoran(), restPon.getPonudjac());
+
+	}
+	
+	@RequestMapping(value = "/registrujIDodajPonudjaca", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void registrujIDodajPonudjaca(@RequestBody RestoranPonudjac restPon) {	
+		restPon.getPonudjac().setTipKorisnika(TipKorisnika.PONUDJAC);		// TODO: Aca ~ proveriti..
+		Ponudjac ponudjac = restoranServirs.save(restPon.getPonudjac());
+		restoranServirs.dodajPonudjacaURestoran(restPon.getRestoran(), ponudjac);
 
 	}
 }

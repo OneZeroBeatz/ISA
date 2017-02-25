@@ -174,7 +174,23 @@
 			</div>
 
 			<div ng-show="isSet(2)">
-				<h2>Dodaj ponudjaca</h2>
+				<!-- Prikazati sve ponudjace restorana... -->
+				<h2>Dodaj ponudjaca za svoj restoran</h2>
+				<!-- Napraviti pretragu po imenu, prezimenu, emailu -->
+				<table border="2px">
+					<tr>
+						<th>Ime</th>
+						<th>Prezime</th>
+						<th>Email</th>
+						<th></th>
+					</tr>
+					<tr ng-repeat="n1 in moguciPonudjaci">
+						<td>{{n1.ime}}</td>
+						<td>{{n1.prezime}}</td>
+						<td>{{n1.email}}</td>
+						<td><button ng-click="dodajPonudjaca(n1)">Dodaj</button></td>
+					<tr>
+				</table>
 				<table>
 					<tr>
 						<td>Ime:</td>
@@ -193,7 +209,7 @@
 						<td><input type=text ng-model="lozinkaPonudjaca"></td>
 					<tr>
 				</table>
-				<button ng-click="dodajPonudjaca()">Dodaj</button>
+				<button ng-click="registrujIDodajPonudjaca()">Registruj i dodaj</button>
 				
 				</br>
 				<h2>Moje ponude:</h2></br>

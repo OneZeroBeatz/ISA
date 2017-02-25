@@ -10,6 +10,37 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 			$scope.prezimeIzmena = data.prezime;
 			$scope.emailIzmena = data.email;
 			$scope.staraLozinka = data.sifra;
+			
+			
+			ponudjacServisS.izlistajPorudzbineBezPonude(data).success(function(data) {
+				$scope.porudzbineMen = data;
+				
+			}).error(function(data) {
+			});
+			
+			/*	//TODO: Kasnije
+			ponudjacServisS.izlistajPorudzbineSaPonudom(str).success(function(data) {
+				$scope.porudzbineMen = data;
+			}).error(function(data) {
+			});
+			*/
+			
+			$scope.prikaziDetalje = function(porudzbina){
+				ponudjacServisS.izlistajStavkePorudzbine(porudzbina).success(function(data) {
+					$scope.stavke = data;
+				}).error(function(data) {
+				});
+				
+				$scope.selektovanaPorudzbinaId = porudzbina.id;
+			}
+			
+			$scope.vidljivosPorudzbine = function(id){
+				return $scope.selektovanaPorudzbinaId === id;
+			}
+			
+			$scope.slanjePonude = function(porudzbina){
+				//ponudjacServisS.posaljiPonudu(porudzbina);
+			}
 		}else{
 			alert("Niko nije ulogovan");
 		}

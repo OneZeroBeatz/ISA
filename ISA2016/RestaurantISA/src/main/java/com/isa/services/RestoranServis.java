@@ -4,29 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import com.isa.model.Jelo;
 import com.isa.model.Pice;
 import com.isa.model.Restoran;
 import com.isa.model.Sto;
+import com.isa.model.korisnici.Ponudjac;
 
 public interface RestoranServis {
 
 	List<Restoran> findAll();
-	
+
 	Restoran findOne(Long id);
-	
+
 	Restoran save(Restoran restoran);
-	
+
 	void delete(Long id);
 
 	Page<Jelo> izlistajJelovnik(Restoran restoran, Pageable pageable);
 
 	Page<Pice> izlistajKartuPica(Restoran restoran, Pageable pageable);
 
-	Page<Sto> izlistajStolove (Restoran restoran, Pageable pageable);
+	Page<Sto> izlistajStolove(Restoran restoran, Pageable pageable);
 
 	void save(Jelo jelo);
 
@@ -40,6 +40,12 @@ public interface RestoranServis {
 
 	Sto izlistajSto(Sto sto);
 
+	void dodajRedoveIKolone(Restoran rest);
+
+	List<Ponudjac> izlistajPonudjaceVanRestorana(Restoran restoran);
+
+	Ponudjac save(Ponudjac ponudjac);
 	
-	
+	void dodajPonudjacaURestoran(Restoran restoran, Ponudjac ponudjac);
+
 }

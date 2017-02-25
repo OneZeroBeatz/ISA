@@ -18,19 +18,21 @@ public class Ponuda implements Serializable {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	@ManyToOne(optional = false)
 	private Ponudjac ponudjac;
+
+	@ManyToOne(optional = false)
+	private PorudzbinaMenadzer porudzbinamenadzer;
 
 	@Column(name = "cena")
 	private float cena;
 
-	@Column(name = "rokIsporuke")
-	private int rokIsporuke; // ako se misli na broj dana...
+	@Column(name = "rokisporuke")
+	private int rokisporuke; // ako se misli na broj dana...
 
 	@Column(name = "garancija")
 	private String garancija;
-	
 
 	public Ponuda() {
 
@@ -47,7 +49,7 @@ public class Ponuda implements Serializable {
 	public Ponudjac getPonudjac() {
 		return ponudjac;
 	}
-	
+
 	public float getCena() {
 		return cena;
 	}
@@ -56,12 +58,12 @@ public class Ponuda implements Serializable {
 		this.cena = cena;
 	}
 
-	public int getRokIsporuke() {
-		return rokIsporuke;
+	public int getRokisporuke() {
+		return rokisporuke;
 	}
 
-	public void setRokIsporuke(int rokIsporuke) {
-		this.rokIsporuke = rokIsporuke;
+	public void setRokisporuke(int rokisporuke) {
+		this.rokisporuke = rokisporuke;
 	}
 
 	public String getGarancija() {
@@ -70,6 +72,18 @@ public class Ponuda implements Serializable {
 
 	public void setGarancija(String garancija) {
 		this.garancija = garancija;
+	}
+
+	public PorudzbinaMenadzer getPorudzbinamenadzer() {
+		return porudzbinamenadzer;
+	}
+
+	public void setPorudzbinamenadzer(PorudzbinaMenadzer porudzbinamenadzer) {
+		this.porudzbinamenadzer = porudzbinamenadzer;
+	}
+
+	public void setPonudjac(Ponudjac ponudjac) {
+		this.ponudjac = ponudjac;
 	}
 
 }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.isa.model.Namirnica;
 import com.isa.model.PorudzbinaMenadzer;
+import com.isa.model.StavkaPorudzbineMenadzera;
 
 public interface PorudzbinaMenadzeraServis {
 
@@ -14,11 +15,13 @@ public interface PorudzbinaMenadzeraServis {
 	
 	PorudzbinaMenadzer findOne(Long id);
 	
-	PorudzbinaMenadzer save(PorudzbinaMenadzer ponudjac);
+	//PorudzbinaMenadzer save(PorudzbinaMenadzer ponudjac);
 	
 	void delete(Long id);
+
+	List<StavkaPorudzbineMenadzera> izlistajStavke(PorudzbinaMenadzer porudzbinaMenadzer);
 	
-	Page<Namirnica> izlistajNamirnice(PorudzbinaMenadzer ponudjac, Pageable pageable);
+	//Page<Namirnica> izlistajNamirnice(PorudzbinaMenadzer ponudjac, Pageable pageable);
 	
 	//Page<Pice> izlistajPica(PorudzbinaMenadzer ponudjac, Pageable pageable);
 	

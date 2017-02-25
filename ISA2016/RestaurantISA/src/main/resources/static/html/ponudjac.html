@@ -15,10 +15,47 @@
 			</div>
 
 			<div ng-show="isSet(0)">
-				<h2>Spisak porudzbine</h2>
+				<h2>Aktivne porudzbine</h2></br>
+				<div>
+					<h3>Niste poslali ponudu:</h3>
+					<ul>
+       					<li ng-repeat="por in porudzbineMen"> {{por.menadzerRestorana.restoran.naziv}}   {{por.aktivnoOd}} {{por.aktivnoDo}} <button ng-click="prikaziDetalje(por)">Detalji</button>
+       					<div ng-show="vidljivosPorudzbine(por.id)" ng-model="por.id">
+       						<h3>Sadrzaj porudzbine:</h3>
+							<table border="1px">
+								<tr>
+									<th>Naziv</th>
+									<th>Kolicina</th>
+								</tr>
+								<tr ng-repeat="stavka in stavke">
+									<td>{{stavka.naziv}}</td> <!-- Proveravati da li je pice ili namirnica, dodati i tip -->
+									<td>{{stavka.kolicina}}</td>
+								<tr>
+							</table>
+							<table>
+								<tr>
+									<td>Cena</td>
+									<td><input type=number ng-model="cenaPonude"></td>
+								<tr>
+								<tr>
+									<td>Rok isporuke</td>
+									<td><input type=number ng-model="rokIsporuke"></td>
+								<tr>
+								<tr>
+									<td>Garancija</td>
+									<td><input type=text ng-model="garancija"></td>
+								<tr>
+							</table>
+							<button ng-click="slanjePonude(por)">Posalji ponudu</button>
+       					</div>
+       					</li>
+    				</ul>
+    				<br><br>
+    				<h3>Poslali ste ponudu</h3>
+    				<!--Isto kao i gore, samo popuniti inpute... -->
+				</div>
 			</div>
-
-
+			
 			<div ng-show="isSet(1)">
 				<div>
 					<h2>Izmenite podatke:</h2>
@@ -59,19 +96,7 @@
 					</table>
 					<button ng-click="izmeniPonudjaca()">Sacuvaj lozinku</button>
 				</div>
-
-				<div>
-					<ul>
-       					<li ng-repeat="item in items"> {{item.cena}} {{item.rokIsporuke}} {{item.garancija}} <button ng-click="izmeniPonudu(item.id)">Izmeni</button>
-       					<div ng-show="isVisible(item.id)" ng-model="item.id">
-       						<h3>Ispis....</h3>
-       					</div>
-       					</li>
-    				</ul>
-				</div>
 			</div>
 		</div>
-
 	</div>
-
 </div>

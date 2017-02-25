@@ -24,7 +24,7 @@ public class Sto implements Serializable {
 	private int oznaka;
 	
 	@Column(name = "segment")
-	private String segemnt;
+	private String segment;
 	
 	@Column(name = "zauzetost")
 	private Boolean zauzet;
@@ -63,12 +63,12 @@ public class Sto implements Serializable {
 		this.oznaka = oznaka;
 	}
 	
-	public String getSegemnt() {
-		return segemnt;
+	public String getSegment() {
+		return segment;
 	}
 
-	public void setSegemnt(String segemnt) {
-		this.segemnt = segemnt;
+	public void setSegment(String segment) {
+		this.segment = segment;
 	}
 	
 	public Boolean getZauzet() {

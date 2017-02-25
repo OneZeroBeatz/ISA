@@ -2,8 +2,6 @@ package com.isa.controller;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.isa.model.korisnici.Gost;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.TipKorisnika;
-import com.isa.services.GostServisImp;
+import com.isa.services.GostServis;
 
 @Controller
 @SessionAttributes("ulogovanKorisnik")
@@ -27,7 +25,7 @@ import com.isa.services.GostServisImp;
 public class LogRegKontroler {
 
 	@Autowired
-	public GostServisImp servis;
+	public GostServis servis;
 	
 	private ModelAndView modelAndView;
 	

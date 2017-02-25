@@ -20,5 +20,5 @@ public interface MenadzerRestoranaSkladiste extends JpaRepository<MenadzerRestor
 	List<MenadzerRestorana> findById(Long id);
 	MenadzerRestorana save(MenadzerRestorana menadzerRestorana);
 	void delete(Long id);
-	//Restoran findByMenadzerrestorana(MenadzerRestorana menadzerRestorana);
+	List<MenadzerRestorana> findByRestoran(Restoran restoran);
 }
