@@ -12,8 +12,13 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 @Entity
 @Table(name = "korisnik")
+@Component
+@Scope("session")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="ctype", discriminatorType=DiscriminatorType.STRING)
 public class Korisnik{
@@ -30,6 +35,8 @@ public class Korisnik{
 	
 	@Column(name = "sifra")
 	private String sifra;
+	
+	private String sifraStara;
 	
 	@Column(name = "email")
 	private String email;
@@ -109,5 +116,13 @@ public class Korisnik{
 	public void setTipKorisnika(TipKorisnika tipKorisnika) {
 		this.tipKorisnika = tipKorisnika;
 	}
+	
+	public String getSifraStara() {
+		return sifraStara;
+	}
+	public void setSifraStara(String sifraStara) {
+		this.sifraStara = sifraStara;
+	}
+	
 	
 }

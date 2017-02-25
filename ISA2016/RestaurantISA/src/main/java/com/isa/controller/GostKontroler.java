@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.isa.model.korisnici.Gost;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.Prijatelj;
+import com.isa.pomocni.GostPrijatelj;
 import com.isa.services.GostServis;
 
 @Controller
@@ -61,9 +62,9 @@ public class GostKontroler {
 	}
 	
 	@RequestMapping(value = "/ukloniPrijatelja", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void izbrisiJelo(@RequestBody Long id) {
+	public void izbrisiJelo(@RequestBody GostPrijatelj gostPrij) {
 		
-		gostServis.delete(id);
+		gostServis.delete(gostPrij);
 	}
 
 }
