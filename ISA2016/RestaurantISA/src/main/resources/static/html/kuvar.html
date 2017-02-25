@@ -16,7 +16,17 @@
 
 			<div ng-show="isSet(0)">
 				<h2>Raspored rada</h2>
-
+				<table>
+					<tr>
+						<td>
+							Odaberi kuvara:
+						</td>
+						<td>
+							<select ng-model = "selektovaniKuvar" ng-options = "x.ime for x in kuvariRestorana" ng-change = "promenjenKuvar()"></select>
+						</td>
+						
+					</tr>
+				</table>
 			</div>
 
 

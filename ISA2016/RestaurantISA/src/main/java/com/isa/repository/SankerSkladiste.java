@@ -4,12 +4,16 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.isa.model.Restoran;
 import com.isa.model.korisnici.Korisnik;
+import com.isa.model.korisnici.Sanker;
 
-public interface SankerSkladiste extends JpaRepository<Korisnik, Long> {
+public interface SankerSkladiste extends JpaRepository<Sanker, Long> {
 	
 	List<Korisnik> findById(Long gid);
 	
 	List<Korisnik> findByEmail(String email);
+
+	List<Sanker> findByRestoran(Restoran restoran);
 
 }

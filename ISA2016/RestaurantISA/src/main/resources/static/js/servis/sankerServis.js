@@ -32,6 +32,9 @@ sankerServis.factory('izmeniSankerServis', function($http) {
 		return $http.post('/sankerKontroler/zavrsiPorudzbinu', porudzbina);
 	}
 	
+	temp.ucitajSankerRestorana = function(kuvar){
+		return $http.post('/sankerKontroler/ucitajSankereRestorana', kuvar);
+	}	
 	
 	
 	return temp;

@@ -39,8 +39,8 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, logovanjeServ
 				izmeniKuvarServis.izmeni(str).success(function(data) {
 						//TODO: doznaka i clear
 					logovanjeServis.ulogujKorisnika(data).success(function(data) {
-						$scope.ulogovanKonobar = data;
-						$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
+						$scope.ulogovanKuvar = data;
+						$scope.osveziPrikazZaIzmenu($scope.ulogovanKuvar);
 
 						});	
 					$location.path('/kuvar');
@@ -73,7 +73,7 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, logovanjeServ
 				}
 				
 			}
-			//TODO: Obrisati funkcije koje su visak iz sanker kontrolera i servisa
+			//TODO: Obrisati funkcije koje su visak iz kuvar kontrolera i servisa
 			
 			// UCITAVANJE PORUDZBINA
 			$scope.porudzbine = [];
@@ -137,6 +137,21 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, logovanjeServ
 					alert("Neuspelo ucitavanje detalja");
 				});
 			}
+			
+
+			// PROMENJEN KUVAR
+		    $scope.promenjenKuvar = function(){
+		    	$scope.odabranKuvar = $scope.selektovaniKuvar;
+		    	alert($scope.selektovaniKuvar.ime);
+		    }
+			
+			// UCITAJ KUVARE RESTORANA
+			$scope.kuvariRestorana = [];
+			izmeniKuvarServis.ucitajKuvareRestorana($scope.ulogovanKuvar).success(function(data) {
+				$scope.kuvariRestorana = data;
+				}).error(function (data){
+				alert("Neuspelo ucitavanje kuvara");
+			});
 			
 			
 			/// Kliknuo prihvati

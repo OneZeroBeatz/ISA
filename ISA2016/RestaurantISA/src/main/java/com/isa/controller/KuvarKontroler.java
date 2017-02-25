@@ -22,6 +22,7 @@ import com.isa.pomocni.MogucePrihvacene;
 import com.isa.pomocni.PorudzbinaKuvar;
 import com.isa.services.KonobarServis;
 import com.isa.services.KuvarServis;
+import com.isa.services.RestoranServis;
 import com.isa.services.SankerServis;
 
 @Controller
@@ -34,6 +35,8 @@ public class KuvarKontroler {
 	public SankerServis sankerServis;
 	@Autowired
 	public KonobarServis konobarServis;
+	@Autowired
+	public RestoranServis restoranServis;
 	
 	@RequestMapping(value = "/ucitajPorudzbine", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Porudzbina>> ucitajPorudzbine(@RequestBody Kuvar kuvar){
@@ -198,6 +201,13 @@ public class KuvarKontroler {
 		moPri.setMogucePorudzbine(listaMogucihPorudzbina);
 		
 		return moPri;
+	}
+	
+	@RequestMapping(value = "/ucitajKuvareRestorana", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Kuvar>> ucitajKonobareRestorana(@RequestBody Kuvar kuvar){
+		Restoran restoran = kuvarServis.izlistajRestoran(kuvar);
+		List<Kuvar> retVal = restoranServis.izlistajKuvare(restoran);
+		return new ResponseEntity<List<Kuvar>>(retVal, HttpStatus.OK);
 	}
 	
 

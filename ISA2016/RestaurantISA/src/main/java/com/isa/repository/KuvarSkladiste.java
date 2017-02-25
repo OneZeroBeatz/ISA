@@ -17,6 +17,6 @@ public interface KuvarSkladiste extends JpaRepository<Kuvar, Long> {
 	List<Korisnik> findById(Long gid);
 	
 	List<Korisnik> findByEmail(String email);
-	
+
 	List<Kuvar> findByRestoran(Restoran restoran);
 }

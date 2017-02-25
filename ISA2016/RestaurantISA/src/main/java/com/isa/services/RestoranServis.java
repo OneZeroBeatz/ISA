@@ -13,8 +13,10 @@ import com.isa.model.Restoran;
 import com.isa.model.Smena;
 import com.isa.model.SmenaUDanu;
 import com.isa.model.Sto;
+import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Kuvar;
 import com.isa.model.korisnici.Ponudjac;
+import com.isa.model.korisnici.Sanker;
 
 public interface RestoranServis {
 
@@ -63,5 +65,12 @@ public interface RestoranServis {
 	void dodajSmenu(Smena smena);
 
 	List<Kuvar> izlistajDostupneKuvare(Restoran restoran, DanUNedelji danUNedelji);
+
+	List<Konobar> izlistajKonobare(Restoran restoran);
+
+	List<Kuvar> izlistajKuvare(Restoran restoran);
+
+	List<Sanker> izlistajSankere(Restoran restoran);
+
 
 }

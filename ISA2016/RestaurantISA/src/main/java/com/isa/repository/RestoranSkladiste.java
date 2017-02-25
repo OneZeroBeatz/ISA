@@ -10,8 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.isa.model.Restoran;
 import com.isa.model.korisnici.Konobar;
+import com.isa.model.korisnici.Kuvar;
 import com.isa.model.korisnici.MenadzerRestorana;
 import com.isa.model.korisnici.Ponudjac;
+import com.isa.model.korisnici.Sanker;
 
 @Repository
 @Transactional
@@ -21,6 +23,9 @@ public interface RestoranSkladiste extends JpaRepository<Restoran,Long> {
 	Page<Restoran> findAll(Pageable pageable);
 	Restoran findByMenadzerrestorana(MenadzerRestorana menadzerRestorana);
 	Restoran findByKonobar(Konobar konobar);
+	Restoran findByKuvar(Kuvar kuvar);
+	Restoran findBySanker(Sanker sanker);
 	Restoran save(Restoran restoran);
 	List<Restoran> findByPonudjac(Ponudjac ponudjac);
+
 }

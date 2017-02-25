@@ -8,12 +8,13 @@ import org.springframework.data.domain.Pageable;
 
 import com.isa.model.JeloUPorudzbini;
 import com.isa.model.Porudzbina;
+import com.isa.model.Restoran;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.Kuvar;
 
 public interface KuvarServis {
 
-	List<Korisnik> findAll();
+	List<Kuvar> findAll();
 
     Korisnik findOne(Long id);
 
@@ -27,4 +28,6 @@ public interface KuvarServis {
 			Pageable pageable);
 
 	void sacuvajJeloUPorudzbini(JeloUPorudzbini jeloUPorudzbini);
+
+	Restoran izlistajRestoran(Kuvar kuvar);
 }

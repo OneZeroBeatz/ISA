@@ -762,6 +762,13 @@ public class KonobarKontroler {
 		
 		return new ResponseEntity<List<Porudzbina>>(retVal, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/ucitajKonobareRestorana", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Konobar>> ucitajKonobareRestorana(@RequestBody Konobar konobar){
+		Restoran restoran = konobarServis.izlistajRestoran(konobar);
+		List<Konobar> retVal = restoranServis.izlistajKonobare(restoran);
+		return new ResponseEntity<List<Konobar>>(retVal, HttpStatus.OK);
+	}
 }
 
 

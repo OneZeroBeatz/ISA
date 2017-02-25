@@ -45,10 +45,7 @@ public class KonobarServisImpl implements KonobarServis {
 	@Autowired
 	private RacunSkladiste racunSkladiste;
 	
-	@Override
-	public List<Korisnik> findAll() {
-		return konobarSkladiste.findAll();
-	}
+
 
 	@Override
 	public Korisnik findOne(Long id) {
@@ -66,7 +63,7 @@ public class KonobarServisImpl implements KonobarServis {
 		if(gost == null){
 			return null;
 		}else{
-			konobarSkladiste.delete(gost);
+			konobarSkladiste.delete((Konobar)gost);
 			return gost;
 		}
 	}
@@ -146,5 +143,10 @@ public class KonobarServisImpl implements KonobarServis {
 	@Override
 	public void saveRacun(RacunKonobar racun) {
 		racunSkladiste.save(racun);
+	}
+
+	@Override
+	public List<Konobar> findAll() {
+		return konobarSkladiste.findAll();
 	}
 }
