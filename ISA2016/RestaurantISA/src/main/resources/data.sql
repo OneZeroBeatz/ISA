@@ -1,7 +1,8 @@
---insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Pera', 'Peric', 'pera123', 'G','pera@pera.com', 'GOST');
---insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Sima', 'Simic', 'sima123', 'G','sima@sima.com', 'GOST');
---insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Djura', 'Djuric', 'djura123', 'G','djura@djura.com', 'GOST');
---insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Verka', 'Verkic', 'verka123', 'G','verka@verka.com', 'GOST');
+insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Pera', 'Peric', 'p', 'G','p', 'GOST');
+insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Pera', 'Peric', 'pera123', 'G','pera@pera.com', 'GOST');
+insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Sima', 'Simic', 'sima123', 'G','sima@sima.com', 'GOST');
+insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Djura', 'Djuric', 'djura123', 'G','djura@djura.com', 'GOST');
+insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Verka', 'Verkic', 'verka123', 'G','verka@verka.com', 'GOST');
 
 --insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Aca', 'aaa', 'a', 'PN','a@a.a', 'PONUDJAC');
 --insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('B', 'bbb', 'b', 'PN','b', 'PONUDJAC');
@@ -130,3 +131,13 @@ insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('CETVRTAK
 insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('PETAK', (select id from korisnik where ime ='Sano'), 1, (select id from restoran where naziv = 'Restoran 1'));
 insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('SUBOTA', (select id from korisnik where ime ='Sano'), 2, (select id from restoran where naziv = 'Restoran 1'));
 insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('NEDELJA', (select id from korisnik where ime ='Sano'), 2, (select id from restoran where naziv = 'Restoran 1'));
+
+
+insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati) values (1,1,true, -1, '2018-01-12 11:39:16', 1);
+insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati) values (2,1,true, -1, '2013-01-12 11:39:51', 3);
+insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati) values (1,1,false, -1, '2015-01-12 11:39:41', 5);
+insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati) values (1,1,true, -1, '2013-01-12 11:39:11', 2);
+insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati) values (1,2,true, -1, '2017-01-12 11:59:41', 1);
+insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati) values (2,2,true, -1, '2013-01-12 11:32:11', 5);
+insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati) values (1,2,false, -1, '2011-01-12 11:49:11', 7);
+insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati) values (1,1,true, -1, '2014-01-12 11:59:11', 8);

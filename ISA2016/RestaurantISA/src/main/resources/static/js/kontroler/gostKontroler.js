@@ -31,6 +31,17 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 				});
 				
 				
+				
+				/// SASA RADIO DO ELSA
+				$scope.poseteGosta = [];
+				$scope.show = -1;
+				$scope.odabranaPoseta = null;
+				izmeniGostaServis.ucitajPoseteGosta($scope.ulogovanGost).success(function (data){
+					$scope.poseteGosta = data;
+				}).error(function (data){
+					alert("Neuspelo ucitavanje poseta");
+				});
+				
 			}else{
 				alert("Niko nije ulogovan");
 			}
@@ -242,6 +253,39 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 			    }
 			  }
 			}
+		
+		
+		
+		
+		
+		// SASA RADIO
+		$scope.kliknuoOceni = function (item){
+			
+			$scope.odabranaPoseta = item;
+			if ($scope.show == item.id){
+				$scope.show = -1;
+			} else {
+				$scope.show = item.id;
+			}
+			
+		}
+		
+		$scope.potvrdiOcenu = function (ocena){
+			if(ocena == null){
+				alert("Prvo odaberite ocenu")
+			} else {
+				var ocenaPosete = {
+					ocena: ocena,
+					poseta: $scope.odabranaPoseta
+				}
+				izmeniGostaServis.oceniPosetu(ocenaPosete).success(function(data){
+					$scope.poseteGosta = data;
+				}).error(function (data){
+					alert("Neuspesno ocenjivanje");
+				});
+				
+			}
+		}
 			
 			
 })

@@ -7,12 +7,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.isa.model.PosetaRestoranu;
 import com.isa.model.ZahtevZaPrijateljstvo;
 import com.isa.model.korisnici.Gost;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.Prijatelj;
 import com.isa.pomocni.GostPrijatelj;
 import com.isa.repository.GostSkladiste;
+import com.isa.repository.PoseteSkladiste;
 import com.isa.repository.PrijateljSkladiste;
 import com.isa.repository.ZahteviZaPrijSkladiste;
 
@@ -27,6 +29,12 @@ public class GostServisImp implements GostServis {
 	
 	@Autowired
 	private ZahteviZaPrijSkladiste zahtevSkladiste;
+	
+	
+	// SASA POCETAK
+	@Autowired
+	private PoseteSkladiste poseteSkladiste;
+	// SASA KRAJ
 	
 	@Override
 	public List<Korisnik> findAll() {
@@ -127,7 +135,25 @@ public class GostServisImp implements GostServis {
 			
 		}
 	}
+
 	
+	
+	// SASA DODAO DO KRAJA
+	@Override
+	public List<PosetaRestoranu> ucitajPoseteGosta(Gost gost) {
+		return poseteSkladiste.findByGost(gost);
+	}
+
+	@Override
+	public PosetaRestoranu pronadjiPosetu(Long id) {
+		return poseteSkladiste.findOne(id);
+	}
+
+	@Override
+	public PosetaRestoranu sacuvajPosetu(PosetaRestoranu poseta) {
+		return poseteSkladiste.save(poseta);
+		
+	}
 	
 
 }

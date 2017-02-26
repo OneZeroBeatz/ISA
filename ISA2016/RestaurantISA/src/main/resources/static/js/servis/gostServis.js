@@ -52,5 +52,19 @@ gostServis.factory('izmeniGostaServis', function($http) {
 		return $http.post('/gostKontroler/dodajPrijatelja', obj);
 	}
 	
+	
+	
+	
+	// SASA 
+	temp.ucitajPoseteGosta = function (gost){
+		return $http.post('/gostKontroler/ucitajPoseteGosta', gost);
+	}
+	
+	temp.oceniPosetu = function (posetaGost){
+		return $http.post('/gostKontroler/oceniPosetu', posetaGost);
+	}
+	
+	
+	
 	return temp;	
 })

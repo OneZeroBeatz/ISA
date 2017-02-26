@@ -21,6 +21,35 @@
 			
 			<div ng-show="isSet(0)">
 				<h2>Istorija poseta restoranima.</h2>
+				<table ng-repeat = "item in poseteGosta">
+					<tr>
+						<td style = "width:240px; heigth: 70px">Restoran : {{item.restoran.naziv}}</td>
+						<td style = "width:240px; heigth: 70px">Termin : {{item.termin}}</td>
+						<td style = "width:120px; heigth: 70px">Trajanje : {{item.brSati}}h</td>
+						<td><button ng-click = "kliknuoOceni(item)">Oceni</button></td>
+						
+					</tr>
+					<tr ng-show = "show == item.id">
+						<td>
+							 <label><input type="radio" ng-model = "ocena" value = 1>1</label>
+							 <label><input type="radio" ng-model = "ocena" value = 2>2</label>
+							 <label><input type="radio" ng-model = "ocena" value = 3>3</label>
+							 <label><input type="radio" ng-model = "ocena" value = 4>4</label>
+							 <label><input type="radio" ng-model = "ocena" value = 5>5</label>
+							
+						</td>
+						<td ng-show = 'item.ocena == -1'>
+							<button ng-click = potvrdiOcenu(ocena)>Potvrdi</button>
+						</td>
+						<td ng-show = 'item.ocena != -1'>
+							<button ng-click = potvrdiOcenu(ocena)>Promeni</button>
+						</td>
+						<td ng-show = 'item.ocena != -1'>
+							Ocenili ste sa {{item.ocena}}
+						</td>
+					</tr>
+				</table>
+				
 			</div>
 			
 			<div ng-show="isSet(1)">

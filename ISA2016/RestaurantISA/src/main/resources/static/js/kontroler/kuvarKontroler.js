@@ -10,6 +10,7 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, logovanjeServ
 		$scope.emailIzmena = kuvar.email
 	}
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
+		console.log(data.ime + "ULOGOVANI KUVAR");
 		if(data != ""){
 			$scope.ulogovanKuvar = data;
 
