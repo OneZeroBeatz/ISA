@@ -159,9 +159,29 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 				if(data != ""){
 					var parameter = {
 							gost: data,
-							prijatelj: prij						
+							prijatelj: prij,
+							paramPretrageIme: $scope.searchFriendIme,
+							paramPretragePrz: $scope.searchFriendPrz
 						}						
 						izmeniGostaServis.dodajPrijatelja(parameter).success(function(data) {
+							$scope.filtriraniPrijatelji = data;
+						}).error(function(data) {							
+						});
+				}
+			});
+		}
+		
+		$scope.otkaziZahtev = function(prij){
+
+			gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
+				if(data != ""){
+					var parameter = {
+							gost: data,
+							prijatelj: prij,
+							paramPretrageIme: $scope.searchFriendIme,
+							paramPretragePrz: $scope.searchFriendPrz
+						}						
+						izmeniGostaServis.otkaziZahtev(parameter).success(function(data) {
 							$scope.filtriraniPrijatelji = data;
 						}).error(function(data) {							
 						});
@@ -209,6 +229,43 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 		$scope.sortTableNpr = function(n) {
 			  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
 			  table = document.getElementById("myNeprijatelji");
+			  switching = true;
+			  dir = "asc"; 
+			  while (switching) {
+			    switching = false;
+			    rows = table.getElementsByTagName("TR");
+			    for (i = 1; i < (rows.length - 1); i++) {
+			      shouldSwitch = false;
+			      x = rows[i].getElementsByTagName("TD")[n];
+			      y = rows[i + 1].getElementsByTagName("TD")[n];
+			      if (dir == "asc") {
+			        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+			          shouldSwitch= true;
+			          break;
+			        }
+			      } else if (dir == "desc") {
+			        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+			          shouldSwitch= true;
+			          break;
+			        }
+			      }
+			    }
+			    if (shouldSwitch) {
+			      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+			      switching = true;
+			      switchcount ++;      
+			    } else {
+			      if (switchcount == 0 && dir == "asc") {
+			        dir = "desc";
+			        switching = true;
+			      }
+			    }
+			  }
+			}
+		
+		$scope.sortTableZah = function(n) {
+			  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+			  table = document.getElementById("myZahtevi");
 			  switching = true;
 			  dir = "asc"; 
 			  while (switching) {

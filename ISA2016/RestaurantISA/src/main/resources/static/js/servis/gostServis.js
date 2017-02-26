@@ -52,5 +52,9 @@ gostServis.factory('izmeniGostaServis', function($http) {
 		return $http.post('/gostKontroler/dodajPrijatelja', obj);
 	}
 	
+	temp.otkaziZahtev = function(obj) {
+		return $http.post('/gostKontroler/otkaziZahtev', obj);
+	}
+	
 	return temp;	
 })
