@@ -85,6 +85,30 @@ menRestoranaServis.factory('menRestoranaServisS', function($http) {
 		return $http.post('/menadzerRestoranaKontroler/registrujIDodajPonudjaca', restPon);
 	}
 	
+	temp.izlistajSmeneKonobara = function(smenaUDanu) {
+		return $http.post('/menadzerRestoranaKontroler/izlistajSmeneKonobara', smenaUDanu);
+	}
+	
+	temp.izlistajSmeneKuvara = function(smenaUDanu) {
+		return $http.post('/menadzerRestoranaKontroler/izlistajSmeneKuvara', smenaUDanu);
+	}
+	
+	temp.izlistajSmeneSankera = function(smenaUDanu) {
+		return $http.post('/menadzerRestoranaKontroler/izlistajSmeneSankera', smenaUDanu);
+	}
+	
+	temp.izlistajSmene = function(restoran) {
+		return $http.post('/menadzerRestoranaKontroler/izlistajSmene', restoran);
+	}
+	
+	temp.dodajSmenu = function(smena) {
+		return $http.post('/menadzerRestoranaKontroler/dodajSmenu', smena);
+	}
+	
+	temp.dostupniKuvari = function(smena) {
+		return $http.post('/menadzerRestoranaKontroler/dostupniKuvari', smena);
+	}
+	
 	return temp;
 
 })

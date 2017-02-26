@@ -8,14 +8,13 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, log
 		$scope.emailIzmena = sanker.email
 	}
 	
+	
+	
 	//TODO: Kada porudzbina nema pica ne prikazati je
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 		if(data != ""){
-			//TODO mora da se uloguje opet da bi skontao podatke
 			$scope.ulogovanSanker = data;
-
 			$scope.osveziPrikazZaIzmenu($scope.ulogovanSanker);
-			
 			$scope.setTab = function(newTab){
 		    	$scope.tab = newTab;
 		    };
@@ -25,6 +24,7 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, log
 		    };
 			
 			$scope.setTab(0);
+			
 			// za izmeenu podataka
 			$scope.izmeniSankeraPodaci = function(){
 				var gost = {
@@ -36,8 +36,8 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, log
 				var str = JSON.stringify(gost);
 				izmeniSankerServis.izmeni(str).success(function(data) {
 					logovanjeServis.ulogujKorisnika(data).success(function(data) {
-						$scope.ulogovanKonobar = data;
-						$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
+						$scope.ulogovanKuvar = data;
+						$scope.osveziPrikazZaIzmenu($scope.ulogovanSanker);
 
 						});
 					//TODO: doznaka i clear
@@ -140,13 +140,28 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, log
 					alert("Neuspelo ucitavanje detalja");
 				});
 			}
+			
+			
+			// PROMENJEN KONOBAR
+		    $scope.promenjenSanker = function(){
+		    	$scope.odabranSanker = $scope.selektovaniSanker;
+		    	alert($scope.selektovaniSanker.ime);
+		    }
+			
+			// UCITAJ KONOBARE RESTORANA
+			$scope.sankeriRestorana = [];
+			izmeniSankerServis.ucitajSankerRestorana($scope.ulogovanSanker).success(function(data) {
+
+				$scope.sankeriRestorana = data;
+				}).error(function (data){
+				alert("Neuspelo ucitavanje konobara");
+			});
 
 			// Kliknuo prihvati
 			$scope.prihvati = function (porudzbina){
 				var sanKon = {
-						sanker: $scope.ulogovanSanker,
-						porudzbina: porudzbina
-						
+					sanker: $scope.ulogovanSanker,
+					porudzbina: porudzbina	
 				}
 				izmeniSankerServis.prihvatiPorudzbinu(sanKon).success(function(data){
 					$scope.klasifikovanePorudzbine = data;	
@@ -164,6 +179,9 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, log
 				});
 				
 			}
+			
+			
+			
 			
 			
 		}else{

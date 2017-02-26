@@ -39,11 +39,11 @@
 								<tr>
 								<tr>
 									<td>Rok isporuke</td>
-									<td><input type=number ng-model="rokIsporuke"></td>
+									<td><input type=number ng-model="rokIsporuke"{{por.id}}></td>
 								<tr>
 								<tr>
 									<td>Garancija</td>
-									<td><input type=text ng-model="garancija"></td>
+									<td><input type=text ng-model="garancijaA[por.id]"></td>
 								<tr>
 							</table>
 							<button ng-click="slanjePonude(por)">Posalji ponudu</button>

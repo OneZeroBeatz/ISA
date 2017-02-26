@@ -14,7 +14,7 @@ import com.isa.model.korisnici.Sanker;
 
 public interface SankerServis {
 
-	List<Korisnik> findAll();
+	List<Sanker> findAll();
 
     Korisnik findOne(Long id);
 
@@ -28,6 +28,8 @@ public interface SankerServis {
 
 	Page<PiceUPorudzbini> izlistajPicaPorudzbine(Porudzbina porudzbina,
 			Pageable pageable);
+
+	Restoran izlistajRestoran(Sanker sanker);
 
 
 

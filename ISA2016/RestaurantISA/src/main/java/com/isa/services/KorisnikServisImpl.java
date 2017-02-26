@@ -3,10 +3,13 @@ package com.isa.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Korisnik;
+import com.isa.model.korisnici.Kuvar;
 import com.isa.model.korisnici.MenadzerRestorana;
 import com.isa.model.korisnici.MenadzerSistema;
 import com.isa.model.korisnici.Ponudjac;
+import com.isa.model.korisnici.Sanker;
 import com.isa.model.korisnici.TipKorisnika;
 import com.isa.repository.GostSkladiste;
 import com.isa.repository.KonobarSkladiste;
@@ -40,9 +43,9 @@ public class KorisnikServisImpl implements KorisnikServis {
 		if (korisnik.getTipKorisnika() == TipKorisnika.GOST){
 			return gostSkladiste.save(korisnik);
 		} else if (korisnik.getTipKorisnika() == TipKorisnika.KONOBAR){
-			return konobarSkladiste.save(korisnik);
+			return konobarSkladiste.save((Konobar)korisnik);
 		} else if (korisnik.getTipKorisnika() == TipKorisnika.KUVAR){
-			return kuvarSkladiste.save(korisnik);
+			return kuvarSkladiste.save((Kuvar)korisnik);
 		} else if (korisnik.getTipKorisnika() == TipKorisnika.MENADZER_RESTRORANA){
 			return menadzerRestoranaSkladiste.save((MenadzerRestorana)korisnik);
 		} else if (korisnik.getTipKorisnika() == TipKorisnika.MENADZER_SISTEMA){
@@ -50,7 +53,7 @@ public class KorisnikServisImpl implements KorisnikServis {
 		} else if (korisnik.getTipKorisnika() == TipKorisnika.PONUDJAC){
 			return ponudjacSkladiste.save((Ponudjac)korisnik);
 		} else if (korisnik.getTipKorisnika() == TipKorisnika.SANKER){
-			return sankerSkladiste.save(korisnik);
+			return sankerSkladiste.save((Sanker)korisnik);
 		} else {
 			return korisnik;//mora neki return
 		}

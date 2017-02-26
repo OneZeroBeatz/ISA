@@ -1,6 +1,6 @@
 var konobarKontroler = angular.module('restoranApp.konobarKontroler', []);
 
-konobarKontroler.controller('konobarCtrl', function($scope, $location, logovanjeServis, gostGlavnaStranaServis, izmeniKonobarServis){
+konobarKontroler.controller('konobarCtrl', function($scope, $location, menRestoranaServisS, logovanjeServis, gostGlavnaStranaServis, izmeniKonobarServis){
 	
 	$scope.osveziPrikazZaIzmenu = function (konobar){
 		$scope.imeIzmena = konobar.ime;
@@ -9,6 +9,7 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, logovanje
 		
 	}
 	
+
 	$scope.vratiNaDodavanje = function(){
 		$scope.izmena = false;
 		$scope.smeDaBriseJela = true;
@@ -58,6 +59,7 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, logovanje
 					}).error(function (data){
 						alert("Neuspelo ucitavanje porudzbina");
 					});
+
 					
 					// Kliknuce na zavrsi i kreiraj racun
 					$scope.zavrsiIKreiraj = function (item){
@@ -110,7 +112,8 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, logovanje
 							alert("Nemoguce kreirati racun");
 						});
 							
-					}					
+					}		
+					
 					// Kliknuce na detalji
 					$scope.jelaKliknutePorudzbine = [];
 					$scope.picaKliknutePorudzbine = [];
@@ -157,6 +160,10 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, logovanje
 		    		$scope.dodataJela.push(jelo1);
 		    	}
 	    	}
+		    
+		    
+
+
 	    
 		    $scope.dodajPice = function (pice){
 		    	var pice1 = {
@@ -343,8 +350,161 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, logovanje
 					});
 			}
 			
-			// za izmenu lozinke
+			// Kliknuo na detalje kalendar
 			
+			$scope.danasnjiDatum = new Date();
+			$scope.danasnjiDan = $scope.danasnjiDatum.getDay();
+			
+			$scope.prikaziDan = -1;
+			$scope.prikaziSmene = function(index){
+				if ($scope.prikaziDan == index){
+					$scope.prikaziDan = -1;
+				} else {
+					$scope.prikaziDan = index;
+				}
+				
+			}
+			
+			$scope.stringuj = function(s){
+				return s.getDate() + "-" + (s.getMonth()+1) + "-"+ s.getFullYear();
+			}
+			
+			$scope.setuj = function (){
+				$scope.datumPonedeljakStr = $scope.stringuj($scope.datumPonedeljak);
+				$scope.datumUtorakStr = $scope.stringuj($scope.datumUtorak);
+				$scope.datumSredaStr = $scope.stringuj($scope.datumSreda);
+				$scope.datumCetvrtakStr = $scope.stringuj($scope.datumCetvrtak);
+				$scope.datumPetakStr = $scope.stringuj($scope.datumPetak);
+				$scope.datumSubotaStr = $scope.stringuj($scope.datumSubota);
+				$scope.datumNedeljaStr = $scope.stringuj($scope.datumNedelja);
+			}
+			
+			var tomorrow = new Date();
+			$scope.datumNedelja = new Date();
+			$scope.datumSubota = new Date();
+			$scope.datumPetak = new Date();
+			$scope.datumCetvrtak = new Date();
+			$scope.datumSreda = new Date();
+			$scope.datumUtorak = new Date();
+			$scope.datumPonedeljak = new Date();
+			
+			
+			if ($scope.danasnjiDan == 1){
+				$scope.datumPonedeljak = $scope.danasnjiDatum;
+				$scope.datumUtorak.setDate($scope.danasnjiDatum.getDate() + 1);
+				$scope.datumSreda.setDate($scope.danasnjiDatum.getDate() + 2);
+				$scope.datumCetvrtak.setDate($scope.danasnjiDatum.getDate() + 3);
+				$scope.datumPetak.setDate($scope.danasnjiDatum.getDate() + 4);
+				$scope.datumSubota.setDate($scope.danasnjiDatum.getDate() + 5);
+				$scope.datumNedelja.setDate($scope.danasnjiDatum.getDate() + 6);
+				$scope.setuj();
+			} else if ($scope.danasnjiDan == 2){
+				$scope.datumUtorak = $scope.danasnjiDatum;
+				$scope.datumSreda.setDate($scope.danasnjiDatum.getDate() + 1);
+				$scope.datumCetvrtak.setDate($scope.danasnjiDatum.getDate() + 2);
+				$scope.datumPetak.setDate($scope.danasnjiDatum.getDate() + 3);
+				$scope.datumSubota.setDate($scope.danasnjiDatum.getDate() + 4);
+				$scope.datumNedelja.setDate($scope.danasnjiDatum.getDate() + 5);
+				$scope.datumPonedeljak.setDate($scope.danasnjiDatum.getDate() + 6);
+				$scope.setuj();
+			} else if ($scope.danasnjiDan == 3){
+				$scope.datumSreda = $scope.danasnjiDatum;
+				$scope.datumCetvrtak.setDate($scope.danasnjiDatum.getDate() + 1);
+				$scope.datumPetak.setDate($scope.danasnjiDatum.getDate() + 2);
+				$scope.datumSubota.setDate($scope.danasnjiDatum.getDate() + 3);
+				$scope.datumNedelja.setDate($scope.danasnjiDatum.getDate() + 4);
+				$scope.datumPonedeljak.setDate($scope.danasnjiDatum.getDate() + 5);
+				$scope.datumUtorak.setDate($scope.danasnjiDatum.getDate() + 6);
+				$scope.setuj();
+			} else if ($scope.danasnjiDan == 4){
+				$scope.datumCetvrtak = $scope.danasnjiDatum;
+				$scope.datumPetak.setDate($scope.danasnjiDatum.getDate() + 1);
+				$scope.datumSubota.setDate($scope.danasnjiDatum.getDate() + 2);
+				$scope.datumNedelja.setDate($scope.danasnjiDatum.getDate() + 3);
+				$scope.datumPonedeljak.setDate($scope.danasnjiDatum.getDate() + 4);
+				$scope.datumUtorak.setDate($scope.danasnjiDatum.getDate() + 5);
+				$scope.datumSreda.setDate($scope.danasnjiDatum.getDate() + 6);
+				$scope.setuj();
+			} else if ($scope.danasnjiDan == 5){
+				$scope.datumPetak = $scope.danasnjiDatum;
+				$scope.datumSubota.setDate($scope.danasnjiDatum.getDate() + 1);
+				$scope.datumNedelja.setDate($scope.danasnjiDatum.getDate() + 2);
+				$scope.datumPonedeljak.setDate($scope.danasnjiDatum.getDate() + 3);
+				$scope.datumUtorak.setDate($scope.danasnjiDatum.getDate() + 4);
+				$scope.datumSreda.setDate($scope.danasnjiDatum.getDate() + 5);
+				$scope.datumCetvrtak.setDate($scope.danasnjiDatum.getDate() + 6);
+				$scope.setuj();
+			} else if ($scope.danasnjiDan == 6){
+				$scope.datumSubota = $scope.danasnjiDatum;
+				$scope.datumNedelja.setDate($scope.danasnjiDatum.getDate() + 1);
+				$scope.datumPonedeljak.setDate($scope.danasnjiDatum.getDate() + 2);
+				$scope.datumUtorak.setDate($scope.danasnjiDatum.getDate() + 3);
+				$scope.datumSreda.setDate($scope.danasnjiDatum.getDate() + 4);
+				$scope.datumCetvrtak.setDate($scope.danasnjiDatum.getDate() + 5);
+				$scope.datumPetak.setDate($scope.danasnjiDatum.getDate() + 6);
+				$scope.setuj();
+			} else if ($scope.danasnjiDan == 7){
+				$scope.datumNedelja = $scope.danasnjiDatum;
+				$scope.datumPonedeljak.setDate($scope.danasnjiDatum.getDate() + 1);
+				$scope.datumUtorak.setDate($scope.danasnjiDatum.getDate() + 2);
+				$scope.datumSreda.setDate($scope.danasnjiDatum.getDate() + 3);
+				$scope.datumCetvrtak.setDate($scope.danasnjiDatum.getDate() + 4);
+				$scope.datumPetak.setDate($scope.danasnjiDatum.getDate() + 5);
+				$scope.datumSubota.setDate($scope.danasnjiDatum.getDate() + 6);
+				$scope.setuj();
+			} 
+			// PROMENJEN KONOBAR
+		    $scope.promenjenKonobar = function(){
+		    	$scope.odabranKonobar = $scope.selektovaniKonobar;
+		    	alert($scope.selektovaniKonobar.ime);
+		    }
+			
+			// UCITAJ KONOBARE RESTORANA
+			$scope.konobariRestorana = [];
+			izmeniKonobarServis.ucitajKonobareRestorana($scope.ulogovanKonobar).success(function(data) {
+
+				$scope.konobariRestorana = data;
+				}).error(function (data){
+				alert("Neuspelo ucitavanje konobara");
+			});
+			
+			/// UCITAJ BROJ REDOVA
+			$scope.brRedova = [];
+			$scope.brKolona = [];
+			if($scope.ulogovanKonobar.restoran.brojredova != null && $scope.ulogovanKonobar.restoran.brojkolona != null){
+				menRestoranaServisS.izlistajStolove($scope.ulogovanKonobar.restoran).success(function(data) {
+					$scope.stolovi = data;
+					$scope.jeSto = function (oznaka){
+						for (var i = 0; i < $scope.stolovi.length; i++){
+							if ($scope.stolovi[i].oznaka === oznaka){
+								if($scope.stolovi[i].segment != "o"){
+									return false;
+								}
+							}
+						}
+						return true;
+						
+					}
+					
+				}).error(function(data) {
+					alert("Nema stolova...!");
+				});
+				$scope.brojRedova = $scope.ulogovanKonobar.restoran.brojredova;
+				$scope.brojKolona = $scope.ulogovanKonobar.restoran.brojkolona;
+				
+				for(i=0; i<$scope.brojRedova; i++){
+					$scope.brRedova.push(i);
+				}
+				for(i=0; i<$scope.brojKolona; i++){
+					$scope.brKolona.push(i);
+				}
+				
+
+			}
+			
+
+			
+			// za izmenu lozinke
 			$scope.izmeniLozinku = function (){
 				if($scope.novaLozinka == $scope.novaLozinkaPotvrda){
 					var gost = {
@@ -367,12 +527,7 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, logovanje
 					alert ("Ne podudaraju se nove lozinke")
 				}
 			}
-			
 
-			
-			
-			
-			
 		}else{
 			alert("Morate se prvo ulogovati");
 			window.location.href = "logovanje.html";

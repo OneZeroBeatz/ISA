@@ -53,10 +53,11 @@ public class LogRegKontroler {
 	public ResponseEntity<Korisnik> checkSession(){
 		Map<String,Object> map = modelAndView.getModel();
 		Korisnik kor = (Korisnik) map.get("ulogovanKorisnik");
-		System.out.println(kor.getIme());
-		{
+		if(kor != null){
 			return new ResponseEntity<Korisnik>(kor, HttpStatus.ACCEPTED);
-		}
+		}else{
+			return null;
+		}	
 			
 	}
 }

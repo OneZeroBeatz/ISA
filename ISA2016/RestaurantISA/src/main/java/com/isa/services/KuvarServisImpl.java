@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 
 import com.isa.model.JeloUPorudzbini;
 import com.isa.model.Porudzbina;
+import com.isa.model.Restoran;
+import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.Kuvar;
 import com.isa.repository.JeloUPorudzbiniSkladiste;
 import com.isa.repository.KuvarSkladiste;
+import com.isa.repository.RestoranSkladiste;
 
 @Service
 public class KuvarServisImpl implements KuvarServis{
@@ -21,14 +24,13 @@ public class KuvarServisImpl implements KuvarServis{
 	private KuvarSkladiste kuvarSkladiste;
 	
 	@Autowired
+	private RestoranSkladiste restoranSkladiste;
+		
+	@Autowired
 	private JeloUPorudzbiniSkladiste jeloUPorudzbiniSkladiste;
 	
 	
-	
-	@Override
-	public List<Korisnik> findAll() {
-		return kuvarSkladiste.findAll();
-	}
+
 
 	@Override
 	public Korisnik findOne(Long id) {
@@ -48,7 +50,7 @@ public class KuvarServisImpl implements KuvarServis{
 		if(gost == null){
 			return null;
 		}else{
-			kuvarSkladiste.delete(gost);
+			kuvarSkladiste.delete((Kuvar)gost);
 			return gost;
 		}
 	}
@@ -71,6 +73,16 @@ public class KuvarServisImpl implements KuvarServis{
 	@Override
 	public void sacuvajJeloUPorudzbini(JeloUPorudzbini jeloUPorudzbini) {
 		jeloUPorudzbiniSkladiste.save(jeloUPorudzbini);
+	}
+
+	@Override
+	public Restoran izlistajRestoran(Kuvar kuvar) {
+		return restoranSkladiste.findByKuvar(kuvar);
+	}
+
+	@Override
+	public List<Kuvar> findAll() {
+		return kuvarSkladiste.findAll();
 	}
 
 }

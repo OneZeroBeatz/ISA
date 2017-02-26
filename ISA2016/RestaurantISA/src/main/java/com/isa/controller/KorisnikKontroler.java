@@ -32,9 +32,6 @@ public class KorisnikKontroler {
 	@RequestMapping(value = "/izmeniLozinkuKorisnika", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Korisnik> izmeniLozinkuKorisnika(@RequestBody Korisnik gost) {
 		Korisnik originalKorisnik = (Korisnik) korisnikServis.findOne(gost.getId());	
-		//TODO Dodatna provera, da li se poklapaju, i da li je ista stara
-
-		
 		if (!originalKorisnik.getSifra().equals(gost.getSifraStara())){
 			return new ResponseEntity<Korisnik>(HttpStatus.NOT_MODIFIED);
 		}

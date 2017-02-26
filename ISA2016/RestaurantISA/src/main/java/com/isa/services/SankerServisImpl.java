@@ -14,6 +14,7 @@ import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.Sanker;
 import com.isa.repository.PiceUPorudzbiniSkladiste;
 import com.isa.repository.PorudzbinaSkladiste;
+import com.isa.repository.RestoranSkladiste;
 import com.isa.repository.SankerSkladiste;
 
 @Service
@@ -29,8 +30,13 @@ public class SankerServisImpl implements SankerServis {
 	@Autowired
 	private PiceUPorudzbiniSkladiste piceUPorudzbiniSkladiste;
 	
+	@Autowired
+	private RestoranSkladiste restoranSkladiste;
+	
+	
+	
 	@Override
-	public List<Korisnik> findAll() {
+	public List<Sanker> findAll() {
 		return sankerSkladiste.findAll();
 	}
 
@@ -50,7 +56,7 @@ public class SankerServisImpl implements SankerServis {
 		if(gost == null){
 			return null;
 		}else{
-			sankerSkladiste.delete(gost);
+			sankerSkladiste.delete((Sanker)gost);
 			return gost;
 		}
 	}
@@ -74,6 +80,11 @@ public class SankerServisImpl implements SankerServis {
 	public Page<PiceUPorudzbini> izlistajPicaPorudzbine(Porudzbina porudzbina,
 			Pageable pageable) {
 		return piceUPorudzbiniSkladiste.findByPorudzbina(porudzbina, pageable);
+	}
+
+	@Override
+	public Restoran izlistajRestoran(Sanker sanker) {
+		return restoranSkladiste.findBySanker(sanker);
 	}
 
 
