@@ -36,6 +36,25 @@ gostServis.factory('izmeniGostaServis', function($http) {
 		return $http.post('/gostKontroler/prihvatiZahtev', id);
 	}
 	
+	temp.odbijZahtev = function(obj) {
+		return $http.post('/gostKontroler/odbijZahtev', obj);
+	}
+	
+	temp.pretraziPrijatelje = function(obj) {
+		return $http.post('/gostKontroler/pretraziPrijatelje', obj);
+	}
+	
+	temp.pretraziPravePrijatelje = function(obj) {
+		return $http.post('/gostKontroler/pretraziPravePrijatelje', obj);
+	}
+	
+	temp.dodajPrijatelja = function(obj) {
+		return $http.post('/gostKontroler/dodajPrijatelja', obj);
+	}
+	
+	temp.otkaziZahtev = function(obj) {
+		return $http.post('/gostKontroler/otkaziZahtev', obj);
+	}
 	
 	return temp;	
 })

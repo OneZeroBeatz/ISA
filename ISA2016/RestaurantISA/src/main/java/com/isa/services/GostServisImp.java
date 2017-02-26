@@ -12,6 +12,7 @@ import com.isa.model.korisnici.Gost;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.Prijatelj;
 import com.isa.pomocni.GostPrijatelj;
+import com.isa.pomocni.Poruka;
 import com.isa.repository.GostSkladiste;
 import com.isa.repository.PrijateljSkladiste;
 import com.isa.repository.ZahteviZaPrijSkladiste;
@@ -69,6 +70,15 @@ public class GostServisImp implements GostServis {
 			return null;			
 		}
 	}
+	
+	@Override
+	public Page<Korisnik> izlistajNeprijatelje(Gost gost, Pageable pageable) {
+		try{
+			return gostSkladiste.findByEmailNotLike(gost.getEmail(), pageable);
+		}catch(Exception ex){
+			return null;			
+		}
+	}
 
 	@Override
 	public void delete(Long id) {
@@ -93,18 +103,35 @@ public class GostServisImp implements GostServis {
 			prijSkladiste.save(prij1);
 			prijSkladiste.save(prij2);
 			//prijSkladiste.addGostPrij(gostPrij.getGost().getEmail(), gostPrij.getPrijatelj().getEmail());
-		}catch(Exception ex){
-			
-		}
+		}catch(Exception ex){}
 	}
 
 	@Override
 	public void removeZahtevZaPrijateljstvo(GostPrijatelj gostPrij) {
 		try{
 			zahtevSkladiste.deleteZahtev(gostPrij.getGost().getEmail(), gostPrij.getPrijatelj().getEmail());
-		}catch(Exception ex){
-			
-		}
+		}catch(Exception ex){}
 	}
+	
+	@Override
+	public void addZahtevZaPrijateljstvo(GostPrijatelj gostPrij, Pageable pageable) {
+		try{
+			if(zahtevSkladiste.findByEmailGostaAndEmailPrijatelj(gostPrij.getPrijatelj().getEmail(), gostPrij.getGost().getEmail(), pageable).getContent().size() == 0)
+				zahtevSkladiste.addZahtev(gostPrij.getPrijatelj().getEmail(), gostPrij.getGost().getEmail());				
+		}catch(Exception ex){}
+	}
+	
+	public int zahteviCount(GostPrijatelj gostPrij, Pageable pageable){
+		return zahtevSkladiste.findByEmailGostaAndEmailPrijatelj(gostPrij.getPrijatelj().getEmail(), gostPrij.getGost().getEmail(), pageable).getContent().size();
+	}
+
+	@Override
+	public void removeZahtevZaPrijateljstvoByGost(GostPrijatelj gostPrij) {
+		try{
+			zahtevSkladiste.deleteZahtev(gostPrij.getPrijatelj().getEmail(), gostPrij.getGost().getEmail());
+		}catch(Exception ex){}
+	}
+	
+	
 
 }

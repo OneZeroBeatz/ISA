@@ -21,6 +21,8 @@ public interface PrijateljSkladiste extends JpaRepository<Prijatelj, Long> {
 	
 	Page<Prijatelj> findByEmailGosta(String email, Pageable pageable);
 	
+	Page<Prijatelj> findByEmailGostaNotLike(String email, Pageable pageable);
+	
 	@Modifying
 	@Transactional
 	@Query("delete from Prijatelj where email_gosta = :gEmail and email_prijatelja = :pEmail")
@@ -35,6 +37,8 @@ public interface PrijateljSkladiste extends JpaRepository<Prijatelj, Long> {
 	@Transactional
 	@Query(value = "insert into Prijatelj (email_gosta, email_prijatelja) values (:gEmail, :pEmail)", nativeQuery = true)
 	void addGostPrij(@Param("gEmail") String gEmail, @Param("pEmail") String pEmail);
+	
+	
 	
 	
 }

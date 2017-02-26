@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.isa.model.PiceUPorudzbini;
 import com.isa.model.Porudzbina;
 import com.isa.model.Restoran;
+import com.isa.model.SmenaUDanu;
+import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Sanker;
 import com.isa.pomocni.MogucePrihvacene;
 import com.isa.pomocni.PorudzbinaSanker;
@@ -128,6 +130,13 @@ public class SankerKontroler {
 		Restoran restoran = sankerServis.izlistajRestoran(sanker);
 		List<Sanker> retVal = restoranServis.izlistajSankere(restoran);
 		return new ResponseEntity<List<Sanker>>(retVal, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/ucitajKalendarSankera", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<SmenaUDanu>> ucitajKalendarSankera(@RequestBody Sanker parametar){
+		Sanker Sanker = (Sanker) sankerServis.findOne(parametar.getId());
+		List<SmenaUDanu> retVal = restoranServis.izlistajSmenePoDanimaSankera(Sanker);
+		return new ResponseEntity<List<SmenaUDanu>>(retVal, HttpStatus.OK);
 	}
 	
 	

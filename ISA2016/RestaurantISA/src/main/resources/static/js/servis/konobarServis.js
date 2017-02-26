@@ -65,7 +65,10 @@ konobarServis.factory('izmeniKonobarServis', function($http) {
 	temp.ucitajKonobareRestorana = function(konobar){
 		return $http.post('/konobarKontroler/ucitajKonobareRestorana', konobar);
 	}	
-	
+
+	temp.ucitajKalendarKonobara = function(konobar){
+		return $http.post('/konobarKontroler/ucitajKalendarKonobara', konobar);
+	}	
 	
 	return temp;
 	

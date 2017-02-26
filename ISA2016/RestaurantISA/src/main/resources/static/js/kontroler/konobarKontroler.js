@@ -2,6 +2,8 @@ var konobarKontroler = angular.module('restoranApp.konobarKontroler', []);
 
 konobarKontroler.controller('konobarCtrl', function($scope, $location, menRestoranaServisS, logovanjeServis, gostGlavnaStranaServis, izmeniKonobarServis){
 	
+
+	$scope.odabranKonobar = null;
 	$scope.osveziPrikazZaIzmenu = function (konobar){
 		$scope.imeIzmena = konobar.ime;
 		$scope.prezimeIzmena = konobar.prezime
@@ -354,6 +356,7 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, menRestor
 			
 			$scope.danasnjiDatum = new Date();
 			$scope.danasnjiDan = $scope.danasnjiDatum.getDay();
+			console.log($scope.danasnjiDan);
 			
 			$scope.prikaziDan = -1;
 			$scope.prikaziSmene = function(index){
@@ -443,7 +446,7 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, menRestor
 				$scope.datumCetvrtak.setDate($scope.danasnjiDatum.getDate() + 5);
 				$scope.datumPetak.setDate($scope.danasnjiDatum.getDate() + 6);
 				$scope.setuj();
-			} else if ($scope.danasnjiDan == 7){
+			} else if ($scope.danasnjiDan == 0){
 				$scope.datumNedelja = $scope.danasnjiDatum;
 				$scope.datumPonedeljak.setDate($scope.danasnjiDatum.getDate() + 1);
 				$scope.datumUtorak.setDate($scope.danasnjiDatum.getDate() + 2);
@@ -454,9 +457,43 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, menRestor
 				$scope.setuj();
 			} 
 			// PROMENJEN KONOBAR
-		    $scope.promenjenKonobar = function(){
+			$scope.promenjenKonobar = function(){
+	    		$scope.ponedeljakKonobara = null;
+    			$scope.utorakKonobara = null;	
+    			$scope.sredaKonobara = null;	
+				$scope.cetvrtakKonobara = null;	
+				$scope.petakKonobara = null;	
+    			$scope.subotaKonobara = null;	
+    			$scope.nedeljaKonobara = null;	
+			
 		    	$scope.odabranKonobar = $scope.selektovaniKonobar;
-		    	alert($scope.selektovaniKonobar.ime);
+		    	if($scope.odabranKonobar != null){
+		    		izmeniKonobarServis.ucitajKalendarKonobara($scope.odabranKonobar).success(function (data){
+		    			$scope.kalendarOdabranogKonobara = data;
+		    			for (var i = 0; i < $scope.kalendarOdabranogKonobara.length; i++){
+		    				if ($scope.kalendarOdabranogKonobara[i].danUNedelji == "PONEDELJAK"){
+				    			$scope.ponedeljakKonobara = $scope.kalendarOdabranogKonobara[i].smena;
+		    				} else if ($scope.kalendarOdabranogKonobara[i].danUNedelji == "UTORAK"){
+				    			$scope.utorakKonobara = $scope.kalendarOdabranogKonobara[i].smena;	
+		    				} else if ($scope.kalendarOdabranogKonobara[i].danUNedelji == "SREDA"){
+				    			$scope.sredaKonobara = $scope.kalendarOdabranogKonobara[i].smena;	
+		    				} else if ($scope.kalendarOdabranogKonobara[i].danUNedelji == "CETVRTAK"){
+				    			$scope.cetvrtakKonobara = $scope.kalendarOdabranogKonobara[i].smena;	
+		    				} else if ($scope.kalendarOdabranogKonobara[i].danUNedelji == "PETAK"){
+				    			$scope.petakKonobara = $scope.kalendarOdabranogKonobara[i].smena;	
+		    				} else if ($scope.kalendarOdabranogKonobara[i].danUNedelji == "SUBOTA"){
+				    			$scope.subotaKonobara = $scope.kalendarOdabranogKonobara[i].smena;	
+		    				} else if ($scope.kalendarOdabranogKonobara[i].danUNedelji == "NEDELJA"){
+				    			$scope.nedeljaKonobara = $scope.kalendarOdabranogKonobara[i].smena;	
+		    				} 
+		    			}
+		    			
+		    		}).error(function (data){
+		    			
+		    		});
+		    	} else {
+		    		alert("Niste odabrali konobara");
+		    	}
 		    }
 			
 			// UCITAJ KONOBARE RESTORANA

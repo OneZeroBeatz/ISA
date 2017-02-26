@@ -10,6 +10,9 @@ import com.isa.model.Smena;
 import com.isa.model.SmenaUDanu;
 import com.isa.model.Sto;
 import com.isa.model.korisnici.Konobar;
+import com.isa.model.korisnici.Kuvar;
+import com.isa.model.korisnici.Sanker;
+
 
 public interface SmeneUDanuSkladiste extends JpaRepository<SmenaUDanu, Long>{
 
@@ -30,4 +33,11 @@ public interface SmeneUDanuSkladiste extends JpaRepository<SmenaUDanu, Long>{
 	SmenaUDanu findByRestoranAndDanUNedeljiAndKonobarAndSmena(Restoran restoran, DanUNedelji danUNedelji, Konobar konobar, Smena smena);
 	
 	SmenaUDanu findByRestoranAndDanUNedeljiAndKonobar(Restoran restoran, DanUNedelji danUNedelji, Konobar konobar);
+
+	List<SmenaUDanu> findByKuvar(Kuvar kuvar);
+
+	List<SmenaUDanu> findByKonobar(Konobar konobar);
+	
+	List<SmenaUDanu> findBySanker(Sanker sanker);
+
 }

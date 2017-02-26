@@ -2,24 +2,17 @@ package com.isa.pomocni;
 
 import com.isa.model.korisnici.Gost;
 
-public class GostPrijatelj {
-	
+public class PretragaPrijatelja {
+
 	private Gost gost;
-	private Gost prijatelj;
 	private String paramPretrageIme;
 	private String paramPretragePrz;
 	
-	public GostPrijatelj(){
+	public PretragaPrijatelja(){
 	}
 	
-	public GostPrijatelj(Gost gost, Gost prijatelj){
+	public PretragaPrijatelja(Gost gost, String paramPretrageIme, String paramPretragePrz){
 		this.gost = gost;
-		this.prijatelj = prijatelj;
-	}
-	
-	public GostPrijatelj(Gost gost, Gost prijatelj, String paramPretrageIme, String paramPretragePrz){
-		this.gost = gost;
-		this.prijatelj = prijatelj;
 		this.paramPretrageIme = paramPretrageIme;
 		this.paramPretragePrz = paramPretragePrz;
 	}
@@ -27,17 +20,9 @@ public class GostPrijatelj {
 	public Gost getGost() {
 		return gost;
 	}
-
+	
 	public void setGost(Gost gost) {
 		this.gost = gost;
-	}
-
-	public Gost getPrijatelj() {
-		return prijatelj;
-	}
-
-	public void setPrijatelj(Gost prijatelj) {
-		this.prijatelj = prijatelj;
 	}
 	
 	public String getParamPretrageIme() {
@@ -55,4 +40,5 @@ public class GostPrijatelj {
 	public void setParamPretragePrz(String paramPretragePrz) {
 		this.paramPretragePrz = paramPretragePrz;
 	}
+	
 }
