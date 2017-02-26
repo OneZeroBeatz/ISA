@@ -2,7 +2,9 @@ var menRestoranaKontroler = angular.module('restoranApp.menRestoranaKontroler', 
 
 menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStranaServis, $scope, menRestoranaServisS) {
 	$scope.radniciTip = ["Konobar", "Kuvar", "Sanker"];
-	
+	$scope.selektovanTip = "";
+	$scope.restoran = null;
+	var danString = "";
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 		$scope.brRedova = [];
 		$scope.brKolona = [];
@@ -93,7 +95,6 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 			$scope.promenjenTip = function(){
 				$scope.selektovanTip = $scope.tipRadnika;
 				
-				var danString = "";
 				if($scope.prikaziDan == 1){
 					danString = "PONEDELJAK";
 				}else if($scope.prikaziDan == 2){
@@ -106,24 +107,11 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 					danString = "PETAK";
 				}else if($scope.prikaziDan == 6){
 					danString = "SUBOTA";
-				}else if($scope.prikaziDan == 7){
+				}else if($scope.prikaziDan == 0){
 					danString = "NEDELJA";
 				}
 				
-				
-				if($scope.selektovanTip == "Konobar"){	
-					var smenaUDanu = {
-						restoran : $scope.restoran,
-						danUNedelji : danString,
-					}
-						
-					var str = JSON.stringify(smenaUDanu);
-					menRestoranaServisS.izlistajSmeneKonobara(str).success(function(data) {
-						$scope.smeneZaKonobare = data;
-						// TODO:
-					}).error(function(data) {
-					});
-				}else if($scope.selektovanTip == "Kuvar"){
+				if($scope.selektovanTip == "Kuvar"){
 					var smenaUDanu = {
 						restoran : $scope.restoran,
 						danUNedelji : danString,
@@ -137,17 +125,17 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 							if($scope.prikaziDan == 1){
 								$scope.dostupniKuvPonedeljak = data1;
 							}else if($scope.prikaziDan == 2){
-								// TODO:
+								$scope.dostupniKuvUtorak = data1;
 							}else if($scope.prikaziDan == 3){
-								// TODO:
+								$scope.dostupniKuvSreda = data1;
 							}else if($scope.prikaziDan == 4){
-								// TODO:
+								$scope.dostupniKuvCetvrtak = data1;
 							}else if($scope.prikaziDan == 5){
-								// TODO:
+								$scope.dostupniKuvPetak = data1;
 							}else if($scope.prikaziDan == 6){
-								// TODO:
-							}else if($scope.prikaziDan == 7){
-								// TODO:
+								$scope.dostupniKuvSubota = data1;
+							}else if($scope.prikaziDan == 0){
+								$scope.dostupniKuvNedelja = data1;
 							}
 						});
 					}).error(function(data) {
@@ -161,17 +149,232 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 					var str = JSON.stringify(smenaUDanu);
 					menRestoranaServisS.izlistajSmeneSankera(str).success(function(data) {
 						$scope.smeneZaSankere = data;
-						// TODO:
+						menRestoranaServisS.dostupniSankeri(str).success(function(data1) {
+							if($scope.prikaziDan == 1){
+								$scope.dostupniSanPonedeljak = data1;
+							}else if($scope.prikaziDan == 2){
+								$scope.dostupniSanUtorak = data1;
+							}else if($scope.prikaziDan == 3){
+								$scope.dostupniSanSreda = data1;
+							}else if($scope.prikaziDan == 4){
+								$scope.dostupniSanCetvrtak = data1;
+							}else if($scope.prikaziDan == 5){
+								$scope.dostupniSanPetak = data1;
+							}else if($scope.prikaziDan == 6){
+								$scope.dostupniSanSubota = data1;
+							}else if($scope.prikaziDan == 0){
+								$scope.dostupniSanNedelja = data1;
+							}
+						});
 					}).error(function(data) {
 					});
 				}
 
 			}
 			
+			$scope.dodajKuvaraUSmenuDana = function(){
+				var smenaDan = null;
+				var dostKuv = null;
+				
+				if($scope.prikaziDan == 1){
+					smenaDan = $scope.smenaKuvarPon;
+					dostKuv = $scope.dostupniKuvariPon;
+				}else if($scope.prikaziDan == 2){
+					smenaDan = $scope.smenaKuvarUto;
+					dostKuv = $scope.dostupniKuvariUto;
+				}else if($scope.prikaziDan == 3){
+					smenaDan = $scope.smenaKuvarSre;
+					dostKuv = $scope.dostupniKuvariSre;
+				}else if($scope.prikaziDan == 4){
+					smenaDan = $scope.smenaKuvarCet;
+					dostKuv = $scope.dostupniKuvariCet;
+				}else if($scope.prikaziDan == 5){
+					smenaDan = $scope.smenaKuvarPet;
+					dostKuv = $scope.dostupniKuvariPet;
+				}else if($scope.prikaziDan == 6){
+					smenaDan = $scope.smenaKuvarSub;
+					dostKuv = $scope.dostupniKuvariSub;
+				}else if($scope.prikaziDan == 0){
+					smenaDan = $scope.smenaKuvarNed;
+					dostKuv = $scope.dostupniKuvariNed;
+				}
+				
+				var smenaUDanu = {
+					restoran : $scope.restoran,
+					kuvar : dostKuv,
+					smena : smenaDan,
+					danUNedelji : danString
+				}
+				
+				var str = JSON.stringify(smenaUDanu);
+				menRestoranaServisS.dodajKuvaraUSmenuDana(str);
+				
+			}
 			
+			//Sanker
+			$scope.dodajSankeraUSmenuDana = function(){
+				var smenaDan = null;
+				var dostSan = null;
+				
+				if($scope.prikaziDan == 1){
+					smenaDan = $scope.smenaSankerPon;
+					dostSan = $scope.dostupniSankeriPon;
+				}else if($scope.prikaziDan == 2){
+					smenaDan = $scope.smenaSankerUto;
+					dostSan = $scope.dostupniSankeriUto;
+				}else if($scope.prikaziDan == 3){
+					smenaDan = $scope.smenaSankerSre;
+					dostSan = $scope.dostupniSankeriSre;
+				}else if($scope.prikaziDan == 4){
+					smenaDan = $scope.smenaSankerCet;
+					dostSan = $scope.dostupniSankeriCet;
+				}else if($scope.prikaziDan == 5){
+					smenaDan = $scope.smenaSankerPet;
+					dostSan = $scope.dostupniSankeriPet;
+				}else if($scope.prikaziDan == 6){
+					smenaDan = $scope.smenaSankerSub;
+					dostSan = $scope.dostupniSankeriSub;
+				}else if($scope.prikaziDan == 0){
+					smenaDan = $scope.smenaSankerNed;
+					dostSan = $scope.dostupniSankeriNed;
+				}
+				
+				var smenaUDanu = {
+					restoran : $scope.restoran,
+					sanker : dostSan,
+					smena : smenaDan,
+					danUNedelji : danString
+				}
+				
+				var str = JSON.stringify(smenaUDanu);
+				menRestoranaServisS.dodajSankeraUSmenuDana(str);
+				
+			}
 			
+			// Konobar~!
+			var tempSto = null;
+			$scope.prikaziStoloveKonobara = function(oznaka){
+				$scope.dostupniKonPonedeljak = null;
+				$scope.dostupneSmenePon = null;
+				$scope.prikaz = true;
+				
+				tempSto = [{oznaka : oznaka, restoran : $scope.restoran}];
+				var smenaDan = {
+					sto : tempSto,
+					restoran : $scope.restoran,
+					danUNedelji : danString
+				}
+				var str = JSON.stringify(smenaDan);
+				menRestoranaServisS.izlistajSmeneKonobar(str).success(function(data) {
+					$scope.smeneZaKonobare = data;
+				}).error(function(data) {
+				});
+				
+				menRestoranaServisS.izlistajDostupneSmeneKonobarDan(str).success(function(data2) {
+					if(data2 != null){
+						if($scope.prikaziDan == 1){
+							$scope.dostupneSmenePon = data2;
+						}else if($scope.prikaziDan == 2){
+							$scope.dostupneSmeneUto = data2;
+						}else if($scope.prikaziDan == 3){
+							$scope.dostupneSmeneSre = data2;
+						}else if($scope.prikaziDan == 4){
+							$scope.dostupneSmeneCet = data2;
+						}else if($scope.prikaziDan == 5){
+							$scope.dostupneSmenePet = data2;
+						}else if($scope.prikaziDan == 6){
+							$scope.dostupneSmeneSub = data2;
+						}else if($scope.prikaziDan == 0){
+							$scope.dostupneSmeneNed = data2;
+						}
+					}
+				}).error(function(data) {
+				});
+			}
 			
+			$scope.promenaSmeneKonobar = function(){
+				var tempSmenaa = null;
+				if($scope.prikaziDan == 1){
+					tempSmenaa = $scope.smenaKonobarPon;
+				}else if($scope.prikaziDan == 2){
+					tempSmenaa = $scope.smenaKonobarUto;
+				}else if($scope.prikaziDan == 3){
+					tempSmenaa = $scope.smenaKonobarSre;
+				}else if($scope.prikaziDan == 4){
+					tempSmenaa = $scope.smenaKonobarCet;
+				}else if($scope.prikaziDan == 5){
+					tempSmenaa = $scope.smenaKonobarPet;
+				}else if($scope.prikaziDan == 6){
+					tempSmenaa = $scope.smenaKonobarSub;
+				}else if($scope.prikaziDan == 0){
+					tempSmenaa = $scope.smenaKonobarNed;
+				}
+				
+				var sud = {
+					restoran : $scope.restoran,
+					sto : tempSto,
+					danUNedelji : danString,
+					smena : tempSmenaa
+				}
+				var str = JSON.stringify(sud);
+				menRestoranaServisS.izlistajDostupneKonobare(str).success(function(data1) {
+					if($scope.prikaziDan == 1){
+						$scope.dostupniKonPonedeljak = data1;
+					}else if($scope.prikaziDan == 2){
+						$scope.dostupniKonUtorak = data1;
+					}else if($scope.prikaziDan == 3){
+						$scope.dostupniKonSreda = data1;
+					}else if($scope.prikaziDan == 4){
+						$scope.dostupniKonCetvrtak = data1;
+					}else if($scope.prikaziDan == 5){
+						$scope.dostupniKonPetak = data1;
+					}else if($scope.prikaziDan == 6){
+						$scope.dostupniKonSubota = data1;
+					}else if($scope.prikaziDan == 0){
+						$scope.dostupniKonNedelja = data1;
+					}
+				}).error(function(data) {
+				});
+			}
 			
+			$scope.dodajKonobaraUSmenuDana = function(){
+				var tempSme = null;
+				var tempKon = null
+				if($scope.prikaziDan == 1){
+					tempSme = $scope.smenaKonobarPon;
+					tempKon = $scope.dostupniKonobariPon;
+				}else if($scope.prikaziDan == 2){
+					tempSme = $scope.smenaKonobarUto;
+					tempKon = $scope.dostupniKonobariUto;
+				}else if($scope.prikaziDan == 3){
+					tempSme = $scope.smenaKonobarSre;
+					tempKon = $scope.dostupniKonobariSre;
+				}else if($scope.prikaziDan == 4){
+					tempSme = $scope.smenaKonobarCet;
+					tempKon = $scope.dostupniKonobariCet;
+				}else if($scope.prikaziDan == 5){
+					tempSme = $scope.smenaKonobarPet;
+					tempKon = $scope.dostupniKonobariPet;
+				}else if($scope.prikaziDan == 6){
+					tempSme = $scope.smenaKonobarSub;
+					tempKon = $scope.dostupniKonobariSub;
+				}else if($scope.prikaziDan == 0){
+					tempSme = $scope.smenaKonobarNed;
+					tempKon = $scope.dostupniKonobariNed;
+				}
+				
+				var sud = {
+					restoran : $scope.restoran,
+					sto : tempSto,
+					danUNedelji : danString,
+					smena : tempSme,
+					konobar : tempKon
+				}
+				var str = JSON.stringify(sud);
+				menRestoranaServisS.dodajKonobaraStoSmenaDan(str);
+			}
+			
+			// Porudzbine...
 			menRestoranaServisS.izlistajSveNamirnice().success(function(data) {
 				$scope.listaNamirnica = data;
 			}).error(function(data) {
@@ -207,6 +410,7 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 			
 			$scope.prikaziDan = -1;
 			$scope.prikaziSmene = function(index){
+				$scope.selektovanTip = "";
 				if ($scope.prikaziDan == index){
 					$scope.prikaziDan = -1;
 				} else {
@@ -293,7 +497,7 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 				$scope.datumCetvrtak.setDate($scope.danasnjiDatum.getDate() + 5);
 				$scope.datumPetak.setDate($scope.danasnjiDatum.getDate() + 6);
 				$scope.setuj();
-			} else if ($scope.danasnjiDan == 7){
+			} else if ($scope.danasnjiDan == 0){
 				$scope.datumNedelja = $scope.danasnjiDatum;
 				$scope.datumPonedeljak.setDate($scope.danasnjiDatum.getDate() + 1);
 				$scope.datumUtorak.setDate($scope.danasnjiDatum.getDate() + 2);
