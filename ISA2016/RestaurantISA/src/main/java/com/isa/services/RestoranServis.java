@@ -72,5 +72,10 @@ public interface RestoranServis {
 
 	List<Sanker> izlistajSankere(Restoran restoran);
 
+	List<SmenaUDanu> izlistajSmenePoDanimaKuvara(Kuvar kuvar);
+
+	List<SmenaUDanu> izlistajSmenePoDanimaKonobara(Konobar konobar);
+	
+	List<SmenaUDanu> izlistajSmenePoDanimaSankera (Sanker sanker);
 
 }

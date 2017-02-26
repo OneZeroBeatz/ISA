@@ -24,8 +24,10 @@ import com.isa.model.PiceUPorudzbini;
 import com.isa.model.Porudzbina;
 import com.isa.model.RacunKonobar;
 import com.isa.model.Restoran;
+import com.isa.model.SmenaUDanu;
 import com.isa.model.Sto;
 import com.isa.model.korisnici.Konobar;
+import com.isa.model.korisnici.Kuvar;
 import com.isa.pomocni.IzmeniPorudzbinuIzmeni;
 import com.isa.pomocni.IzmeniPorudzbinuPrikaz;
 import com.isa.pomocni.JelaPica;
@@ -769,6 +771,15 @@ public class KonobarKontroler {
 		List<Konobar> retVal = restoranServis.izlistajKonobare(restoran);
 		return new ResponseEntity<List<Konobar>>(retVal, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/ucitajKalendarKonobara", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<SmenaUDanu>> ucitajKalendarKonobara(@RequestBody Konobar parametar){
+		Konobar konobar = (Konobar) konobarServis.findOne(parametar.getId());
+		List<SmenaUDanu> retVal = restoranServis.izlistajSmenePoDanimaKonobara(konobar);
+		return new ResponseEntity<List<SmenaUDanu>>(retVal, HttpStatus.OK);
+	}
+	
+
 }
 
 

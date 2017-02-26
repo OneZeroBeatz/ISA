@@ -237,4 +237,19 @@ public class RestoranServisImpl implements RestoranServis{
 		return sankerSkladiste.findByRestoran(restoran);
 	}
 
+	@Override
+	public List<SmenaUDanu> izlistajSmenePoDanimaKuvara(Kuvar kuvar) {
+		return smeneUDanuSkladiste.findByKuvar(kuvar);
+	}
+
+	@Override
+	public List<SmenaUDanu> izlistajSmenePoDanimaKonobara(Konobar konobar) {
+		return smeneUDanuSkladiste.findByKonobar(konobar);
+	}
+	
+	@Override
+	public List<SmenaUDanu> izlistajSmenePoDanimaSankera(Sanker Sanker) {
+		return smeneUDanuSkladiste.findBySanker(Sanker);
+	}
+
 }

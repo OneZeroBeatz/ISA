@@ -32,6 +32,64 @@
 						
 					</tr>
 				</table>
+				
+				<table ng-show = "selektovaniSanker != null" >
+					<tr>
+						<th style = "width:70px">Dan</th>
+						<th style = "width:90px">Datum</th>
+						<th>Smena</th>
+						<th></th>
+					</tr>
+					<tr>
+						<td>Ponedeljak</td>
+						<td>{{datumPonedeljakStr}}</td>
+						<td ng-show = "ponedeljakSankera != null">{{ponedeljakSankera.vremeod}} - {{ponedeljakSankera.vremedo}} </td>
+						<td ng-show = "ponedeljakSankera == null">Ne radi</td>
+						<td ng-show = "danasnjiDan == 1">*<td>
+					</tr>
+					<tr>
+						<td>Utorak</td>
+						<td>{{datumUtorakStr}}</td>
+						<td ng-show = "utorakSankera != null">{{utorakSankera.vremeod}} - {{utorakSankera.vremedo}} </td>
+						<td ng-show = "utorakSankera == null">Ne radi</td>
+						<td ng-show = "danasnjiDan == 2">*<td>
+					</tr>
+					<tr>
+						<td>Sreda</td>
+						<td>{{datumSredaStr}}</td>
+						<td ng-show = "sredaSankera != null">{{sredaSankera.vremeod}} - {{sredaSankera.vremedo}} </td>
+						<td ng-show = "sredaSankera == null">Ne radi</td>
+						<td ng-show = "danasnjiDan == 3">*<td>
+					</tr>
+					<tr>
+						<td>Cetvrtak</td>
+						<td>{{datumCetvrtakStr}}</td>
+						<td ng-show = "cetvrtakSankera != null">{{cetvrtakSankera.vremeod}} - {{cetvrtakSankera.vremedo}} </td>
+						<td ng-show = "cetvrtakSankera == null">Ne radi</td>
+						<td ng-show = "danasnjiDan == 4">*<td>
+					</tr>
+					<tr>
+						<td>Petak</td>
+						<td>{{datumPetakStr}}</td>
+						<td ng-show = "petakSankera != null">{{petakSankera.vremeod}} - {{petakSankera.vremedo}} </td>
+						<td ng-show = "petakSankera == null">Ne radi</td>
+						<td ng-show = "danasnjiDan == 5">*<td>
+					</tr>
+					<tr>
+						<td>Subota</td>
+						<td>{{datumSubotaStr}}</td>
+						<td ng-show = "subotaSankera != null">{{subotaSankera.vremeod}} - {{subotaSankera.vremedo}} </td>
+						<td ng-show = "subotaSankera == null">Ne radi</td>
+						<td ng-show = "danasnjiDan == 6">*<td>
+					</tr>
+					<tr>
+						<td>Nedelja</td>
+						<td>{{datumNedeljaStr}}</td>
+						<td ng-show = "nedeljaSankera != null">{{nedeljaSankera.vremeod}} - {{nedeljaSankera.vremedo}} </td>
+						<td ng-show = "nedeljaSankera == null">Ne radi</td>
+						<td ng-show = "danasnjiDan == 0">*<td>
+					</tr>
+				</table>
 			</div>
 
 			<div id = "div1" ng-show="isSet(1)">				

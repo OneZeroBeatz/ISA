@@ -141,14 +141,49 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, log
 				});
 			}
 			
+			// PROMENJEN Sanker
+			$scope.promenjenSanker = function(){
+	    		$scope.ponedeljakSankera = null;
+    			$scope.utorakSankera = null;	
+    			$scope.sredaSankera = null;	
+				$scope.cetvrtakSankera = null;	
+				$scope.petakSankera = null;	
+    			$scope.subotaSankera = null;	
+    			$scope.nedeljaSankera = null;	
 			
-			// PROMENJEN KONOBAR
-		    $scope.promenjenSanker = function(){
 		    	$scope.odabranSanker = $scope.selektovaniSanker;
-		    	alert($scope.selektovaniSanker.ime);
+		    	if($scope.odabranSanker != null){
+		    		izmeniSankerServis.ucitajKalendarSankera($scope.odabranSanker).success(function (data){
+		    			$scope.kalendarOdabranogSankera = data;
+		    			for (var i = 0; i < $scope.kalendarOdabranogSankera.length; i++){
+		    				if ($scope.kalendarOdabranogSankera[i].danUNedelji == "PONEDELJAK"){
+				    			$scope.ponedeljakSankera = $scope.kalendarOdabranogSankera[i].smena;
+		    				} else if ($scope.kalendarOdabranogSankera[i].danUNedelji == "UTORAK"){
+				    			$scope.utorakSankera = $scope.kalendarOdabranogSankera[i].smena;	
+		    				} else if ($scope.kalendarOdabranogSankera[i].danUNedelji == "SREDA"){
+				    			$scope.sredaSankera = $scope.kalendarOdabranogSankera[i].smena;	
+		    				} else if ($scope.kalendarOdabranogSankera[i].danUNedelji == "CETVRTAK"){
+				    			$scope.cetvrtakSankera = $scope.kalendarOdabranogSankera[i].smena;	
+		    				} else if ($scope.kalendarOdabranogSankera[i].danUNedelji == "PETAK"){
+				    			$scope.petakSankera = $scope.kalendarOdabranogSankera[i].smena;	
+		    				} else if ($scope.kalendarOdabranogSankera[i].danUNedelji == "SUBOTA"){
+				    			$scope.subotaSankera = $scope.kalendarOdabranogSankera[i].smena;	
+		    				} else if ($scope.kalendarOdabranogSankera[i].danUNedelji == "NEDELJA"){
+				    			$scope.nedeljaSankera = $scope.kalendarOdabranogSankera[i].smena;	
+		    				} 
+		    			}
+		    			
+		    		}).error(function (data){
+		    			
+		    		});
+		    	} else {
+		    		alert("Niste odabrali Sankera");
+		    	}
 		    }
 			
-			// UCITAJ KONOBARE RESTORANA
+
+			
+			// UCITAJ Sankere RESTORANA
 			$scope.sankeriRestorana = [];
 			izmeniSankerServis.ucitajSankerRestorana($scope.ulogovanSanker).success(function(data) {
 

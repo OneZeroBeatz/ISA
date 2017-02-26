@@ -31,6 +31,7 @@ public class LogRegKontroler {
 	
 	private ModelAndView modelAndView;
 	
+	
 	@RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Korisnik> getNew(Model model, @RequestBody Gost newGuest) {
 		newGuest.setTipKorisnika(TipKorisnika.GOST);
@@ -40,6 +41,11 @@ public class LogRegKontroler {
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Korisnik> getKorisnik(Model model, @RequestBody Gost newGuest){
+		model.addAttribute("error", "Your username and password is invalid.");
+
+		model.addAttribute("error", "Your username and password is invalid.");
+
+		
 		Korisnik temp = servis.findByEmail(newGuest.getEmail());
 		if(temp != null && temp.getSifra().equals(newGuest.getSifra())){
 			modelAndView = new ModelAndView();

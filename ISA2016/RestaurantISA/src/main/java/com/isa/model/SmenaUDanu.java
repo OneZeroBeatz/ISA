@@ -31,10 +31,10 @@ public class SmenaUDanu implements Serializable {
 	@Column(name = "dan")
 	private DanUNedelji danUNedelji;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	private Restoran restoran;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	private Smena smena;
 
 	@ManyToOne(optional = true)

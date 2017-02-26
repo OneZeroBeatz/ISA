@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.isa.model.JeloUPorudzbini;
 import com.isa.model.Porudzbina;
 import com.isa.model.Restoran;
+import com.isa.model.SmenaUDanu;
 import com.isa.model.korisnici.Kuvar;
 import com.isa.pomocni.MogucePrihvacene;
 import com.isa.pomocni.PorudzbinaKuvar;
@@ -209,6 +210,15 @@ public class KuvarKontroler {
 		List<Kuvar> retVal = restoranServis.izlistajKuvare(restoran);
 		return new ResponseEntity<List<Kuvar>>(retVal, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/ucitajKalendarKuvara", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<SmenaUDanu>> ucitajKalendarKuvara(@RequestBody Kuvar parametar){
+		Kuvar kuvar = (Kuvar) kuvarServis.findOne(parametar.getId());
+		List<SmenaUDanu> retVal = restoranServis.izlistajSmenePoDanimaKuvara(kuvar);
+		return new ResponseEntity<List<SmenaUDanu>>(retVal, HttpStatus.OK);
+	}
+	
+	
 	
 
 }
