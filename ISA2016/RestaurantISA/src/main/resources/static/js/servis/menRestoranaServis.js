@@ -85,10 +85,6 @@ menRestoranaServis.factory('menRestoranaServisS', function($http) {
 		return $http.post('/menadzerRestoranaKontroler/registrujIDodajPonudjaca', restPon);
 	}
 	
-	temp.izlistajSmeneKonobara = function(smenaUDanu) {
-		return $http.post('/menadzerRestoranaKontroler/izlistajSmeneKonobara', smenaUDanu);
-	}
-	
 	temp.izlistajSmeneKuvara = function(smenaUDanu) {
 		return $http.post('/menadzerRestoranaKontroler/izlistajSmeneKuvara', smenaUDanu);
 	}
@@ -107,6 +103,34 @@ menRestoranaServis.factory('menRestoranaServisS', function($http) {
 	
 	temp.dostupniKuvari = function(smena) {
 		return $http.post('/menadzerRestoranaKontroler/dostupniKuvari', smena);
+	}
+	
+	temp.dostupniSankeri = function(smena) {
+		return $http.post('/menadzerRestoranaKontroler/dostupniSankeri', smena);
+	}
+	
+	temp.dodajKuvaraUSmenuDana = function(smenaUDanu) {
+		return $http.post('/menadzerRestoranaKontroler/dodajKuvaraUSmenuDana', smenaUDanu);
+	}
+	
+	temp.dodajSankeraUSmenuDana = function(smenaUDanu) {
+		return $http.post('/menadzerRestoranaKontroler/dodajSankeraUSmenuDana', smenaUDanu);
+	}
+	
+	temp.izlistajSmeneKonobar = function(smenaUDanu) {
+		return $http.post('/menadzerRestoranaKontroler/izlistajSmeneKonobar', smenaUDanu);
+	}
+	
+	temp.izlistajDostupneKonobare = function(smenaUDanu) {
+		return $http.post('/menadzerRestoranaKontroler/izlistajDostupneKonobare', smenaUDanu);
+	}
+	
+	temp.izlistajDostupneSmeneKonobarDan = function(smenaUDanu) {
+		return $http.post('/menadzerRestoranaKontroler/izlistajDostupneSmeneKonobarDan', smenaUDanu);
+	}
+	
+	temp.dodajKonobaraStoSmenaDan = function(smenaUDanu) {
+		return $http.post('/menadzerRestoranaKontroler/dodajKonobaraStoSmenaDan', smenaUDanu);
 	}
 	
 	return temp;

@@ -22,9 +22,11 @@ import com.isa.model.Restoran;
 import com.isa.model.Smena;
 import com.isa.model.SmenaUDanu;
 import com.isa.model.Sto;
+import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Kuvar;
 import com.isa.model.korisnici.MenadzerRestorana;
 import com.isa.model.korisnici.Ponudjac;
+import com.isa.model.korisnici.Sanker;
 import com.isa.model.korisnici.TipKorisnika;
 import com.isa.pomocni.ListaStavki;
 import com.isa.pomocni.RestoranPonudjac;
@@ -209,15 +211,7 @@ public class MenadzerRestoranaKontroler {
 		restoranServirs.dodajPonudjacaURestoran(restPon.getRestoran(), ponudjac);
 
 	}
-	
-	@RequestMapping(value = "/izlistajSmeneKonobara", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<SmenaUDanu>> izlistajSmeneKonobara(@RequestBody SmenaUDanu smenaUDanu) {
-		
-		List<SmenaUDanu> smene = null;//restoranServirs.izlistajSmeneKonobara(smenaUDanu.getRestoran(), smenaUDanu.getDanUNedelji());
-		
-		return new ResponseEntity<List<SmenaUDanu>>(smene, HttpStatus.OK);
-	}
-	
+
 	@RequestMapping(value = "/izlistajSmeneKuvara", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<SmenaUDanu>> izlistajSmeneKuvara(@RequestBody SmenaUDanu smenaUDanu) {
 		
@@ -229,7 +223,7 @@ public class MenadzerRestoranaKontroler {
 	@RequestMapping(value = "/izlistajSmeneSankera", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<SmenaUDanu>> izlistajSmeneSankera(@RequestBody SmenaUDanu smenaUDanu) {
 		
-		List<SmenaUDanu> smene = null;//restoranServirs.izlistajSmeneSankera(smenaUDanu.getRestoran(), smenaUDanu.getDanUNedelji());
+		List<SmenaUDanu> smene = restoranServirs.izlistajSmeneSankera(smenaUDanu.getRestoran(), smenaUDanu.getDanUNedelji());
 		
 		return new ResponseEntity<List<SmenaUDanu>>(smene, HttpStatus.OK);
 	}
@@ -249,12 +243,92 @@ public class MenadzerRestoranaKontroler {
 		
 	}
 	
-	
 	@RequestMapping(value = "/dostupniKuvari", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Kuvar>> dostupniKuvari(@RequestBody SmenaUDanu smenaUDanu) {
 		
 		List<Kuvar> smene = restoranServirs.izlistajDostupneKuvare(smenaUDanu.getRestoran(), smenaUDanu.getDanUNedelji());
 		
 		return new ResponseEntity<List<Kuvar>>(smene, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/dodajKuvaraUSmenuDana", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void dodajKuvaraUSmenuDana(@RequestBody SmenaUDanu smenaUDanu) {
+		
+		restoranServirs.dodajKuvaraUSmenuDana(smenaUDanu);
+		
+	}
+	
+	@RequestMapping(value = "/dostupniSankeri", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Sanker>> dostupniSankeri(@RequestBody SmenaUDanu smenaUDanu) {
+		
+		List<Sanker> smene = restoranServirs.izlistajDostupneSankere(smenaUDanu.getRestoran(), smenaUDanu.getDanUNedelji());
+		
+		return new ResponseEntity<List<Sanker>>(smene, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/dodajSankeraUSmenuDana", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void dodajSankeraUSmenuDana(@RequestBody SmenaUDanu smenaUDanu) {
+		
+		restoranServirs.dodajSankeraUSmenuDana(smenaUDanu);
+		
+	}
+	
+	@RequestMapping(value = "/izlistajSmeneKonobar", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<SmenaUDanu>> izlistajSmeneKonobar(@RequestBody SmenaUDanu smenaUDanu) {
+		List<SmenaUDanu> smene = null;
+		
+		while(smenaUDanu.getSto().iterator().hasNext()){
+			Sto sto = smenaUDanu.getSto().iterator().next();
+			if(sto != null){
+				smene = restoranServirs.izlistajSmeneKonobara(smenaUDanu.getRestoran(), smenaUDanu.getDanUNedelji(), sto);
+				break;
+			}
+		}
+		
+		return new ResponseEntity<List<SmenaUDanu>>(smene, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/izlistajDostupneKonobare", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Konobar>> izlistajDostupneKonobare(@RequestBody SmenaUDanu smenaUDanu) {
+		List<Konobar> konobari = null;
+		
+		while(smenaUDanu.getSto().iterator().hasNext()){
+			Sto sto = smenaUDanu.getSto().iterator().next();
+			if(sto != null){
+				konobari = restoranServirs.izlistajDostupneKonobare(smenaUDanu.getRestoran(), smenaUDanu.getDanUNedelji(), sto, smenaUDanu.getSmena());
+				break;
+			}
+		}
+
+		
+		return new ResponseEntity<List<Konobar>>(konobari, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/izlistajDostupneSmeneKonobarDan", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Smena>> izlistajDostupneSmeneKonobarDan(@RequestBody SmenaUDanu smenaUDanu) {
+		List<Smena> smene = null;
+		
+		while(smenaUDanu.getSto().iterator().hasNext()){
+			Sto sto = smenaUDanu.getSto().iterator().next();
+			if(sto != null){
+				smene = restoranServirs.izlistajDostupneSmeneKonobarDan(smenaUDanu.getRestoran(), smenaUDanu.getDanUNedelji(), sto);
+				break;
+			}
+		}
+		
+		return new ResponseEntity<List<Smena>>(smene, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value = "/dodajKonobaraStoSmenaDan", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void dodajKonobaraStoSmenaDan(@RequestBody SmenaUDanu smenaUDanu) {
+		
+		while(smenaUDanu.getSto().iterator().hasNext()){
+			Sto sto = smenaUDanu.getSto().iterator().next();
+			if(sto != null){
+				restoranServirs.dodajKonobaraStoSmenaDan(smenaUDanu.getRestoran(), smenaUDanu.getDanUNedelji(), smenaUDanu.getKonobar(), smenaUDanu.getSmena(), sto);
+				return;
+			}
+		}
 	}
 }

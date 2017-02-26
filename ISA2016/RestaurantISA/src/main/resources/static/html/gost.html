@@ -99,9 +99,20 @@
 
 			<div ng-show="isSet(3)">
 				<h2>Zahtevi za prijateljstvo:</h2>
-				<ul>
+				<table id="myZahtevi">
+					<tr ng-show="zahteviZaPrijateljstvo.length > 0">
+						<th ng-click="sortTableZah(0)">Ime</th>
+    					<th ng-click="sortTableZah(1)">Prezime</th>
+					</tr>
+					<tr ng-repeat="prij in zahteviZaPrijateljstvo">
+						<td>{{prij.ime}}</td>
+						<td>{{prij.prezime}}</td>
+						<td> <a ng-click="prihvatiZahtev(prij)" href="">Prihvati</a> <a ng-click="odbijZahtev(prij)" href=""> Odbij</a> </td>
+					</tr>
+				</table>
+				<!-- <ul>
 				<li ng-repeat="prij in zahteviZaPrijateljstvo"> {{prij.ime}} {{prij.prezime}} <a ng-click="prihvatiZahtev(prij)" href="">Prihvati</a> <a ng-click="odbijZahtev(prij)" href=""> Odbij</a> </li>
-				</ul>
+				</ul> -->
 				<hr>
 				<h2>Spisak prijatelja:</h2>
 				<table>
@@ -146,7 +157,9 @@
 					<tr ng-repeat="prij in filtriraniPrijatelji">
 						<td>{{prij.ime}}</td>
 						<td>{{prij.prezime}}</td>
-						<td> <a ng-click="dodajPrijatelja(prij)" href="">Dodaj</a></td>
+						<td> <a ng-show="prij.canSend" ng-click="dodajPrijatelja(prij)" href="">Dodaj</a> <a ng-show="prij.canDecline" ng-click="otkaziZahtev(prij)" href="">Otkazi</a> 
+							 <a ng-show="prij.canAccept" ng-click="prihvatiZahtev(prij)" href="">Prihvati</a> <a ng-show="prij.canAccept" ng-click="odbijZahtev(prij)" href=""> Odbij</a> 
+						</td>
 					</tr>
 				</table>
 				<!--<ul>

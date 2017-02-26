@@ -60,7 +60,15 @@ public class LogRegKontroler {
 	public ResponseEntity<Korisnik> getKorisnik(Model model, @RequestBody Gost newGuest){	
 		Korisnik korisnik = servis.findByEmail(newGuest.getEmail());
 		if(korisnik != null && korisnik.getSifra().equals(newGuest.getSifra())){
+
 			model.addAttribute("korisnik", korisnik);
+
+			
+			//if (!model.containsAttribute("korisnik")) {
+				model.addAttribute("korisnik", korisnik);
+			//}
+
+
 			System.out.println("STAVIO SI NA SESIJU - " + korisnik.getIme());
 			return new ResponseEntity<Korisnik>(korisnik, HttpStatus.ACCEPTED);
 		}else

@@ -1,7 +1,9 @@
 package com.isa.services;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -238,6 +240,111 @@ public class RestoranServisImpl implements RestoranServis{
 	}
 
 	@Override
+	public void dodajKuvaraUSmenuDana(SmenaUDanu smenaUDanu) {
+		smeneUDanuSkladiste.save(smenaUDanu);
+		
+	}
+
+	@Override
+	public List<SmenaUDanu> izlistajSmeneKonobara(Restoran restoran, DanUNedelji danUNedelji, Sto sto) {
+		Sto s = stoSkladiste.findByRestoranAndOznaka(sto.getRestoran(), sto.getOznaka());
+		List<SmenaUDanu> smene = smeneUDanuSkladiste.findByRestoranAndDanUNedeljiAndStoAndKonobarNotNull(restoran, danUNedelji, s);
+		
+		return smene;
+	}
+
+	@Override
+	public List<Smena> izlistajDostupneSmeneKonobarDan(Restoran restoran, DanUNedelji danUNedelji, Sto sto) {
+		List<Smena> smene = smenaSkladiste.findByRestoran(restoran);
+		List<Smena> retVal = smenaSkladiste.findByRestoran(restoran);
+		Sto s = stoSkladiste.findByRestoranAndOznaka(sto.getRestoran(), sto.getOznaka());
+		List<SmenaUDanu> smeneDan = smeneUDanuSkladiste.findByRestoranAndDanUNedeljiAndStoAndKonobarNotNull(restoran, danUNedelji, s);
+		
+		for(Smena sm : smene){
+			for(SmenaUDanu sud : smeneDan){
+				if(sm.equals(sud.getSmena())){
+					retVal.remove(sm);
+					break;
+				}
+			}
+		}
+		
+		return retVal;
+	}
+
+	@Override
+	public List<Konobar> izlistajDostupneKonobare(Restoran restoran, DanUNedelji danUNedelji, Sto sto, Smena smena) {
+		List<Konobar> konobari = konobarSkladiste.findByRestoran(restoran);
+		List<Konobar> retVal = konobarSkladiste.findByRestoran(restoran);
+		Sto s = stoSkladiste.findByRestoranAndOznaka(sto.getRestoran(), sto.getOznaka());
+		Smena smenaa = smenaSkladiste.findOne(smena.getId());
+		try{
+			for(Konobar kon : konobari){
+				if(smeneUDanuSkladiste.findByRestoranAndDanUNedeljiAndStoAndKonobarAndSmena(restoran, danUNedelji, s, kon, smenaa) != null){		// Ako vec radi za tim stolom
+					retVal.remove(kon);
+				}else{
+					try{
+						if(!smeneUDanuSkladiste.findByRestoranAndDanUNedeljiAndKonobar(restoran, danUNedelji, kon).getSmena().equals(smenaa)){
+							retVal.remove(kon);
+						}
+					}catch(Exception e){
+						System.out.println("Konobar ne radi taj dan");
+					}
+				}
+			}
+		}catch(Exception e){
+			System.out.println("Nesto puca");
+		}
+				
+		return retVal;
+	}
+
+	@Override
+	public void dodajKonobaraStoSmenaDan(Restoran restoran, DanUNedelji danUNedelji, Konobar konobar, Smena smena,
+			Sto sto) {
+		Sto s = stoSkladiste.findByRestoranAndOznaka(sto.getRestoran(), sto.getOznaka());
+		SmenaUDanu sud = smeneUDanuSkladiste.findByRestoranAndDanUNedeljiAndKonobarAndSmena(restoran, danUNedelji, konobar, smena);
+		if(sud == null){
+			SmenaUDanu smenaDana = new SmenaUDanu();
+			smenaDana.setRestoran(restoran);
+			smenaDana.setDanUNedelji(danUNedelji);
+			smenaDana.setKonobar(konobar);
+			smenaDana.setSmena(smena);
+			Set<Sto> stolovi = new HashSet<>();
+			stolovi.add(s);
+			smenaDana.setSto(stolovi);
+			smeneUDanuSkladiste.save(smenaDana);
+		}else{
+			sud.getSto().add(s);
+			smeneUDanuSkladiste.save(sud);
+		}
+	}
+
+	@Override
+	public List<Sanker> izlistajDostupneSankere(Restoran restoran, DanUNedelji danUNedelji) {
+		List<Sanker> retVal = sankerSkladiste.findByRestoran(restoran);
+		List<SmenaUDanu> sud = smeneUDanuSkladiste.findByRestoranAndDanUNedeljiAndSankerNotNull(restoran, danUNedelji);
+		
+		for(SmenaUDanu s : sud){
+			if(retVal.contains(s.getSanker())){
+				retVal.remove(s.getSanker());
+			}
+		}
+		
+		return retVal;
+	}
+
+	@Override
+	public void dodajSankeraUSmenuDana(SmenaUDanu smenaUDanu) {
+		smeneUDanuSkladiste.save(smenaUDanu);
+		
+	}
+
+	@Override
+	public List<SmenaUDanu> izlistajSmeneSankera(Restoran restoran, DanUNedelji danUNedelji) {
+		return smeneUDanuSkladiste.findByRestoranAndDanUNedeljiAndSankerNotNull(restoran, danUNedelji);
+	}
+	
 	public List<SmenaUDanu> izlistajSmenePoDanimaKuvara(Kuvar kuvar) {
 		return smeneUDanuSkladiste.findByKuvar(kuvar);
 	}
@@ -250,6 +357,7 @@ public class RestoranServisImpl implements RestoranServis{
 	@Override
 	public List<SmenaUDanu> izlistajSmenePoDanimaSankera(Sanker Sanker) {
 		return smeneUDanuSkladiste.findBySanker(Sanker);
+
 	}
 
 }

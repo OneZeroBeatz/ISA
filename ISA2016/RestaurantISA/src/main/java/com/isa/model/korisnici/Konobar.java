@@ -2,6 +2,7 @@ package com.isa.model.korisnici;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,7 +26,7 @@ public class Konobar extends Korisnik{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "konobar")
 	private Set<Porudzbina> porudzbine1;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "konobar")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "konobar", cascade = {CascadeType.ALL})
 	private Set<SmenaUDanu> smenaudanu;
 	
 	public Konobar() {

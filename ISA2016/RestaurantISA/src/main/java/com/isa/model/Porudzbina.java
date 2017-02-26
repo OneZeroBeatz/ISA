@@ -31,7 +31,7 @@ public class Porudzbina {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "porudzbina")
 	private Set<PiceUPorudzbini> picovnik;
 
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = true, cascade = {CascadeType.ALL})
 	private Restoran restoran;
 	
 	@JsonIgnore
@@ -42,7 +42,7 @@ public class Porudzbina {
 	@ManyToOne(optional = true)
 	private Konobar konobar1;
 
-	@ManyToOne(optional = true, cascade = CascadeType.MERGE)
+	@ManyToOne(optional = true, cascade = {CascadeType.ALL})
 	private Sto sto;
 
 	@ManyToOne(optional = true, cascade = CascadeType.ALL)
