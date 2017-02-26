@@ -58,9 +58,9 @@ public class LogRegKontroler {
 		Korisnik korisnik = servis.findByEmail(newGuest.getEmail());
 		if(korisnik != null && korisnik.getSifra().equals(newGuest.getSifra())){
 			
-			if (!model.containsAttribute("korisnik")) {
+			//if (!model.containsAttribute("korisnik")) {
 				model.addAttribute("korisnik", korisnik);
-			}
+			//}
 
 			System.out.println("STAVIO SI NA SESIJU - " + korisnik.getIme());
 			return new ResponseEntity<Korisnik>(korisnik, HttpStatus.ACCEPTED);
