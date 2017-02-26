@@ -71,12 +71,58 @@
 			<div ng-show="isSet(3)">
 				<h2>Zahtevi za prijateljstvo:</h2>
 				<ul>
-				<li ng-repeat="prij in zahteviZaPrijateljstvo"> {{prij.ime}} {{prij.prezime}} <a ng-click="prihvatiZahtev(prij)" href="">Prihvati</a> <a ng-clock="odbijZahtev(prij)" href=""> Odbij</a> </li>
+				<li ng-repeat="prij in zahteviZaPrijateljstvo"> {{prij.ime}} {{prij.prezime}} <a ng-click="prihvatiZahtev(prij)" href="">Prihvati</a> <a ng-click="odbijZahtev(prij)" href=""> Odbij</a> </li>
 				</ul>
+				<hr>
 				<h2>Spisak prijatelja:</h2>
-				<ul>
+				<table>
+					<tr>
+						<td><p>Unesite ime:</p></td>
+						<td><input type="text" name="searchRealIme" ng-model="searchRealFriendIme" ng-change="pretraziPravePrijatelje()"/></td>
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						<td><p>Unesite prezime:</p></td>
+						<td><input type="text" name="searchRealPrz" ng-model="searchRealFriendPrz" ng-change="pretraziPravePrijatelje()"/></td>
+					</tr>
+				</table>
+				<table id="myPrijatelji">
+					<tr ng-show="prijateljiNeprijatelji.length > 0">
+						<th ng-click="sortTablePr(0)">Ime</th>
+    					<th ng-click="sortTablePr(1)">Prezime</th>
+					</tr>
+					<tr ng-repeat="prij in prijateljiNeprijatelji">
+						<td>{{prij.ime}}</td>
+						<td>{{prij.prezime}}</td>
+						<td> <a ng-click="ukloniPrijatelja(prij)" href="">Ukloni</a></td>
+					</tr>
+				</table>
+				<!-- <ul>
 				<li ng-repeat="prij in prijateljiNeprijatelji"> {{prij.ime}} {{prij.prezime}} <a ng-click="ukloniPrijatelja(prij)" href="">Ukloni</a> </li>
-				</ul>
+				</ul> -->
+				<hr>
+				<h2>Dodaj nove prijatelje:</h2> 
+				<table>
+					<tr>
+						<td><p>Unesite ime:</p></td>
+						<td><input type="text" name="searchIme" ng-model="searchFriendIme" ng-change="pretraziPrijatelje()"/></td>
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						<td><p>Unesite prezime:</p></td>
+						<td><input type="text" name="searchPrz" ng-model="searchFriendPrz" ng-change="pretraziPrijatelje()"/></td>
+					</tr>
+				</table>
+				<table id="myNeprijatelji">
+					<tr ng-show="filtriraniPrijatelji.length > 0">
+						<th ng-click="sortTableNpr(0)">Ime</th>
+    					<th ng-click="sortTableNpr(1)">Prezime</th>
+					</tr>
+					<tr ng-repeat="prij in filtriraniPrijatelji">
+						<td>{{prij.ime}}</td>
+						<td>{{prij.prezime}}</td>
+						<td> <a ng-click="dodajPrijatelja(prij)" href="">Dodaj</a></td>
+					</tr>
+				</table>
+				<!--<ul>
+				<li ng-repeat="prij in filtriraniPrijatelji"> {{prij.ime}} {{prij.prezime}} <a ng-click="dodajPrijatelja(prij)" href="">Dodaj</a> </li>
+				</ul> -->
 			</div>
 
 
@@ -87,3 +133,4 @@
 	</div>
 
 </div>
+

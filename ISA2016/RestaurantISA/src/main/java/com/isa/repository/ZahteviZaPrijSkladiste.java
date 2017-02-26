@@ -21,9 +21,16 @@ public interface ZahteviZaPrijSkladiste extends JpaRepository<ZahtevZaPrijateljs
 	
 	Page<ZahtevZaPrijateljstvo> findByEmailGosta(String email, Pageable pageable);
 	
+	Page<ZahtevZaPrijateljstvo> findByEmailGostaAndEmailPrijatelj(String emailG, String emailP, Pageable pageable);
+	
 	@Modifying
 	@Transactional
 	@Query("delete from ZahtevZaPrijateljstvo where email_gosta = :gEmail and email_prijatelja = :pEmail")
 	void deleteZahtev(@Param("gEmail") String gEmail, @Param("pEmail") String pEmail);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "insert into zahtev_za_prijateljstvo (email_gosta, email_prijatelja) values (:gEmail, :pEmail)", nativeQuery = true)
+	void addZahtev(@Param("gEmail") String gEmail, @Param("pEmail") String pEmail);
 
 }

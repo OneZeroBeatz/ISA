@@ -34,5 +34,9 @@ public interface GostServis {
 	void addPrijateljstvo(GostPrijatelj gostPrij);
 	
 	void removeZahtevZaPrijateljstvo(GostPrijatelj gostPrij);
+
+	Page<Korisnik> izlistajNeprijatelje(Gost gost, Pageable pageable);
+
+	void addZahtevZaPrijateljstvo(GostPrijatelj gostPrij, Pageable pageable);
     
 }

@@ -69,6 +69,15 @@ public class GostServisImp implements GostServis {
 			return null;			
 		}
 	}
+	
+	@Override
+	public Page<Korisnik> izlistajNeprijatelje(Gost gost, Pageable pageable) {
+		try{
+			return gostSkladiste.findByEmailNotLike(gost.getEmail(), pageable);
+		}catch(Exception ex){
+			return null;			
+		}
+	}
 
 	@Override
 	public void delete(Long id) {
@@ -106,5 +115,19 @@ public class GostServisImp implements GostServis {
 			
 		}
 	}
+	
+	@Override
+	public void addZahtevZaPrijateljstvo(GostPrijatelj gostPrij, Pageable pageable) {
+		try{
+			if(zahtevSkladiste.findByEmailGostaAndEmailPrijatelj(gostPrij.getPrijatelj().getEmail(), gostPrij.getGost().getEmail(), pageable).getContent().size() == 0){
+				zahtevSkladiste.addZahtev(gostPrij.getPrijatelj().getEmail(), gostPrij.getGost().getEmail());
+				System.out.println("Poslao sam zahtev");
+			}
+		}catch(Exception ex){
+			
+		}
+	}
+	
+	
 
 }
