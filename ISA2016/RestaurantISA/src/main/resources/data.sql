@@ -1,7 +1,7 @@
-insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Pera', 'Peric', 'pera123', 'G','pera@pera.com', 'GOST');
-insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Sima', 'Simic', 'sima123', 'G','sima@sima.com', 'GOST');
-insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Djura', 'Djuric', 'djura123', 'G','djura@djura.com', 'GOST');
-insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Verka', 'Verkic', 'verka123', 'G','verka@verka.com', 'GOST');
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, is_activated) values ('Pera', 'Peric', 'pera123', 'G','pera@pera.com', 'GOST', true);
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, is_activated) values ('Sima', 'Simic', 'sima123', 'G','sima@sima.com', 'GOST', true);
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, is_activated) values ('Djura', 'Djuric', 'djura123', 'G','djura@djura.com', 'GOST', true);
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, is_activated) values ('Verka', 'Verkic', 'verka123', 'G','verka@verka.com', 'GOST', true);
 
 --insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Aca', 'aaa', 'a', 'PN','a@a.a', 'PONUDJAC');
 --insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('B', 'bbb', 'b', 'PN','b', 'PONUDJAC');

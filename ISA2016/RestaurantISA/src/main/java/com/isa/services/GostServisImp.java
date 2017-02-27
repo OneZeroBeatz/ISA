@@ -30,7 +30,7 @@ public class GostServisImp implements GostServis {
 	private ZahteviZaPrijSkladiste zahtevSkladiste;
 	
 	@Override
-	public List<Korisnik> findAll() {
+	public List<Gost> findAll() {
 		return gostSkladiste.findAll();
 	}
 
@@ -54,7 +54,7 @@ public class GostServisImp implements GostServis {
 	}
 
 	@Override
-	public Korisnik findByEmail(String email) {
+	public Gost findByEmail(String email) {
 		try{
 			return gostSkladiste.findByEmail(email).get(0);
 		}catch(Exception e){
@@ -72,7 +72,7 @@ public class GostServisImp implements GostServis {
 	}
 	
 	@Override
-	public Page<Korisnik> izlistajNeprijatelje(Gost gost, Pageable pageable) {
+	public Page<Gost> izlistajNeprijatelje(Gost gost, Pageable pageable) {
 		try{
 			return gostSkladiste.findByEmailNotLike(gost.getEmail(), pageable);
 		}catch(Exception ex){
@@ -130,6 +130,13 @@ public class GostServisImp implements GostServis {
 		try{
 			zahtevSkladiste.deleteZahtev(gostPrij.getPrijatelj().getEmail(), gostPrij.getGost().getEmail());
 		}catch(Exception ex){}
+	}
+
+	@Override
+	public void activateAccount(String email) {
+		Gost gost = (Gost) gostSkladiste.findByEmail(email).get(0);
+		gost.setIsActivated(true);
+		gostSkladiste.save(gost);
 	}
 	
 	

@@ -17,6 +17,9 @@ public class Gost extends Korisnik{
 	@Column(name = "canAccept", nullable = true)
 	private Boolean canAccept;
 	
+	@Column(name = "isActivated", nullable = true)
+	private Boolean isActivated;
+
 	public Gost(){		
 	}
 
@@ -42,5 +45,13 @@ public class Gost extends Korisnik{
 
 	public void setCanAccept(Boolean canAccept) {
 		this.canAccept = canAccept;
+	}
+	
+	public Boolean getIsActivated() {
+		return isActivated;
+	}
+
+	public void setIsActivated(Boolean isActivated) {
+		this.isActivated = isActivated;
 	}
 }

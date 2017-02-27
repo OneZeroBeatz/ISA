@@ -65,7 +65,7 @@ public class GostKontroler {
 	@RequestMapping(value = "/izlistajPrijateljeNeprijatelje", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Korisnik>> izlistajPrijateljeNeprijatelje(@RequestBody Gost gost) {
 		Gost originalGost = (Gost) gostServis.findOne(gost.getId());	
-		Page<Prijatelj> prijatelji = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 10));	
+		Page<Prijatelj> prijatelji = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 100));	
 		List<Korisnik> korisnici = new ArrayList<>();	
 		Iterator<Prijatelj> itr = prijatelji.iterator();
 		
@@ -92,7 +92,7 @@ public class GostKontroler {
 		
 		if(!ime.equals("") && prezime.equals("")){		
 			Gost originalGost = (Gost) gostServis.findOne(pretrPrij.getGost().getId());		
-			Page<Prijatelj> prijatelji = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 10));		
+			Page<Prijatelj> prijatelji = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 100));		
 			List<Korisnik> korisnici = new ArrayList<>();		
 			Iterator<Prijatelj> itr = prijatelji.iterator();
 			
@@ -106,7 +106,7 @@ public class GostKontroler {
 			
 		}else if(ime.equals("") && !prezime.equals("")){
 			Gost originalGost = (Gost) gostServis.findOne(pretrPrij.getGost().getId());		
-			Page<Prijatelj> prijatelji = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 10));		
+			Page<Prijatelj> prijatelji = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 100));		
 			List<Korisnik> korisnici = new ArrayList<>();		
 			Iterator<Prijatelj> itr = prijatelji.iterator();
 			
@@ -120,7 +120,7 @@ public class GostKontroler {
 			
 		}else if(!ime.equals("") && !prezime.equals("")){
 			Gost originalGost = (Gost) gostServis.findOne(pretrPrij.getGost().getId());		
-			Page<Prijatelj> prijatelji = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 10));		
+			Page<Prijatelj> prijatelji = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 100));		
 			List<Korisnik> korisnici = new ArrayList<>();		
 			Iterator<Prijatelj> itr = prijatelji.iterator();
 			
@@ -133,7 +133,7 @@ public class GostKontroler {
 			return new ResponseEntity<List<Korisnik>>(korisnici, HttpStatus.OK);
 		}else{
 			Gost originalGost = (Gost) gostServis.findOne(pretrPrij.getGost().getId());			
-			Page<Prijatelj> prijatelji = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 10));			
+			Page<Prijatelj> prijatelji = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 100));			
 			List<Korisnik> korisnici = new ArrayList<>();			
 			Iterator<Prijatelj> itr = prijatelji.iterator();
 			
@@ -153,7 +153,7 @@ public class GostKontroler {
 	@RequestMapping(value = "/izlistajZahteveZaPrijateljstvo", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Korisnik>> izlistajZahteveZaPrijateljstvo(@RequestBody Gost gost) {
 		Gost originalGost = (Gost) gostServis.findOne(gost.getId());		
-		Page<ZahtevZaPrijateljstvo> prijatelji = gostServis.izlistajZahteveZaPrij(originalGost, new PageRequest(0, 10));		
+		Page<ZahtevZaPrijateljstvo> prijatelji = gostServis.izlistajZahteveZaPrij(originalGost, new PageRequest(0, 100));		
 		List<Korisnik> korisnici = new ArrayList<>();	
 		Iterator<ZahtevZaPrijateljstvo> itr = prijatelji.iterator();
 		
@@ -169,7 +169,7 @@ public class GostKontroler {
 		gostServis.delete(gostPrij);
 		
 		Gost originalGost = (Gost) gostServis.findOne(gostPrij.getGost().getId());	
-		Page<Prijatelj> prijatelji = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 10));	
+		Page<Prijatelj> prijatelji = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 100));	
 		List<Korisnik> korisnici = new ArrayList<>();	
 		Iterator<Prijatelj> itr = prijatelji.iterator();
 		
@@ -186,7 +186,7 @@ public class GostKontroler {
 		gostServis.removeZahtevZaPrijateljstvo(gostPrij);
 		
 		Gost originalGost = (Gost) gostServis.findOne(gostPrij.getGost().getId());		
-		Page<ZahtevZaPrijateljstvo> prijatelji = gostServis.izlistajZahteveZaPrij(originalGost, new PageRequest(0, 10));		
+		Page<ZahtevZaPrijateljstvo> prijatelji = gostServis.izlistajZahteveZaPrij(originalGost, new PageRequest(0, 100));		
 		List<Korisnik> korisnici = new ArrayList<>();	
 		Iterator<ZahtevZaPrijateljstvo> itr = prijatelji.iterator();
 		
@@ -202,7 +202,7 @@ public class GostKontroler {
 		gostServis.removeZahtevZaPrijateljstvo(gostPrij);	
 		
 		Gost originalGost = (Gost) gostServis.findOne(gostPrij.getGost().getId());		
-		Page<ZahtevZaPrijateljstvo> prijatelji = gostServis.izlistajZahteveZaPrij(originalGost, new PageRequest(0, 10));		
+		Page<ZahtevZaPrijateljstvo> prijatelji = gostServis.izlistajZahteveZaPrij(originalGost, new PageRequest(0, 100));		
 		List<Korisnik> korisnici = new ArrayList<>();	
 		Iterator<ZahtevZaPrijateljstvo> itr = prijatelji.iterator();
 		
@@ -221,8 +221,8 @@ public class GostKontroler {
 	}
 	
 	@RequestMapping(value = "/dodajPrijatelja", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Gost>> dodajPrijatelja(@RequestBody GostPrijatelj gostPrij) {		
-		gostServis.addZahtevZaPrijateljstvo(gostPrij, new PageRequest(0, 10));
+	public ResponseEntity<List<Gost>>  jatelja(@RequestBody GostPrijatelj gostPrij) {		
+		gostServis.addZahtevZaPrijateljstvo(gostPrij, new PageRequest(0, 100));
 
 		return neprijatelji(new PretragaPrijatelja(gostPrij.getGost(), gostPrij.getParamPretrageIme(), gostPrij.getParamPretragePrz()));
 	}
@@ -241,20 +241,20 @@ public class GostKontroler {
 		
 		if(!ime.equals("") && prezime.equals("")){		
 			Gost originalGost = (Gost) gostServis.findOne(pretrPrij.getGost().getId());		
-			Page<Korisnik> prijatelji = gostServis.izlistajNeprijatelje(originalGost, new PageRequest(0, 10));		
+			Page<Gost> prijatelji = gostServis.izlistajNeprijatelje(originalGost, new PageRequest(0, 100));		
 			List<Gost> korisnici = new ArrayList<>();
-			Iterator<Korisnik> itr = prijatelji.iterator();
+			Iterator<Gost> itr = prijatelji.iterator();
 			
 			while(itr.hasNext()){
 				Korisnik kor = gostServis.findByEmail(itr.next().getEmail());
 				if(kor.getIme().toLowerCase().contains(ime))
 					if(!kor.getEmail().equals(originalGost.getEmail()) && kor.getTipKorisnika().equals(TipKorisnika.GOST)){
 						
-						Page<Prijatelj> prijateljiKorisnika = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 10));							
+						Page<Prijatelj> prijateljiKorisnika = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 100));							
 						List<Korisnik> korisniciPrij = new ArrayList<>();					
 						Iterator<Prijatelj> itr2 = prijateljiKorisnika.iterator();
 										
-						Page<ZahtevZaPrijateljstvo> zahteviZaPrij = gostServis.izlistajZahteveZaPrij(originalGost, new PageRequest(0, 10));		
+						Page<ZahtevZaPrijateljstvo> zahteviZaPrij = gostServis.izlistajZahteveZaPrij(originalGost, new PageRequest(0, 100));		
 						List<Korisnik> korisniciZaht = new ArrayList<>();	
 						Iterator<ZahtevZaPrijateljstvo> itrZaht = zahteviZaPrij.iterator();
 								
@@ -282,7 +282,7 @@ public class GostKontroler {
 								
 						if(canAdd){
 							Gost gost = (Gost)kor;
-							if(gostServis.zahteviCount(new GostPrijatelj(originalGost, gost), new PageRequest(0, 10)) > 0){
+							if(gostServis.zahteviCount(new GostPrijatelj(originalGost, gost), new PageRequest(0, 100)) > 0){
 								gost.setCanSend(false);
 								gost.setCanDecline(true);
 								gost.setCanAccept(false);
@@ -299,20 +299,20 @@ public class GostKontroler {
 			
 		}else if(ime.equals("") && !prezime.equals("")){
 			Gost originalGost = (Gost) gostServis.findOne(pretrPrij.getGost().getId());		
-			Page<Korisnik> prijatelji = gostServis.izlistajNeprijatelje(originalGost, new PageRequest(0, 10));		
+			Page<Gost> prijatelji = gostServis.izlistajNeprijatelje(originalGost, new PageRequest(0, 100));		
 			List<Gost> korisnici = new ArrayList<>();		
-			Iterator<Korisnik> itr = prijatelji.iterator();
+			Iterator<Gost> itr = prijatelji.iterator();
 			
 			while(itr.hasNext()){
 				Korisnik kor = gostServis.findByEmail(itr.next().getEmail());
 				if(kor.getPrezime().toLowerCase().contains(prezime))
 					if(!kor.getEmail().equals(originalGost.getEmail()) && kor.getTipKorisnika().equals(TipKorisnika.GOST)){
 						
-						Page<Prijatelj> prijateljiKorisnika = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 10));							
+						Page<Prijatelj> prijateljiKorisnika = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 100));							
 						List<Korisnik> korisniciPrij = new ArrayList<>();					
 						Iterator<Prijatelj> itr2 = prijateljiKorisnika.iterator();
 						
-						Page<ZahtevZaPrijateljstvo> zahteviZaPrij = gostServis.izlistajZahteveZaPrij(originalGost, new PageRequest(0, 10));		
+						Page<ZahtevZaPrijateljstvo> zahteviZaPrij = gostServis.izlistajZahteveZaPrij(originalGost, new PageRequest(0, 100));		
 						List<Korisnik> korisniciZaht = new ArrayList<>();	
 						Iterator<ZahtevZaPrijateljstvo> itrZaht = zahteviZaPrij.iterator();
 						
@@ -340,7 +340,7 @@ public class GostKontroler {
 								
 						if(canAdd){
 							Gost gost = (Gost)kor;
-							if(gostServis.zahteviCount(new GostPrijatelj(originalGost, gost), new PageRequest(0, 10)) > 0){
+							if(gostServis.zahteviCount(new GostPrijatelj(originalGost, gost), new PageRequest(0, 100)) > 0){
 								gost.setCanSend(false);
 								gost.setCanDecline(true);
 								gost.setCanAccept(false);
@@ -357,20 +357,20 @@ public class GostKontroler {
 			
 		}else if(!ime.equals("") && !prezime.equals("")){
 			Gost originalGost = (Gost) gostServis.findOne(pretrPrij.getGost().getId());		
-			Page<Korisnik> prijatelji = gostServis.izlistajNeprijatelje(originalGost, new PageRequest(0, 10));		
+			Page<Gost> prijatelji = gostServis.izlistajNeprijatelje(originalGost, new PageRequest(0, 100));		
 			List<Gost> korisnici = new ArrayList<>();		
-			Iterator<Korisnik> itr = prijatelji.iterator();
+			Iterator<Gost> itr = prijatelji.iterator();
 			
 			while(itr.hasNext()){
 				Korisnik kor = gostServis.findByEmail(itr.next().getEmail());
 				if(kor.getIme().toLowerCase().contains(ime) && kor.getPrezime().toLowerCase().contains(prezime))
 					if(!kor.getEmail().equals(originalGost.getEmail()) && kor.getTipKorisnika().equals(TipKorisnika.GOST)){
 						
-						Page<Prijatelj> prijateljiKorisnika = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 10));							
+						Page<Prijatelj> prijateljiKorisnika = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 100));							
 						List<Korisnik> korisniciPrij = new ArrayList<>();					
 						Iterator<Prijatelj> itr2 = prijateljiKorisnika.iterator();
 						
-						Page<ZahtevZaPrijateljstvo> zahteviZaPrij = gostServis.izlistajZahteveZaPrij(originalGost, new PageRequest(0, 10));		
+						Page<ZahtevZaPrijateljstvo> zahteviZaPrij = gostServis.izlistajZahteveZaPrij(originalGost, new PageRequest(0, 100));		
 						List<Korisnik> korisniciZaht = new ArrayList<>();	
 						Iterator<ZahtevZaPrijateljstvo> itrZaht = zahteviZaPrij.iterator();
 						
@@ -398,7 +398,7 @@ public class GostKontroler {
 								
 						if(canAdd){
 							Gost gost = (Gost)kor;
-							if(gostServis.zahteviCount(new GostPrijatelj(originalGost, gost), new PageRequest(0, 10)) > 0){
+							if(gostServis.zahteviCount(new GostPrijatelj(originalGost, gost), new PageRequest(0, 100)) > 0){
 								gost.setCanSend(false);
 								gost.setCanDecline(true);
 								gost.setCanAccept(false);

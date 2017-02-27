@@ -15,7 +15,7 @@ import com.isa.pomocni.Poruka;
 
 public interface GostServis {
 
-    List<Korisnik> findAll();
+    List<Gost> findAll();
 
     Korisnik findOne(Long id);
 
@@ -23,7 +23,7 @@ public interface GostServis {
 
     void delete(Long id);
 
-    Korisnik findByEmail(String email);
+    Gost findByEmail(String email);
     
     Page<Prijatelj> izlistajPrijatelje(Gost gost, Pageable pageable);
 
@@ -37,10 +37,12 @@ public interface GostServis {
 	
 	void removeZahtevZaPrijateljstvoByGost(GostPrijatelj gostPrij);
 
-	Page<Korisnik> izlistajNeprijatelje(Gost gost, Pageable pageable);
+	Page<Gost> izlistajNeprijatelje(Gost gost, Pageable pageable);
 
 	void addZahtevZaPrijateljstvo(GostPrijatelj gostPrij, Pageable pageable);
 	
 	public int zahteviCount(GostPrijatelj gostPrij, Pageable pageable);
+
+	void activateAccount(String email);
     
 }
