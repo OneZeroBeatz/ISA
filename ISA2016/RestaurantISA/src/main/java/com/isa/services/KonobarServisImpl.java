@@ -7,13 +7,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.isa.model.DanUNedelji;
 import com.isa.model.Jelo;
 import com.isa.model.JeloUPorudzbini;
 import com.isa.model.Pice;
 import com.isa.model.PiceUPorudzbini;
 import com.isa.model.Porudzbina;
+import com.isa.model.PosetaRestoranu;
 import com.isa.model.RacunKonobar;
 import com.isa.model.Restoran;
+import com.isa.model.SmenaUDanu;
+import com.isa.model.Sto;
 import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.repository.JeloSkladiste;
@@ -22,8 +26,10 @@ import com.isa.repository.KonobarSkladiste;
 import com.isa.repository.PiceSkladiste;
 import com.isa.repository.PiceUPorudzbiniSkladiste;
 import com.isa.repository.PorudzbinaSkladiste;
+import com.isa.repository.PoseteSkladiste;
 import com.isa.repository.RacunSkladiste;
 import com.isa.repository.RestoranSkladiste;
+import com.isa.repository.SmeneUDanuSkladiste;
 
 @Service
 public class KonobarServisImpl implements KonobarServis {
@@ -43,7 +49,11 @@ public class KonobarServisImpl implements KonobarServis {
 	@Autowired
 	private JeloUPorudzbiniSkladiste jeloUPorudzbiniSkladiste;
 	@Autowired
-	private RacunSkladiste racunSkladiste;
+	private RacunSkladiste racunSkladiste;	
+	@Autowired
+	private PoseteSkladiste poseteSkladiste;
+	@Autowired
+	private SmeneUDanuSkladiste smeneUDanuSkladiste;
 	
 
 
@@ -149,4 +159,24 @@ public class KonobarServisImpl implements KonobarServis {
 	public List<Konobar> findAll() {
 		return konobarSkladiste.findAll();
 	}
+
+	@Override
+	public List<PosetaRestoranu> izlistajPosetePoStolu(Sto sto) {
+		return poseteSkladiste.findBySto(sto);
+	}
+
+	@Override
+	public SmenaUDanu izlistajSmenuUDanu(Konobar konobar, DanUNedelji dan) {
+		Restoran res = restoranSkladiste.findOne(konobar.getRestoran().getId());
+		return smeneUDanuSkladiste.findByRestoranAndDanUNedeljiAndKonobar(res, dan, konobar);
+	}
+
+	@Override
+	public List<Porudzbina> izlistajPorudzbineStola(Sto sto) {
+		return porudzbinaSkladiste.findBySto(sto);
+	}
+
+
+	
+
 }

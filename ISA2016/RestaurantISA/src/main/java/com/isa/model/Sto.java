@@ -42,6 +42,9 @@ public class Sto implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sto")
 	private Set<Porudzbina> porudzbine;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sto")
+	private Set<PosetaRestoranu> posete;
+	
 	//@JsonIgnore
 	@ManyToMany(mappedBy = "sto", cascade = CascadeType.ALL)
 	private Set<SmenaUDanu> smenaudanu;

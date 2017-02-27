@@ -96,4 +96,6 @@ public interface RestoranServis {
 
 	Sto izmeniSto(Sto sto);
 
+	List<Sto> izlistajStoloveSmene(SmenaUDanu smenaKonobara);
+
 }

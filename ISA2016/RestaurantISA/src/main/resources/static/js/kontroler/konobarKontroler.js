@@ -513,11 +513,18 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, menRestor
 			if($scope.ulogovanKonobar.restoran.brojredova != null && $scope.ulogovanKonobar.restoran.brojkolona != null){
 				menRestoranaServisS.izlistajStolove($scope.ulogovanKonobar.restoran).success(function(data) {
 					$scope.stolovi = data;
-					$scope.jeSto = function (oznaka){
+					$scope.jeSto = function (oznaka){		
+						
 						for (var i = 0; i < $scope.stolovi.length; i++){
+							var parametar = {
+									konobar: $scope.ulovanKonobar,
+									sto: $scope.stolovi[i]
+								}
 							if ($scope.stolovi[i].oznaka === oznaka){
-								if($scope.stolovi[i].segment != "o"){
-									return false;
+								if($scope.stolovi[i].segment == "nijesto"){
+									return "nijesto"
+								} else if ($scope.stolovi[i]) {
+									
 								}
 							}
 						}

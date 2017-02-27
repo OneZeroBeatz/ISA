@@ -93,9 +93,12 @@
 					<table border="1">
 						<tr ng-repeat="n1 in brRedova">
 							<td ng-repeat="n2 in brKolona">
-								<div ng-show = "jeSto(n1*brojKolona+n2) == true" style = "background-color:black">
+								<div style = "width : 100px" ng-show = "jeSto(n1*brojKolona+n2) == true" style = "background: lightblue">
 									{{n1}}-{{n2}} {{jeSto(n1*brojKolona+n2)}}
-								</div>					
+								</div>	
+								<div style = "width : 100px" ng-show = "jeSto(n1*brojKolona+n2) != true" style = "background: yellow">
+									{{n1}}-{{n2}} {{jeSto(n1*brojKolona+n2)}}
+								</div>				
 								<!--<button ng-click="prikaziInformacije(n1*brojKolona+n2, restoran)">{{n1}}-{{n2}}</button>-->
 							</td>
 						</tr>
@@ -172,8 +175,8 @@
 					<h2>Lista porudzbina</h2>
 						<table ng-show = "!item.spremna" ng-repeat = "item in porudzbine">
 							<tr >
-								<td>Vreme : {{item.vremePrimanja}}</td>
-								<td>Oznaka stola : {{item.sto.oznaka}}</td>
+								<td style = "width:260px">Vreme : {{item.vremePrimanja}}</td>
+								<td style = "width:180px">Oznaka stola : {{item.sto.oznaka}}</td>
 								<td>
 									<button ng-click = "kliknuoNaDetalji(item)">Detalji</button>
 								</td>

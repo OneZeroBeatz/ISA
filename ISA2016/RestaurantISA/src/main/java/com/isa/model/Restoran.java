@@ -46,7 +46,7 @@ public class Restoran implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restoran")
 	private Set<Jelo> jelovnik;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restoran")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restoran", cascade = CascadeType.MERGE)
 	private Set<Konobar> konobar;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restoran")

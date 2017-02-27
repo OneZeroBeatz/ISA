@@ -23,6 +23,9 @@ public class PosetaRestoranu {
 	@ManyToOne(optional = true)
 	private Restoran restoran;
 	
+	@ManyToOne(optional = false)
+	private Sto sto; 
+	
 	@Column(name = "obavljena")
 	private boolean obavljena;
 	
@@ -36,11 +39,7 @@ public class PosetaRestoranu {
 	@Column(name = "br_sati")
 	private int brSati;
 
-	
-	
-	public PosetaRestoranu() {
-		// TODO Auto-generated constructor stub
-	}
+
 	
 	public Gost getGost() {
 		return gost;
@@ -88,6 +87,14 @@ public class PosetaRestoranu {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	public Sto getSto() {
+		return sto;
+	}
+	public void setSto(Sto sto) {
+		this.sto = sto;
+	}
+	
 	
 	
 }

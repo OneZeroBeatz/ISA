@@ -377,4 +377,9 @@ public class RestoranServisImpl implements RestoranServis{
 		return s;
 	}
 
+	@Override
+	public List<Sto> izlistajStoloveSmene(SmenaUDanu smenaKonobara) {
+		return stoSkladiste.findBySmenaudanu(smenaKonobara);
+	}
+
 }

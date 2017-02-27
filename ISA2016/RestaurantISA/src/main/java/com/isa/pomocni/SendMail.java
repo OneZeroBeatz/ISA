@@ -10,6 +10,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+
 public class SendMail {
 
 	
@@ -45,6 +46,7 @@ public class SendMail {
 	      }
 	      catch (AddressException e) {e.printStackTrace();}
 	      catch (MessagingException e) {e.printStackTrace();}
+	
 	}
 	
 }

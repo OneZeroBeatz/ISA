@@ -1,7 +1,11 @@
 package com.isa.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,17 +21,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.isa.model.DanUNedelji;
 import com.isa.model.Jelo;
 import com.isa.model.JeloUPorudzbini;
 import com.isa.model.Pice;
 import com.isa.model.PiceUPorudzbini;
 import com.isa.model.Porudzbina;
+import com.isa.model.PosetaRestoranu;
 import com.isa.model.RacunKonobar;
 import com.isa.model.Restoran;
+import com.isa.model.Smena;
 import com.isa.model.SmenaUDanu;
 import com.isa.model.Sto;
 import com.isa.model.korisnici.Konobar;
-import com.isa.model.korisnici.Kuvar;
 import com.isa.pomocni.IzmeniPorudzbinuIzmeni;
 import com.isa.pomocni.IzmeniPorudzbinuPrikaz;
 import com.isa.pomocni.JelaPica;
@@ -74,14 +80,13 @@ public class KonobarKontroler {
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = sdf.format(dt);
 		porudzbina.setVremePrimanja(currentTime);
-		porudzbina.setRestoran(restoran);
+		porudzbina.setRestoran(restoranServis.findOne(restoran.getId()));
 		porudzbina.setSanker(null);
 		porudzbina.setKonobar((Konobar)konobarServis.findOne(jelaPica.getKonobar().getId()));
-		porudzbina.setSto(jelaPica.getSto());
 
+		porudzbina.setSto(restoranServis.izlistajSto(jelaPica.getSto()));
 		
 		konobarServis.savePorudzbina(porudzbina);
-		
 		ArrayList<Jelo> jelaL = new ArrayList<Jelo>();
 		ArrayList<Pice> picaL = new ArrayList<Pice>();
 		
@@ -127,17 +132,9 @@ public class KonobarKontroler {
 			piceUPorudzbini.setPorudzbina(porudzbina);
 			konobarServis.savePiceUPorudzbini(piceUPorudzbini);
 		}
-		Page<Porudzbina> porudzbine = konobarServis.izlistajPorudzbine((Konobar)konobarServis.findOne(jelaPica.getKonobar().getId()), new PageRequest(0, 10));
 
-		List<Porudzbina> retVal = new ArrayList<Porudzbina>();
-		
-		for (int i = 0; i<porudzbine.getContent().size(); i++){
-			if(porudzbine.getContent().get(i).getRacun() == null){
-				retVal.add(porudzbine.getContent().get(i));
-			}
-		}
-		
-		return new ResponseEntity<List<Porudzbina>>(retVal, HttpStatus.OK);
+
+		return new ResponseEntity<List<Porudzbina>>(vratiPorudzbineKonobara((Konobar)konobarServis.findOne(jelaPica.getKonobar().getId())), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/potvrdiIzmene", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -257,9 +254,6 @@ public class KonobarKontroler {
 				jeloUPorudzbini.setKolicina(Collections.frequency(jelaL, temp));
 				jeloUPorudzbini.setJelo(temp);
 				jeloUPorudzbini.setPorudzbina(parametar.getPorudzbina());
-			
-				// TODO: Signalizacija kuvaru koji je prihvatio da je doslo do izmene
-
 				List<JeloUPorudzbini> svaJelaUP = konobarServis.izlistajJelaPorudzbine(parametar.getPorudzbina(), new PageRequest(0,10)).getContent();
 
 				for (int i = 0; i < svaJelaUP.size(); i++){
@@ -581,43 +575,68 @@ public class KonobarKontroler {
 		Porudzbina porudz = konobarServis.pronadjiPorudzbinu(parametar.getPorudzbina().getId());
 		porudz.setSpremnaJela(parametar.getPorudzbina().isSpremnaJela());
 		porudz.setSpremnaPica(parametar.getPorudzbina().isSpremnaPica());
-		konobarServis.savePorudzbina(porudz);
-		Page<Porudzbina> porudzbine = konobarServis.izlistajPorudzbine((Konobar)konobarServis.findOne(porudz.getKonobar().getId()), new PageRequest(0, 10));
+		konobarServis.savePorudzbina(porudz);	
 		
+		return new ResponseEntity<List<Porudzbina>>(vratiPorudzbineKonobara((Konobar)konobarServis.findOne(porudz.getId())), HttpStatus.OK);
 		
-		List<Porudzbina> retVal = new ArrayList<Porudzbina>();
-		
-		for (int i = 0; i<porudzbine.getContent().size(); i++){
-			if(porudzbine.getContent().get(i).getRacun() == null){
-				retVal.add(porudzbine.getContent().get(i));
-			}
-		}
-		
-		return new ResponseEntity<List<Porudzbina>>(retVal, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/izlistajStolove", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Sto>> ucitajStoloveKonobara(@RequestBody Konobar konobar) {
-
-		// TODO: Da vrati samo stolove za koje je zaduzen ovaj konobar, a ne sve 
-		Restoran restoran = konobarServis.izlistajRestoran(konobar);
-		Page<Sto> stolovi = restoranServis.izlistajStolove(restoran, new PageRequest(0, 10));
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		int trenutniDanUNedelji = calendar.get(Calendar.DAY_OF_WEEK);
+		DanUNedelji dan = null;
 		
-		return new ResponseEntity<List<Sto>>(stolovi.getContent(), HttpStatus.OK);
+		
+		System.out.println("ponedeljak = " + calendar.get(Calendar.DAY_OF_WEEK));
+		calendar.add(Calendar.HOUR_OF_DAY, 24); // adds one hour
+		System.out.println("utorak = " + calendar.get(Calendar.DAY_OF_WEEK));
+		calendar.add(Calendar.HOUR_OF_DAY, 24); // adds one hour
+		System.out.println("sreda = " + calendar.get(Calendar.DAY_OF_WEEK));
+		calendar.add(Calendar.HOUR_OF_DAY, 24); // adds one hour
+		System.out.println("cetvrtak = " + calendar.get(Calendar.DAY_OF_WEEK));
+		calendar.add(Calendar.HOUR_OF_DAY, 24); // adds one hour
+		System.out.println("petak = " + calendar.get(Calendar.DAY_OF_WEEK));
+		calendar.add(Calendar.HOUR_OF_DAY, 24); // adds one hour
+		System.out.println("subota = " + calendar.get(Calendar.DAY_OF_WEEK));
+		calendar.add(Calendar.HOUR_OF_DAY, 24); // adds one hour
+		System.out.println("nedelja = " + calendar.get(Calendar.DAY_OF_WEEK));
+		calendar.add(Calendar.HOUR_OF_DAY, 24); // adds one hour
+		
+		
+		
+		if(trenutniDanUNedelji == 2){
+			dan = DanUNedelji.PONEDELJAK;
+		} else if (trenutniDanUNedelji == 3){
+			dan = DanUNedelji.UTORAK;
+		} else if (trenutniDanUNedelji == 4){
+			dan = DanUNedelji.SREDA;
+		} else if (trenutniDanUNedelji == 5){
+			dan = DanUNedelji.CETVRTAK;
+		} else if (trenutniDanUNedelji == 6){
+			dan = DanUNedelji.PETAK;
+		} else if (trenutniDanUNedelji == 7){
+			dan = DanUNedelji.SUBOTA;
+		} else if (trenutniDanUNedelji == 1){
+			dan = DanUNedelji.NEDELJA;
+		} else {
+			dan = DanUNedelji.NEDELJA;
+		}
+		
+
+		SmenaUDanu smenaKonobara = konobarServis.izlistajSmenuUDanu(konobar,dan);
+		System.out.println(smenaKonobara.getId() + " ovo je id smene konobara");
+		List<Sto> stoloviKonobara = restoranServis.izlistajStoloveSmene(smenaKonobara);
+		
+		
+		return new ResponseEntity<List<Sto>>(stoloviKonobara, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/ucitajPorudzbine", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Porudzbina>> ucitajPorudzbine(@RequestBody Konobar konobar){		
-		Page<Porudzbina> porudzbine = konobarServis.izlistajPorudzbine(konobar, new PageRequest(0, 10));
-		List<Porudzbina> retVal = new ArrayList<Porudzbina>();
-		
-		for (int i = 0; i<porudzbine.getContent().size(); i++){
-			if(porudzbine.getContent().get(i).getRacun() == null){
-				retVal.add(porudzbine.getContent().get(i));
-			}
-		}
-		
-		return new ResponseEntity<List<Porudzbina>>(retVal, HttpStatus.OK);
+		Page<Porudzbina> porudzbine = konobarServis.izlistajPorudzbine(konobar, new PageRequest(0, 10));		
+		return new ResponseEntity<List<Porudzbina>>(vratiPorudzbineKonobara((Konobar)konobarServis.findOne(konobar.getId())), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/ucitajJelaPorudzbine", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -740,9 +759,9 @@ public class KonobarKontroler {
 		
 		//TODO skontati koji je konobar pa uraditi na osnovu onog kriterijuma sto su dali
 		
-		java.util.Date dt = new java.util.Date();
+		java.util.Date vremeNaplate = new java.util.Date();
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String currentTime = sdf.format(dt);
+		String currentTime = sdf.format(vremeNaplate);
 		Porudzbina porudz = konobarServis.pronadjiPorudzbinu(porKon.getPorudzbina().getId());
 		porudz.setVremeNaplate(currentTime);
 		porudz.setKonobar1(porKon.getKonobar());		
@@ -750,19 +769,82 @@ public class KonobarKontroler {
 		racun.setPorudzbina(porudz);
 		porudz.setRacun(racun);
 		
+		if(porudz.getKonobar().getId().equals(porudz.getKonobar1())){
+			racun.setKonobar((Konobar)konobarServis.findOne(porudz.getKonobar().getId()));
+		} else{
+				
+			/*
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Calendar calendar = Calendar.getInstance(); 
+			
+			
+			
+			
+			String primljenaStr = porudz.getVremePrimanja();
+			Date vremePrimanja = null;
+			try {
+				vremePrimanja = format.parse(primljenaStr);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+			List<PosetaRestoranu> posete = konobarServis.izlistajPosetePoStolu(porudz.getSto());
+			PosetaRestoranu trazenaPoseta = null;
+			for (int i =0 ; i < posete.size();i++){
+				String terminStr = posete.get(i).getTermin();
+				Date terminDat = null;
+				try {
+					terminDat = format.parse(terminStr);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				calendar.setTime(terminDat); // sets calendar time/date
+				calendar.add(Calendar.HOUR_OF_DAY, posete.get(i).getBrSati()); // adds one hour
+				Date terminDatKraj = calendar.getTime();
+				
+				
+				
+				trazenaPoseta = posete.get(i);
+				
+			}
+			
+			String terminStr = trazenaPoseta.getTermin();
+			Date terminDat = null;
+			try {
+				terminDat = format.parse(terminStr);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Calendar c = Calendar.getInstance();
+			c.setTime(terminDat);
+			int danUNedeljiPosete = c.get(Calendar.DAY_OF_WEEK);
+			
+			List<SmenaUDanu> smenePoDanimaKonobara = restoranServis.izlistajSmenePoDanimaKonobara((Konobar) konobarServis.findOne(porudz.getKonobar().getId()));
+			List<SmenaUDanu> smenePoDanimaKonobara1 = restoranServis.izlistajSmenePoDanimaKonobara((Konobar) konobarServis.findOne(porudz.getKonobar1().getId()));
+			
+			Smena smenaKonobara = null;
+			Smena smenaKonobara1 = null;
+			
+			for (int i = 0; i < smenePoDanimaKonobara.size(); i++){
+				if (smenePoDanimaKonobara.get(i).getDanUNedelji() == danUNedeljiPosete))){
+					smenaKonobara = smenePoDanimaKonobara.get(i).getSmena();
+				}
+			}
+			
+			*/
+		
+		}
+		
 		konobarServis.saveRacun(racun);
 		konobarServis.savePorudzbina(porudz);
 		
-		Page<Porudzbina> porudzbine = konobarServis.izlistajPorudzbine(porKon.getKonobar(), new PageRequest(0, 10));
-		List<Porudzbina> retVal = new ArrayList<Porudzbina>();
+		return new ResponseEntity<List<Porudzbina>>(vratiPorudzbineKonobara((Konobar)konobarServis.findOne(porKon.getKonobar().getId())), HttpStatus.OK);
 		
-		for (int i = 0; i<porudzbine.getContent().size(); i++){
-			if(porudzbine.getContent().get(i).getRacun() == null){
-				retVal.add(porudzbine.getContent().get(i));
-			}
-		}
-		
-		return new ResponseEntity<List<Porudzbina>>(retVal, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/ucitajKonobareRestorana", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -777,6 +859,53 @@ public class KonobarKontroler {
 		Konobar konobar = (Konobar) konobarServis.findOne(parametar.getId());
 		List<SmenaUDanu> retVal = restoranServis.izlistajSmenePoDanimaKonobara(konobar);
 		return new ResponseEntity<List<SmenaUDanu>>(retVal, HttpStatus.OK);
+	}
+	
+	private List<Porudzbina> vratiPorudzbineKonobara(Konobar konobar){
+		List<Porudzbina> porudzbine = new ArrayList<Porudzbina>();
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date()); // sets calendar time/date
+		int trenutniDanUNedelji = calendar.get(Calendar.DAY_OF_WEEK);
+		DanUNedelji dan = null;
+		if(trenutniDanUNedelji == 2){
+			dan = DanUNedelji.PONEDELJAK;
+		} else if (trenutniDanUNedelji == 3){
+			dan = DanUNedelji.UTORAK;
+		} else if (trenutniDanUNedelji == 4){
+			dan = DanUNedelji.SREDA;
+		} else if (trenutniDanUNedelji == 5){
+			dan = DanUNedelji.CETVRTAK;
+		} else if (trenutniDanUNedelji == 6){
+			dan = DanUNedelji.PETAK;
+		} else if (trenutniDanUNedelji == 7){
+			dan = DanUNedelji.SUBOTA;
+		} else if (trenutniDanUNedelji == 1){
+			dan = DanUNedelji.NEDELJA;
+		} else {
+			dan = DanUNedelji.NEDELJA;
+		}
+		
+		SmenaUDanu smenaKonobara = konobarServis.izlistajSmenuUDanu(konobar,dan);
+		
+		List<Sto> stoloviKonobara = restoranServis.izlistajStoloveSmene(smenaKonobara);
+		
+		for (int i = 0 ; i< stoloviKonobara.size(); i++){
+			List<Porudzbina> tempPorudzbine = konobarServis.izlistajPorudzbineStola(stoloviKonobara.get(i));
+			for (int j = 0; j < tempPorudzbine.size(); j++){
+				porudzbine.add(tempPorudzbine.get(j));
+			}
+			
+		}
+		
+		List<Porudzbina> retVal = new ArrayList<Porudzbina>();
+		
+		for (int i = 0; i<porudzbine.size(); i++){
+			if(porudzbine.get(i).getRacun() == null){
+				retVal.add(porudzbine.get(i));
+			}
+		}
+		return retVal;
 	}
 	
 
