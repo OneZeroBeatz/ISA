@@ -8,18 +8,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.isa.model.korisnici.Gost;
 import com.isa.model.korisnici.Korisnik;
-import com.isa.model.korisnici.Prijatelj;
 
 
 @Repository
 @Transactional
-public interface GostSkladiste extends JpaRepository<Korisnik, Long> {
+public interface GostSkladiste extends JpaRepository<Gost, Long> {
 
-	List<Korisnik> findById(Long gid);
+	List<Gost> findById(Long gid);
 	
-	List<Korisnik> findByEmail(String email);
+	List<Gost> findByEmail(String email);
 	
-	Page<Korisnik> findByEmailNotLike(String email, Pageable pageable);
+	Page<Gost> findByEmailNotLike(String email, Pageable pageable);
 	
 }

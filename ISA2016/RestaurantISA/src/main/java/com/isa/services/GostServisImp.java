@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.isa.model.PosetaRestoranu;
 import com.isa.model.ZahtevZaPrijateljstvo;
 import com.isa.model.korisnici.Gost;
 import com.isa.model.korisnici.Korisnik;
@@ -14,6 +15,7 @@ import com.isa.model.korisnici.Prijatelj;
 import com.isa.pomocni.GostPrijatelj;
 import com.isa.pomocni.Poruka;
 import com.isa.repository.GostSkladiste;
+import com.isa.repository.PoseteSkladiste;
 import com.isa.repository.PrijateljSkladiste;
 import com.isa.repository.ZahteviZaPrijSkladiste;
 
@@ -29,8 +31,14 @@ public class GostServisImp implements GostServis {
 	@Autowired
 	private ZahteviZaPrijSkladiste zahtevSkladiste;
 	
+	
+	// SASA POCETAK
+	@Autowired
+	private PoseteSkladiste poseteSkladiste;
+	// SASA KRAJ
+	
 	@Override
-	public List<Korisnik> findAll() {
+	public List<Gost> findAll() {
 		return gostSkladiste.findAll();
 	}
 
@@ -54,7 +62,7 @@ public class GostServisImp implements GostServis {
 	}
 
 	@Override
-	public Korisnik findByEmail(String email) {
+	public Gost findByEmail(String email) {
 		try{
 			return gostSkladiste.findByEmail(email).get(0);
 		}catch(Exception e){
@@ -72,7 +80,7 @@ public class GostServisImp implements GostServis {
 	}
 	
 	@Override
-	public Page<Korisnik> izlistajNeprijatelje(Gost gost, Pageable pageable) {
+	public Page<Gost> izlistajNeprijatelje(Gost gost, Pageable pageable) {
 		try{
 			return gostSkladiste.findByEmailNotLike(gost.getEmail(), pageable);
 		}catch(Exception ex){
@@ -131,7 +139,29 @@ public class GostServisImp implements GostServis {
 			zahtevSkladiste.deleteZahtev(gostPrij.getPrijatelj().getEmail(), gostPrij.getGost().getEmail());
 		}catch(Exception ex){}
 	}
+
+	public void activateAccount(String email) {
+		Gost gost = (Gost) gostSkladiste.findByEmail(email).get(0);
+		gost.setIsActivated(true);
+		gostSkladiste.save(gost);
+	}
 	
+	// SASA DODAO DO KRAJA
+	@Override
+	public List<PosetaRestoranu> ucitajPoseteGosta(Gost gost) {
+		return poseteSkladiste.findByGost(gost);
+	}
+
+	@Override
+	public PosetaRestoranu pronadjiPosetu(Long id) {
+		return poseteSkladiste.findOne(id);
+	}
+
+	@Override
+	public PosetaRestoranu sacuvajPosetu(PosetaRestoranu poseta) {
+		return poseteSkladiste.save(poseta);
+		
+	}
 	
 
 }

@@ -21,23 +21,26 @@ logovanjeKontroler.controller('logovanjeCtrl', function($location, $scope, logov
 		var str = JSON.stringify(korisnik);
 		
 		logovanjeServis.ulogujKorisnika(str).success(function(data) {
-			if(data != ""){
-				if(data.tipKorisnika == 'GOST')
+			if(data.message != "NePostoji"){
+				if(data.obj.tipKorisnika == 'GOST' && data.message == "Ulogovan"){
 					$location.path('/gostGlavnaStrana');
-				if(data.tipKorisnika == 'PONUDJAC')
+				}else if(data.obj.tipKorisnika == 'GOST' && data.message == "NijeAktiviran"){
+					alert("Da bi ste se ulogovali morate potvrditi aktivaciju na email-u.");
+				}
+				if(data.obj.tipKorisnika == 'PONUDJAC')
 					$location.path('/ponudjac');
-				if(data.tipKorisnika == 'KUVAR')
+				if(data.obj.tipKorisnika == 'KUVAR')
 					$location.path('/kuvar');
-				if(data.tipKorisnika == 'MENADZER_SISTEMA')
+				if(data.obj.tipKorisnika == 'MENADZER_SISTEMA')
 					$location.path('/menSistema');
-				if(data.tipKorisnika == 'MENADZER_RESTRORANA')
+				if(data.obj.tipKorisnika == 'MENADZER_RESTRORANA')
 					$location.path('/menadzerRestorana');
-				if(data.tipKorisnika == 'KONOBAR')
+				if(data.obj.tipKorisnika == 'KONOBAR')
 					$location.path('/konobar');
-				if(data.tipKorisnika == 'SANKER')
+				if(data.obj.tipKorisnika == 'SANKER')
 					$location.path('/sanker');
 			}else{
-				alert("Neuspesno logovanje");
+				alert("Korisnik ne postoji u bazi.");
 				$scope.changeRoute('/');
 			}
 		});

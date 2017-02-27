@@ -12,6 +12,7 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, log
 	
 	//TODO: Kada porudzbina nema pica ne prikazati je
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
+		console.log(data.ime + "ULOGOVANI SANKER");
 		if(data != ""){
 			$scope.ulogovanSanker = data;
 			$scope.osveziPrikazZaIzmenu($scope.ulogovanSanker);

@@ -27,6 +27,8 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, menRestor
 	$scope.vratiNaDodavanje();
 	
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
+
+		console.log(data.ime + "ULOGOVANI KONOBAR");
 		if(data != ""){
 
 			$scope.ulogovanKonobar = data;

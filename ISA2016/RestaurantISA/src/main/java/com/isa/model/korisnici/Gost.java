@@ -1,12 +1,24 @@
 package com.isa.model.korisnici;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+
+import com.isa.model.PosetaRestoranu;
 
 @Entity
 @DiscriminatorValue("G")
 public class Gost extends Korisnik{
+
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "gost")
+	private Set<PosetaRestoranu> posete;
+	
+
 
 	@Column(name = "canSend", nullable = true)
 	private Boolean canSend;
@@ -16,7 +28,11 @@ public class Gost extends Korisnik{
 	
 	@Column(name = "canAccept", nullable = true)
 	private Boolean canAccept;
+
 	
+	@Column(name = "isActivated", nullable = true)
+	private Boolean isActivated;
+
 	public Gost(){		
 	}
 
@@ -42,5 +58,13 @@ public class Gost extends Korisnik{
 
 	public void setCanAccept(Boolean canAccept) {
 		this.canAccept = canAccept;
+	}
+	
+	public Boolean getIsActivated() {
+		return isActivated;
+	}
+
+	public void setIsActivated(Boolean isActivated) {
+		this.isActivated = isActivated;
 	}
 }

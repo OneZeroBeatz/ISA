@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.isa.model.PosetaRestoranu;
 import com.isa.model.ZahtevZaPrijateljstvo;
 import com.isa.model.korisnici.Gost;
 import com.isa.model.korisnici.Korisnik;
@@ -15,7 +16,7 @@ import com.isa.pomocni.Poruka;
 
 public interface GostServis {
 
-    List<Korisnik> findAll();
+    List<Gost> findAll();
 
     Korisnik findOne(Long id);
 
@@ -23,7 +24,7 @@ public interface GostServis {
 
     void delete(Long id);
 
-    Korisnik findByEmail(String email);
+    Gost findByEmail(String email);
     
     Page<Prijatelj> izlistajPrijatelje(Gost gost, Pageable pageable);
 
@@ -37,10 +38,18 @@ public interface GostServis {
 	
 	void removeZahtevZaPrijateljstvoByGost(GostPrijatelj gostPrij);
 
-	Page<Korisnik> izlistajNeprijatelje(Gost gost, Pageable pageable);
+	Page<Gost> izlistajNeprijatelje(Gost gost, Pageable pageable);
 
 	void addZahtevZaPrijateljstvo(GostPrijatelj gostPrij, Pageable pageable);
+
+	List<PosetaRestoranu> ucitajPoseteGosta(Gost gost);
+
+	PosetaRestoranu pronadjiPosetu(Long id);
+
+	PosetaRestoranu sacuvajPosetu(PosetaRestoranu poseta);
 	
 	public int zahteviCount(GostPrijatelj gostPrij, Pageable pageable);
-    
+
+	void activateAccount(String email);
+
 }

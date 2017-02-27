@@ -3,6 +3,7 @@ package com.isa.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.isa.model.korisnici.Gost;
 import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.Kuvar;
@@ -13,6 +14,7 @@ import com.isa.model.korisnici.Sanker;
 import com.isa.model.korisnici.TipKorisnika;
 import com.isa.repository.GostSkladiste;
 import com.isa.repository.KonobarSkladiste;
+import com.isa.repository.KorisnikSkladiste;
 import com.isa.repository.KuvarSkladiste;
 import com.isa.repository.MenadzerRestoranaSkladiste;
 import com.isa.repository.MenadzerSistemaSkladiste;
@@ -22,6 +24,8 @@ import com.isa.repository.SankerSkladiste;
 @Service
 public class KorisnikServisImpl implements KorisnikServis {
 	
+	@Autowired
+	private KorisnikSkladiste korisnikSkladiste;
 	@Autowired
 	private GostSkladiste gostSkladiste;
 	@Autowired
@@ -41,7 +45,7 @@ public class KorisnikServisImpl implements KorisnikServis {
 	@Override
 	public Korisnik save(Korisnik korisnik) {
 		if (korisnik.getTipKorisnika() == TipKorisnika.GOST){
-			return gostSkladiste.save(korisnik);
+			return gostSkladiste.save((Gost)korisnik);
 		} else if (korisnik.getTipKorisnika() == TipKorisnika.KONOBAR){
 			return konobarSkladiste.save((Konobar)korisnik);
 		} else if (korisnik.getTipKorisnika() == TipKorisnika.KUVAR){
@@ -101,4 +105,14 @@ public class KorisnikServisImpl implements KorisnikServis {
 		}
 	}
 
+	@Override
+	public Korisnik findByEmail(String email) {
+		try{
+			return korisnikSkladiste.findByEmail(email).get(0);
+		}catch(Exception ex){}
+		
+		return null;
+	}
+	
+	
 }
