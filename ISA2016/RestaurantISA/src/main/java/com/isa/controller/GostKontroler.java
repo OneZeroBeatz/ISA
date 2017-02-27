@@ -50,7 +50,7 @@ public class GostKontroler {
 	//Collections.sort(korisnici, IME_ASC_PREZIME_ASC);
 	
 	@RequestMapping(value = "/izmeniGosta", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Gost> izmeniPonudjaca(@RequestBody Gost gost) {
+	public ResponseEntity<Gost> izmeniPonudjaca(@RequestBody Gost gost, HttpSession session) {
 		Gost originalGost = (Gost) gostServis.findOne(gost.getId());
 		
 		originalGost.setIme(gost.getIme());
@@ -59,6 +59,8 @@ public class GostKontroler {
 		originalGost.setSifra(gost.getSifra());
 		
 		originalGost = gostServis.save(originalGost);
+		
+		session.setAttribute("ulogovanKorisnik", originalGost);
 		
 		return new ResponseEntity<Gost>(originalGost, HttpStatus.OK);
 	}

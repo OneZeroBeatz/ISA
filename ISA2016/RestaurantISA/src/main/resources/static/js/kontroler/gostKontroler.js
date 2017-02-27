@@ -1,6 +1,6 @@
 var gostKontroler = angular.module('restoranApp.gostGlavnaStranaKontroler', []);
 
-gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStranaServis, izmeniGostaServis, $window){
+gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStranaServis, izmeniGostaServis, menRestoranaServisS, $window, menSistemaServis){
 		
 		gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 			if(data.message == "NekoNaSesiji"){
@@ -30,7 +30,15 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 				}).error(function(data) {
 				});
 				
-				
+				menSistemaServis.izlistajRestorane().success(function(data){
+	    			$scope.restorani = data;
+	    			if(data.length == 0){
+	    				alert("Nema raspolozivih restorana");
+	    				$scope.setTab(0);
+	    			}
+	    		}).error (function (data){
+	    			alert("Neuspesno ucitavanje restorana");
+	    		});
 				
 				/// SASA RADIO DO ELSA
 				$scope.poseteGosta = [];
@@ -96,7 +104,7 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 			gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 				if(data != ""){
 					var parameter = {
-							gost: data,
+							gost: data.obj,
 							prijatelj: prij 
 						}					
 						izmeniGostaServis.prihvatiZahtev(parameter).success(function(data) {
@@ -119,7 +127,7 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 			gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 				if(data != ""){
 					var parameter = {
-							gost: data,
+							gost: data.obj,
 							prijatelj: prij 
 						}					
 						izmeniGostaServis.odbijZahtev(parameter).success(function(data) {
@@ -135,7 +143,7 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 			gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 				if(data != ""){
 					var parameter = {
-							gost: data,
+							gost: data.obj,
 							paramPretrageIme: $scope.searchRealFriendIme,
 							paramPretragePrz: $scope.searchRealFriendPrz
 						}						
@@ -152,7 +160,7 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 			gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 				if(data != ""){
 					var parameter = {
-							gost: data,
+							gost: data.obj,
 							paramPretrageIme: $scope.searchFriendIme,
 							paramPretragePrz: $scope.searchFriendPrz
 						}						
@@ -169,7 +177,7 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 			gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 				if(data != ""){
 					var parameter = {
-							gost: data,
+							gost: data.obj,
 							prijatelj: prij,
 							paramPretrageIme: $scope.searchFriendIme,
 							paramPretragePrz: $scope.searchFriendPrz
@@ -187,7 +195,7 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 			gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 				if(data != ""){
 					var parameter = {
-							gost: data,
+							gost: data.obj,
 							prijatelj: prij,
 							paramPretrageIme: $scope.searchFriendIme,
 							paramPretragePrz: $scope.searchFriendPrz
@@ -323,8 +331,38 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 		
 		
 		
+		$scope.odaberiRestoran = function (rest){
+			
+			$scope.odabranRestoran = rest;
+			if ($scope.showRest == rest.id){
+				$scope.showRest = -1;
+			} else {
+				$scope.showRest = rest.id;
+			}
+			
+		}
 		
+		$scope.prikaz = false;
 		
+		$scope.isVisible = function(){	// Proveriti da li treba oznaka...
+			return $scope.prikaz;
+		}
+		
+		$scope.prikaziInformacije = function(oznaka, restoran){
+			$scope.prikaz = true;
+			
+			var sto = {
+				oznaka : oznaka,
+				restoran : restoran
+
+			}
+			var str = JSON.stringify(sto);
+			menRestoranaServisS.izlistajSto(str).success(function(data) {
+				$scope.sto = data;
+				$scope.segmentStola = data.segment;
+			}).error(function(data) {
+			});
+		}
 		
 		
 		

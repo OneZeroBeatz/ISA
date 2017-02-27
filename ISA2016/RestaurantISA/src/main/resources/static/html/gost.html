@@ -55,6 +55,33 @@
 			
 			<div ng-show="isSet(1)">
 				<h2>Rezervacija restorana.</h2>
+				<table id="myRest">
+					<tr ng-show="zahteviZaPrijateljstvo.length > 0">
+						<th ng-click="sortTableZah(0)">Naziv</th>
+    					<th ng-click="sortTableZah(1)">Vrsta</th>
+    					<th ng-click="sortTableZah(1)">Udaljenost</th>
+					</tr>
+					<div>
+					<tr ng-repeat="rest in restorani">
+						<td>{{rest.naziv}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						<td>{{rest.opis}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						<td>200m &nbsp;&nbsp;&nbsp;&nbsp;</td>
+						<td> <button ng-click="odaberiRestoran(rest)">Rezervisi</button></td>
+						<td ng-show = "showRest == rest.id">
+							<table border="1">
+								<tr ng-repeat="n1 in brRedova">
+									<td ng-repeat="n2 in brKolona">
+										<button ng-click="prikaziInformacije(n1*brojKolona+n2, rest)">{{n1}}-{{n2}}</button>
+									</td>
+								</tr>
+							</table>
+							<div ng-show="isVisible()">
+		       					{{sto.oznaka}}
+		       				</div>
+						</td>
+					</tr>
+				</table>
+				
 			</div>
 
 			<div ng-show="isSet(2)">
