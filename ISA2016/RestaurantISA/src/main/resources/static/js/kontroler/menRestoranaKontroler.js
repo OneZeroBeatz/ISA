@@ -1,7 +1,9 @@
 var menRestoranaKontroler = angular.module('restoranApp.menRestoranaKontroler', []);
 
 menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStranaServis, $scope, menRestoranaServisS) {
-	$scope.radniciTip = ["Konobar", "Kuvar", "Sanker"];
+	$scope.radniciTip = ["", "Konobar", "Kuvar", "Sanker"];
+	$scope.tipRadnika = "";
+	$scope.tipoviJela = ["Peceno", "Kuvano", "Salata"];
 	$scope.selektovanTip = "";
 	$scope.restoran = null;
 	var danString = "";
@@ -411,6 +413,7 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 			
 			$scope.prikaziDan = -1;
 			$scope.prikaziSmene = function(index){
+				$scope.tipRadnika = "";
 				$scope.selektovanTip = "";
 				if ($scope.prikaziDan == index){
 					$scope.prikaziDan = -1;
@@ -534,10 +537,20 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 	
 	$scope.dodajJelo = function(restoran){
 		// TODO: Aca ~ Uraditi validacuju
+		var tip = "";
+		if($scope.tipJela == "Peceno"){
+			tip = "ZA_PECENA_JELA";
+		}else if($scope.tipJela == "Kuvano"){
+			tip = "ZA_KUVANA_JELA";
+		}else if($scope.tipJela == "Salata"){
+			tip = "ZA_SALATE";
+		}
+		
 		var jeloo = {
 			naziv : $scope.nazivJela,
 			opis : $scope.opisJela,
 			cena : $scope.cenaJela,
+			tipKuvara : tip,
 			restoran : restoran
 		}
 		
@@ -635,7 +648,7 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 		menRestoranaServisS.brojeviRedovaIKolona(str).success(function(data) {
 			alert("broj redova i kolona dodat");
 		}).error(function(data) {
-			alert("dodat nije");
+
 		});
 		
 		var tempStolovi = [];
@@ -730,6 +743,26 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 		}
 		var str = JSON.stringify(sto);
 		menRestoranaServisS.izmeniSto(str);
+	}
+	
+	$scope.dodajRadnika = function(){
+		var tipRad = "";
+		if($scope.tipRadnikaDodaj == "konobar"){
+			tipRad = "KONOBAR";
+		}else if($scope.tipRadnikaDodaj == "kuvar"){
+			tipRad = "KUVAR";
+		}else if($scope.tipRadnikaDodaj == "sanker"){
+			tipRad = "SANKER";
+		}
+		
+		var radnik = {
+			restoran : $scope.restoran,
+			ime : $scope.imeRadnika,
+			prezime : $scope.prezimeRadnika,
+			sifra : $scope.emailRadnika,
+			email : $scope.lozinkaRadnika,
+			tipKorisnika : tipRad
+		}
 	}
 	
 });
