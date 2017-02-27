@@ -37,7 +37,7 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, log
 				var str = JSON.stringify(gost);
 				izmeniSankerServis.izmeni(str).success(function(data) {
 					logovanjeServis.ulogujKorisnika(data).success(function(data) {
-						$scope.ulogovanKuvar = data;
+						$scope.ulogovanSanker = data;
 						$scope.osveziPrikazZaIzmenu($scope.ulogovanSanker);
 
 						});
@@ -75,6 +75,7 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, log
 			}
 			
 			
+
 			// UCITAVANJE PORUDZBINA
 			$scope.porudzbine = [];
 			izmeniSankerServis.ucitajPorudzbine($scope.ulogovanSanker).success(function(data) {
@@ -190,7 +191,7 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, log
 
 				$scope.sankeriRestorana = data;
 				}).error(function (data){
-				alert("Neuspelo ucitavanje konobara");
+				alert("Neuspelo ucitavanje sankera");
 			});
 
 			// Kliknuo prihvati
