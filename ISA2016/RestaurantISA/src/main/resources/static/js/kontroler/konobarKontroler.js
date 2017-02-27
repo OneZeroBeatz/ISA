@@ -1,6 +1,6 @@
 var konobarKontroler = angular.module('restoranApp.konobarKontroler', []);
 
-konobarKontroler.controller('konobarCtrl', function($scope, $location, menRestoranaServisS, logovanjeServis, gostGlavnaStranaServis, izmeniKonobarServis){
+konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, menRestoranaServisS, logovanjeServis, gostGlavnaStranaServis, izmeniKonobarServis){
 	
 
 	$scope.odabranKonobar = null;
@@ -28,10 +28,10 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, menRestor
 	
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 
-		console.log(data.ime + "ULOGOVANI KONOBAR");
-		if(data != ""){
+		console.log(data.obj.ime + "ULOGOVANI KONOBAR");
+		if(data.message == "NekoNaSesiji"){
 
-			$scope.ulogovanKonobar = data;
+			$scope.ulogovanKonobar = data.obj;
 			$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
 			
 			$scope.izmena = false;
@@ -50,6 +50,7 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, menRestor
 					}).error (function(data){
 						alert("Neuspesno ucitana pica");
 					});
+					
 					izmeniKonobarServis.izlistajStolove($scope.ulogovanKonobar).success(function(data){
 						$scope.stolovi = data;
 					}).error (function(data){
@@ -343,12 +344,8 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, menRestor
 				var str = JSON.stringify(gost);
 				izmeniKonobarServis.izmeni(str).success(function(data) {
 					// TODO: ispravljeno ovo, ali mi je malo sumnjivo
-					logovanjeServis.ulogujKorisnika(data).success(function(data) {
 						$scope.ulogovanKonobar = data;
 						$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
-
-						});
-						$location.path('/konobar');
 					}).error(function(data) {
 						alert("Neuspesne izmene!");
 					});
@@ -493,9 +490,9 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, menRestor
 		    		}).error(function (data){
 		    			
 		    		});
-		    	} else {
-		    		alert("Niste odabrali konobara");
-		    	}
+		    	} else{
+					$window.location.href = '/';
+				}
 		    }
 			
 			// UCITAJ KONOBARE RESTORANA
@@ -546,6 +543,17 @@ konobarKontroler.controller('konobarCtrl', function($scope, $location, menRestor
 				}
 				
 
+			}
+			
+			/// ODLOGUJ SE
+			$scope.logOut = function(){
+
+				gostGlavnaStranaServis.logOut().success(function(data) {
+					if(data.message == "Izlogovan"){
+						$window.location.href = '/';
+					}else{
+					}
+				});
 			}
 			
 

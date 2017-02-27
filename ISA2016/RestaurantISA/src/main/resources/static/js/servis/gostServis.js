@@ -8,6 +8,10 @@ gostServis.factory('gostGlavnaStranaServis', function($http) {
 		return $http.post('/contr/check');
 	}
 	
+	temp.logOut = function() {
+		return $http.post('/contr/logout');
+	}
+	
 	return temp;
 	
 })

@@ -1,20 +1,20 @@
 var gostKontroler = angular.module('restoranApp.gostGlavnaStranaKontroler', []);
 
-gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStranaServis, izmeniGostaServis){
+gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStranaServis, izmeniGostaServis, $window){
 		
 		gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
-			if(data != ""){
-				$scope.ulogovanGost = data;
-				$scope.imeIzmena = data.ime;
-				$scope.prezimeIzmena = data.prezime;
-				$scope.emailIzmena = data.email;
+			if(data.message == "NekoNaSesiji"){
+				$scope.ulogovanGost = data.obj;
+				$scope.imeIzmena = data.obj.ime;
+				$scope.prezimeIzmena = data.obj.prezime;
+				$scope.emailIzmena = data.obj.email;
 				
 				var gost = {
-						id : data.id,
-						ime : data.ime,
-						prezime : data.prezime,
-						email : data.email,
-						sifra : data.sifra
+						id : data.obj.id,
+						ime : data.obj.ime,
+						prezime : data.obj.prezime,
+						email : data.obj.email,
+						sifra : data.obj.sifra
 					}
 				
 				var str = JSON.stringify(gost);
@@ -43,7 +43,7 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 				});
 				
 			}else{
-				alert("Niko nije ulogovan");
+				$window.location.href = '/';
 			}
 		});
 		
@@ -80,7 +80,7 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 			gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 				if(data != ""){
 					var parameter = {
-							gost: data,
+							gost: data.obj,
 							prijatelj: prij 
 						}				
 						izmeniGostaServis.ukloniPrijatelja(parameter).success(function(data) {
@@ -196,6 +196,16 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 							$scope.filtriraniPrijatelji = data;
 						}).error(function(data) {							
 						});
+				}
+			});
+		}
+		
+		$scope.logOut = function(){
+
+			gostGlavnaStranaServis.logOut().success(function(data) {
+				if(data.message == "Izlogovan"){
+					$window.location.href = '/';
+				}else{
 				}
 			});
 		}

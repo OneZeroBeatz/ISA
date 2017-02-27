@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -145,7 +147,7 @@ public class GostKontroler {
 	}
 	
 	@RequestMapping(value = "/pretraziPrijatelje", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Gost>> pretraziPrijatelje(@RequestBody PretragaPrijatelja pretrPrij) {	
+	public ResponseEntity<List<Gost>> pretraziPrijatelje(@RequestBody PretragaPrijatelja pretrPrij, HttpSession session) {	
 		return neprijatelji(pretrPrij);
 	}
 	

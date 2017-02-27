@@ -2,6 +2,8 @@ package com.isa.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
@@ -16,9 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionAttributeStore;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.isa.model.korisnici.Gost;
@@ -32,7 +31,6 @@ import com.isa.services.KorisnikServis;
 @Controller
 @Scope("session")
 @RequestMapping("/contr")
-@SessionAttributes({"korisnik"})
 public class LogRegKontroler {
 
 	@Autowired
@@ -81,37 +79,56 @@ public class LogRegKontroler {
 	public ResponseEntity<Korisnik> login(Model model, @RequestBody Gost newGuest){
 		Korisnik temp = servis.findByEmail(newGuest.getEmail());
 		if(temp != null && temp.getSifra().equals(newGuest.getSifra())){
-			modelAndView = new ModelAndView();
-			modelAndView.addObject("ulogovanKorisnik", temp);
+			/*modelAndView = new ModelAndView();
+			modelAndView.addObject("ulogovanKorisnik", temp);*/
 			return new ResponseEntity<Korisnik>(temp, HttpStatus.ACCEPTED);
 		}else
 			return null;
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Poruka> getKorisnik(Model model, @RequestBody Gost newGuest){	
-		Gost korisnik = servis.findByEmail(newGuest.getEmail());
-		if(korisnik != null && korisnik.getSifra().equals(newGuest.getSifra())){
-	
-			if(korisnik.getTipKorisnika().equals(TipKorisnika.GOST) && korisnik.getIsActivated()){
-				model.addAttribute("korisnik", korisnik);
-				return new ResponseEntity<Poruka>(new Poruka("Ulogovan", korisnik), HttpStatus.ACCEPTED);
-			}else if(korisnik.getTipKorisnika().equals(TipKorisnika.GOST) && !korisnik.getIsActivated()){
-				return new ResponseEntity<Poruka>(new Poruka("NijeAktiviran", korisnik), HttpStatus.ACCEPTED);
-			}else{}
-			//if (!model.containsAttribute("korisnik")) {
-				//model.addAttribute("korisnik", korisnik);
-			//}
+	public ResponseEntity<Poruka> getKorisnik(@RequestBody Gost newGuest, HttpSession session){	
+		Korisnik kor = (Korisnik) session.getAttribute("ulogovanKorisnik");
+		if(kor == null){
+			Gost korisnik = servis.findByEmail(newGuest.getEmail());
+			if(korisnik != null && korisnik.getSifra().equals(newGuest.getSifra())){
+		
+				if(korisnik.getTipKorisnika().equals(TipKorisnika.GOST) && korisnik.getIsActivated()){
+					//model.addAttribute("korisnik", korisnik);
+					session.setAttribute("ulogovanKorisnik", korisnik);
+					return new ResponseEntity<Poruka>(new Poruka("Ulogovan", korisnik), HttpStatus.ACCEPTED);
+				}else if(korisnik.getTipKorisnika().equals(TipKorisnika.GOST) && !korisnik.getIsActivated()){
+					return new ResponseEntity<Poruka>(new Poruka("NijeAktiviran", korisnik), HttpStatus.ACCEPTED);
+				}else{}
+				//if (!model.containsAttribute("korisnik")) {
+					//model.addAttribute("korisnik", korisnik);
+				//}
 
-		}else{
-			Korisnik otherKoris = korServis.findByEmail(newGuest.getEmail());
-			if(otherKoris != null && otherKoris.getSifra().equals(newGuest.getSifra())){
-				model.addAttribute("korisnik", otherKoris);
-				return new ResponseEntity<Poruka>(new Poruka("Ulogovan", otherKoris), HttpStatus.ACCEPTED);
+			}else{
+				Korisnik otherKoris = korServis.findByEmail(newGuest.getEmail());
+				if(otherKoris != null && otherKoris.getSifra().equals(newGuest.getSifra())){
+					//model.addAttribute("korisnik", otherKoris);
+					session.setAttribute("ulogovanKorisnik", otherKoris);
+					return new ResponseEntity<Poruka>(new Poruka("Ulogovan", otherKoris), HttpStatus.ACCEPTED);
+				}
 			}
+			return new ResponseEntity<Poruka>(new Poruka("NePostoji", null), HttpStatus.ACCEPTED);
+		}else{
+			return new ResponseEntity<Poruka>(new Poruka("VecUlogovan", kor), HttpStatus.ACCEPTED);
 		}
-		return new ResponseEntity<Poruka>(new Poruka("NePostoji", null), HttpStatus.ACCEPTED);
-
+		
+	}
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+	public ResponseEntity<Poruka> logout(HttpSession session){	
+		
+		Korisnik kor = (Korisnik) session.getAttribute("ulogovanKorisnik");
+		if(kor != null){
+			session.invalidate();
+			return new ResponseEntity<Poruka>(new Poruka("Izlogovan", null), HttpStatus.ACCEPTED);
+		}else{
+			return new ResponseEntity<Poruka>(new Poruka("NijeIzlogovan", null), HttpStatus.ACCEPTED);			
+		}
 	}
 	
 	@RequestMapping(value = "/check2", method = RequestMethod.POST)
@@ -128,13 +145,13 @@ public class LogRegKontroler {
 	
 	//// MOJ CEK KOJI JE DOVEO DO PROBLEMA
 	@RequestMapping(value = "/check", method = RequestMethod.POST)
-	public ResponseEntity<Korisnik> checkSessions(@ModelAttribute Korisnik naSesiji){
+	public ResponseEntity<Poruka> checkSessions(@ModelAttribute Korisnik naSesiji, HttpSession session){
 		System.out.println("PROVERAVAS KO JE NA SESIJI - " + naSesiji.getIme());
-		Korisnik kor = korServis.findOne(naSesiji.getId());
+		Korisnik kor = (Korisnik) session.getAttribute("ulogovanKorisnik");
 		if(kor != null){
-			return new ResponseEntity<Korisnik>(kor, HttpStatus.ACCEPTED);
+			return new ResponseEntity<Poruka>(new Poruka("NekoNaSesiji", kor), HttpStatus.ACCEPTED);
 		}else{
-			return null;
+			return new ResponseEntity<Poruka>(new Poruka("NikoNaSesiji", null), HttpStatus.ACCEPTED);
 		}	
 			
 	}
