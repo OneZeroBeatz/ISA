@@ -114,7 +114,7 @@ public class LogRegKontroler {
 			}
 			return new ResponseEntity<Poruka>(new Poruka("NePostoji", null), HttpStatus.ACCEPTED);
 		}else{
-			return new ResponseEntity<Poruka>(new Poruka("VecUlogovan", null), HttpStatus.ACCEPTED);
+			return new ResponseEntity<Poruka>(new Poruka("VecUlogovan", kor), HttpStatus.ACCEPTED);
 		}
 		
 	}

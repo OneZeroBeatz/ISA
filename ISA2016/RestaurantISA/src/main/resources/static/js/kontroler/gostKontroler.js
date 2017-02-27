@@ -80,7 +80,7 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 			gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 				if(data != ""){
 					var parameter = {
-							gost: data,
+							gost: data.obj,
 							prijatelj: prij 
 						}				
 						izmeniGostaServis.ukloniPrijatelja(parameter).success(function(data) {

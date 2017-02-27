@@ -1,7 +1,29 @@
 var logovanjeKontroler = angular.module('restoranApp.logovanjeKontroler', []);
 
-logovanjeKontroler.controller('logovanjeCtrl', function($location, $scope, logovanjeServis) {
+logovanjeKontroler.controller('logovanjeCtrl', function($window, $location, $scope, logovanjeServis, gostGlavnaStranaServis) {
 	
+		gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
+			if(data.message == "NekoNaSesiji"){
+				if(data.obj.tipKorisnika == 'GOST')
+					$location.path('/gostGlavnaStrana');
+				if(data.obj.tipKorisnika == 'PONUDJAC')
+					$location.path('/ponudjac');
+				if(data.obj.tipKorisnika == 'KUVAR')
+					$location.path('/kuvar');
+				if(data.obj.tipKorisnika == 'MENADZER_SISTEMA')
+					$location.path('/menSistema');
+				if(data.obj.tipKorisnika == 'MENADZER_RESTRORANA')
+					$location.path('/menadzerRestorana');
+				if(data.obj.tipKorisnika == 'KONOBAR')
+					$location.path('/konobar');
+				if(data.obj.tipKorisnika == 'SANKER')
+					$location.path('/sanker');
+			}else{
+				
+			}
+		});
+	
+		
 	$scope.changeRoute = function(url, forceReload) {
         $scope = $scope || angular.element(document).scope();
         if(forceReload || $scope.$$phase) { // that's right TWO dollar signs: $$phase
