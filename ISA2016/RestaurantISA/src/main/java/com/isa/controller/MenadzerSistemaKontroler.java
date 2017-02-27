@@ -28,8 +28,7 @@ public class MenadzerSistemaKontroler {
 	public MenadzerSistemaServis menSistemaServis;
 	
 	@RequestMapping(value = "/registrujRestoran", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Restoran> registrujRestoran(Model model, @RequestBody Restoran restoran) {
-		System.out.println("USAO u  reg restoran");
+	public ResponseEntity<Restoran> registrujRestoran(@RequestBody Restoran restoran) {
 		menSistemaServis.saveRestoran(restoran);
 		return new ResponseEntity<Restoran>(restoran, HttpStatus.CREATED);
 	}
@@ -41,14 +40,14 @@ public class MenadzerSistemaKontroler {
 	}
 	
 	@RequestMapping(value = "/registrujMenadzeraRestorana", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<MenadzerRestorana> registrujMenadzeraRestorana(Model model, @RequestBody MenadzerRestorana menadzerRestorana) {
+	public ResponseEntity<MenadzerRestorana> registrujMenadzeraRestorana(@RequestBody MenadzerRestorana menadzerRestorana) {
 		menadzerRestorana.setTipKorisnika(TipKorisnika.MENADZER_RESTRORANA);
 		menSistemaServis.saveMenadzerRestorana(menadzerRestorana);
 		return new ResponseEntity<MenadzerRestorana>(menadzerRestorana, HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/registrujMenadzeraSistema", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<MenadzerSistema> registrujMenadzeraSistema(Model model, @RequestBody MenadzerSistema menadzerSistema){
+	public ResponseEntity<MenadzerSistema> registrujMenadzeraSistema(@RequestBody MenadzerSistema menadzerSistema){
 		menadzerSistema.setTipKorisnika(TipKorisnika.MENADZER_SISTEMA);
 		menadzerSistema.setGlavni(false);
 		menSistemaServis.saveMenadzerSistema(menadzerSistema);

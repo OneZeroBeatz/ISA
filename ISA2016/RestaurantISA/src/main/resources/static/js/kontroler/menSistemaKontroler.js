@@ -1,7 +1,23 @@
 var menSistemaKontroler = angular.module ('restoranApp.menSistemaKontroler', []);
 
-menSistemaKontroler.controller('menSistemaCtrl', function (gostGlavnaStranaServis, $scope, menSistemaServis){
+menSistemaKontroler.controller('menSistemaCtrl', function (gostGlavnaStranaServis, $scope, menSistemaServis, $window){
 
+	// REGISTROVANJE MENADZERA SISTEMA - POSEBNI
+	
+	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
+		if(data.message == "NekoNaSesiji"){
+			$scope.ulogovanKorisnik = data.obj;
+			$scope.jeGlavni = function (){
+				if ($scope.ulogovanKorisnik.glavni == true)
+					return true;
+				else 
+					return false;
+			}
+		}else{
+			$window.location.href = '/';
+		}
+	});
+	
 	//za selektovanje tabova
 	
     $scope.setTab = function(newTab){
@@ -49,25 +65,6 @@ menSistemaKontroler.controller('menSistemaCtrl', function (gostGlavnaStranaServi
 		
 		menSistemaServis.registrujMenadzeraRestorana(str);		
 	}
-	
-
-	
-	
-	// REGISTROVANJE MENADZERA SISTEMA - POSEBNI
-	
-	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
-		if(data != ""){
-			$scope.ulogovanKorisnik = data;
-			$scope.jeGlavni = function (){
-				if ($scope.ulogovanKorisnik.glavni == true)
-					return true;
-				else 
-					return false;
-			}
-		}else{
-			alert("Niko nije ulogovan");
-		}
-	});
 	
 	$scope.registrovanjeMenadzeraSistema = function(){
 		var korisnik = {

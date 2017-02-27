@@ -1,24 +1,25 @@
 var menRestoranaKontroler = angular.module('restoranApp.menRestoranaKontroler', []);
 
-menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStranaServis, $scope, menRestoranaServisS) {
+menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStranaServis, $scope, menRestoranaServisS, $window) {
 	$scope.radniciTip = ["", "Konobar", "Kuvar", "Sanker"];
 	$scope.tipRadnika = "";
 	$scope.tipoviJela = ["Peceno", "Kuvano", "Salata"];
 	$scope.selektovanTip = "";
 	$scope.restoran = null;
 	var danString = "";
+	
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 		$scope.brRedova = [];
 		$scope.brKolona = [];
 		$scope.listaStavki = [];
 		
-		if(data != ""){
+		if(data.message == "NekoNaSesiji"){
 			var menRest = {
-				id : data.id,
-				ime : data.ime,
-				prezime : data.prezime,
-				email : data.email,
-				sifra : data.sifra
+				id : data.obj.id,
+				ime : data.obj.ime,
+				prezime : data.obj.prezime,
+				email : data.obj.email,
+				sifra : data.obj.sifra
 			}
 			
 			var str = JSON.stringify(menRest);
@@ -512,10 +513,18 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 				$scope.setuj();
 			} 
 		}else{
-			alert("Niko nije ulogovan");
-			// TODO: Aca ~ Redirektuj!
+			$window.location.href = '/';
 		}
 	});
+	
+	$scope.logOut = function(){
+		gostGlavnaStranaServis.logOut().success(function(data) {
+			if(data.message == "Izlogovan"){
+				$window.location.href = '/';
+			}else{
+			}
+		});
+	}
 	
 	$scope.setTab = function(newTab){
     	$scope.tab = newTab;
@@ -764,5 +773,6 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 			tipKorisnika : tipRad
 		}
 	}
+
 	
 });

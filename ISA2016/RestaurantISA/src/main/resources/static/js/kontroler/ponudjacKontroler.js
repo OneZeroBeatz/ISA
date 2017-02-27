@@ -1,23 +1,23 @@
 var ponudjacKontroler = angular.module('restoranApp.ponudjacKontroler', []);
 
 
-ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $scope, ponudjacServisS) {
+ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $scope, ponudjacServisS, $window) {
 	
 	
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 		$scope.cena = {};
 		$scope.garancija = {};
 		$scope.rokIsporuke = {};
-		if(data != ""){
-			$scope.ulogovanKorisnik = data;
-			$scope.imeIzmena = data.ime;
-			$scope.prezimeIzmena = data.prezime;
-			$scope.emailIzmena = data.email;
-			$scope.staraLozinka = data.sifra;
+		if(data.message == "NekoNaSesiji"){
+			$scope.ulogovanKorisnik = data.obj;
+			$scope.imeIzmena = data.obj.ime;
+			$scope.prezimeIzmena = data.obj.prezime;
+			$scope.emailIzmena = data.obj.email;
+			$scope.staraLozinka = data.obj.sifra;
 			
 			// AKTIVNE PORUDZBINE
 			// Ponudjac nije slao ponudu:
-			ponudjacServisS.izlistajPorudzbineBezPonude(data).success(function(data) {
+			ponudjacServisS.izlistajPorudzbineBezPonude(data.obj).success(function(data) {
 				$scope.porudzbineMen = data;
 				
 			}).error(function(data) {
@@ -40,7 +40,7 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 
 				var pon = {
 					porudzbinamenadzer : porudzbina,
-					ponudjac : data,
+					ponudjac : data.obj,
 					cena : $scope.cena[porudzbina.id],
 					rokisporuke : $scope.rokIsporuke[porudzbina.id],
 					garancija : $scope.garancija[porudzbina.id]
@@ -51,7 +51,7 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 			
 			// Ponudjac je poslao ponudu ali je moguca izmena:
 			
-			ponudjacServisS.izlistajPorudzbineSaPonudom(data).success(function(data) {
+			ponudjacServisS.izlistajPorudzbineSaPonudom(data.obj).success(function(data) {
 				$scope.ponudePonudjaca = data;
 			}).error(function(data) {
 			});
@@ -82,10 +82,18 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 				ponudjacServisS.izmeniPonudu(str);
 			}
 		}else{
-			alert("Niko nije ulogovan");
+			$window.location.href = '/';
 		}
 	});
 	
+	$scope.logOut = function(){
+		gostGlavnaStranaServis.logOut().success(function(data) {
+			if(data.message == "Izlogovan"){
+				$window.location.href = '/';
+			}else{
+			}
+		});
+	}
 	
     $scope.setTab = function(newTab){
     	$scope.tab = newTab;
