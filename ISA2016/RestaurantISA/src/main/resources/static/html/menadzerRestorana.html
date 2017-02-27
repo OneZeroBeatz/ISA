@@ -8,13 +8,13 @@
 			<div id="tabs">
 				<ul>
 					<li ng-class="{active: isSet(0)}"><a ng-click="setTab(0)"
-						href=""><span>O restoranu</span></a></li>
+						href=""><span>Restorana</span></a></li>
 					<li ng-class="{active: isSet(1)}"><a ng-click="setTab(1)"
 						href=""><span>Zaposleni</span></a></li>
 					<li ng-class="{active: isSet(2)}"><a ng-click="setTab(2)"
 						href=""><span>Ponude i ponudjaci</span></a></li>
 					<li ng-class="{active: isSet(3)}"><a ng-click="setTab(3)"
-						href=""><span>Izvestaj o poslovanju restorana</span></a></li>
+						href=""><span>Izvestaj poslovanja</span></a></li>
 				</ul>
 			</div>
 
@@ -77,12 +77,12 @@
 				<table>
 					<tr>
 						<td>Broj redova:</td>
-						<td><input type="number" ng-model="brojRedova"></td>
+						<td><input type="number" min="0" ng-model="brojRedova"></td>
 					</tr>
 					
 					<tr>
 						<td>Broj kolona:</td>
-						<td><input type="number" ng-model="brojKolona"></td>
+						<td><input type="number" min="0" ng-model="brojKolona"></td>
 					</tr>
 				</table>
 				<button ng-click="napraviKonfiguraciju(restoran)">Kreiraj</button>
@@ -116,6 +116,7 @@
 								<td><input type="number" ng-model="sto.brojmesta"></td>
 							</tr>
 						</table>
+						<button ng-click="izmeniSto()">Izmeni</button>
        				</div>
 				</div>
 				

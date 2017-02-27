@@ -28,6 +28,7 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 			
 			menRestoranaServisS.izlistajRestoran(str).success(function(data) {
 				$scope.restoran = data;
+				
 				menRestoranaServisS.izlistajJela(data).success(function(data) {
 					// TODO: Aca ~ Refesh
 					$scope.jela = data;
@@ -54,18 +55,18 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 					$scope.brojRedova = $scope.restoran.brojredova;
 					$scope.brojKolona = $scope.restoran.brojkolona;
 					
+					menRestoranaServisS.izlistajStolove(data).success(function(data) {
+						$scope.stolovi = data;
+					}).error(function(data) {
+						alert("Nema stolova...!");
+					});
+					
 					for(i=0; i<$scope.brojRedova; i++){
 						$scope.brRedova.push(i);
 					}
 					for(i=0; i<$scope.brojKolona; i++){
 						$scope.brKolona.push(i);
 					}
-					
-					menRestoranaServisS.izlistajStolove(data).success(function(data) {
-						$scope.stolovi = data;
-					}).error(function(data) {
-						alert("Nema stolova...!");
-					});
 					
 					$scope.promenaRadnika = function(x){
 						alert(x);
@@ -718,6 +719,17 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 		var str = JSON.stringify(ponRest);
 		menRestoranaServisS.registrujIDodajPonudjaca(str);
 		
+	}
+	
+	$scope.izmeniSto = function(){
+		var sto = {
+			restoran : $scope.restoran,
+			oznaka : $scope.sto.oznaka,
+			segment : $scope.segmentStola,
+			brojmesta : $scope.sto.brojmesta
+		}
+		var str = JSON.stringify(sto);
+		menRestoranaServisS.izmeniSto(str);
 	}
 	
 });

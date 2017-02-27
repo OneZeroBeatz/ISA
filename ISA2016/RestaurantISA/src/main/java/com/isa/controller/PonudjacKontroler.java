@@ -59,6 +59,14 @@ public class PonudjacKontroler {
 		return new ResponseEntity<List<PorudzbinaMenadzer>>(porudzbine, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/izlistajPorudzbineSaPonudom", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Ponuda>> izlistajPorudzbineSaPonudom(@RequestBody Ponudjac ponudjac) {
+		
+		List<Ponuda> ponuda = ponudjacServis.izlistajPonudePonudjaca(ponudjac);
+
+		return new ResponseEntity<List<Ponuda>>(ponuda, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/izlistajStavkePorudzbine", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<StavkaPorudzbineMenadzera>> izlistajStavkePorudzbine(@RequestBody PorudzbinaMenadzer porudzbinaMenadzer) {
 		
@@ -72,14 +80,6 @@ public class PonudjacKontroler {
 		
 		ponudjacServis.dodajPonudu(ponuda);
 
-	}
-	
-	@RequestMapping(value = "/izlistajPorudzbineSaPonude", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Ponuda>> izlistajPorudzbineSaPonude(@RequestBody Ponudjac ponudjac) {
-		
-		List<Ponuda> ponude = ponudjacServis.izlistajPorudzbineSaPonude(ponudjac);
-
-		return new ResponseEntity<List<Ponuda>>(ponude, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/izmeniPonudu", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)

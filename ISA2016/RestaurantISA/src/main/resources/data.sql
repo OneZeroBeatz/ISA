@@ -12,6 +12,8 @@ insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values
 insert into restoran(naziv, opis) values ('Restoran 2', 'Opis Restorana 2');
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values ('Z', 'zzz', 'z', 'MENRES','z', 'MENADZER_RESTRORANA', (select id from restoran where naziv='Restoran 2'));
 
+insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('P', 'Ppp', 'p', 'PN','p', 'PONUDJAC');
+
 insert into jelo(naziv, opis, cena, restoran_id, tipkuvara) values ('Jelo 1', 'Opis Jela 1', 200, (select id from restoran where naziv='Restoran 1'), 'ZA_SALATE');
 insert into jelo(naziv, opis, cena, restoran_id, tipkuvara) values ('Jelo 2', 'Opis Jela 2', 250, (select id from restoran where naziv='Restoran 1'), 'ZA_SALATE');
 insert into jelo(naziv, opis, cena, restoran_id, tipkuvara) values ('Jelo 3', 'Opis Jela 3', 300, (select id from restoran where naziv='Restoran 1'), 'ZA_KUVANA_JELA');

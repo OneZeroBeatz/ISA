@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.isa.model.Namirnica;
 import com.isa.model.Pice;
-import com.isa.model.Porudzbina;
 import com.isa.model.PorudzbinaMenadzer;
 import com.isa.model.Restoran;
 import com.isa.model.StavkaPorudzbineMenadzera;

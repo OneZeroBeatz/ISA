@@ -133,6 +133,10 @@ menRestoranaServis.factory('menRestoranaServisS', function($http) {
 		return $http.post('/menadzerRestoranaKontroler/dodajKonobaraStoSmenaDan', smenaUDanu);
 	}
 	
+	temp.izmeniSto = function(sto) {
+		return $http.post('/menadzerRestoranaKontroler/izmeniSto', sto);
+	}
+	
 	return temp;
 
 })

@@ -26,7 +26,7 @@ public interface PonudjacServis {
 
 	void dodajPonudu(Ponuda ponuda);
 
-	List<Ponuda> izlistajPorudzbineSaPonude(Ponudjac ponudjac);
-
 	void izmenaPonude(Ponuda ponuda);
+
+	List<Ponuda> izlistajPonudePonudjaca(Ponudjac ponudjac);
 }

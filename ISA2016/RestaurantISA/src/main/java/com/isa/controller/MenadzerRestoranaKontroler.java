@@ -331,4 +331,12 @@ public class MenadzerRestoranaKontroler {
 			}
 		}
 	}
+	
+	@RequestMapping(value = "/izmeniSto", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Sto> izmeniSto(@RequestBody Sto sto) {
+		
+		Sto retSto = restoranServirs.izmeniSto(sto);
+		
+		return new ResponseEntity<Sto>(retSto, HttpStatus.OK);
+	}
 }

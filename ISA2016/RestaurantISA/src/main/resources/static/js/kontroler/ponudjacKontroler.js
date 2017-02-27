@@ -5,8 +5,9 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 	
 	
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
-		$scope.cenaA = {};
-		$scope.garancijaA = {};
+		$scope.cena = {};
+		$scope.garancija = {};
+		$scope.rokIsporuke = {};
 		if(data != ""){
 			$scope.ulogovanKorisnik = data;
 			$scope.imeIzmena = data.ime;
@@ -36,15 +37,13 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 			}
 			
 			$scope.slanjePonude = function(porudzbina){
-				var aa = 'cena'+porudzbina.id;
-				//var model = $parse(aa);
-				
+
 				var pon = {
 					porudzbinamenadzer : porudzbina,
 					ponudjac : data,
-					cena : $scope.aa,
-					//rokisporuke : 'rokIsporuke'+$scope.porudzbina.id,
-					//garancija : 'garancija'+$scope.porudzbina.id
+					cena : $scope.cena[porudzbina.id],
+					rokisporuke : $scope.rokIsporuke[porudzbina.id],
+					garancija : $scope.garancija[porudzbina.id]
 				}
 				var str = JSON.stringify(pon);
 				ponudjacServisS.posaljiPonudu(str);
@@ -72,17 +71,12 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 			
 			$scope.izmenaPonude = function(ponuda){
 				var pon = {
+					id : ponuda.id,
 					porudzbinamenadzer : ponuda.porudzbinamenadzer,
 					ponudjac : ponuda.ponudjac,
 					cena : ponuda.cena,
 					rokisporuke : ponuda.rokisporuke,
 					garancija : ponuda.garancija
-					
-					/*
-					cena : $scope.cenaPonude,
-					rokisporuke : $scope.rokIsporuke,
-					garancija : $scope.garancija
-					*/
 				}
 				var str = JSON.stringify(pon);
 				ponudjacServisS.izmeniPonudu(str);

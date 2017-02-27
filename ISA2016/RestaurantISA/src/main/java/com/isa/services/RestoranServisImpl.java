@@ -126,17 +126,23 @@ public class RestoranServisImpl implements RestoranServis{
 
 	@Override
 	public Page<Sto> kreirajStolove(Restoran restoran, ArrayList<Integer> oznake, Pageable pageable) {
-		for(Integer i : oznake){
-			Sto s = new Sto();
-			s.setOznaka(i);
-			s.setBrojmesta(0);
-			s.setSegment("nijesto");
-			s.setZauzet(false);
-			s.setRestoran(restoran);
-			stoSkladiste.save(s);
+		List<Sto> stolovi = stoSkladiste.findByRestoranAndZauzetTrue(restoran);
+		if(stolovi == null || stolovi.isEmpty()){
+			stoSkladiste.delete(stoSkladiste.findByRestoran(restoran));
+			
+			for(Integer i : oznake){
+				Sto s = new Sto();
+				s.setOznaka(i);
+				s.setBrojmesta(0);
+				s.setSegment("nijesto");
+				s.setZauzet(false);
+				s.setRestoran(restoran);
+				stoSkladiste.save(s);
+			}
+			return stoSkladiste.findByRestoran(restoran, pageable);
 		}
 		
-		return stoSkladiste.findByRestoran(restoran, pageable);
+		return null;
 	}
 
 	@Override
@@ -358,6 +364,17 @@ public class RestoranServisImpl implements RestoranServis{
 	public List<SmenaUDanu> izlistajSmenePoDanimaSankera(Sanker Sanker) {
 		return smeneUDanuSkladiste.findBySanker(Sanker);
 
+	}
+
+	@Override
+	public Sto izmeniSto(Sto sto) {
+		Sto s = stoSkladiste.findByRestoranAndOznaka(sto.getRestoran(), sto.getOznaka());
+		if(s.getZauzet() && sto.getSegment() == "nijesto")
+			return null;
+		s.setBrojmesta(sto.getBrojmesta());
+		s.setSegment(sto.getSegment());
+		stoSkladiste.save(s);
+		return s;
 	}
 
 }

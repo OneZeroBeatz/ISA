@@ -35,15 +35,15 @@
 							<table>
 								<tr>
 									<td>Cena</td>
-									<td><input type=number ng-model="cena"{{por.id}}></td>
+									<td><input type=number ng-model="cena[por.id]"></td>
 								<tr>
 								<tr>
 									<td>Rok isporuke</td>
-									<td><input type=number ng-model="rokIsporuke"{{por.id}}></td>
+									<td><input type=number ng-model="rokIsporuke[por.id]"></td>
 								<tr>
 								<tr>
 									<td>Garancija</td>
-									<td><input type=text ng-model="garancijaA[por.id]"></td>
+									<td><input type=text ng-model="garancija[por.id]"></td>
 								<tr>
 							</table>
 							<button ng-click="slanjePonude(por)">Posalji ponudu</button>
@@ -63,8 +63,8 @@
 									<th>Kolicina</th>
 								</tr>
 								<tr ng-repeat="stavka in stavkePon">
-									<td>{{stavkePon.naziv}}</td> <!-- Proveravati da li je pice ili namirnica, dodati i tip -->
-									<td>{{stavkePon.kolicina}}</td>
+									<td>{{stavka.naziv}}</td> <!-- Proveravati da li je pice ili namirnica, dodati i tip -->
+									<td>{{stavka.kolicina}}</td>
 								<tr>
 							</table>
 							<table>

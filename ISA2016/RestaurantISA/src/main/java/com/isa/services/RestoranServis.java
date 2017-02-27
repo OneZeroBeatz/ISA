@@ -94,4 +94,6 @@ public interface RestoranServis {
 	
 	List<SmenaUDanu> izlistajSmenePoDanimaSankera (Sanker sanker);
 
+	Sto izmeniSto(Sto sto);
+
 }
