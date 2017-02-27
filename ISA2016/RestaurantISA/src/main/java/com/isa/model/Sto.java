@@ -16,8 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.isa.model.korisnici.Ponudjac;
-
 @Entity
 @Table(name = "sto")
 public class Sto implements Serializable {
@@ -44,8 +42,8 @@ public class Sto implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sto")
 	private Set<Porudzbina> porudzbine;
 	
-	@ManyToMany(targetEntity = SmenaUDanu.class, cascade = {CascadeType.ALL})
-	@JoinTable(name="smenadan_sto", joinColumns = {@JoinColumn(name = "sto_id")}, inverseJoinColumns = {@JoinColumn(name = "smenaudanu_id")})
+	//@JsonIgnore
+	@ManyToMany(mappedBy = "sto", cascade = CascadeType.ALL)
 	private Set<SmenaUDanu> smenaudanu;
 	
 	public Sto() {

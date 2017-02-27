@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.isa.model.PosetaRestoranu;
 import com.isa.model.ZahtevZaPrijateljstvo;
 import com.isa.model.korisnici.Gost;
 import com.isa.model.korisnici.Korisnik;
@@ -40,9 +41,15 @@ public interface GostServis {
 	Page<Gost> izlistajNeprijatelje(Gost gost, Pageable pageable);
 
 	void addZahtevZaPrijateljstvo(GostPrijatelj gostPrij, Pageable pageable);
+
+	List<PosetaRestoranu> ucitajPoseteGosta(Gost gost);
+
+	PosetaRestoranu pronadjiPosetu(Long id);
+
+	PosetaRestoranu sacuvajPosetu(PosetaRestoranu poseta);
 	
 	public int zahteviCount(GostPrijatelj gostPrij, Pageable pageable);
 
 	void activateAccount(String email);
-    
+
 }

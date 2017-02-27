@@ -72,6 +72,22 @@ public interface RestoranServis {
 
 	List<Sanker> izlistajSankere(Restoran restoran);
 
+	void dodajKuvaraUSmenuDana(SmenaUDanu smenaUDanu);
+
+	List<SmenaUDanu> izlistajSmeneKonobara(Restoran restoran, DanUNedelji danUNedelji, Sto sto);
+
+	List<Smena> izlistajDostupneSmeneKonobarDan(Restoran restoran, DanUNedelji danUNedelji, Sto sto);
+
+	List<Konobar> izlistajDostupneKonobare(Restoran restoran, DanUNedelji danUNedelji, Sto sto, Smena smena);
+
+	void dodajKonobaraStoSmenaDan(Restoran restoran, DanUNedelji danUNedelji, Konobar konobar, Smena smena, Sto sto);
+
+	List<Sanker> izlistajDostupneSankere(Restoran restoran, DanUNedelji danUNedelji);
+
+	void dodajSankeraUSmenuDana(SmenaUDanu smenaUDanu);
+
+	List<SmenaUDanu> izlistajSmeneSankera(Restoran restoran, DanUNedelji danUNedelji);
+	
 	List<SmenaUDanu> izlistajSmenePoDanimaKuvara(Kuvar kuvar);
 
 	List<SmenaUDanu> izlistajSmenePoDanimaKonobara(Konobar konobar);

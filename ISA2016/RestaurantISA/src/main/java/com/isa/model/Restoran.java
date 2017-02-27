@@ -37,6 +37,7 @@ public class Restoran implements Serializable {
 
 	@Column(name = "brojredova", columnDefinition = "int default 0")
 	private int brojredova;
+	
 
 	@Column(name = "brojkolona", columnDefinition = "int default 0")
 	private int brojkolona;
@@ -57,6 +58,10 @@ public class Restoran implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restoran")
 	private Set<Porudzbina> porudzbina;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restoran")
+	private Set<PosetaRestoranu> posete;
+
+	
 	// Karta pica - vise pica
 
 	// Konfiguracija sedenja

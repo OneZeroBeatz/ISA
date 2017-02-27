@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionAttributeStore;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.isa.model.korisnici.Gost;
@@ -89,17 +92,17 @@ public class LogRegKontroler {
 	public ResponseEntity<Poruka> getKorisnik(Model model, @RequestBody Gost newGuest){	
 		Gost korisnik = servis.findByEmail(newGuest.getEmail());
 		if(korisnik != null && korisnik.getSifra().equals(newGuest.getSifra())){
-			
+	
 			if(korisnik.getTipKorisnika().equals(TipKorisnika.GOST) && korisnik.getIsActivated()){
 				model.addAttribute("korisnik", korisnik);
 				return new ResponseEntity<Poruka>(new Poruka("Ulogovan", korisnik), HttpStatus.ACCEPTED);
 			}else if(korisnik.getTipKorisnika().equals(TipKorisnika.GOST) && !korisnik.getIsActivated()){
 				return new ResponseEntity<Poruka>(new Poruka("NijeAktiviran", korisnik), HttpStatus.ACCEPTED);
-				//return new ResponseEntity<Poruka>(new Poruka("Ulogovan", korisnik), HttpStatus.ACCEPTED);
 			}else{}
 			//if (!model.containsAttribute("korisnik")) {
 				//model.addAttribute("korisnik", korisnik);
 			//}
+
 		}else{
 			Korisnik otherKoris = korServis.findByEmail(newGuest.getEmail());
 			if(otherKoris != null && otherKoris.getSifra().equals(newGuest.getSifra())){
@@ -108,6 +111,7 @@ public class LogRegKontroler {
 			}
 		}
 		return new ResponseEntity<Poruka>(new Poruka("NePostoji", null), HttpStatus.ACCEPTED);
+
 	}
 	
 	@RequestMapping(value = "/check2", method = RequestMethod.POST)
@@ -122,6 +126,7 @@ public class LogRegKontroler {
 			
 	}
 	
+	//// MOJ CEK KOJI JE DOVEO DO PROBLEMA
 	@RequestMapping(value = "/check", method = RequestMethod.POST)
 	public ResponseEntity<Korisnik> checkSessions(@ModelAttribute Korisnik naSesiji){
 		System.out.println("PROVERAVAS KO JE NA SESIJI - " + naSesiji.getIme());

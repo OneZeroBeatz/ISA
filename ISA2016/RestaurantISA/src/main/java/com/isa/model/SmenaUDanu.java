@@ -10,11 +10,12 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Kuvar;
 import com.isa.model.korisnici.Sanker;
@@ -46,8 +47,8 @@ public class SmenaUDanu implements Serializable {
 	@ManyToOne(optional = true)
 	private Konobar konobar;
 
-	@JsonIgnore
-	@ManyToMany(mappedBy = "smenaudanu", cascade = CascadeType.ALL)
+	@ManyToMany(targetEntity = Sto.class, cascade = CascadeType.ALL)
+	@JoinTable(name="smenadan_sto", joinColumns = {@JoinColumn(name = "smenaudanu_id")}, inverseJoinColumns = {@JoinColumn(name = "sto_id")})
 	private Set<Sto> sto;
 
 	public SmenaUDanu() {
