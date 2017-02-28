@@ -1,6 +1,6 @@
 var sankerKontroler = angular.module('restoranApp.sankerKontroler', []);
 
-sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, logovanjeServis, gostGlavnaStranaServis, izmeniSankerServis){
+sankerKontroler.controller('sankerCtrl', function($window, $scope, $route, $location, logovanjeServis, gostGlavnaStranaServis, izmeniSankerServis){
 	
 	$scope.osveziPrikazZaIzmenu = function (sanker){
 		$scope.imeIzmena = sanker.ime;
@@ -13,8 +13,8 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, log
 	//TODO: Kada porudzbina nema pica ne prikazati je
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 		console.log(data.ime + "ULOGOVANI SANKER");
-		if(data != ""){
-			$scope.ulogovanSanker = data;
+		if(data.message == "NekoNaSesiji"){
+			$scope.ulogovanSanker = data.obj;
 			$scope.osveziPrikazZaIzmenu($scope.ulogovanSanker);
 			$scope.setTab = function(newTab){
 		    	$scope.tab = newTab;
@@ -36,18 +36,24 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, log
 				}
 				var str = JSON.stringify(gost);
 				izmeniSankerServis.izmeni(str).success(function(data) {
-					logovanjeServis.ulogujKorisnika(data).success(function(data) {
 						$scope.ulogovanSanker = data;
 						$scope.osveziPrikazZaIzmenu($scope.ulogovanSanker);
-
-						});
-					//TODO: doznaka i clear
-						$location.path('/sanker');
 					}).error(function(data) {
 						alert("Neuspesne izmene!");
 					});
 			}
 			
+			
+			/// ODLOGUJ SE
+			$scope.logOut = function(){
+
+				gostGlavnaStranaServis.logOut().success(function(data) {
+					if(data.message == "Izlogovan"){
+						$window.location.href = '/';
+					}else{
+					}
+				});
+			}
 			// za izmenu lozinke
 			
 			$scope.izmeniLozinku = function (){
@@ -222,8 +228,8 @@ sankerKontroler.controller('sankerCtrl', function($scope, $route, $location, log
 			
 			
 		}else{
-			alert("Morate se prvo ulogovati");
-			window.location.href = "logovanje.html";
+
+			$window.location.href = '/';
 		}
 	});
 })

@@ -1,6 +1,6 @@
 var kuvarKontroler = angular.module('restoranApp.kuvarKontroler', []);
 
-kuvarKontroler.controller('kuvarCtrl', function($scope, $location, logovanjeServis, gostGlavnaStranaServis, izmeniKuvarServis){
+kuvarKontroler.controller('kuvarCtrl', function($window, $scope, $location, logovanjeServis, gostGlavnaStranaServis, izmeniKuvarServis){
 	
 	
 	$scope.odabranKuvar = null;
@@ -10,10 +10,9 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, logovanjeServ
 		$scope.emailIzmena = kuvar.email
 	}
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
-		console.log(data.ime + "ULOGOVANI KUVAR");
-		if(data != ""){
-			$scope.ulogovanKuvar = data;
-
+		console.log(data.obj.ime + "ULOGOVANI KUVAR");
+		if(data.message == "NekoNaSesiji"){
+			$scope.ulogovanKuvar = data.obj;
 			$scope.osveziPrikazZaIzmenu($scope.ulogovanKuvar);
 			
 			$scope.setTab = function(newTab){
@@ -39,16 +38,21 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, logovanjeServ
 				}
 				var str = JSON.stringify(gost);
 				izmeniKuvarServis.izmeni(str).success(function(data) {
-						//TODO: doznaka i clear
-					logovanjeServis.ulogujKorisnika(data).success(function(data) {
-						$scope.ulogovanKuvar = data;
-						$scope.osveziPrikazZaIzmenu($scope.ulogovanKuvar);
-
-						});	
-					$location.path('/kuvar');
+					$scope.ulogovanKuvar = data;
+					$scope.osveziPrikazZaIzmenu($scope.ulogovanKuvar);	
 					}).error(function(data) {
 						alert("Neuspesne izmene!");
 					});
+			}
+			
+			/// ODLOGUJ SE
+			$scope.logOut = function(){
+				gostGlavnaStranaServis.logOut().success(function(data) {
+					if(data.message == "Izlogovan"){
+						$window.location.href = '/';
+					}else{
+					}
+				});
 			}
 			
 			// za izmenu lozinke
@@ -83,7 +87,6 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, logovanjeServ
 				
 				$scope.porudzbine = data;
 				if ($scope.porudzbine.length == 0){
-					alert("Nema raspolozivih porudzbina");
 					$scope.setTab(0);
 				}
 				
@@ -322,8 +325,7 @@ kuvarKontroler.controller('kuvarCtrl', function($scope, $location, logovanjeServ
 			
 			
 		}else{
-			alert("Morate se prvo ulogovati");
-			window.location.href = "logovanje.html";
+			$window.location.href = '/';
 		}
 	});
 })

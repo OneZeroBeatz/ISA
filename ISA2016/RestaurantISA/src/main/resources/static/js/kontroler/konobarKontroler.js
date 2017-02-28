@@ -343,7 +343,6 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 				}
 				var str = JSON.stringify(gost);
 				izmeniKonobarServis.izmeni(str).success(function(data) {
-					// TODO: ispravljeno ovo, ali mi je malo sumnjivo
 						$scope.ulogovanKonobar = data;
 						$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
 					}).error(function(data) {
@@ -351,6 +350,17 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 					});
 			}
 			
+			
+			/// ODLOGUJ SE
+			$scope.logOut = function(){
+
+				gostGlavnaStranaServis.logOut().success(function(data) {
+					if(data.message == "Izlogovan"){
+						$window.location.href = '/';
+					}else{
+					}
+				});
+			}
 			// Kliknuo na detalje kalendar
 			
 			$scope.danasnjiDatum = new Date();
@@ -545,16 +555,7 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 
 			}
 			
-			/// ODLOGUJ SE
-			$scope.logOut = function(){
 
-				gostGlavnaStranaServis.logOut().success(function(data) {
-					if(data.message == "Izlogovan"){
-						$window.location.href = '/';
-					}else{
-					}
-				});
-			}
 			
 
 			
@@ -583,8 +584,8 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 			}
 
 		}else{
-			alert("Morate se prvo ulogovati");
-			window.location.href = "logovanje.html";
+
+			$window.location.href = '/';
 		}
 	});
 })
