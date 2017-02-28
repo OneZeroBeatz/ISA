@@ -119,10 +119,22 @@ public class SankerKontroler {
 			}
 		}
 		MogucePrihvacene moPri = new MogucePrihvacene();
-		moPri.setPrihvacenePorudzbine(listaPrihvacenihPorudzbina);
-		moPri.setMogucePorudzbine(listaMogucihPorudzbina);
+		moPri.setPrihvacenePorudzbine(izbaciNeprihvacene(listaPrihvacenihPorudzbina));
+		moPri.setMogucePorudzbine(izbaciNeprihvacene(listaMogucihPorudzbina));
 		
 		return moPri;
+	}
+	
+	private ArrayList<Porudzbina> izbaciNeprihvacene(List<Porudzbina> parametar){
+		ArrayList<Porudzbina> retVal = new ArrayList<Porudzbina>();
+		
+		for(int i = 0; i < parametar.size(); i++){
+			if(parametar.get(i).isPorudzbinaPrihvacena()){
+				retVal.add(parametar.get(i));
+			}
+		}
+		
+		return retVal;
 	}
 	
 	@RequestMapping(value = "/ucitajSankereRestorana", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -138,6 +150,8 @@ public class SankerKontroler {
 		List<SmenaUDanu> retVal = restoranServis.izlistajSmenePoDanimaSankera(Sanker);
 		return new ResponseEntity<List<SmenaUDanu>>(retVal, HttpStatus.OK);
 	}
+	
+	
 	
 	
 }

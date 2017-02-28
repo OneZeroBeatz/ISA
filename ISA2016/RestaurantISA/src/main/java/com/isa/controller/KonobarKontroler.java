@@ -71,6 +71,29 @@ public class KonobarKontroler {
 		
 		return new ResponseEntity<List<Pice>>(pica.getContent(), HttpStatus.OK);
 	}
+
+
+	@RequestMapping(value = "/prihvatiPorudzbinu", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Porudzbina>> prihvatiPorudzbinu(@RequestBody PorudzbinaKonobar porKon)  {
+		
+		Porudzbina porudzbina = konobarServis.pronadjiPorudzbinu(porKon.getPorudzbina().getId());
+		Konobar konobar = (Konobar) konobarServis.findOne(porKon.getKonobar().getId());
+		
+		java.util.Date dt = new java.util.Date();
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String currentTime = sdf.format(dt);
+		porudzbina.setVremePrimanja(currentTime);
+		porudzbina.setKonobar(konobar);
+		porudzbina.setPorudzbinaPrihvacena(true);
+		
+		konobarServis.savePorudzbina(porudzbina);
+		
+		return new ResponseEntity<List<Porudzbina>>(vratiPorudzbineKonobara(konobar), HttpStatus.OK);
+	}
+
+	
+	
+	
 	
 	@RequestMapping(value = "/dodajPorudzbinu", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Porudzbina>> ucitajPicaKonobara(@RequestBody JelaPica jelaPica)  {
@@ -85,7 +108,7 @@ public class KonobarKontroler {
 		porudzbina.setRestoran(restoranServis.findOne(restoran.getId()));
 		porudzbina.setSanker(null);
 		porudzbina.setKonobar((Konobar)konobarServis.findOne(jelaPica.getKonobar().getId()));
-
+		porudzbina.setPorudzbinaPrihvacena(true);
 		porudzbina.setSto(restoranServis.izlistajSto(jelaPica.getSto()));
 		
 		konobarServis.savePorudzbina(porudzbina);

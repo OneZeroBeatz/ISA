@@ -301,6 +301,18 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 		    	$scope.smeDaDodaPica = true;
 		    }
 		    
+		    $scope.prihvati = function(item){
+				var konPor = {
+						konobar : $scope.ulogovanKonobar,
+						porudzbina : item
+					}
+		    	izmeniKonobarServis.prihvatiPorudzbinu(konPor).success (function (data){
+		    		$scope.porudzbine = data;
+		    	}).error(function (data){
+		    		
+		    	});
+
+		    }
 		    
 		    // IZMENI PORUDZBINU
 		    $scope.izmeni = function (porudzbina){

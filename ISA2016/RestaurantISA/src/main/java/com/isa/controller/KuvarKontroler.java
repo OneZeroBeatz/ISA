@@ -47,7 +47,19 @@ public class KuvarKontroler {
 		Page<Porudzbina> porudzbine = sankerServis.izlistajPorudzbine(restoran, new PageRequest(0, 10));
 		
 		
-		return new ResponseEntity<List<Porudzbina>> (porudzbine.getContent(), HttpStatus.OK);
+		return new ResponseEntity<List<Porudzbina>> (izbaciNeprihvacene(porudzbine.getContent()), HttpStatus.OK);
+	}
+	
+	private ArrayList<Porudzbina> izbaciNeprihvacene(List<Porudzbina> parametar){
+		ArrayList<Porudzbina> retVal = new ArrayList<Porudzbina>();
+		
+		for(int i = 0; i < parametar.size(); i++){
+			if(parametar.get(i).isPorudzbinaPrihvacena()){
+				retVal.add(parametar.get(i));
+			}
+		}
+		
+		return retVal;
 	}
 	
 	@RequestMapping(value = "/ucitajPorudzbineKlasifikovane", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -198,8 +210,8 @@ public class KuvarKontroler {
 		}
 		
 		MogucePrihvacene moPri = new MogucePrihvacene();
-		moPri.setPrihvacenePorudzbine(listaPrihvacenihPorudzbina);
-		moPri.setMogucePorudzbine(listaMogucihPorudzbina);
+		moPri.setPrihvacenePorudzbine(izbaciNeprihvacene(listaPrihvacenihPorudzbina));
+		moPri.setMogucePorudzbine(izbaciNeprihvacene(listaMogucihPorudzbina));
 		
 		return moPri;
 	}
