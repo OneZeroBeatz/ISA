@@ -33,13 +33,15 @@ public class KorisnikKontroler {
 	}
 	
 	@RequestMapping(value = "/izmeniLozinkuKorisnika", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Korisnik> izmeniLozinkuKorisnika(@RequestBody Korisnik gost) {
+	public ResponseEntity<Korisnik> izmeniLozinkuKorisnika(@RequestBody Korisnik gost,HttpSession request) {
 		Korisnik originalKorisnik = (Korisnik) korisnikServis.findOne(gost.getId());	
 		if (!originalKorisnik.getSifra().equals(gost.getSifraStara())){
 			return new ResponseEntity<Korisnik>(HttpStatus.NOT_MODIFIED);
 		}
 		originalKorisnik.setSifra(gost.getSifra());
+		originalKorisnik.setLogovaoSe(true);
 		originalKorisnik = korisnikServis.save(originalKorisnik);
+		request.setAttribute("ulogovanKorisnik", originalKorisnik);
 		return new ResponseEntity<Korisnik>(originalKorisnik, HttpStatus.OK);
 	}
 

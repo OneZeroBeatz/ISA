@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import scala.annotation.meta.setter;
+
 import com.isa.model.korisnici.Gost;
 
 @Entity
@@ -32,6 +34,12 @@ public class PosetaRestoranu {
 	@Column(name = "ocena")
 	private int ocena;
 
+	@Column(name = "ocena_usluge")
+	private int ocenaUsluge;
+	
+	@Column(name = "ocena_obroka")
+	private int ocenaObroka;
+	
 	@Column(name = "termin")
 	private String termin;
 
@@ -94,6 +102,20 @@ public class PosetaRestoranu {
 	public void setSto(Sto sto) {
 		this.sto = sto;
 	}
+	
+	public int getOcenaObroka() {
+		return ocenaObroka;
+	}
+	public int getOcenaUsluge() {
+		return ocenaUsluge;
+	}
+	public void setOcenaObroka(int ocenaObroka) {
+		this.ocenaObroka = ocenaObroka;
+	}
+	public void setOcenaUsluge(int ocenaUsluge) {
+		this.ocenaUsluge = ocenaUsluge;
+	}
+	
 	
 	
 	

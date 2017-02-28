@@ -585,15 +585,13 @@ public class KonobarKontroler {
 	
 	@RequestMapping(value = "/izlistajStolove", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Sto>> ucitajStoloveKonobara(@RequestBody Konobar konobar) {
+		konobar = (Konobar) konobarServis.findOne(konobar.getId());
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());
 		int trenutniDanUNedelji = calendar.get(Calendar.DAY_OF_WEEK);
 		DanUNedelji dan = getDanUNedelji(trenutniDanUNedelji);
 		SmenaUDanu smenaKonobara = konobarServis.izlistajSmenuUDanu(konobar,dan);
-		System.out.println(smenaKonobara.getId() + " ovo je id smene konobara");
 		List<Sto> stoloviKonobara = restoranServis.izlistajStoloveSmene(smenaKonobara);
-		
-		
 		return new ResponseEntity<List<Sto>>(stoloviKonobara, HttpStatus.OK);
 	}
 	

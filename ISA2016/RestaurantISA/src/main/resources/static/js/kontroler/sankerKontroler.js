@@ -16,7 +16,12 @@ sankerKontroler.controller('sankerCtrl', function($window, $scope, $route, $loca
 		if(data.message == "NekoNaSesiji"){
 			$scope.ulogovanSanker = data.obj;
 			$scope.osveziPrikazZaIzmenu($scope.ulogovanSanker);
+			
 			$scope.setTab = function(newTab){
+				if($scope.ulogovanSanker.logovaoSe == false){
+					$scope.tab = 3;
+					return;
+				}
 		    	$scope.tab = newTab;
 		    };
 
@@ -69,6 +74,7 @@ sankerKontroler.controller('sankerCtrl', function($window, $scope, $route, $loca
 						$scope.staraLozinka = "";
 						$scope.novaLozinka = "";
 						$scope.novaLozinkaPotvrda = "";
+						$scope.ulogovanSanker = data;
 						alert("Uspesno promenjena lozinka");
 						$location.path('/sanker');
 					}).error(function (data){

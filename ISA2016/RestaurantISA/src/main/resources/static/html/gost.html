@@ -49,6 +49,49 @@
 							Ocenili ste sa {{item.ocena}}
 						</td>
 					</tr>
+					
+					<tr ng-show = "show == item.id">
+						<td>
+							 <label><input type="radio" ng-model = "ocena1" value = 1>1</label>
+							 <label><input type="radio" ng-model = "ocena1" value = 2>2</label>
+							 <label><input type="radio" ng-model = "ocena1" value = 3>3</label>
+							 <label><input type="radio" ng-model = "ocena1" value = 4>4</label>
+							 <label><input type="radio" ng-model = "ocena1" value = 5>5</label>
+							
+						</td>
+						<td ng-show = 'item.ocenaUsluge == -1'>
+							<button ng-click = potvrdiOcenuUsluge(ocena1)>Potvrdi</button>
+						</td>
+						<td ng-show = 'item.ocenaUsluge != -1'>
+							<button ng-click = potvrdiOcenuUsluge(ocena1)>Promeni</button>
+						</td>
+						<td ng-show = 'item.ocenaUsluge != -1'>
+							Ocenili ste sa {{item.ocenaUsluge}}
+						</td>
+					</tr>
+					
+					
+					
+					<tr ng-show = "show == item.id">
+						<td>
+							 <label><input type="radio" ng-model = "ocena2" value = 1>1</label>
+							 <label><input type="radio" ng-model = "ocena2" value = 2>2</label>
+							 <label><input type="radio" ng-model = "ocena2" value = 3>3</label>
+							 <label><input type="radio" ng-model = "ocena2" value = 4>4</label>
+							 <label><input type="radio" ng-model = "ocena2" value = 5>5</label>
+							
+						</td>
+						<td ng-show = 'item.ocenaObroka == -1'>
+							<button ng-click = potvrdiOcenuObroka(ocena2)>Potvrdi</button>
+						</td>
+						<td ng-show = 'item.ocenaObroka != -1'>
+							<button ng-click = potvrdiOcenuObroka(ocena2)>Promeni</button>
+						</td>
+						<td ng-show = 'item.ocenaObroka != -1'>
+							Ocenili ste sa {{item.ocenaObroka}}
+						</td>
+					</tr>
+					
 				</table>
 				
 			</div>

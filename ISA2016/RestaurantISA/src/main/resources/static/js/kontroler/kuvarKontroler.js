@@ -16,9 +16,14 @@ kuvarKontroler.controller('kuvarCtrl', function($window, $scope, $location, logo
 			$scope.osveziPrikazZaIzmenu($scope.ulogovanKuvar);
 			
 			$scope.setTab = function(newTab){
+				if($scope.ulogovanKuvar.logovaoSe == false){
+					$scope.tab = 3;
+					return;
+				}
 		    	$scope.tab = newTab;
 		    };
-
+		    $scope.setTab(0);
+		    
 		    $scope.isSet = function(tabNum){   
 		    	return $scope.tab === tabNum;
 		    };
@@ -27,7 +32,6 @@ kuvarKontroler.controller('kuvarCtrl', function($window, $scope, $location, logo
 		    // KLIKNUO NA DETALJI PRIHVACENE
 		    
 		    
-			$scope.setTab(0);
 			// za izmeenu podataka
 			$scope.izmeniKuvaraPodaci = function(){
 				var gost = {
@@ -69,6 +73,7 @@ kuvarKontroler.controller('kuvarCtrl', function($window, $scope, $location, logo
 						$scope.staraLozinka = "";
 						$scope.novaLozinka = "";
 						$scope.novaLozinkaPotvrda = "";
+						$scope.ulogovanKuvar = data;
 						alert("Uspesno promenjena lozinka");
 						$location.path('/kuvar');
 					}).error(function (data){

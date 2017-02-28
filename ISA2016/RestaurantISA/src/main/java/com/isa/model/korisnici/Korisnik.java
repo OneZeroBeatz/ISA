@@ -41,6 +41,10 @@ public class Korisnik{
 	@Column(name = "email")
 	private String email;
 	
+	@Column(name = "logovao_se")
+	private boolean logovaoSe;
+	
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tip")
 	private TipKorisnika tipKorisnika;
@@ -123,6 +127,15 @@ public class Korisnik{
 	public void setSifraStara(String sifraStara) {
 		this.sifraStara = sifraStara;
 	}
+	
+	public boolean isLogovaoSe() {
+		return logovaoSe;
+	}
+	
+	public void setLogovaoSe(boolean logovaoSe) {
+		this.logovaoSe = logovaoSe;
+	}
+	
 	
 	
 }

@@ -29,15 +29,21 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 
 		console.log(data.obj.ime + "ULOGOVANI KONOBAR");
+		
 		if(data.message == "NekoNaSesiji"){
-
+			
 			$scope.ulogovanKonobar = data.obj;
 			$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
+			
 			
 			$scope.izmena = false;
 			$scope.smeDaDodaJela = true;
 			$scope.smeDaDodaPica = true;
 			$scope.setTab = function(newTab){
+				if($scope.ulogovanKonobar.logovaoSe == false){
+					$scope.tab = 4;
+					return;
+				}
 				if (newTab == 2){
 					izmeniKonobarServis.izlistajJela($scope.ulogovanKonobar).success(function(data){
 						$scope.jela = data;
@@ -146,6 +152,9 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 				}
 		    	$scope.tab = newTab;
 		    };
+		    
+		    $scope.setTab(0);
+
 		    
 		    // Dodaj u listu jela
 		    $scope.dodataPica = [];
@@ -332,7 +341,7 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 		    	});
 		    }
 		    
-			$scope.setTab(0);
+			
 			// za izmeenu podataka
 			$scope.izmeniKonobaraPodaci = function(){
 				var gost = {
@@ -573,6 +582,7 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 						$scope.staraLozinka = "";
 						$scope.novaLozinka = "";
 						$scope.novaLozinkaPotvrda = "";
+						$scope.ulogovanKonobar = data;
 						alert("Uspesno promenjena lozinka");
 						$location.path('/konobar');
 					}).error(function (data){
