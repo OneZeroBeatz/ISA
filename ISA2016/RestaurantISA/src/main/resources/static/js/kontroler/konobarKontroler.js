@@ -29,15 +29,21 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 
 		console.log(data.obj.ime + "ULOGOVANI KONOBAR");
+		
 		if(data.message == "NekoNaSesiji"){
-
+			
 			$scope.ulogovanKonobar = data.obj;
 			$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
+			
 			
 			$scope.izmena = false;
 			$scope.smeDaDodaJela = true;
 			$scope.smeDaDodaPica = true;
 			$scope.setTab = function(newTab){
+				if($scope.ulogovanKonobar.logovaoSe == false){
+					$scope.tab = 4;
+					return;
+				}
 				if (newTab == 2){
 					izmeniKonobarServis.izlistajJela($scope.ulogovanKonobar).success(function(data){
 						$scope.jela = data;
@@ -146,6 +152,9 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 				}
 		    	$scope.tab = newTab;
 		    };
+		    
+		    $scope.setTab(0);
+
 		    
 		    // Dodaj u listu jela
 		    $scope.dodataPica = [];
@@ -292,6 +301,18 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 		    	$scope.smeDaDodaPica = true;
 		    }
 		    
+		    $scope.prihvati = function(item){
+				var konPor = {
+						konobar : $scope.ulogovanKonobar,
+						porudzbina : item
+					}
+		    	izmeniKonobarServis.prihvatiPorudzbinu(konPor).success (function (data){
+		    		$scope.porudzbine = data;
+		    	}).error(function (data){
+		    		
+		    	});
+
+		    }
 		    
 		    // IZMENI PORUDZBINU
 		    $scope.izmeni = function (porudzbina){
@@ -332,7 +353,7 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 		    	});
 		    }
 		    
-			$scope.setTab(0);
+			
 			// za izmeenu podataka
 			$scope.izmeniKonobaraPodaci = function(){
 				var gost = {
@@ -343,7 +364,6 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 				}
 				var str = JSON.stringify(gost);
 				izmeniKonobarServis.izmeni(str).success(function(data) {
-					// TODO: ispravljeno ovo, ali mi je malo sumnjivo
 						$scope.ulogovanKonobar = data;
 						$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
 					}).error(function(data) {
@@ -351,6 +371,17 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 					});
 			}
 			
+			
+			/// ODLOGUJ SE
+			$scope.logOut = function(){
+
+				gostGlavnaStranaServis.logOut().success(function(data) {
+					if(data.message == "Izlogovan"){
+						$window.location.href = '/';
+					}else{
+					}
+				});
+			}
 			// Kliknuo na detalje kalendar
 			
 			$scope.danasnjiDatum = new Date();
@@ -545,16 +576,7 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 
 			}
 			
-			/// ODLOGUJ SE
-			$scope.logOut = function(){
 
-				gostGlavnaStranaServis.logOut().success(function(data) {
-					if(data.message == "Izlogovan"){
-						$window.location.href = '/';
-					}else{
-					}
-				});
-			}
 			
 
 			
@@ -572,6 +594,7 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 						$scope.staraLozinka = "";
 						$scope.novaLozinka = "";
 						$scope.novaLozinkaPotvrda = "";
+						$scope.ulogovanKonobar = data;
 						alert("Uspesno promenjena lozinka");
 						$location.path('/konobar');
 					}).error(function (data){
@@ -583,8 +606,8 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 			}
 
 		}else{
-			alert("Morate se prvo ulogovati");
-			window.location.href = "logovanje.html";
+
+			$window.location.href = '/';
 		}
 	});
 })

@@ -36,6 +36,12 @@ public class PosetaRestoranu {
 	@Column(name = "ocena")
 	private int ocena;
 
+	@Column(name = "ocena_usluge")
+	private int ocenaUsluge;
+	
+	@Column(name = "ocena_obroka")
+	private int ocenaObroka;
+	
 	@Column(name = "termin")
 	private String termin;
 
@@ -117,5 +123,17 @@ public class PosetaRestoranu {
 	public void setDatumrez(Date datumrez) {
 		this.datumrez = datumrez;
 	}
-
+	
+	public int getOcenaObroka() {
+		return ocenaObroka;
+	}
+	public int getOcenaUsluge() {
+		return ocenaUsluge;
+	}
+	public void setOcenaObroka(int ocenaObroka) {
+		this.ocenaObroka = ocenaObroka;
+	}
+	public void setOcenaUsluge(int ocenaUsluge) {
+		this.ocenaUsluge = ocenaUsluge;
+	}
 }

@@ -71,6 +71,29 @@ public class KonobarKontroler {
 		
 		return new ResponseEntity<List<Pice>>(pica.getContent(), HttpStatus.OK);
 	}
+
+
+	@RequestMapping(value = "/prihvatiPorudzbinu", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Porudzbina>> prihvatiPorudzbinu(@RequestBody PorudzbinaKonobar porKon)  {
+		
+		Porudzbina porudzbina = konobarServis.pronadjiPorudzbinu(porKon.getPorudzbina().getId());
+		Konobar konobar = (Konobar) konobarServis.findOne(porKon.getKonobar().getId());
+		
+		java.util.Date dt = new java.util.Date();
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String currentTime = sdf.format(dt);
+		porudzbina.setVremePrimanja(currentTime);
+		porudzbina.setKonobar(konobar);
+		porudzbina.setPorudzbinaPrihvacena(true);
+		
+		konobarServis.savePorudzbina(porudzbina);
+		
+		return new ResponseEntity<List<Porudzbina>>(vratiPorudzbineKonobara(konobar), HttpStatus.OK);
+	}
+
+	
+	
+	
 	
 	@RequestMapping(value = "/dodajPorudzbinu", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Porudzbina>> ucitajPicaKonobara(@RequestBody JelaPica jelaPica)  {
@@ -85,7 +108,7 @@ public class KonobarKontroler {
 		porudzbina.setRestoran(restoranServis.findOne(restoran.getId()));
 		porudzbina.setSanker(null);
 		porudzbina.setKonobar((Konobar)konobarServis.findOne(jelaPica.getKonobar().getId()));
-
+		porudzbina.setPorudzbinaPrihvacena(true);
 		porudzbina.setSto(restoranServis.izlistajSto(jelaPica.getSto()));
 		
 		konobarServis.savePorudzbina(porudzbina);
@@ -585,53 +608,13 @@ public class KonobarKontroler {
 	
 	@RequestMapping(value = "/izlistajStolove", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Sto>> ucitajStoloveKonobara(@RequestBody Konobar konobar) {
+		konobar = (Konobar) konobarServis.findOne(konobar.getId());
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());
 		int trenutniDanUNedelji = calendar.get(Calendar.DAY_OF_WEEK);
-		DanUNedelji dan = null;
-		
-		
-		System.out.println("ponedeljak = " + calendar.get(Calendar.DAY_OF_WEEK));
-		calendar.add(Calendar.HOUR_OF_DAY, 24); // adds one hour
-		System.out.println("utorak = " + calendar.get(Calendar.DAY_OF_WEEK));
-		calendar.add(Calendar.HOUR_OF_DAY, 24); // adds one hour
-		System.out.println("sreda = " + calendar.get(Calendar.DAY_OF_WEEK));
-		calendar.add(Calendar.HOUR_OF_DAY, 24); // adds one hour
-		System.out.println("cetvrtak = " + calendar.get(Calendar.DAY_OF_WEEK));
-		calendar.add(Calendar.HOUR_OF_DAY, 24); // adds one hour
-		System.out.println("petak = " + calendar.get(Calendar.DAY_OF_WEEK));
-		calendar.add(Calendar.HOUR_OF_DAY, 24); // adds one hour
-		System.out.println("subota = " + calendar.get(Calendar.DAY_OF_WEEK));
-		calendar.add(Calendar.HOUR_OF_DAY, 24); // adds one hour
-		System.out.println("nedelja = " + calendar.get(Calendar.DAY_OF_WEEK));
-		calendar.add(Calendar.HOUR_OF_DAY, 24); // adds one hour
-		
-		
-		
-		if(trenutniDanUNedelji == 2){
-			dan = DanUNedelji.PONEDELJAK;
-		} else if (trenutniDanUNedelji == 3){
-			dan = DanUNedelji.UTORAK;
-		} else if (trenutniDanUNedelji == 4){
-			dan = DanUNedelji.SREDA;
-		} else if (trenutniDanUNedelji == 5){
-			dan = DanUNedelji.CETVRTAK;
-		} else if (trenutniDanUNedelji == 6){
-			dan = DanUNedelji.PETAK;
-		} else if (trenutniDanUNedelji == 7){
-			dan = DanUNedelji.SUBOTA;
-		} else if (trenutniDanUNedelji == 1){
-			dan = DanUNedelji.NEDELJA;
-		} else {
-			dan = DanUNedelji.NEDELJA;
-		}
-		
-
+		DanUNedelji dan = getDanUNedelji(trenutniDanUNedelji);
 		SmenaUDanu smenaKonobara = konobarServis.izlistajSmenuUDanu(konobar,dan);
-		System.out.println(smenaKonobara.getId() + " ovo je id smene konobara");
 		List<Sto> stoloviKonobara = restoranServis.izlistajStoloveSmene(smenaKonobara);
-		
-		
 		return new ResponseEntity<List<Sto>>(stoloviKonobara, HttpStatus.OK);
 	}
 	
@@ -759,8 +742,6 @@ public class KonobarKontroler {
 		RacunKonobar racun = new RacunKonobar();
 		racun.setUkupno(ukupno);
 		
-		//TODO skontati koji je konobar pa uraditi na osnovu onog kriterijuma sto su dali
-		
 		java.util.Date vremeNaplate = new java.util.Date();
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = sdf.format(vremeNaplate);
@@ -771,17 +752,13 @@ public class KonobarKontroler {
 		racun.setPorudzbina(porudz);
 		porudz.setRacun(racun);
 		
-		if(porudz.getKonobar().getId().equals(porudz.getKonobar1())){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Calendar calendar = Calendar.getInstance(); 
+		porudz.setKonobar1((Konobar) konobarServis.findOne(porKon.getKonobar().getId()));
+		
+		if(porudz.getKonobar().getId().equals(porudz.getKonobar1().getId())){
 			racun.setKonobar((Konobar)konobarServis.findOne(porudz.getKonobar().getId()));
 		} else{
-				
-			/*
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			Calendar calendar = Calendar.getInstance(); 
-			
-			
-			
-			
 			String primljenaStr = porudz.getVremePrimanja();
 			Date vremePrimanja = null;
 			try {
@@ -791,40 +768,35 @@ public class KonobarKontroler {
 				e.printStackTrace();
 			}
 			
-			
-			
+			System.out.println("DATUM PRIMANJA PORUDZBINE - " + vremePrimanja);
 			List<PosetaRestoranu> posete = konobarServis.izlistajPosetePoStolu(porudz.getSto());
 			PosetaRestoranu trazenaPoseta = null;
-			for (int i =0 ; i < posete.size();i++){
+			Date terminDatKraj = null;
+			Date terminDat = null;
+			for (int i = 0 ; i < posete.size(); i++){
 				String terminStr = posete.get(i).getTermin();
-				Date terminDat = null;
+				
 				try {
 					terminDat = format.parse(terminStr);
 				} catch (ParseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				calendar.setTime(terminDat); // sets calendar time/date
-				calendar.add(Calendar.HOUR_OF_DAY, posete.get(i).getBrSati()); // adds one hour
-				Date terminDatKraj = calendar.getTime();
+				calendar.setTime(terminDat);
+				calendar.add(Calendar.HOUR_OF_DAY, posete.get(i).getBrSati());
+				terminDatKraj = calendar.getTime();
+
+				System.out.println("DATUM POCETKA POSETE - " + terminDat);
+				System.out.println("DATUM KRAJA POSETE - " + terminDatKraj);
 				
 				
-				
-				trazenaPoseta = posete.get(i);
-				
+				if(vremePrimanja.after(terminDat) && vremePrimanja.before(terminDatKraj)){
+					System.out.println("USAO U IF");
+					System.out.println("DATUM POCETKA TRAZENE POSETE - " + terminDat);
+					System.out.println("DATUM KRAJA TRAZENE POSETE - " + terminDatKraj);
+					trazenaPoseta = posete.get(i);	
+					break;
+				}
 			}
-			
-			String terminStr = trazenaPoseta.getTermin();
-			Date terminDat = null;
-			try {
-				terminDat = format.parse(terminStr);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			Calendar c = Calendar.getInstance();
-			c.setTime(terminDat);
-			int danUNedeljiPosete = c.get(Calendar.DAY_OF_WEEK);
 			
 			List<SmenaUDanu> smenePoDanimaKonobara = restoranServis.izlistajSmenePoDanimaKonobara((Konobar) konobarServis.findOne(porudz.getKonobar().getId()));
 			List<SmenaUDanu> smenePoDanimaKonobara1 = restoranServis.izlistajSmenePoDanimaKonobara((Konobar) konobarServis.findOne(porudz.getKonobar1().getId()));
@@ -832,14 +804,95 @@ public class KonobarKontroler {
 			Smena smenaKonobara = null;
 			Smena smenaKonobara1 = null;
 			
+			calendar.setTime(terminDat);
+			int danUNedeljiPoseteInt = calendar.get(Calendar.DAY_OF_WEEK);	
+			
 			for (int i = 0; i < smenePoDanimaKonobara.size(); i++){
-				if (smenePoDanimaKonobara.get(i).getDanUNedelji() == danUNedeljiPosete))){
+				if (smenePoDanimaKonobara.get(i).getDanUNedelji().equals(getDanUNedelji(danUNedeljiPoseteInt))){
 					smenaKonobara = smenePoDanimaKonobara.get(i).getSmena();
 				}
 			}
+
+			for (int i = 0; i < smenePoDanimaKonobara1.size(); i++){
+				if (smenePoDanimaKonobara1.get(i).getDanUNedelji().equals(getDanUNedelji(danUNedeljiPoseteInt))){
+					smenaKonobara1 = smenePoDanimaKonobara1.get(i).getSmena();
+				}
+			}
 			
-			*/
-		
+			Date vremePocetkaKonobar = null;
+			Date vremePocetkaKonobar1 = null;
+			Date vremeKrajaKonobar = null;
+			Date vremeKrajaKonobar1 = null;
+
+			SimpleDateFormat formatSmene = new SimpleDateFormat("HH:mm");
+			String pocetakString = smenaKonobara.getVremeod();
+			String pocetakString1 = smenaKonobara1.getVremeod();
+			String krajString = smenaKonobara.getVremedo();
+			String krajString1 = smenaKonobara1.getVremedo();
+			try {
+				vremePocetkaKonobar = formatSmene.parse(pocetakString);
+				vremePocetkaKonobar1 = formatSmene.parse(pocetakString1);
+				vremeKrajaKonobar = formatSmene.parse(krajString);
+				vremeKrajaKonobar1 = formatSmene.parse(krajString1);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
+
+			
+			Calendar temp = Calendar.getInstance();			
+			calendar.setTime(new Date());
+			
+			temp.setTime(vremePocetkaKonobar);
+			calendar.set(Calendar.MINUTE, temp.get(Calendar.MINUTE));
+			calendar.set(Calendar.HOUR_OF_DAY, temp.get(Calendar.HOUR_OF_DAY));
+			calendar.set(Calendar.SECOND, 0);
+			vremePocetkaKonobar = calendar.getTime();
+			
+			temp.setTime(vremePocetkaKonobar1);
+			calendar.set(Calendar.MINUTE, temp.get(Calendar.MINUTE));
+			calendar.set(Calendar.HOUR_OF_DAY, temp.get(Calendar.HOUR_OF_DAY));
+			calendar.set(Calendar.SECOND, 0);
+			vremePocetkaKonobar1 = calendar.getTime();
+			
+			temp.setTime(vremeKrajaKonobar);
+			calendar.set(Calendar.MINUTE, temp.get(Calendar.MINUTE));
+			calendar.set(Calendar.HOUR_OF_DAY, temp.get(Calendar.HOUR_OF_DAY));
+			calendar.set(Calendar.SECOND, 0);
+			vremeKrajaKonobar = calendar.getTime();
+			
+			temp.setTime(vremeKrajaKonobar1);
+			calendar.set(Calendar.MINUTE, temp.get(Calendar.MINUTE));
+			calendar.set(Calendar.HOUR_OF_DAY, temp.get(Calendar.HOUR_OF_DAY));
+			calendar.set(Calendar.SECOND, 0);
+			vremeKrajaKonobar1 = calendar.getTime();
+			
+			System.out.println("POCETAK" + vremePocetkaKonobar);
+			System.out.println("POCETAK1" + vremePocetkaKonobar1);
+			System.out.println("KRAJ" + vremeKrajaKonobar);
+			System.out.println("KRAJ1" + vremeKrajaKonobar1);
+			
+			//TODO: skloniti ako nema potrebe
+			if (vremeKrajaKonobar.before(new Date())){
+				System.out.println("USAO U ZAVRSENA SMENA");
+				long intervalKonobar = vremeKrajaKonobar.getTime() - terminDat.getTime();
+				long intervalKonobar1 = terminDatKraj.getTime() - vremePocetkaKonobar1.getTime();
+				
+				System.out.println("interval   = " + vremeKrajaKonobar + " - " + terminDat);
+				System.out.println("interval 1 = " + terminDatKraj + " - " + vremePocetkaKonobar1);
+				
+				System.out.println("INTERVALI***");
+				System.out.println("INTERVAL = " + intervalKonobar);
+				System.out.println("INTERVAL1 = " + intervalKonobar1);
+				if(intervalKonobar > intervalKonobar1){
+					racun.setKonobar((Konobar) konobarServis.findOne(porudz.getKonobar().getId()));
+				} else if (intervalKonobar <= intervalKonobar1){
+					racun.setKonobar((Konobar) konobarServis.findOne(porudz.getKonobar1().getId()));
+				}
+			} else {
+				return new ResponseEntity<List<Porudzbina>>(HttpStatus.NOT_MODIFIED);
+				
+			}
 		}
 		
 		konobarServis.saveRacun(racun);
@@ -869,24 +922,7 @@ public class KonobarKontroler {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date()); // sets calendar time/date
 		int trenutniDanUNedelji = calendar.get(Calendar.DAY_OF_WEEK);
-		DanUNedelji dan = null;
-		if(trenutniDanUNedelji == 2){
-			dan = DanUNedelji.PONEDELJAK;
-		} else if (trenutniDanUNedelji == 3){
-			dan = DanUNedelji.UTORAK;
-		} else if (trenutniDanUNedelji == 4){
-			dan = DanUNedelji.SREDA;
-		} else if (trenutniDanUNedelji == 5){
-			dan = DanUNedelji.CETVRTAK;
-		} else if (trenutniDanUNedelji == 6){
-			dan = DanUNedelji.PETAK;
-		} else if (trenutniDanUNedelji == 7){
-			dan = DanUNedelji.SUBOTA;
-		} else if (trenutniDanUNedelji == 1){
-			dan = DanUNedelji.NEDELJA;
-		} else {
-			dan = DanUNedelji.NEDELJA;
-		}
+		DanUNedelji dan = getDanUNedelji(trenutniDanUNedelji);
 		
 		SmenaUDanu smenaKonobara = konobarServis.izlistajSmenuUDanu(konobar,dan);
 		
@@ -909,6 +945,32 @@ public class KonobarKontroler {
 		}
 		return retVal;
 	}
+	
+	private DanUNedelji getDanUNedelji (int trenutniDanUNedelji){
+		DanUNedelji dan = DanUNedelji.PONEDELJAK;
+		if(trenutniDanUNedelji == 2){
+			dan = DanUNedelji.PONEDELJAK;
+		} else if (trenutniDanUNedelji == 3){
+			dan = DanUNedelji.UTORAK;
+		} else if (trenutniDanUNedelji == 4){
+			dan = DanUNedelji.SREDA;
+		} else if (trenutniDanUNedelji == 5){
+			dan = DanUNedelji.CETVRTAK;
+		} else if (trenutniDanUNedelji == 6){
+			dan = DanUNedelji.PETAK;
+		} else if (trenutniDanUNedelji == 7){
+			dan = DanUNedelji.SUBOTA;
+		} else if (trenutniDanUNedelji == 1){
+			dan = DanUNedelji.NEDELJA;
+		} else {
+			dan = DanUNedelji.NEDELJA;
+		}
+		
+		return dan;
+	}
+	
+	
+	
 	
 
 }

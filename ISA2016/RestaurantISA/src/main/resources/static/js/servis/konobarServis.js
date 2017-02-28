@@ -70,6 +70,12 @@ konobarServis.factory('izmeniKonobarServis', function($http) {
 		return $http.post('/konobarKontroler/ucitajKalendarKonobara', konobar);
 	}	
 	
+	temp.prihvatiPorudzbinu = function(porKon){
+		return $http.post('/konobarKontroler/prihvatiPorudzbinu', porKon);
+	}	
+	
+	
+	
 	return temp;
 	
 })

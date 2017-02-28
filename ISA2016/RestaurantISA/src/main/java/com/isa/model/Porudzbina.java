@@ -60,15 +60,14 @@ public class Porudzbina {
 
 	@Column(name = "spremna_pica")
 	private boolean spremnaPica;
+	
+	@Column(name = "porudzbina_prihvacena")
+	private boolean porudzbinaPrihvacena;
 
 	@Column(name = "vremeprimanja")
-	// @Type(type="date")
 	private String vremePrimanja;
 
-	// TODO: Sacuvati datume kao datum a ne string
-
 	@Column(name = "vremenaplate")
-	// @Type(type="date")
 	private String vremeNaplate;
 
 	public Porudzbina() {
@@ -164,6 +163,13 @@ public class Porudzbina {
 	}
 	public void setKonobar1(Konobar konobar1) {
 		this.konobar1 = konobar1;
+	}
+	
+	public boolean isPorudzbinaPrihvacena() {
+		return porudzbinaPrihvacena;
+	}
+	public void setPorudzbinaPrihvacena(boolean porudzbinaPrihvacena) {
+		this.porudzbinaPrihvacena = porudzbinaPrihvacena;
 	}
 	
 

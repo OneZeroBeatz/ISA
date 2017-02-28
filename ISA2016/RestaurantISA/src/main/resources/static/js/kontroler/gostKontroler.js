@@ -356,6 +356,40 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 				
 			}
 		}
+		
+		$scope.potvrdiOcenuObroka = function (ocena){
+			if(ocena == null){
+				alert("Prvo odaberite ocenu")
+			} else {
+				var ocenaPosete = {
+					ocena: ocena,
+					poseta: $scope.odabranaPoseta
+				}
+				izmeniGostaServis.oceniPosetuObrok(ocenaPosete).success(function(data){
+					$scope.poseteGosta = data;
+				}).error(function (data){
+					alert("Neuspesno ocenjivanje");
+				});
+				
+			}
+		}
+		
+		$scope.potvrdiOcenuUsluge = function (ocena){
+			if(ocena == null){
+				alert("Prvo odaberite ocenu")
+			} else {
+				var ocenaPosete = {
+					ocena: ocena,
+					poseta: $scope.odabranaPoseta
+				}
+				izmeniGostaServis.oceniPosetuUsluga(ocenaPosete).success(function(data){
+					$scope.poseteGosta = data;
+				}).error(function (data){
+					alert("Neuspesno ocenjivanje");
+				});
+				
+			}
+		}
 			
 			
 })

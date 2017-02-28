@@ -71,6 +71,13 @@ gostServis.factory('izmeniGostaServis', function($http) {
 		return $http.post('/gostKontroler/oceniPosetu', posetaGost);
 	}
 	
+	temp.oceniPosetuObrok = function (posetaGost){
+		return $http.post('/gostKontroler/oceniObrok', posetaGost);
+	}	
+	
+	temp.oceniPosetuUsluga = function (posetaGost){
+		return $http.post('/gostKontroler/oceniUslugu', posetaGost);
+	}	
 	
 	
 
