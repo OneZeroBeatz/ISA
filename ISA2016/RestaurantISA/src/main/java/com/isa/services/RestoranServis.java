@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.isa.model.DanUNedelji;
+import com.isa.model.IzvestajJelo;
 import com.isa.model.Jelo;
 import com.isa.model.Pice;
 import com.isa.model.Restoran;
@@ -97,5 +98,9 @@ public interface RestoranServis {
 	Sto izmeniSto(Sto sto);
 
 	List<Sto> izlistajStoloveSmene(SmenaUDanu smenaKonobara);
+
+	IzvestajJelo izlistajIzvestajZaJelo(IzvestajJelo izvestajJelo);
+
+	int izlistajOcenuRestorana(Restoran restoran);
 
 }

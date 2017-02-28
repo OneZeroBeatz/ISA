@@ -13,12 +13,12 @@ public interface PiceSkladiste extends JpaRepository<Pice, Long>{
 
 	List<Pice> findAll();
 	
-	//Page<Pice> findByPorudzbinaMenadzer(PorudzbinaMenadzer porudzbinaMenadzer, Pageable pageable);
-	
 	Pice save(Pice pice);
 
 	Page<Pice> findByRestoran(Restoran restoran, Pageable pageable);
 
 	Pice findById(Long i);
+
+	List<Pice> findByNaziv(String naziv);
 	
 }

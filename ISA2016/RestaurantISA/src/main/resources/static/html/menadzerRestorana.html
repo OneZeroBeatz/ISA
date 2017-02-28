@@ -140,7 +140,7 @@
 					<table border="1px">
 						<tr ng-repeat="n1 in brRedova">
 							<td ng-repeat="n2 in brKolona">
-								<button ng-click="prikaziInformacije(n1*brojKolona+n2, restoran)">{{n1}}-{{n2}}</button>
+								<button style="background-color:lightgreen" ng-click="prikaziInformacije(n1*brojKolona+n2, restoran)">{{n1}}-{{n2}}</button>
 							</td>
 						</tr>
 					</table>
@@ -272,7 +272,9 @@
 								<table>
 									<tr ng-repeat="n1 in brRedova">
 										<td ng-repeat="n2 in brKolona">
-											<button style = "width:30px" ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button> <!-- Ako nije sto, zabraniti da se klikne i naznaciti (obojati) -->
+											<button ng-show="obojiSto(nijesto[n1*brojKolona+n2]" disabled="disabled" style = "width:30px; background-color:white" ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button>
+											<button ng-show="obojiSto(popnunjen[n1*brojKolona+n2]" style="background-color:green" style = "width:30px" ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button>
+											<button ng-show="obojiSto(nijePopunjen[n1*brojKolona+n2]" style="background-color:red" style = "width:30px" ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button>
 										</td>
 									</tr>
 								</table>
@@ -302,7 +304,7 @@
 				       					<table border="1px">
 				       						<tr>
 												<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-												<td><select ng-model = "smenaKonobarPon" ng-options="x.smena as x.vremeod + '-' + x.vremedo for x in dostupneSmenePon" ng-change="promenaSmeneKonobar()"></select></td>
+												<td><select ng-model = "smenaKonobarPon" ng-options="x.vremeod + '-' + x.vremedo for x in dostupneSmenePon" ng-change="promenaSmeneKonobar()"></select></td>
 											</tr>
 											<tr>
 												<td>Dostupni konobari</td>
@@ -343,7 +345,7 @@
 									</tr>
 									<tr>
 										<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-										<td><select ng-model = "smenaKuvarPon" ng-options="x.smena as x.vremeod + '-' + x.vremedo for x in smeneRestorana"></select></td>
+										<td><select ng-model = "smenaKuvarPon" ng-options="x.vremeod + '-' + x.vremedo for x in smeneRestorana"></select></td>
 									</tr>
 								</table>
 								<button ng-click = "dodajKuvaraUSmenuDana()">Dodaj</button>
@@ -377,7 +379,7 @@
 									</tr>
 									<tr>
 										<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-										<td><select ng-model = "smenaSankerPon" ng-options="x.vremeod for x in smeneRestorana"></select></td>
+										<td><select ng-model = "smenaSankerPon" ng-options="x.vremeod + '-' + x.vremedo for x in smeneRestorana"></select></td>
 									</tr>
 								</table>
 								<button ng-click = "dodajSankeraUSmenuDana()">Dodaj</button>
@@ -427,7 +429,7 @@
 				       					<table border="1px">
 				       						<tr>
 												<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-												<td><select ng-model = "smenaKonobarUto" ng-options="x.vremeod for x in dostupneSmeneUto" ng-change="promenaSmeneKonobar()"></select></td>
+												<td><select ng-model = "smenaKonobarUto" ng-options="x.vremeod + '-' + x.vremedo for x in dostupneSmeneUto" ng-change="promenaSmeneKonobar()"></select></td>
 											</tr>
 											<tr>
 												<td>Dostupni konobari</td>
@@ -467,7 +469,7 @@
 									</tr>
 									<tr>
 										<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-										<td><select ng-model = "smenaKuvarUto" ng-options="x.vremeod for x in smeneRestorana"></select></td>
+										<td><select ng-model = "smenaKuvarUto" ng-options="x.vremeod + '-' + x.vremedo for x in smeneRestorana"></select></td>
 									</tr>
 								</table>
 								<button ng-click = "dodajKuvaraUSmenuDana()">Dodaj</button>
@@ -500,7 +502,7 @@
 									</tr>
 									<tr>
 										<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-										<td><select ng-model = "smenaSankerUto" ng-options="x.vremeod for x in smeneRestorana"></select></td>
+										<td><select ng-model = "smenaSankerUto" ng-options="x.vremeod + '-' + x.vremedo for x in smeneRestorana"></select></td>
 									</tr>
 								</table>
 								<button ng-click = "dodajSankeraUSmenuDana()">Dodaj</button>
@@ -550,7 +552,7 @@
 				       					<table border="1px">
 				       						<tr>
 												<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-												<td><select ng-model = "smenaKonobarSre" ng-options="x.vremeod for x in dostupneSmeneSre" ng-change="promenaSmeneKonobar()"></select></td>
+												<td><select ng-model = "smenaKonobarSre" ng-options="x.vremeod + '-' + x.vremedo for x in dostupneSmeneSre" ng-change="promenaSmeneKonobar()"></select></td>
 											</tr>
 											<tr>
 												<td>Dostupni konobari</td>
@@ -590,7 +592,7 @@
 									</tr>
 									<tr>
 										<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-										<td><select ng-model = "smenaKuvarSre" ng-options="x.vremeod for x in smeneRestorana"></select></td>
+										<td><select ng-model = "smenaKuvarSre" ng-options="x.vremeod + '-' + x.vremedo for x in smeneRestorana"></select></td>
 									</tr>
 								</table>
 								<button ng-click = "dodajKuvaraUSmenuDana()">Dodaj</button>
@@ -623,7 +625,7 @@
 									</tr>
 									<tr>
 										<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-										<td><select ng-model = "smenaSankerSre" ng-options="x.vremeod for x in smeneRestorana"></select></td>
+										<td><select ng-model = "smenaSankerSre" ng-options="x.vremeod + '-' + x.vremedo for x in smeneRestorana"></select></td>
 									</tr>
 								</table>
 								<button ng-click = "dodajSankeraUSmenuDana()">Dodaj</button>
@@ -673,7 +675,7 @@
 				       					<table border="1px">
 				       						<tr>
 												<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-												<td><select ng-model = "smenaKonobarCet" ng-options="x.vremeod for x in dostupneSmeneCet" ng-change="promenaSmeneKonobar()"></select></td>
+												<td><select ng-model = "smenaKonobarCet" ng-options="x.vremeod + '-' + x.vremedo for x in dostupneSmeneCet" ng-change="promenaSmeneKonobar()"></select></td>
 											</tr>
 											<tr>
 												<td>Dostupni konobari</td>
@@ -713,7 +715,7 @@
 									</tr>
 									<tr>
 										<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-										<td><select ng-model = "smenaKuvarCet" ng-options="x.vremeod for x in smeneRestorana"></select></td>
+										<td><select ng-model = "smenaKuvarCet" ng-options="x.vremeod + '-' + x.vremedo for x in smeneRestorana"></select></td>
 									</tr>
 								</table>
 								<button ng-click = "dodajKuvaraUSmenuDana()">Dodaj</button>
@@ -746,7 +748,7 @@
 									</tr>
 									<tr>
 										<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-										<td><select ng-model = "smenaSankerCet" ng-options="x.vremeod for x in smeneRestorana"></select></td>
+										<td><select ng-model = "smenaSankerCet" ng-options="x.vremeod + '-' + x.vremedo for x in smeneRestorana"></select></td>
 									</tr>
 								</table>
 								<button ng-click = "dodajSankeraUSmenuDana()">Dodaj</button>
@@ -796,7 +798,7 @@
 				       					<table border="1px">
 				       						<tr>
 												<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-												<td><select ng-model = "smenaKonobarPet" ng-options="x.vremeod for x in dostupneSmenePet" ng-change="promenaSmeneKonobar()"></select></td>
+												<td><select ng-model = "smenaKonobarPet" ng-options="x.vremeod + '-' + x.vremedo for x in dostupneSmenePet" ng-change="promenaSmeneKonobar()"></select></td>
 											</tr>
 											<tr>
 												<td>Dostupni konobari</td>
@@ -836,7 +838,7 @@
 									</tr>
 									<tr>
 										<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-										<td><select ng-model = "smenaKuvarPet" ng-options="x.vremeod for x in smeneRestorana"></select></td>
+										<td><select ng-model = "smenaKuvarPet" ng-options="x.vremeod + '-' + x.vremedo for x in smeneRestorana"></select></td>
 									</tr>
 								</table>
 								<button ng-click = "dodajKuvaraUSmenuDana()">Dodaj</button>
@@ -869,7 +871,7 @@
 									</tr>
 									<tr>
 										<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-										<td><select ng-model = "smenaSankerPet" ng-options="x.vremeod for x in smeneRestorana"></select></td>
+										<td><select ng-model = "smenaSankerPet" ng-options="x.vremeod + '-' + x.vremedo for x in smeneRestorana"></select></td>
 									</tr>
 								</table>
 								<button ng-click = "dodajSankeraUSmenuDana()">Dodaj</button>
@@ -919,7 +921,7 @@
 				       					<table border="1px">
 				       						<tr>
 												<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-												<td><select ng-model = "smenaKonobarSub" ng-options="x.vremeod for x in dostupneSmeneSub" ng-change="promenaSmeneKonobar()"></select></td>
+												<td><select ng-model = "smenaKonobarSub" ng-options="x.vremeod + '-' + x.vremedo for x in dostupneSmeneSub" ng-change="promenaSmeneKonobar()"></select></td>
 											</tr>
 											<tr>
 												<td>Dostupni konobari</td>
@@ -959,7 +961,7 @@
 									</tr>
 									<tr>
 										<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-										<td><select ng-model = "smenaKuvarSub" ng-options="x.vremeod for x in smeneRestorana"></select></td>
+										<td><select ng-model = "smenaKuvarSub" ng-options="x.vremeod + '-' + x.vremedo for x in smeneRestorana"></select></td>
 									</tr>
 								</table>
 								<button ng-click = "dodajKuvaraUSmenuDana()">Dodaj</button>
@@ -992,7 +994,7 @@
 									</tr>
 									<tr>
 										<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-										<td><select ng-model = "smenaSankerSub" ng-options="x.vremeod for x in smeneRestorana"></select></td>
+										<td><select ng-model = "smenaSankerSub" ng-options="x.vremeod + '-' + x.vremedo for x in smeneRestorana"></select></td>
 									</tr>
 								</table>
 								<button ng-click = "dodajSankeraUSmenuDana()">Dodaj</button>
@@ -1042,7 +1044,7 @@
 				       					<table border="1px">
 				       						<tr>
 												<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-												<td><select ng-model = "smenaKonobarNed" ng-options="x.vremeod for x in dostupneSmeneNed" ng-change="promenaSmeneKonobar()"></select></td>
+												<td><select ng-model = "smenaKonobarNed" ng-options="x.vremeod + '-' + x.vremedo for x in dostupneSmeneNed" ng-change="promenaSmeneKonobar()"></select></td>
 											</tr>
 											<tr>
 												<td>Dostupni konobari</td>
@@ -1082,7 +1084,7 @@
 									</tr>
 									<tr>
 										<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-										<td><select ng-model = "smenaKuvarNed" ng-options="x.vremeod for x in smeneRestorana"></select></td>
+										<td><select ng-model = "smenaKuvarNed" ng-options="x.vremeod + '-' + x.vremedo for x in smeneRestorana"></select></td>
 									</tr>
 								</table>
 								<button ng-click = "dodajKuvaraUSmenuDana()">Dodaj</button>
@@ -1115,7 +1117,7 @@
 									</tr>
 									<tr>
 										<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-										<td><select ng-model = "smenaSankerNed" ng-options="x.vremeod for x in smeneRestorana"></select></td>
+										<td><select ng-model = "smenaSankerNed" ng-options="x.vremeod + '-' + x.vremedo for x in smeneRestorana"></select></td>
 									</tr>
 								</table>
 								<button ng-click = "dodajSankeraUSmenuDana()">Dodaj</button>
@@ -1178,25 +1180,128 @@
 				</table>
 				<table>
 					<tr>
-						<td>Namirnice: </td>
+						<th colspan="4">Namirnice </th>
+					</tr>
+					<tr>
+						<td>Postojece </td>
 						<td><select ng-model="namirnicaStavka" ng-options="x.naziv for x in listaNamirnica"></select></td>
 						<td><input type="number" ng-model="kolNamirnica"></td>
 						<td><button ng-click="dodajStavkuNamirnicu()">Dodaj</button></td>
 					<tr>
 					<tr>
-						<td>Pice: </td>
+						<td>Novu </td>
+						<td><input type="text" ng-model="novaNamirnicaStavka" ></td>
+						<td><input type="number" ng-model="kolNamirnicaNovo"></td>
+						<td><button ng-click="dodajNovuStavkuNamirnicu()">Dodaj</button></td>
+					<tr>
+					<tr>
+						<th colspan="4"></th>
+					</tr>
+					<tr>
+						<th colspan="4">Pice</th>
+					</tr>
+					<tr>
+						<td>Postojece</td>
 						<td><select ng-model="piceStavka" ng-options="x.naziv for x in listaPica"></select></td>
 						<td><input type="number" ng-model="kolPica"></td>
 						<td><button ng-click="dodajStavkuPice()">Dodaj</button></td>
 					<tr>
+					<tr>
+						<td>Novo</td>
+						<td><input type="text" ng-model="novoPiceStavka"></td>
+						<td><input type="number" ng-model="kolPicaNovo"></td>
+						<td><button ng-click="dodajNovuStavkuPice()">Dodaj</button></td>
+					<tr>
 				</table>
 				<button ng-click="objaviPorudzbinu()">Objavi</button>
-				</br>
+				</br></br>
+				
 				<h2>Lista pristiglih ponuda</h2>
+				
+				<h3>Aktivne porudzbine</h3>
+				<ul>
+				<li ng-repeat="porudz in porudzbineMan"> {{porudz.id}}&nbsp;&nbsp;&nbsp;{{porudz.aktivnoOd}}&nbsp;&nbsp;&nbsp;{{porudz.aktivnoDo}}
+					<button ng-click="prikaziPonudeZa(porudz)">Prikazi ponude</button><br>
+					<div ng-show="daPrikaze(porudz)">
+						<table>
+						 	<tr>
+						 		<th>Ponudjac</th>
+						 		<th>Cena</th>
+						 		<th>Rok isporuke</th>
+						 		<th>Garancija</th>
+						 		<th></th>
+						 	</tr>
+						 	<tr ng-repeat="pon in ponudePorudz">
+						 		<td>{{pon.ponudjac.email}}</td>
+						 		<td>{{pon.cena}}</td>
+						 		<td>{{pon.rokisporuke}}</td>
+						 		<td>{{pon.garancija}}</td>
+						 		<td><button ng-click="prihvatiPonudu(pon)">Prihvati</button></td>
+						 	</tr>
+						</table>
+					</div>
+				</li>
+				</ul>
+
 			</div>
 
 			<div ng-show="isSet(3)">
-				<h2>Izvestaj....</h2>
+				<h2>Izvestaj o poslovanju</h2>
+				<table border="1px">
+					<tr>
+						<td>Ocena restorana</td>
+						<td><input placeholder="od datuma" type="date" ng-model="datumOdOcenaRest" ng-change="izlistajOcenuRestorana()"></td>
+						<td><input placeholder="do datuma" type="date" ng-model="datumDoOcenaRest" ng-change="izlistajOcenuRestorana()"></td>
+						<td>{{ocenaRestorana}}</td>
+					</tr>
+				</table><br>
+				
+				<table border="1px">
+					<tr>
+						<td colspan="4">Izvestaj za jelo</td>
+					</tr>
+					<tr>
+						<td><input placeholder="naziv" type="text" ng-model="nazivJela"></td>
+						<td><input placeholder="od datuma" type="date" ng-model="datumOdOcenaJela"></td>
+						<td><input placeholder="do datuma" type="date" ng-model="datumDoOcenaJela"></td>
+						<td><button>Kreiraj</button></td>
+					</tr>
+				</table>
+				<div> <!-- ng-show="prikaziIzvestajJelo()"> -->
+					<table border="1px">
+						<tr>
+							<td>{{izvestajJelo.jelo.naziv}}</td>
+							<td>{{izvestajJelo.ocena}}</td>
+						</tr>
+						<tr>
+							<td colspan="2"></td>
+						</tr>
+						<tr>
+							<td colspan="2">Ocena kuvar za {{izvestajJelo.jelo.naziv}}</td>
+						</tr>
+						<tr>
+							<td>Email kuvara</td>
+							<td>Prosecna ocena</td>
+						</tr>
+						<tr ng-repeat="kuvIzv in izvestajJelo.izvestajKuvarJelo">
+							<td>kuvIzv.kuvar.email</td>
+							<td>kuvIzv.prosecnaOcena</td>
+						</tr>
+					</table>
+				</div>
+				<br>
+				
+				<table border="1px">
+					<tr>
+						<td colspan="4">Izvestaj za konobara</td>
+					</tr>
+					<tr>
+						<td><input placeholder="email" type="text" ng-model="nazivKonobara"></td>
+						<td><input placeholder="od datuma" type="date" ng-model="datumOdOcenaPica"></td>
+						<td><input placeholder="do datuma" type="date" ng-model="datumDoOcenaPica"></td>
+						<td><button>Kreiraj</button></td>
+					</tr>
+				</table>
 			</div>
 
 		</div>
