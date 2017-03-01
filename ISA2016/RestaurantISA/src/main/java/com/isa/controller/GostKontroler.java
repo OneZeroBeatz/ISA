@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,7 +28,9 @@ import com.isa.model.korisnici.Prijatelj;
 import com.isa.model.korisnici.TipKorisnika;
 import com.isa.pomocni.GostPrijatelj;
 import com.isa.pomocni.OcenaPoseta;
+import com.isa.pomocni.Poruka;
 import com.isa.pomocni.PretragaPrijatelja;
+import com.isa.pomocni.SendMail;
 import com.isa.services.GostServis;
 
 @Controller
@@ -50,7 +54,7 @@ public class GostKontroler {
 	//Collections.sort(korisnici, IME_ASC_PREZIME_ASC);
 	
 	@RequestMapping(value = "/izmeniGosta", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Gost> izmeniPonudjaca(@RequestBody Gost gost) {
+	public ResponseEntity<Gost> izmeniPonudjaca(@RequestBody Gost gost, HttpSession session) {
 		Gost originalGost = (Gost) gostServis.findOne(gost.getId());
 		
 		originalGost.setIme(gost.getIme());
@@ -60,12 +64,15 @@ public class GostKontroler {
 		
 		originalGost = gostServis.save(originalGost);
 		
+		session.setAttribute("ulogovanKorisnik", originalGost);
+		
 		return new ResponseEntity<Gost>(originalGost, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/izlistajPrijateljeNeprijatelje", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Korisnik>> izlistajPrijateljeNeprijatelje(@RequestBody Gost gost) {
-		Gost originalGost = (Gost) gostServis.findOne(gost.getId());	
+	public ResponseEntity<List<Korisnik>> izlistajPrijateljeNeprijatelje(@RequestBody Gost gost, HttpSession session) {
+		//Gost originalGost = (Gost) gostServis.findOne(gost.getId());	
+		Gost originalGost = (Gost) session.getAttribute("ulogovanKorisnik");	
 		Page<Prijatelj> prijatelji = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 100));	
 		List<Korisnik> korisnici = new ArrayList<>();	
 		Iterator<Prijatelj> itr = prijatelji.iterator();
@@ -419,7 +426,39 @@ public class GostKontroler {
 		return null;
 	}
 	
+	@RequestMapping(value = "/rezervisiRestoran", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Poruka> rezervisiRestoran(@RequestBody List<PosetaRestoranu> rezervacija, HttpSession session) {		
+		
+		for(PosetaRestoranu poseta: rezervacija){
+			if(!poseta.getGost().getEmail().equals(((Gost)session.getAttribute("ulogovanKorisnik")).getEmail())){
+				
+				String emailSubject = "Prijatelj " + poseta.getPozivalac().getIme() + " " + poseta.getPozivalac().getPrezime()
+						+ " Vas je pozvao da mu budete gost u restoranu \"" + poseta.getRestoran().getNaziv() + "\", Datum: " + poseta.getTermin()+ "\n\n"
+						+ "Ukoliko zelite da prihvatite poziv, kliknite na link:\t" + "http://localhost:9000/gostKontroler/acceptdecline/"+poseta.getRestoran().getId()+"/"
+						+ poseta.getPozivalac().getEmail()+"/"+poseta.getSto().getOznaka()+"/accept/\n"
+						+ "Ukoliko zelite da odbijete poziv, kliknite na link:\t" + "http://localhost:9000/gostKontroler/acceptdecline/"+poseta.getRestoran().getId()+"/"
+						+ poseta.getPozivalac().getEmail()+"/"+poseta.getSto().getOznaka()+"/decline/\n";
+				
+				SendMail sm = new SendMail("nikola9n@gmail.com",emailSubject);
+				
+			}
+			gostServis.sacuvajPosetu(poseta);
+		}
+		
+		return new ResponseEntity<Poruka>(new Poruka("Rezervisano", null), HttpStatus.ACCEPTED);
+	}
 	
+	@Transactional
+	@RequestMapping(value = "/acceptdecline/{idRestorana}/{emailPozivaoca}/{oznakaStola}/{acceptDecline}")
+	public ResponseEntity<String> activateAccount(@PathVariable String idRestorana, @PathVariable String emailPozivaoca, @PathVariable String oznakaStola, @PathVariable String acceptDecline) {			
+		
+		try{
+			System.out.println(idRestorana + "  " + emailPozivaoca + "  " + oznakaStola + "  " + acceptDecline);
+			return new ResponseEntity<String>("Uspesno ste aktivirali nalog!", HttpStatus.ACCEPTED);			
+		}catch(Exception ex){}
+		return new ResponseEntity<String>("Neuspesna aktivacija naloga.", HttpStatus.ACCEPTED);
+		
+	}
 	
 	// SASA
 	
@@ -439,27 +478,7 @@ public class GostKontroler {
 		List<PosetaRestoranu> posete = gostServis.ucitajPoseteGosta((Gost)gostServis.findOne(parametar.getPoseta().getGost().getId()));
 		return new ResponseEntity<List<PosetaRestoranu>>(getObavljene(posete), HttpStatus.OK);
 	
-	}	
-	
-	@RequestMapping(value = "/oceniObrok", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<PosetaRestoranu>> oceniObrok(@RequestBody OcenaPoseta parametar) {		
-		PosetaRestoranu poseta = gostServis.pronadjiPosetu(parametar.getPoseta().getId());
-		poseta.setOcenaObroka(parametar.getOcena());
-		gostServis.sacuvajPosetu(poseta);
-		List<PosetaRestoranu> posete = gostServis.ucitajPoseteGosta((Gost)gostServis.findOne(parametar.getPoseta().getGost().getId()));
-		return new ResponseEntity<List<PosetaRestoranu>>(getObavljene(posete), HttpStatus.OK);
-	
-	}	
-	
-	@RequestMapping(value = "/oceniUslugu", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<PosetaRestoranu>> oceniUslugu(@RequestBody OcenaPoseta parametar) {		
-		PosetaRestoranu poseta = gostServis.pronadjiPosetu(parametar.getPoseta().getId());
-		poseta.setOcenaUsluge(parametar.getOcena());
-		gostServis.sacuvajPosetu(poseta);
-		List<PosetaRestoranu> posete = gostServis.ucitajPoseteGosta((Gost)gostServis.findOne(parametar.getPoseta().getGost().getId()));
-		return new ResponseEntity<List<PosetaRestoranu>>(getObavljene(posete), HttpStatus.OK);
-	
-	}	
+	}		
 	
 	private List<PosetaRestoranu> getObavljene(List<PosetaRestoranu> posete){
 		List<PosetaRestoranu> retVal = new ArrayList<PosetaRestoranu>();
