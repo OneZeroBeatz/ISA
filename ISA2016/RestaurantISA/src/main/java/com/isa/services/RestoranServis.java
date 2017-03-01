@@ -122,4 +122,6 @@ public interface RestoranServis {
 
 	ArrayList<Double> izracunaPosecenostNedelja(PosecenostIzvestaj posecenostIzvestaj);
 
+	ArrayList<Double> izracunaPosecenostDnevno(PosecenostIzvestaj posecenostIzvestaj);
+
 }

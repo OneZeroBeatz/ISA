@@ -79,6 +79,7 @@ public class KonobarKontrolerIntegracioniTest {
 		restoranServis.save(jelo);
 		konobarServis.saveJeloUPorudzbini(jeloUPorudzbini);	
 		konobarServis.savePorudzbina(porudzbina);	
+		
 		RestAssured.given()
         .body(porudzbina)
         .contentType(ContentType.JSON)

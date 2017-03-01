@@ -171,6 +171,8 @@ public class RestoranServisImpl implements RestoranServis{
 		return stoSkladiste.findByRestoranAndOznaka(rest, sto.getOznaka());
 	}
 
+	
+	
 	@Override
 	public Page<Sto> izlistajStolove(Restoran restoran, Pageable pageable) {
 		return stoSkladiste.findByRestoran(restoran, pageable);
@@ -522,10 +524,10 @@ public class RestoranServisImpl implements RestoranServis{
 	@Override
 	public String sima(DanUNedelji dan, Sto sto, Konobar konobar, Restoran restoran) {
 		Sto s = stoSkladiste.findByRestoranAndOznaka(restoran, sto.getOznaka());
-		if (sto.getSegment().equals("nijesto") || sto == null){
+		if (s.getSegment().equals("nijesto") || s == null){
 			return "nijeSto";
 		}
-		SmenaUDanu smenaUDanu = smeneUDanuSkladiste.findByKonobarAndDanUNedeljiAndRestoranAndSto(sto, konobar, restoran, dan);
+		SmenaUDanu smenaUDanu = smeneUDanuSkladiste.findByKonobarAndDanUNedeljiAndRestoranAndSto(konobar, dan, restoran, s);
 		System.out.println("smena u danu = "  + smenaUDanu);
 		if(smenaUDanu == null) {
 			return "jeSto";
@@ -635,4 +637,30 @@ public class RestoranServisImpl implements RestoranServis{
 		return retVal;
 	}
 
+	@Override
+	public ArrayList<Double> izracunaPosecenostDnevno(PosecenostIzvestaj posecenostIzvestaj) {
+		ArrayList<Integer> temp = new ArrayList<>();
+		ArrayList<Double> retVal = new ArrayList<>();
+		int ukupno = 0;
+		Date datumOd = posecenostIzvestaj.getDatum();
+		Restoran restoran = restoranSkladiste.findOne(posecenostIzvestaj.getRestoran().getId());
+		
+		for(int i=0; i<7; i++){
+			int p = poseteSkladiste.findByRestoranAndDatumrezAndDatumrezBefore(restoran, datumOd, new Date()).size();
+			
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(datumOd);
+			calendar.add(Calendar.HOUR_OF_DAY, 24);
+			datumOd = calendar.getTime();
+			temp.add(p);
+			ukupno += p;
+		}
+		
+		for(Integer t : temp){
+			retVal.add(((double)t)/ukupno * 100);
+		}
+		
+		return retVal;
+	}
+	
 }
