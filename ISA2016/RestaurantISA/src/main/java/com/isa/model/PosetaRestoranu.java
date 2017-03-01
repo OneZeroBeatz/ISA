@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.joda.time.DateTime;
+
 import com.isa.model.korisnici.Gost;
 
 @Entity
@@ -68,6 +70,8 @@ public class PosetaRestoranu {
 			@JoinColumn(name = "poseta_restoranu_id") }, inverseJoinColumns = { @JoinColumn(name = "jelo_id") })
 	private Set<Jelo> jelo;
 
+	private Boolean accepted;
+	
 	public PosetaRestoranu() {
 
 	}
@@ -174,6 +178,14 @@ public class PosetaRestoranu {
 
 	public void setJelo(Set<Jelo> jelo) {
 		this.jelo = jelo;
+	}
+	
+	public Boolean getAccepted() {
+		return accepted;
+	}
+
+	public void setAccepted(Boolean accepted) {
+		this.accepted = accepted;
 	}
 
 }

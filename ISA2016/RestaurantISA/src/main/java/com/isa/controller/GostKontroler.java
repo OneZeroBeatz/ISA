@@ -1,7 +1,11 @@
 package com.isa.controller;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.isa.model.PosetaRestoranu;
+import com.isa.model.Restoran;
+import com.isa.model.Sto;
 import com.isa.model.ZahtevZaPrijateljstvo;
 import com.isa.model.korisnici.Gost;
 import com.isa.model.korisnici.Korisnik;
@@ -30,8 +36,11 @@ import com.isa.pomocni.GostPrijatelj;
 import com.isa.pomocni.OcenaPoseta;
 import com.isa.pomocni.Poruka;
 import com.isa.pomocni.PretragaPrijatelja;
+import com.isa.pomocni.PromeniSifru;
 import com.isa.pomocni.SendMail;
 import com.isa.services.GostServis;
+import com.isa.services.MenadzerSistemaServis;
+import com.isa.services.RestoranServis;
 
 @Controller
 @RequestMapping("/gostKontroler")
@@ -39,6 +48,12 @@ public class GostKontroler {
 	
 	@Autowired
 	public GostServis gostServis;
+	
+	@Autowired
+	public RestoranServis restServis;
+	
+	@Autowired
+	public MenadzerSistemaServis menSistemaServis;
 	
 	//Ako zatreba sortiranje u code-behind
 	/*public static final Comparator<Korisnik> IME_ASC_PREZIME_ASC = new Comparator<Korisnik>() {
@@ -67,6 +82,26 @@ public class GostKontroler {
 		session.setAttribute("ulogovanKorisnik", originalGost);
 		
 		return new ResponseEntity<Gost>(originalGost, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value = "/izmeniGostaSifra", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Poruka> izmeniGostaSifra(@RequestBody PromeniSifru promeniSifru, HttpSession session) {		
+		Gost gost = (Gost) session.getAttribute("ulogovanKorisnik");
+		Gost gost2 = (Gost) gostServis.findOne(gost.getId());
+		
+		if(gost2.getSifra().equals(promeniSifru.getStaraSifra())){			
+			if(promeniSifru.getNovaSifra().equals(promeniSifru.getNovaSifra2())){
+				gost.setSifra(promeniSifru.getNovaSifra());
+				gostServis.save(gost);
+				
+				return new ResponseEntity<Poruka>(new Poruka("Promenjena", null), HttpStatus.OK);
+			}else{
+				return new ResponseEntity<Poruka>(new Poruka("NisuIste", null), HttpStatus.OK);
+			}	
+		}else{
+			return new ResponseEntity<Poruka>(new Poruka("NijeStara", null), HttpStatus.OK);
+		}
 	}
 
 	@RequestMapping(value = "/izlistajPrijateljeNeprijatelje", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -106,7 +141,7 @@ public class GostKontroler {
 			
 			while(itr.hasNext()){
 				Korisnik kor = gostServis.findByEmail(itr.next().getEmailPrijatelj());
-				if(kor.getIme().toLowerCase().contains(ime))			
+				if(kor.getIme().toLowerCase().startsWith(ime))			
 					korisnici.add(kor); 
 			}
 			
@@ -120,7 +155,7 @@ public class GostKontroler {
 			
 			while(itr.hasNext()){
 				Korisnik kor = gostServis.findByEmail(itr.next().getEmailPrijatelj());
-				if(kor.getPrezime().toLowerCase().contains(prezime))			
+				if(kor.getPrezime().toLowerCase().startsWith(prezime))			
 					korisnici.add(kor); 
 			}
 			
@@ -134,7 +169,7 @@ public class GostKontroler {
 			
 			while(itr.hasNext()){
 				Korisnik kor = gostServis.findByEmail(itr.next().getEmailPrijatelj());
-				if(kor.getIme().toLowerCase().contains(ime) && kor.getPrezime().toLowerCase().contains(prezime))
+				if(kor.getIme().toLowerCase().startsWith(ime) && kor.getPrezime().toLowerCase().startsWith(prezime))
 					korisnici.add(kor);
 			}
 					
@@ -256,7 +291,7 @@ public class GostKontroler {
 			
 			while(itr.hasNext()){
 				Korisnik kor = gostServis.findByEmail(itr.next().getEmail());
-				if(kor.getIme().toLowerCase().contains(ime))
+				if(kor.getIme().toLowerCase().startsWith(ime))
 					if(!kor.getEmail().equals(originalGost.getEmail()) && kor.getTipKorisnika().equals(TipKorisnika.GOST)){
 						
 						Page<Prijatelj> prijateljiKorisnika = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 100));							
@@ -314,7 +349,7 @@ public class GostKontroler {
 			
 			while(itr.hasNext()){
 				Korisnik kor = gostServis.findByEmail(itr.next().getEmail());
-				if(kor.getPrezime().toLowerCase().contains(prezime))
+				if(kor.getPrezime().toLowerCase().startsWith(prezime))
 					if(!kor.getEmail().equals(originalGost.getEmail()) && kor.getTipKorisnika().equals(TipKorisnika.GOST)){
 						
 						Page<Prijatelj> prijateljiKorisnika = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 100));							
@@ -372,7 +407,7 @@ public class GostKontroler {
 			
 			while(itr.hasNext()){
 				Korisnik kor = gostServis.findByEmail(itr.next().getEmail());
-				if(kor.getIme().toLowerCase().contains(ime) && kor.getPrezime().toLowerCase().contains(prezime))
+				if(kor.getIme().toLowerCase().startsWith(ime) && kor.getPrezime().toLowerCase().startsWith(prezime))
 					if(!kor.getEmail().equals(originalGost.getEmail()) && kor.getTipKorisnika().equals(TipKorisnika.GOST)){
 						
 						Page<Prijatelj> prijateljiKorisnika = gostServis.izlistajPrijatelje(originalGost, new PageRequest(0, 100));							
@@ -427,29 +462,108 @@ public class GostKontroler {
 	}
 	
 	@RequestMapping(value = "/rezervisiRestoran", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Poruka> rezervisiRestoran(@RequestBody List<PosetaRestoranu> rezervacija, HttpSession session) {		
+	public ResponseEntity<Poruka> rezervisiRestoran(@RequestBody List<PosetaRestoranu> rezervacija, HttpSession session) throws ParseException {		
+
+		boolean canAdd = true;
 		
 		for(PosetaRestoranu poseta: rezervacija){
-			if(!poseta.getGost().getEmail().equals(((Gost)session.getAttribute("ulogovanKorisnik")).getEmail())){
-				
-				String emailSubject = "Prijatelj " + poseta.getPozivalac().getIme() + " " + poseta.getPozivalac().getPrezime()
-						+ " Vas je pozvao da mu budete gost u restoranu \"" + poseta.getRestoran().getNaziv() + "\", Datum: " + poseta.getTermin()+ "\n\n"
-						+ "Ukoliko zelite da prihvatite poziv, kliknite na link:\t" + "http://localhost:9000/gostKontroler/acceptdecline/"+poseta.getRestoran().getId()+"/"
-						+ poseta.getPozivalac().getEmail()+"/"+poseta.getSto().getOznaka()+"/accept/\n"
-						+ "Ukoliko zelite da odbijete poziv, kliknite na link:\t" + "http://localhost:9000/gostKontroler/acceptdecline/"+poseta.getRestoran().getId()+"/"
-						+ poseta.getPozivalac().getEmail()+"/"+poseta.getSto().getOznaka()+"/decline/\n";
-				
-				SendMail sm = new SendMail("nikola9n@gmail.com",emailSubject);
-				
-			}
-			gostServis.sacuvajPosetu(poseta);
+			Restoran r = restServis.findOne(poseta.getRestoran().getId());
+			Sto sto = restServis.izlistajSto(poseta.getSto());
+			
+			List<PosetaRestoranu> svePosete = gostServis.poseteRestoranAndSto(r, sto);	
+			
+			System.out.println(svePosete.size() + " SIZE POSETE");
+			
+			
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			poseta.setTermin(sdf.format(poseta.getDatumrez()));
+			
+			Calendar calendarPos = Calendar.getInstance();
+			Date datumPocetkaPos = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(poseta.getTermin());
+			calendarPos.setTime(datumPocetkaPos);
+			calendarPos.add(Calendar.HOUR_OF_DAY, poseta.getBrSati());
+			Date datumKrajaPos = calendarPos.getTime();
+			
+			System.out.println("Datum pocetka pos: " + datumPocetkaPos + " *********** Datum kraja posete: " + datumKrajaPos);
+			
+			
+			
+			if(svePosete.size() > 0){			
+				for(PosetaRestoranu posetaRestoranu: svePosete){
+					
+					Calendar calendar = Calendar.getInstance();
+					Date datumPocetka = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(posetaRestoranu.getTermin());
+					calendar.setTime(datumPocetka);
+					calendar.add(Calendar.HOUR_OF_DAY, posetaRestoranu.getBrSati());
+					Date datumKraja = calendar.getTime();
+					
+					System.out.println("Datum posete: " + datumPocetka + " *********** Datum kraja posete: " + datumKraja);
+					
+					
+						
+						if(datumKrajaPos.before(datumPocetka))
+						{
+							
+							System.out.println("(datumPocetkaPos.before(datumPocetka)    " + datumPocetkaPos.before(datumPocetka));
+							System.out.println("datumKrajaPos.before(datumPocetka)    " + datumKrajaPos.before(datumPocetka));
+							System.out.println("(datumPocetkaPos.after(datumKraja)    " + datumPocetkaPos.after(datumKraja));
+							System.out.println("(datumKrajaPos.after(datumKraja)    " + datumKrajaPos.after(datumKraja));
+							
+						}else if (datumPocetkaPos.after(datumKraja)){
+							
+							System.out.println("(datumPocetkaPos.before(datumPocetka)    " + datumPocetkaPos.before(datumPocetka));
+							System.out.println("datumKrajaPos.before(datumPocetka)    " + datumKrajaPos.before(datumPocetka));
+							System.out.println("(datumPocetkaPos.after(datumKraja)    " + datumPocetkaPos.after(datumKraja));
+							System.out.println("(datumKrajaPos.after(datumKraja)    " + datumKrajaPos.after(datumKraja));
+							
+						}else{
+							
+							canAdd = false;
+							break;
+						}
+					}		
+			}		
 		}
 		
-		return new ResponseEntity<Poruka>(new Poruka("Rezervisano", null), HttpStatus.ACCEPTED);
+		System.out.println("***************" + canAdd);
+		
+		if(canAdd){
+			
+			for(PosetaRestoranu poseta: rezervacija){
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				poseta.setTermin(sdf.format(poseta.getDatumrez()));
+				
+				if(!poseta.getGost().getEmail().equals(((Gost)session.getAttribute("ulogovanKorisnik")).getEmail())){
+					
+					String emailSubject = "Prijatelj " + poseta.getPozivalac().getIme() + " " + poseta.getPozivalac().getPrezime()
+							+ " Vas je pozvao da mu budete gost u restoranu \"" + poseta.getRestoran().getNaziv() + "\", Datum: " + poseta.getTermin()+ "\n\n"
+							+ "Ukoliko zelite da prihvatite poziv, kliknite na link:\t" + "http://localhost:9000/gostKontroler/acceptdecline/"+poseta.getRestoran().getId()+"/"
+							+ poseta.getPozivalac().getId()+"/"+poseta.getSto().getOznaka()+"/accept/\n"
+							+ "Ukoliko zelite da odbijete poziv, kliknite na link:\t" + "http://localhost:9000/gostKontroler/acceptdecline/"+poseta.getRestoran().getId()+"/"
+							+ poseta.getPozivalac().getId()+"/"+poseta.getSto().getOznaka()+"/decline/\n";
+					
+					SendMail sm = new SendMail("nikola9n@gmail.com",emailSubject);
+					
+					poseta.setAccepted(false);
+					
+				}else{
+					poseta.setAccepted(true);
+				}
+				
+				gostServis.sacuvajPosetu(poseta);
+			}
+			
+			return new ResponseEntity<Poruka>(new Poruka("Rezervisano", null), HttpStatus.ACCEPTED);
+		}else{
+			return new ResponseEntity<Poruka>(new Poruka("NijeRezervisano", null), HttpStatus.ACCEPTED);
+		}
+			
 	}
 	
 	@Transactional
-	@RequestMapping(value = "/acceptdecline/{idRestorana}/{emailPozivaoca}/{oznakaStola}/{acceptDecline}")
+	@RequestMapping(value = "/acceptdecline/{idRestorana}/{idPozivaoca}/{oznakaStola}/{acceptDecline}")
 	public ResponseEntity<String> activateAccount(@PathVariable String idRestorana, @PathVariable String emailPozivaoca, @PathVariable String oznakaStola, @PathVariable String acceptDecline) {			
 		
 		try{
@@ -459,6 +573,23 @@ public class GostKontroler {
 		return new ResponseEntity<String>("Neuspesna aktivacija naloga.", HttpStatus.ACCEPTED);
 		
 	}
+	
+	@RequestMapping(value = "/pretraziRestorane", method = RequestMethod.POST)
+	public ResponseEntity<List<Restoran>> izlistajRestorane(@RequestBody Poruka parameter) {
+		Page<Restoran> restorani = menSistemaServis.izlistajRestorane(new PageRequest(0, 100));
+		List<Restoran> tempLista = restorani.getContent();
+		List<Restoran> returnedList = new ArrayList<>();	
+		
+		for(Restoran rest: tempLista){
+			if(rest.getNaziv().toLowerCase().startsWith(parameter.getMessage().toLowerCase())
+				|| rest.getOpis().toLowerCase().startsWith(parameter.getMessage().toLowerCase())){
+				returnedList.add(rest);
+			}
+		}
+		
+		return new ResponseEntity<List<Restoran>>(returnedList, HttpStatus.OK);
+	}
+	
 	
 	// SASA
 	

@@ -498,6 +498,22 @@ public class MenadzerRestoranaKontroler {
 		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
 	}
 	
+
+	@RequestMapping(value = "/izlistajBojuStola1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Poruka> izlistajBojuStola1(@RequestBody Sto sto) {
+		Poruka poruka = new Poruka();
+		Sto sto2 = restoranServirs.izlistajSto(sto);
+		
+		if(sto2.getSegment().equals("nijesto") || sto2.getSegment() == null){
+			poruka.setMessage("nijesto");
+		}else {
+			poruka.setMessage("nepusacki");
+		}
+		
+		poruka.setObj(sto.getOznaka());
+		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/izvestajZaKonobara", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Poruka> izvestajZaKonobara(@RequestBody IzvestajKonobar izvestajKonobar) {
 		Poruka poruka = new Poruka();

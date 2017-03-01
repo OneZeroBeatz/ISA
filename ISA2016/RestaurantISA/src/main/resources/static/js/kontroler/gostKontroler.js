@@ -2,6 +2,8 @@ var gostKontroler = angular.module('restoranApp.gostGlavnaStranaKontroler', []);
 
 gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStranaServis, izmeniGostaServis, menRestoranaServisS, $window, menSistemaServis){
 
+	$scope.pojedSto = [];
+	
 		gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 			if(data.message == "NekoNaSesiji"){
 				$scope.ulogovanGost = data.obj;
@@ -50,10 +52,13 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 					alert("Neuspelo ucitavanje poseta");
 				});
 				
+				
 			}else{
 				$window.location.href = '/';
 			}
 		});
+		
+		
 		
 		$scope.setTab = function(newTab){
 	    	$scope.tab = newTab;
@@ -156,6 +161,7 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 			});
 		}
 		
+		
 		$scope.pretraziPrijatelje = function(){
 
 			gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
@@ -171,6 +177,22 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 						});
 				}
 			});
+		}
+			
+		$scope.pretraziRestorane = function(){
+	    	
+			var temp = {
+					message : $scope.inputPretragaRest,
+					obj : null
+				}
+			
+			izmeniGostaServis.pretraziRestorane(temp).success(function(data){
+				$scope.restorani = data;
+			});
+	    };
+	    
+	    $scope.obojiStoPrav = function(kriterijum, oznaka){
+			return kriterijum == $scope.pojedSto[oznaka];
 		}
 		
 		$scope.dodajPrijatelja = function(prij){
@@ -374,15 +396,21 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 		}
 		
 		$scope.potvrdiSto = function(sto){
-			canPush = true;
+			canPush = 0;
+			
+			if(sto.message == "nijesto")
+				canPush = 2;
+			
 			for(var i = 0; i < $scope.odabraniStolovi.length; i++){
-				if($scope.odabraniStolovi[i].oznaka == sto.oznaka)
-					canPush = false;
+				if($scope.odabraniStolovi[i].oznaka == sto.obj.oznaka)
+					canPush = 1;
 			}
-			if(canPush){
-				$scope.odabraniStolovi.push(sto);				
-			}else{
+			if(canPush == 0){
+				$scope.odabraniStolovi.push(sto.obj);				
+			}else if(canPush == 1){
 				alert("Vec ste odabrali ovaj sto.");
+			}else if(canPush == 2){
+				alert("Odabrana pozicija nije sto.");
 			}
 		}
 		
@@ -406,14 +434,12 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 		$scope.pozovi = function(prij, odabraniStoOznaka){	// Proveriti da li treba oznaka...
 			var dat = new Date($scope.datumVremeRezervacije);
 			
-			datum = dat.toLocaleDateString() + "!" + dat.toLocaleTimeString();
-			
 			var rezervacija = {
 					sto : odabraniStoOznaka,
 					restoran : $scope.odabranRestoran,
 					gost: prij,
 					brSati : $scope.brojSatiBoravka,
-					termin : dat.toString(),
+					datumrez : dat,
 					pozivalac : $scope.ulogovanGost
 				}
 			
@@ -423,14 +449,12 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 		$scope.rezervisiRestoran = function(){
 			var dat = new Date($scope.datumVremeRezervacije);
 			
-			datum = dat.toLocaleDateString() + "!" + dat.toLocaleTimeString();
-			
 			var rezervacija = {
 					sto : $scope.odabraniStolovi[0],
 					restoran : $scope.odabranRestoran,
 					gost: $scope.ulogovanGost,
 					brSati : $scope.brojSatiBoravka,
-					termin : datum,
+					datumrez : dat
 				}
 			
 			$scope.listaPozvanihKorisnika.push(rezervacija);
@@ -438,6 +462,9 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 			izmeniGostaServis.rezervisiRestoran($scope.listaPozvanihKorisnika).success(function(data) {
 				if(data.message == "Rezervisano"){
 					alert("Pozivnice poslate!");
+				}else if(data.message == "NijeRezervisano"){
+					alert("Zao nam je, ali je jedan od odabranih stolova zauzet u unetom terminu. " +
+							"Molimo pokusajte drugi termin. Hvala.")
 				}else{
 					alert("Greska prilikom slanja pozivnica! :(");
 				}
@@ -457,7 +484,23 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 			$scope.brKolona = [];
 			$scope.listaPozvanihKorisnika = [];
 			$scope.brojKolona = rest.brojkolona;
+			$scope.brojRedova = rest.brojredova;
 			$scope.odabranRestoran = rest;
+			
+			for(z=0; z<$scope.brojRedova*$scope.brojKolona; z++){
+				tempSto = [{oznaka : z, restoran : $scope.odabranRestoran}];
+				var poseta = {
+					//sto : tempSto,
+					oznaka : z,
+					restoran : $scope.odabranRestoran
+				}
+				var str = JSON.stringify(poseta);
+				menRestoranaServisS.izlistajBojuStola1(str).success(function(aaa) {
+					$scope.pojedSto[aaa.obj] = aaa.message;
+				}).error(function(data) {
+					$scope.pojedSto[aaa.obj] = "nijesto";
+				});
+			}
 			
 	
 			for(i=0; i<rest.brojredova; i++){
@@ -501,6 +544,29 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 			} else {
 				$scope.show = item.id;
 			}
+			
+		}
+		
+		$scope.izmeniGostaSifra = function (){
+			
+			var objekat = {
+				staraSifra : $scope.staraLozinka,
+				novaSifra :	$scope.novaLozinka,
+				novaSifra2 : $scope.novaLozinkaPotvrda
+			}
+			
+			izmeniGostaServis.izmeniGostaSifra(objekat).success(function(data){
+				if(data.message == "Promenjena"){
+					alert("Sifra uspesno promenjena");
+				}else if(data.message == "NisuIste"){
+					alert("Lozinke moraju da se poklapaju");
+				}else if(data.message == "NijeStara"){
+					alert("Uneli ste pogresnu staru sifru")
+				}else{
+					alert("Greska prilikom promene lozinke")					
+				}
+			}).error(function (data){
+			});
 			
 		}
 		

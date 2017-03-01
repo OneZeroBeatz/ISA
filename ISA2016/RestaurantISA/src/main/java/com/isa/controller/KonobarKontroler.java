@@ -425,9 +425,7 @@ public class KonobarKontroler {
 				piceUPorudzbini.setKolicina(Collections.frequency(picaL, temp));
 				piceUPorudzbini.setPice(temp);
 				piceUPorudzbini.setPorudzbina(parametar.getPorudzbina());
-				
-				// TODO: DA SIGNALIZIRAM SANKERU DA JE DOSLO DO PROMENE, AKO MOGU DA INKREMENTUJEM AKO VEC IMA
-				
+
 				List<PiceUPorudzbini> picaUP = konobarServis.izlistajPicaPorudzbineIPica(parametar.getPorudzbina(),piceUPorudzbini.getPice(), new PageRequest(0,10)).getContent();
 				if(!picaUP.isEmpty()){
 					picaUP.get(0).setKolicina(picaUP.get(0).getKolicina() + piceUPorudzbini.getKolicina());

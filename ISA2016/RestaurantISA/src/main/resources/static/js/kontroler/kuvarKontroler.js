@@ -34,6 +34,10 @@ kuvarKontroler.controller('kuvarCtrl', function($window, $scope, $location, logo
 		    
 			// za izmeenu podataka
 			$scope.izmeniKuvaraPodaci = function(){
+				if($scope.emailIzmena == null){
+					alert("Los email");
+					return;
+				}
 				var gost = {
 					ime : $scope.imeIzmena,
 					prezime : $scope.prezimeIzmena,
@@ -43,6 +47,8 @@ kuvarKontroler.controller('kuvarCtrl', function($window, $scope, $location, logo
 				var str = JSON.stringify(gost);
 				izmeniKuvarServis.izmeni(str).success(function(data) {
 					$scope.ulogovanKuvar = data;
+					alert("Uspesno promenjeni podaci");
+					$scope.setTab(0);
 					$scope.osveziPrikazZaIzmenu($scope.ulogovanKuvar);	
 					}).error(function(data) {
 						alert("Neuspesne izmene!");
@@ -75,7 +81,7 @@ kuvarKontroler.controller('kuvarCtrl', function($window, $scope, $location, logo
 						$scope.novaLozinkaPotvrda = "";
 						$scope.ulogovanKuvar = data;
 						alert("Uspesno promenjena lozinka");
-						$location.path('/kuvar');
+						$scope.setTab(0);
 					}).error(function (data){
 						alert("Neuspesne izmene!");
 					});
