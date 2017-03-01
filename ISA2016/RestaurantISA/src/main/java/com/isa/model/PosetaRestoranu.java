@@ -25,9 +25,12 @@ public class PosetaRestoranu {
 	private Gost gost;
 
 	@ManyToOne(optional = true)
+	private Gost pozivalac;
+	
+	@ManyToOne(optional = true)
 	private Restoran restoran;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	private Sto sto;
 
 	@Column(name = "obavljena")
@@ -51,9 +54,15 @@ public class PosetaRestoranu {
 
 	@Column(name = "br_sati")
 	private int brSati;
-
-	// TODO: many to many sa jelom (picem?)
 	
+	@Column(name = "isAccepted")
+	private Boolean isAccepted;
+
+
+	public PosetaRestoranu() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Gost getGost() {
 		return gost;
 	}
@@ -108,6 +117,14 @@ public class PosetaRestoranu {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Gost getPozivalac() {
+		return pozivalac;
+	}
+
+	public void setPozivalac(Gost pozivalac) {
+		this.pozivalac = pozivalac;
 	}
 
 	public Sto getSto() {

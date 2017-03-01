@@ -18,7 +18,8 @@ public class Gost extends Korisnik{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "gost")
 	private Set<PosetaRestoranu> posete;
 	
-
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pozivalac")
+	private Set<PosetaRestoranu> posetaRestorana;
 
 	@Column(name = "canSend", nullable = true)
 	private Boolean canSend;

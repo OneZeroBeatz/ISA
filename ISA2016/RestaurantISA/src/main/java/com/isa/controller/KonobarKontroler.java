@@ -898,6 +898,34 @@ public class KonobarKontroler {
 		
 	}
 	
+
+
+	@RequestMapping(value = "/izlistajDostupneSmeneKonobarDan", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Konobar>> izlistajDostupneSmeneKonobarDan(@RequestBody SmenaUDanu smenaUDanu){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		int trenutniDanUNedelji = calendar.get(Calendar.DAY_OF_WEEK);
+		DanUNedelji dan = getDanUNedelji(trenutniDanUNedelji);
+		String string = "";
+		Konobar konobar = (Konobar) konobarServis.findOne(smenaUDanu.getKonobar().getId());
+		while(smenaUDanu.getSto().iterator().hasNext()){
+			Sto sto = smenaUDanu.getSto().iterator().next();
+			if(sto != null){
+				string = restoranServis.sima(dan, sto, konobar, konobar.getRestoran());
+				break;
+			}
+		}
+
+		
+		
+		Restoran restoran = konobarServis.izlistajRestoran(konobar);
+		List<Konobar> retVal = restoranServis.izlistajKonobare(restoran);
+		
+		return new ResponseEntity<List<Konobar>>(retVal, HttpStatus.OK);
+	}
+	
+	
+	
 	@RequestMapping(value = "/ucitajKonobareRestorana", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Konobar>> ucitajKonobareRestorana(@RequestBody Konobar konobar){
 		Restoran restoran = konobarServis.izlistajRestoran(konobar);
@@ -964,9 +992,9 @@ public class KonobarKontroler {
 		
 		return dan;
 	}
+
 	
-	
-	
+
 	
 
 }

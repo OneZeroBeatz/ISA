@@ -1,4 +1,4 @@
-package test;
+package com.isa;
 
 import javax.transaction.Transactional;
 

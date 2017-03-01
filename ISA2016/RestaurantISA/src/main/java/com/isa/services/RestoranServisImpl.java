@@ -514,4 +514,20 @@ public class RestoranServisImpl implements RestoranServis{
 		return sankerSkladiste.save(sanker);
 	}
 
+	@Override
+	public String sima(DanUNedelji dan, Sto sto, Konobar konobar, Restoran restoran) {
+		Sto s = stoSkladiste.findByRestoranAndOznaka(restoran, sto.getOznaka());
+		if (sto.getSegment().equals("nijesto") || sto == null){
+			return "nijeSto";
+		}
+		SmenaUDanu smenaUDanu = smeneUDanuSkladiste.findByKonobarAndDanUNedeljiAndRestoranAndSto(sto, konobar, restoran, dan);
+		System.out.println("smena u danu = "  + smenaUDanu);
+		if(smenaUDanu == null) {
+			return "jeSto";
+		} else {
+			return "mojSto";
+		}
+	
+	}
+
 }

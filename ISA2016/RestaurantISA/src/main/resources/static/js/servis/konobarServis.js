@@ -74,6 +74,10 @@ konobarServis.factory('izmeniKonobarServis', function($http) {
 		return $http.post('/konobarKontroler/prihvatiPorudzbinu', porKon);
 	}	
 	
+	temp.izlistajDostupneSmeneKonobarDan = function (param){
+		return $http.post('/izlistajDostupneSmeneKonobarDan', porKon);
+	}
+	
 	
 	
 	return temp;

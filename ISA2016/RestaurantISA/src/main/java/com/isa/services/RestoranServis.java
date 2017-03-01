@@ -112,4 +112,6 @@ public interface RestoranServis {
 
 	Sanker registrujeSankera(Sanker sanker);
 
+	String sima(DanUNedelji dan, Sto sto, Konobar konobar, Restoran restoran);
+
 }

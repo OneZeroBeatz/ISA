@@ -127,7 +127,3 @@ insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('NEDELJA'
 --insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati, sto_id, ocena_obroka, ocena_usluge, datumrez) values (16,2,true, 1, '2017-02-25 08:30:00', 2, 5, -1, -1, '2017-02-25');
 --insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati, sto_id, ocena_obroka, ocena_usluge, datumrez) values (15,2,true, 4, '2017-02-28 11:30:00', 5, 3, -1, -1, '2017-02-28');
 
- 
- 
-
- 
