@@ -441,8 +441,8 @@ public class GostKontroler {
 				
 				SendMail sm = new SendMail("nikola9n@gmail.com",emailSubject);
 				
-				gostServis.sacuvajPosetu(poseta);
 			}
+			gostServis.sacuvajPosetu(poseta);
 		}
 		
 		return new ResponseEntity<Poruka>(new Poruka("Rezervisano", null), HttpStatus.ACCEPTED);

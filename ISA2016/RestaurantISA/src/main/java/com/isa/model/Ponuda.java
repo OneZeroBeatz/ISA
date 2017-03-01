@@ -29,7 +29,7 @@ public class Ponuda implements Serializable {
 	private float cena;
 
 	@Column(name = "rokisporuke")
-	private int rokisporuke; // ako se misli na broj dana...
+	private int rokisporuke;
 
 	@Column(name = "garancija")
 	private String garancija;

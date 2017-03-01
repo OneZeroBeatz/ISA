@@ -1,9 +1,6 @@
 package com.isa.services;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,8 +11,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.isa.model.DanUNedelji;
+import com.isa.model.IzvestajJelo;
 import com.isa.model.Jelo;
 import com.isa.model.Pice;
+import com.isa.model.Porudzbina;
+import com.isa.model.PosetaRestoranu;
 import com.isa.model.Restoran;
 import com.isa.model.Smena;
 import com.isa.model.SmenaUDanu;
@@ -24,6 +24,7 @@ import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Kuvar;
 import com.isa.model.korisnici.Ponudjac;
 import com.isa.model.korisnici.Sanker;
+import com.isa.pomocni.IzvestajRestoran;
 import com.isa.repository.JeloSkladiste;
 import com.isa.repository.JeloUPorudzbiniSkladiste;
 import com.isa.repository.KonobarSkladiste;
@@ -31,6 +32,9 @@ import com.isa.repository.KuvarSkladiste;
 import com.isa.repository.PiceSkladiste;
 import com.isa.repository.PiceUPorudzbiniSkladiste;
 import com.isa.repository.PonudjacSkladiste;
+import com.isa.repository.PorudzbinaSkladiste;
+import com.isa.repository.PoseteSkladiste;
+import com.isa.repository.RacunSkladiste;
 import com.isa.repository.RestoranSkladiste;
 import com.isa.repository.SankerSkladiste;
 import com.isa.repository.SmenaSkladiste;
@@ -76,6 +80,14 @@ public class RestoranServisImpl implements RestoranServis{
 	@Autowired
 	SankerSkladiste sankerSkladiste;
 
+	@Autowired
+	PoseteSkladiste poseteSkladiste;
+	
+	@Autowired
+	RacunSkladiste racunKonobarSkladiste;
+	
+	@Autowired
+	PorudzbinaSkladiste porudzbinaSkladiste;
 	
 	@Override
 	public List<Restoran> findAll() {
@@ -150,7 +162,8 @@ public class RestoranServisImpl implements RestoranServis{
 
 	@Override
 	public Sto izlistajSto(Sto sto) {
-		return stoSkladiste.findByRestoranAndOznaka(sto.getRestoran(), sto.getOznaka());
+		Restoran rest = restoranSkladiste.findOne(sto.getRestoran().getId());
+		return stoSkladiste.findByRestoranAndOznaka(rest, sto.getOznaka());
 	}
 
 	@Override
@@ -417,6 +430,104 @@ public class RestoranServisImpl implements RestoranServis{
 	@Override
 	public List<Sto> izlistajStoloveSmene(SmenaUDanu smenaKonobara) {
 		return stoSkladiste.findBySmenaudanu(smenaKonobara);
+	}
+
+	@Override
+	public IzvestajJelo izlistajIzvestajZaJelo(IzvestajJelo izvestajJelo) {
+		// izlistati sve ocene za jela datum od-do... izracunati...
+		Restoran restoran = restoranSkladiste.findOne(izvestajJelo.getJelo().getRestoran().getId());
+		Jelo jelo = jeloSkladiste.findById(izvestajJelo.getJelo().getId());
+		List<PosetaRestoranu> posete = null;
+		if(izvestajJelo.getDatumod() == null && izvestajJelo.getDatumdo() == null){
+			//posete = poseteSkladiste.findByRestoranAndJeloAndOcena_obrokaNot(restoran, jelo, -1);
+		}else if(izvestajJelo.getDatumod() == null){
+			//posete = poseteSkladiste.findByRestoranAndJeloAndOcena_obrokaNotAndDatumrezBefore(restoran, jelo, -1, izvestajJelo.getDatumdo());
+		}else if(izvestajJelo.getDatumdo() == null){
+			//posete = poseteSkladiste.findByRestoranAndJeloAndOcena_obrokaNotAndDatumrezAfter(restoran, jelo, -1, izvestajJelo.getDatumod());
+		}else{
+			//posete = poseteSkladiste.findByRestoranAndJeloAndOcena_obrokaNotAndDatumrezBetween(restoran, jelo, -1, izvestajJelo.getDatumod(), izvestajJelo.getDatumdo());
+		}
+		
+		
+		
+		return null;
+	}
+
+	@Override
+	public double izlistajOcenuRestorana(IzvestajRestoran izvestajRestoran) {
+		Restoran restoran = restoranSkladiste.findOne(izvestajRestoran.getRestoran().getId());
+		List<PosetaRestoranu> posete = null;
+		if(izvestajRestoran.getOdDatum() == null && izvestajRestoran.getDoDatum() == null){
+			posete = poseteSkladiste.findByRestoranAndOcenaNot(restoran, -1);
+		}else if(izvestajRestoran.getOdDatum() == null){
+			posete = poseteSkladiste.findByRestoranAndOcenaNotAndDatumrezBefore(restoran, -1, izvestajRestoran.getDoDatum());
+		}else if(izvestajRestoran.getDoDatum() == null){
+			posete = poseteSkladiste.findByRestoranAndOcenaNotAndDatumrezAfter(restoran, -1, izvestajRestoran.getOdDatum());
+		}else{
+			posete = poseteSkladiste.findByRestoranAndOcenaNotAndDatumrezBetween(restoran, -1, izvestajRestoran.getOdDatum(), izvestajRestoran.getDoDatum());
+		}
+		
+		double retVal = 0;
+		
+		for(PosetaRestoranu pr : posete){
+			retVal += pr.getOcena();
+		}
+		
+		return (double)retVal/posete.size();
+	}
+
+	@Override		// TODO: TESTIRATI...
+	public double izlistajPrihodRestorana(IzvestajRestoran izvestajRestoran) {
+		Restoran restoran = restoranSkladiste.findOne(izvestajRestoran.getRestoran().getId());
+		List<Porudzbina> porudzbine = null;
+		if(izvestajRestoran.getOdDatum() == null && izvestajRestoran.getDoDatum() == null){
+			porudzbine = porudzbinaSkladiste.findByRestoran(restoran);
+		}else if(izvestajRestoran.getOdDatum() == null){
+			porudzbine = porudzbinaSkladiste.findByRestoranAndDatumizradeBefore(restoran, izvestajRestoran.getDoDatum());
+		}else if(izvestajRestoran.getDoDatum() == null){
+			porudzbine = porudzbinaSkladiste.findByRestoranAndDatumizradeAfter(restoran, izvestajRestoran.getOdDatum());
+		}else{
+			porudzbine = porudzbinaSkladiste.findByRestoranAndDatumizradeBetween(restoran, izvestajRestoran.getOdDatum(), izvestajRestoran.getDoDatum());
+		}
+
+		double retVal = 0;
+		
+		for(Porudzbina por : porudzbine){
+			retVal += por.getRacun().getUkupno();
+		}
+		
+		return retVal;
+	}
+
+	@Override
+	public Konobar registrujKonobara(Konobar konobar) {
+		return konobarSkladiste.save(konobar);
+	}
+
+	@Override
+	public Kuvar registrujKuvara(Kuvar kuvar) {
+		return kuvarSkladiste.save(kuvar);
+	}
+
+	@Override
+	public Sanker registrujeSankera(Sanker sanker) {
+		return sankerSkladiste.save(sanker);
+	}
+
+	@Override
+	public String sima(DanUNedelji dan, Sto sto, Konobar konobar, Restoran restoran) {
+		Sto s = stoSkladiste.findByRestoranAndOznaka(restoran, sto.getOznaka());
+		if (sto.getSegment().equals("nijesto") || sto == null){
+			return "nijeSto";
+		}
+		SmenaUDanu smenaUDanu = smeneUDanuSkladiste.findByKonobarAndDanUNedeljiAndRestoranAndSto(sto, konobar, restoran, dan);
+		System.out.println("smena u danu = "  + smenaUDanu);
+		if(smenaUDanu == null) {
+			return "jeSto";
+		} else {
+			return "mojSto";
+		}
+	
 	}
 
 }

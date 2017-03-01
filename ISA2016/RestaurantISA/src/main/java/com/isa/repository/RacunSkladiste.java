@@ -14,4 +14,5 @@ public interface RacunSkladiste extends JpaRepository<RacunKonobar, Serializable
 
 	RacunKonobar save(RacunKonobar racunKonobar);
 
+
 }

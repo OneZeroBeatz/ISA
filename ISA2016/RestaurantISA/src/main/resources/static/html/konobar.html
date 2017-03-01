@@ -94,13 +94,9 @@
 					<table border="1">
 						<tr ng-repeat="n1 in brRedova">
 							<td ng-repeat="n2 in brKolona">
-								<div style = "width : 100px" ng-show = "jeSto(n1*brojKolona+n2) == true" style = "background: lightblue">
-									{{n1}}-{{n2}} {{jeSto(n1*brojKolona+n2)}}
-								</div>	
-								<div style = "width : 100px" ng-show = "jeSto(n1*brojKolona+n2) != true" style = "background: yellow">
-									{{n1}}-{{n2}} {{jeSto(n1*brojKolona+n2)}}
-								</div>				
-								<!--<button ng-click="prikaziInformacije(n1*brojKolona+n2, restoran)">{{n1}}-{{n2}}</button>-->
+								<div ng-show="obojiSto('jeSto', n1*brojKolona+n2)" style="background-color:red" style = "width:30px" ng-click="prikaziInformacije(n1*brojKolona+n2, restoran)">{{n1}}-{{n2}}</div>
+								<div ng-show="obojiSto('nijeSto', n1*brojKolona+n2)" style="background-color:white" style = "width:30px" ng-click="prikaziInformacije(n1*brojKolona+n2, restoran)">{{n1}}-{{n2}}</div>
+								<div ng-show="obojiSto('mojSto', n1*brojKolona+n2)" style="background-color:yellow" style = "width:30px" ng-click="prikaziInformacije(n1*brojKolona+n2, restoran)">{{n1}}-{{n2}}</div>
 							</td>
 						</tr>
 					</table>
@@ -174,7 +170,7 @@
 					<div ng-show = "porudzbine.length != 0">
 					<hr ng-show = "smeDaDodaJela || smeDaDodaPica"/>
 					<h2>Lista porudzbina</h2>
-						<table ng-show = "!item.spremna" ng-repeat = "item in porudzbine">
+						<table ng-show = "item.porudzbinaPrihvacena" ng-repeat = "item in porudzbine">
 							<tr >
 								<td style = "width:260px">Vreme : {{item.vremePrimanja}}</td>
 								<td style = "width:180px">Oznaka stola : {{item.sto.oznaka}}</td>
@@ -232,6 +228,28 @@
 								<td colspan = 2>Ukupna cena</td>
 								<td>{{ukupnoRacunKliknute}}</td>
 								<td><button ng-click = "zavrsiIKreiraj(item)">Kreiraj i zavrsi</button></td>
+							</tr>
+						</table>
+						
+						
+						<hr/>
+						<table ng-show = "!item.porudzbinaPrihvacena" ng-repeat = "item in porudzbine">
+							<tr >
+								<td style = "width:180px">Oznaka stola : {{item.sto.oznaka}}</td>
+								<td>
+									<button ng-click = "kliknuoNaDetalji(item)">Detalji</button>
+								</td>
+								<td>
+									<button ng-click = "prihvati(item)">Prihvati</button>
+								</td>
+							</tr>
+							<tr  ng-show = "show == item.id" ng-repeat = "item1 in picaKliknutePorudzbine">
+								<td>{{item1.pice.naziv}}</td>
+								<td>{{item1.kolicina}}</td>
+							</tr>
+							<tr  ng-show = "show == item.id" ng-repeat = "item1 in jelaKliknutePorudzbine">
+								<td>{{item1.jelo.naziv}}</td>
+								<td>{{item1.kolicina}}</td>
 							</tr>
 						</table>
 

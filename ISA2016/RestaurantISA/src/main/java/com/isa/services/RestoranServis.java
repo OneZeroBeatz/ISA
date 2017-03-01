@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.isa.model.DanUNedelji;
+import com.isa.model.IzvestajJelo;
 import com.isa.model.Jelo;
 import com.isa.model.Pice;
 import com.isa.model.Restoran;
@@ -17,6 +18,7 @@ import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Kuvar;
 import com.isa.model.korisnici.Ponudjac;
 import com.isa.model.korisnici.Sanker;
+import com.isa.pomocni.IzvestajRestoran;
 
 public interface RestoranServis {
 
@@ -47,8 +49,6 @@ public interface RestoranServis {
 	void izbrisiJeloUPorudzbini(Long id);
 	
 	Page<Sto> kreirajStolove(Restoran restoran, ArrayList<Integer> oznake, Pageable pageable);
-
-	Sto izlistajSto(Sto sto);
 
 	void dodajRedoveIKolone(Restoran rest);
 
@@ -96,6 +96,22 @@ public interface RestoranServis {
 
 	Sto izmeniSto(Sto sto);
 
+	Sto izlistajSto(Sto sto);
+
 	List<Sto> izlistajStoloveSmene(SmenaUDanu smenaKonobara);
+
+	IzvestajJelo izlistajIzvestajZaJelo(IzvestajJelo izvestajJelo);
+
+	double izlistajOcenuRestorana(IzvestajRestoran izvestajRestoran);
+
+	double izlistajPrihodRestorana(IzvestajRestoran izvestajRestoran);
+
+	Konobar registrujKonobara(Konobar konobar);
+
+	Kuvar registrujKuvara(Kuvar kuvar);
+
+	Sanker registrujeSankera(Sanker sanker);
+
+	String sima(DanUNedelji dan, Sto sto, Konobar konobar, Restoran restoran);
 
 }

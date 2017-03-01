@@ -413,7 +413,7 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 					restoran : $scope.odabranRestoran,
 					gost: prij,
 					brSati : $scope.brojSatiBoravka,
-					termin : datum.toString(),
+					termin : dat.toString(),
 					pozivalac : $scope.ulogovanGost
 				}
 			

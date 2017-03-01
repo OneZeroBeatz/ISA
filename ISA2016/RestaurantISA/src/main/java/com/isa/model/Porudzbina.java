@@ -1,5 +1,6 @@
 package com.isa.model;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.model.korisnici.Konobar;
@@ -60,17 +63,20 @@ public class Porudzbina {
 
 	@Column(name = "spremna_pica")
 	private boolean spremnaPica;
+	
+	@Column(name = "porudzbina_prihvacena")
+	private boolean porudzbinaPrihvacena;
 
 	@Column(name = "vremeprimanja")
-	// @Type(type="date")
 	private String vremePrimanja;
 
-	// TODO: Sacuvati datume kao datum a ne string
-
 	@Column(name = "vremenaplate")
-	// @Type(type="date")
 	private String vremeNaplate;
 
+	@Column(name = "datumizrade", nullable = true)
+	@Temporal(TemporalType.DATE)
+	private Date datumizrade;
+	
 	public Porudzbina() {
 
 	}
@@ -166,5 +172,18 @@ public class Porudzbina {
 		this.konobar1 = konobar1;
 	}
 	
+	public boolean isPorudzbinaPrihvacena() {
+		return porudzbinaPrihvacena;
+	}
+	public void setPorudzbinaPrihvacena(boolean porudzbinaPrihvacena) {
+		this.porudzbinaPrihvacena = porudzbinaPrihvacena;
+	}
+	
+	public Date getDatumizrade() {
+		return datumizrade;
+	}
 
+	public void setDatumizrade(Date datumizrade) {
+		this.datumizrade = datumizrade;
+	}
 }

@@ -74,25 +74,19 @@ public class LogRegKontroler {
 		return new ResponseEntity<String>("Neuspesna aktivacija naloga.", HttpStatus.ACCEPTED);
 		
 	}
-	
-	@RequestMapping(value = "/login2", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Korisnik> login(Model model, @RequestBody Gost newGuest){
-		Korisnik temp = servis.findByEmail(newGuest.getEmail());
-		if(temp != null && temp.getSifra().equals(newGuest.getSifra())){
-			/*modelAndView = new ModelAndView();
-			modelAndView.addObject("ulogovanKorisnik", temp);*/
-			return new ResponseEntity<Korisnik>(temp, HttpStatus.ACCEPTED);
-		}else
-			return null;
-	}
 
+
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Poruka> getKorisnik(@RequestBody Gost newGuest, HttpSession session){	
 		Korisnik kor = (Korisnik) session.getAttribute("ulogovanKorisnik");
-		if(kor == null){
-			Gost korisnik = servis.findByEmail(newGuest.getEmail());
-			if(korisnik != null && korisnik.getSifra().equals(newGuest.getSifra())){
 		
+		
+		
+		if(kor == null){
+			Gost korisnik = servis.findByEmail(newGuest.getEmail());			
+			if(korisnik != null && korisnik.getSifra().equals(newGuest.getSifra())){
+				
 				if(korisnik.getTipKorisnika().equals(TipKorisnika.GOST) && korisnik.getIsActivated()){
 					//model.addAttribute("korisnik", korisnik);
 					session.setAttribute("ulogovanKorisnik", korisnik);
@@ -143,10 +137,9 @@ public class LogRegKontroler {
 			
 	}
 	
-	//// MOJ CEK KOJI JE DOVEO DO PROBLEMA
+	
 	@RequestMapping(value = "/check", method = RequestMethod.POST)
 	public ResponseEntity<Poruka> checkSessions(@ModelAttribute Korisnik naSesiji, HttpSession session){
-		System.out.println("PROVERAVAS KO JE NA SESIJI - " + naSesiji.getIme());
 		Korisnik kor = (Korisnik) session.getAttribute("ulogovanKorisnik");
 		if(kor != null){
 			return new ResponseEntity<Poruka>(new Poruka("NekoNaSesiji", kor), HttpStatus.ACCEPTED);

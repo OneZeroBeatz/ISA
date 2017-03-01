@@ -29,15 +29,21 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 
 		console.log(data.obj.ime + "ULOGOVANI KONOBAR");
+		
 		if(data.message == "NekoNaSesiji"){
-
+			
 			$scope.ulogovanKonobar = data.obj;
 			$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
 			
+			$scope.pokusaj = [];			
 			$scope.izmena = false;
 			$scope.smeDaDodaJela = true;
 			$scope.smeDaDodaPica = true;
 			$scope.setTab = function(newTab){
+				if($scope.ulogovanKonobar.logovaoSe == false){
+					$scope.tab = 4;
+					return;
+				}
 				if (newTab == 2){
 					izmeniKonobarServis.izlistajJela($scope.ulogovanKonobar).success(function(data){
 						$scope.jela = data;
@@ -146,6 +152,9 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 				}
 		    	$scope.tab = newTab;
 		    };
+		    
+		    $scope.setTab(0);
+
 		    
 		    // Dodaj u listu jela
 		    $scope.dodataPica = [];
@@ -275,6 +284,31 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 		    	console.log("doda jela = "+ izmeniPorudzbinuPrikaz.smeDaDodaJela);
 		    	console.log("doda pica = "+ izmeniPorudzbinuPrikaz.smeDaDodaPica);
 		    	
+		    	
+		    	for(q=0; q<$scope.brojRedova*$scope.brojKolona; q++){
+					tempSto = [{oznaka : q, restoran : $scope.restoran}];		// Mozda 1 i <=
+					
+					var smenaDan = {
+						sto : tempSto,
+						konobar: $scope.ulogovanKonobar
+					}
+					var str = JSON.stringify(smenaDan);
+					menRestoranaServisS.izlistajDostupneSmeneKonobarDan(str).success(function(aaa) {
+						if(aaa.message == "Nije sto"){
+							$scope.pokusaj[aaa.obj[0]] = "nijesto";
+						}else if(aaa.message == "Popunjane smene"){
+							$scope.pokusaj[aaa.obj[0]] = "popnunjen";
+						}else if(aaa.message == "Nisu popunjene smene"){
+							$scope.pokusaj[aaa.obj[0]] = "nijePopunjen";
+						}
+					}).error(function(data) {
+						$scope.pokusaj[aaa.obj[0]] = "nijesto";
+					});
+				}
+		    	
+		    	
+		    	
+		    	
 				izmeniKonobarServis.potvrdiIzmene(izmeniPorudzbinuPrikaz).success(function (data){
 		    		$scope.porudzbine = data;
 		    		$scope.show = -1;
@@ -292,6 +326,18 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 		    	$scope.smeDaDodaPica = true;
 		    }
 		    
+		    $scope.prihvati = function(item){
+				var konPor = {
+						konobar : $scope.ulogovanKonobar,
+						porudzbina : item
+					}
+		    	izmeniKonobarServis.prihvatiPorudzbinu(konPor).success (function (data){
+		    		$scope.porudzbine = data;
+		    	}).error(function (data){
+		    		
+		    	});
+
+		    }
 		    
 		    // IZMENI PORUDZBINU
 		    $scope.izmeni = function (porudzbina){
@@ -332,7 +378,10 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 		    	});
 		    }
 		    
-			$scope.setTab(0);
+		    
+		    
+		    
+			
 			// za izmeenu podataka
 			$scope.izmeniKonobaraPodaci = function(){
 				var gost = {
@@ -343,7 +392,6 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 				}
 				var str = JSON.stringify(gost);
 				izmeniKonobarServis.izmeni(str).success(function(data) {
-					// TODO: ispravljeno ovo, ali mi je malo sumnjivo
 						$scope.ulogovanKonobar = data;
 						$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
 					}).error(function(data) {
@@ -351,6 +399,17 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 					});
 			}
 			
+			
+			/// ODLOGUJ SE
+			$scope.logOut = function(){
+
+				gostGlavnaStranaServis.logOut().success(function(data) {
+					if(data.message == "Izlogovan"){
+						$window.location.href = '/';
+					}else{
+					}
+				});
+			}
 			// Kliknuo na detalje kalendar
 			
 			$scope.danasnjiDatum = new Date();
@@ -545,16 +604,12 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 
 			}
 			
-			/// ODLOGUJ SE
-			$scope.logOut = function(){
-
-				gostGlavnaStranaServis.logOut().success(function(data) {
-					if(data.message == "Izlogovan"){
-						$window.location.href = '/';
-					}else{
-					}
-				});
+			$scope.obojiSto = function(kriterijum, oznaka){
+				return kriterijum == $scope.pokusaj[oznaka];
 			}
+			
+			
+
 			
 
 			
@@ -572,6 +627,7 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 						$scope.staraLozinka = "";
 						$scope.novaLozinka = "";
 						$scope.novaLozinkaPotvrda = "";
+						$scope.ulogovanKonobar = data;
 						alert("Uspesno promenjena lozinka");
 						$location.path('/konobar');
 					}).error(function (data){
@@ -583,8 +639,8 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 			}
 
 		}else{
-			alert("Morate se prvo ulogovati");
-			window.location.href = "logovanje.html";
+
+			$window.location.href = '/';
 		}
 	});
 })
