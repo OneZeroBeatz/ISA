@@ -59,21 +59,14 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 					alert("Neuspesno izlistavanje dostupnih ponudjaca!");
 				});
 				
-				if($scope.restoran.brojredova != null && $scope.restoran.brojkolona != null){
+				if($scope.restoran.brojredova != 0 && $scope.restoran.brojkolona != 0){
 					$scope.brojRedova = $scope.restoran.brojredova;
 					$scope.brojKolona = $scope.restoran.brojkolona;
-					/*
-					menRestoranaServisS.izlistajStolove(data).success(function(data) {
-						$scope.stolovi = data;
-					}).error(function(data) {
-						
-					});
-					*/
-					for(q=0; q<$scope.brojRedova*$scope.brojKolona; q++){
-						tempSto = [{oznaka : q, restoran : $scope.restoran}];		// Mozda 1 i <=
+
+					for(z=0; z<$scope.brojRedova*$scope.brojKolona; z++){
 						
 						var smenaDan = {
-							sto : tempSto,
+							oznaka : z,
 							restoran : $scope.restoran,
 						}
 						var str = JSON.stringify(smenaDan);
@@ -689,12 +682,6 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 	$scope.napraviKonfiguraciju = function(restoran) {
 		$scope.brRedova = [];
 		$scope.brKolona = [];
-		for(i=0; i<$scope.brojRedova; i++){
-			$scope.brRedova.push(i);
-		}
-		for(i=0; i<$scope.brojKolona; i++){
-			$scope.brKolona.push(i);
-		}
 		
 		var sizeStolova = {
 			id : restoran.id,
@@ -724,6 +711,27 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 			alert("stolovi nisu napravljeni");
 		});
 		
+		for(i=0; i<$scope.brojRedova; i++){
+			$scope.brRedova.push(i);
+		}
+		for(i=0; i<$scope.brojKolona; i++){
+			$scope.brKolona.push(i);
+		}
+		
+		for(z=0; z<$scope.brojRedova*$scope.brojKolona; z++){
+			
+			var smenaDan = {
+				oznaka : z,
+				restoran : $scope.restoran,
+			}
+			var str = JSON.stringify(smenaDan);
+			menRestoranaServisS.izlistajBojuStola(str).success(function(aaa) {
+				$scope.pojedSto[aaa.obj] = aaa.message;
+			}).error(function(data) {
+				$scope.pojedSto[aaa.obj] = "nijesto";
+			});
+		}
+		
 	}
 	
 	$scope.prikaz = false;
@@ -738,12 +746,12 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 		var sto = {
 			oznaka : oznaka,
 			restoran : restoran
-
 		}
 		var str = JSON.stringify(sto);
 		menRestoranaServisS.izlistajSto(str).success(function(data) {
-			$scope.sto = data;
-			$scope.segmentStola = data.segment;
+			$scope.sto = data.obj;
+			$scope.segmentStola = data.obj.segment;
+			
 		}).error(function(data) {
 		});
 	}
@@ -825,7 +833,12 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 			brojmesta : $scope.sto.brojmesta
 		}
 		var str = JSON.stringify(sto);
-		menRestoranaServisS.izmeniSto(str);
+		menRestoranaServisS.izmeniSto(str).success(function(data) {
+			$scope.pojedSto[data.obj.oznaka] = data.message;	
+		}).error(function(data) {
+			
+		});
+		
 	}
 	
 	$scope.dodajRadnika = function(){

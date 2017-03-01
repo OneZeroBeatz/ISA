@@ -87,21 +87,21 @@ insert into smena(vremeod, vremedo, restoran_id) values ('10:00', '23:00', (sele
 
 
 -- SMENA KONOBARA
-insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('PONEDELJAK', (select id from korisnik where ime ='Kono1'), 1, (select id from restoran where naziv = 'Restoran 1'));
-insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('UTORAK', (select id from korisnik where ime ='Kono1'), 1, (select id from restoran where naziv = 'Restoran 1'));
-insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('SREDA', (select id from korisnik where ime ='Kono1'), 1, (select id from restoran where naziv = 'Restoran 1'));
-insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('CETVRTAK', (select id from korisnik where ime ='Kono1'), 1, (select id from restoran where naziv = 'Restoran 1'));
-insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('PETAK', (select id from korisnik where ime ='Kono1'), 1, (select id from restoran where naziv = 'Restoran 1'));
-insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('SUBOTA', (select id from korisnik where ime ='Kono1'), 2, (select id from restoran where naziv = 'Restoran 1'));
-insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('NEDELJA', (select id from korisnik where ime ='Kono1'), 2, (select id from restoran where naziv = 'Restoran 1'));
-
-insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('PONEDELJAK', (select id from korisnik where ime ='Kono2'), 1, (select id from restoran where naziv = 'Restoran 1'));
-insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('UTORAK', (select id from korisnik where ime ='Kono2'), 2, (select id from restoran where naziv = 'Restoran 1'));
-insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('SREDA', (select id from korisnik where ime ='Kono2'), 2, (select id from restoran where naziv = 'Restoran 1'));
-
-insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('PETAK', (select id from korisnik where ime ='Kono2'), 1, (select id from restoran where naziv = 'Restoran 1'));
-insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('SUBOTA', (select id from korisnik where ime ='Kono2'), 2, (select id from restoran where naziv = 'Restoran 1'));
-insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('NEDELJA', (select id from korisnik where ime ='Kono2'), 2, (select id from restoran where naziv = 'Restoran 1'));
+--insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('PONEDELJAK', (select id from korisnik where ime ='Kono1'), 1, (select id from restoran where naziv = 'Restoran 1'));
+--insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('UTORAK', (select id from korisnik where ime ='Kono1'), 1, (select id from restoran where naziv = 'Restoran 1'));
+--insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('SREDA', (select id from korisnik where ime ='Kono1'), 1, (select id from restoran where naziv = 'Restoran 1'));
+--insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('CETVRTAK', (select id from korisnik where ime ='Kono1'), 1, (select id from restoran where naziv = 'Restoran 1'));
+--insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('PETAK', (select id from korisnik where ime ='Kono1'), 1, (select id from restoran where naziv = 'Restoran 1'));
+--insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('SUBOTA', (select id from korisnik where ime ='Kono1'), 2, (select id from restoran where naziv = 'Restoran 1'));
+--insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('NEDELJA', (select id from korisnik where ime ='Kono1'), 2, (select id from restoran where naziv = 'Restoran 1'));
+--
+--insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('PONEDELJAK', (select id from korisnik where ime ='Kono2'), 1, (select id from restoran where naziv = 'Restoran 1'));
+--insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('UTORAK', (select id from korisnik where ime ='Kono2'), 2, (select id from restoran where naziv = 'Restoran 1'));
+--insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('SREDA', (select id from korisnik where ime ='Kono2'), 2, (select id from restoran where naziv = 'Restoran 1'));
+--
+--insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('PETAK', (select id from korisnik where ime ='Kono2'), 1, (select id from restoran where naziv = 'Restoran 1'));
+--insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('SUBOTA', (select id from korisnik where ime ='Kono2'), 2, (select id from restoran where naziv = 'Restoran 1'));
+--insert into smenaudanu (dan, konobar_id, smena_id, restoran_id) values ('NEDELJA', (select id from korisnik where ime ='Kono2'), 2, (select id from restoran where naziv = 'Restoran 1'));
 
 --insert into smenadan_sto (smenaudanu_id, sto_id) values (2, (select id from sto where oznaka = 11));
 --insert into smenadan_sto (smenaudanu_id, sto_id) values (2, (select id from sto where oznaka = 12));

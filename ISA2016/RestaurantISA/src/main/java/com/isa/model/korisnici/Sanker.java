@@ -18,10 +18,10 @@ import com.isa.model.SmenaUDanu;
 @DiscriminatorValue("SNK")
 public class Sanker extends Korisnik {
 
-	@Column(name = "konfbroj", nullable = true)
+	@Column(name = "konfbroj", columnDefinition = "int default 0")
 	private int konfbroj;
 
-	@Column(name = "velobuce", nullable = true)
+	@Column(name = "velobuce", columnDefinition = "int default 0")
 	private int velobuce;
 
 	@Column(name = "datumrodj", nullable = true)

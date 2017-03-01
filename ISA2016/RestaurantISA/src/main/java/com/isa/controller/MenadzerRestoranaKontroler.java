@@ -147,9 +147,13 @@ public class MenadzerRestoranaKontroler {
 	}
 	
 	@RequestMapping(value = "/izlistajSto", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Sto> izlistajSto(@RequestBody Sto sto) {	
-		Sto s = restoranServirs.izlistajSto(sto);	
-		return new ResponseEntity<Sto>(s, HttpStatus.OK);
+	public ResponseEntity<Poruka> izlistajSto(@RequestBody Sto sto) {
+		Poruka p = new Poruka();
+		Sto s = restoranServirs.izlistajSto(sto);
+		
+		p.setMessage(s.getSegment());
+		p.setObj(s);
+		return new ResponseEntity<Poruka>(p, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/izlistajSveNamirnice", method = RequestMethod.POST)
@@ -344,11 +348,13 @@ public class MenadzerRestoranaKontroler {
 	}
 	
 	@RequestMapping(value = "/izmeniSto", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Sto> izmeniSto(@RequestBody Sto sto) {
-		
+	public ResponseEntity<Poruka> izmeniSto(@RequestBody Sto sto) {
+		Poruka poruka = new Poruka();
 		Sto retSto = restoranServirs.izmeniSto(sto);
 		
-		return new ResponseEntity<Sto>(retSto, HttpStatus.OK);
+		poruka.setMessage(retSto.getSegment());
+		poruka.setObj(retSto);
+		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
 	}
 	
 	
