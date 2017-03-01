@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.isa.model.Ponuda;
 import com.isa.model.PorudzbinaMenadzer;
 import com.isa.model.korisnici.MenadzerRestorana;
 
@@ -13,4 +14,6 @@ public interface PorudzbineMenadzeraSkladiste extends JpaRepository<PorudzbinaMe
 	List<PorudzbinaMenadzer> findByMenadzerrestorana(MenadzerRestorana menadzerRestorana);
 	PorudzbinaMenadzer save(PorudzbinaMenadzer porudzbinaMenadzer);
 	List<PorudzbinaMenadzer> findByMenadzerrestoranaAndAktivnaTrueAndAktivnoDoAfter(MenadzerRestorana menadzerRestorana, Date date);
+	
+	PorudzbinaMenadzer findByPonude(Ponuda ponuda);
 }

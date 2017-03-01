@@ -1,8 +1,7 @@
 var ponudjacKontroler = angular.module('restoranApp.ponudjacKontroler', []);
 
 
-ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $scope, ponudjacServisS, $window) {
-	
+ponudjacKontroler.controller('ponudjacCtrl', function($location, gostGlavnaStranaServis, $scope, izmeniKonobarServis, ponudjacServisS, $window) {
 	
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 		$scope.cena = {};
@@ -13,7 +12,15 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 			$scope.imeIzmena = data.obj.ime;
 			$scope.prezimeIzmena = data.obj.prezime;
 			$scope.emailIzmena = data.obj.email;
-			$scope.staraLozinka = data.obj.sifra;
+			
+			$scope.setTab = function(newTab){
+				if($scope.ulogovanKorisnik.logovaoSe == false){
+					$scope.tab = 2;
+					return;
+				}
+		    	$scope.tab = newTab;
+		    };
+		    $scope.setTab(1);
 			
 			// AKTIVNE PORUDZBINE
 			// Ponudjac nije slao ponudu:
@@ -79,7 +86,13 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 					garancija : ponuda.garancija
 				}
 				var str = JSON.stringify(pon);
-				ponudjacServisS.izmeniPonudu(str);
+				ponudjacServisS.izmeniPonudu(str).success(function(data) {
+					if(data.message == "false"){
+						alert("Nije moguce izmeni, menadzer restorana je odabrao neku od ponuda!");
+					}else if(data.message == "true"){
+						alert("Uspesno izmenjeno");
+					}
+				});
 			}
 		}else{
 			$window.location.href = '/';
@@ -94,10 +107,6 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 			}
 		});
 	}
-	
-    $scope.setTab = function(newTab){
-    	$scope.tab = newTab;
-    };
 
     $scope.isSet = function(tabNum){   
     	return $scope.tab === tabNum;
@@ -118,8 +127,6 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 	$scope.izmeniPonudu = function(idPonude){		
 		$scope.izmeniP = idPonude;
 	}
-	
-	$scope.setTab(1);
 	
 	$scope.izmeniPonudjaca = function(){
 		
@@ -165,5 +172,27 @@ ponudjacKontroler.controller('ponudjacCtrl', function(gostGlavnaStranaServis, $s
 		});
 	}
 	
-	
+	$scope.izmeniLozinku = function (){
+		if($scope.novaLozinka == $scope.novaLozinkaPotvrda){
+			var gost = {
+				id : $scope.ulogovanKorisnik.id,
+				sifraStara : $scope.staraLozinka,
+				sifra : $scope.novaLozinkaPotvrda
+			}
+			var str = JSON.stringify(gost);
+			
+			izmeniKonobarServis.izmeniLozinku(str).success(function (data){
+				$scope.staraLozinka = "";
+				$scope.novaLozinka = "";
+				$scope.novaLozinkaPotvrda = "";
+				$scope.ulogovanKorisnik = data;
+				alert("Uspesno promenjena lozinka");
+				$location.path('/ponudjac');
+			}).error(function (data){
+				alert("Neuspesne izmene!");
+			});
+		} else {
+			alert ("Ne podudaraju se nove lozinke")
+		}
+	}
 });

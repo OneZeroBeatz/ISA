@@ -1,6 +1,6 @@
 var menRestoranaKontroler = angular.module('restoranApp.menRestoranaKontroler', []);
 
-menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStranaServis, $scope, menRestoranaServisS, $window) {
+menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStranaServis, $scope, menRestoranaServisS, $window, izmeniKonobarServis) {
 	$scope.radniciTip = ["", "Konobar", "Kuvar", "Sanker"];
 	$scope.tipRadnika = "";
 	$scope.tipoviJela = ["Peceno", "Kuvano", "Salata"];
@@ -15,6 +15,7 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 	//$scope.nijePopunjen = {};
 	$scope.pokusaj = [];
 	$scope.pojedSto = []
+	
 	
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 		$scope.brRedova = [];
@@ -31,6 +32,7 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 				email : data.obj.email,
 				sifra : data.obj.sifra
 			}
+			
 			
 			var str = JSON.stringify(menRest);
 			
@@ -834,7 +836,11 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 		}
 		var str = JSON.stringify(sto);
 		menRestoranaServisS.izmeniSto(str).success(function(data) {
-			$scope.pojedSto[data.obj.oznaka] = data.message;	
+			if(data.message == "false"){
+				alert("Sto je rezervisan, nije ga moguce izbaciti iz rasporeda stolova");
+			}else{
+				$scope.pojedSto[data.obj.oznaka] = data.message;
+			}
 		}).error(function(data) {
 			
 		});
@@ -1055,4 +1061,5 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 	$scope.selKuvar = function(){
 		return $scope.kuvarSelek;
 	}
+
 });

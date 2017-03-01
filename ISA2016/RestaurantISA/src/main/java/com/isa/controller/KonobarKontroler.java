@@ -90,10 +90,6 @@ public class KonobarKontroler {
 		return new ResponseEntity<List<Porudzbina>>(vratiPorudzbineKonobara(konobar), HttpStatus.OK);
 	}
 
-	
-	
-	
-	
 	@RequestMapping(value = "/dodajPorudzbinu", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Porudzbina>> dodajPorudzbinu(@RequestBody JelaPica jelaPica)  {
 		
