@@ -2,15 +2,11 @@ package com.isa.services;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
-import com.isa.model.Namirnica;
 import com.isa.model.PorudzbinaMenadzer;
 import com.isa.model.StavkaPorudzbineMenadzera;
 
 public interface PorudzbinaMenadzeraServis {
-
+	
 	List<PorudzbinaMenadzer> findAll();
 	
 	PorudzbinaMenadzer findOne(Long id);
