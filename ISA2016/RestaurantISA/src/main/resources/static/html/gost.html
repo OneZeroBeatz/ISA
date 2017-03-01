@@ -55,11 +55,27 @@
 			
 			<div ng-show="isSet(1)">
 				<h2>Rezervacija restorana.</h2>
+				
+				<div ng-show="isKorak(0)">
+					
+					<table>
+						<td>Odaberite datum i vreme dolaska: <input ng-model="datumVremeRezervacije" type="datetime-local"/></td>
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						<td>Koliko sati ostajete u restoranu? <input ng-model="brojSatiBoravka" type="number"  min="1"/></td>
+					</table>
+					
+					<table>
+						<tr>
+							<td><p>Pretraga: </p></td>
+							<td><input type="text" name="pretragaRest" ng-model="inputPretragaRest" ng-change="pretraziRestorane()"/></td>
+						</tr>
+					</table>
+					
 				<table id="myRest">
 					<tr ng-show="zahteviZaPrijateljstvo.length > 0">
-						<th ng-click="sortTableZah(0)">Naziv</th>
-    					<th ng-click="sortTableZah(1)">Vrsta</th>
-    					<th ng-click="sortTableZah(1)">Udaljenost</th>
+						<th ng-click="sortTableRest(0)">Naziv</th>
+    					<th ng-click="sortTableRest(1)">Vrsta</th>
+    					<th ng-click="sortTableRest()">Udaljenost</th>
 					</tr>
 					<div>
 					<tr ng-repeat="rest in restorani">
@@ -67,20 +83,54 @@
 						<td>{{rest.opis}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 						<td>200m &nbsp;&nbsp;&nbsp;&nbsp;</td>
 						<td> <button ng-click="odaberiRestoran(rest)">Rezervisi</button></td>
-						<td ng-show = "showRest == rest.id">
+						
+					</tr>
+				</table>
+					
+				</div>
+			
+				<div ng-show="isKorak(1)">
+					
 							<table border="1">
 								<tr ng-repeat="n1 in brRedova">
 									<td ng-repeat="n2 in brKolona">
-										<button ng-click="prikaziInformacije(n1*brojKolona+n2, rest)">{{n1}}-{{n2}}</button>
+										<button ng-click="prikaziInformacije(n1*brojKolona+n2, odabranRestoran)">{{n1}}-{{n2}}</button>
 									</td>
 								</tr>
 							</table>
 							<div ng-show="isVisible()">
-		       					{{sto.oznaka}}
+							<table>
+								<td ng-repeat="odbSto in odabraniStolovi">
+		       						{{odbSto.oznaka}}
+								</td>
+		       				</table>
+		       				
+		       					<button ng-click="potvrdiSto(aa)">Potvrdi sto</button>
+		       					<button ng-click="korakDva()">Dalje</button>
 		       				</div>
-						</td>
-					</tr>
-				</table>
+				</div>
+				
+				<div ng-show="isKorak(2)">
+					
+					<table>
+		       			<tr>
+		       				<table>
+		       					<tr ng-repeat="prij in prijateljiNeprijatelji">
+									<td>{{prij.ime}}</td>
+									<td>{{prij.prezime}}</td>
+									<td>{{prij.email}}</td>
+												
+									<td><select ng-model="odabraniStoOznaka" ng-options="odbSto.oznaka for odbSto in odabraniStolovi">
+										</select></td>
+									<td> <a ng-click="pozovi(prij, odabraniStoOznaka)" href="">Pozovi</a></td>
+								</tr>
+							</table>
+		       			</tr>
+		       			<button ng-click="rezervisiRestoran()">Rezervisi</button>
+		       		</table>
+		       					
+				</div>
+				
 				
 			</div>
 

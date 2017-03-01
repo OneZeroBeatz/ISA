@@ -1,5 +1,7 @@
 package com.isa.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,12 +22,13 @@ public class KorisnikKontroler {
 	public KorisnikServis korisnikServis;
 	
 	@RequestMapping(value = "/izmeniKorisnika", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Korisnik> izmeniKorisnika(@RequestBody Korisnik gost) {
+	public ResponseEntity<Korisnik> izmeniKorisnika(@RequestBody Korisnik gost, HttpSession request) {
 		Korisnik originalKorisnik = (Korisnik) korisnikServis.findOne(gost.getId());	
 		originalKorisnik.setIme(gost.getIme());
 		originalKorisnik.setPrezime(gost.getPrezime());
 		originalKorisnik.setEmail(gost.getEmail());
 		originalKorisnik = korisnikServis.save(originalKorisnik);
+		request.setAttribute("ulogovanKorisnik", originalKorisnik);
 		return new ResponseEntity<Korisnik>(originalKorisnik, HttpStatus.OK);
 	}
 	

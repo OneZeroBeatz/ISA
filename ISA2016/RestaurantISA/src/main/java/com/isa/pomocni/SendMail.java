@@ -10,6 +10,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+
 public class SendMail {
 
 	
@@ -40,11 +41,12 @@ public class SendMail {
 	          message.setFrom(new InternetAddress(from));
 	          message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 	          message.setSubject("Aktivacioni link");
-	          message.setText("Aktivirajte nalog klikom na link: "+link);
+	          message.setText(link);
 	          Transport.send(message, username	, password);
 	      }
 	      catch (AddressException e) {e.printStackTrace();}
 	      catch (MessagingException e) {e.printStackTrace();}
+	
 	}
 	
 }

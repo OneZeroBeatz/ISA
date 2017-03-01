@@ -1,6 +1,7 @@
 <div ng-cloak ng-controller="menadzerRestoranaCtrl">
 	<div>
-		<h1>Pozdrav menadzere</h1>
+		<h1>Pozdrav </h1>
+		<a ng-click="logOut()" href="">Izloguj se</a>
 	</div>
 
 	<div>
@@ -21,75 +22,122 @@
 			<div ng-show="isSet(0)">
 				<h2>Podaci o restoranu</h2>
 				</br>
-				<label>Naziv restorana: </label> <input type="text" ng-model="restoran.naziv"> <a ng-click="izmenaNazivaRestorana(restoran)" href="">Izmeni</a>
-				
-				</br>
-				<label>Opis restorana: </label> <input type="text" ng-model="restoran.opis"> <a ng-click="izmenaOpisaRestorana(restoran)" href="">Izmeni</a>
-				
-				</br>
-				<label>Jelovnik: </label> </br>
-				<ul>
-				<li ng-repeat="jelo in jela"> {{jelo.naziv}}  {{jelo.opis}}  {{jelo.cena}} <a ng-click="izmenaJela(jelo.id)" href="">Izmeni</a> <a ng-click="odbrisiJelo(jelo.id)" href="">Obrisi</a></li>
-				</ul>
-				<label>Dodaj novo jelo: </label> </br>
-				<table>
-				<tr>
-					<td>Naziv:</td>
-					<td><input type=text ng-model="nazivJela"></td>
-				<tr>
-				<tr>
-					<td>Opis:</td>
-					<td><input type=text ng-model="opisJela"></td>
-				<tr>
-				<tr>
-					<td>Cena:</td>
-					<td><input type="number" ng-model="cenaJela"></td>
-				<tr>
-				</table>
-				<button ng-click="dodajJelo(restoran)">Dodaj</button>
-				
-				</br>
-				<label>Karta pica: </label> </br>
-				<ul>
-				<li ng-repeat="pice in pica"> {{pice.naziv}}  {{pice.opis}}  {{pice.cena}} <a ng-click="izmenaPice(pice.id)" href="">Izmeni</a> <a ng-click="odbrisiPice(pice.id)" href="">Obrisi</a></li>
-				</ul>
-				<label>Dodaj novo pice: </label> </br>
-				<table>
-				<tr>
-					<td>Naziv:</td>
-					<td><input type=text ng-model="nazivPica"></td>
-				<tr>
-				<tr>
-					<td>Opis:</td>
-					<td><input type=text ng-model="opisPica"></td>
-				<tr>
-				<tr>
-					<td>Cena:</td>
-					<td><input type="number" ng-model="cenaPica"></td>
-				<tr>
-				</table>
-				<button ng-click="dodajPice(restoran)">Dodaj</button>
-				
-				</br>
-				<label>Konfiguracija sedenja: </label> </br></br>
-				
-				<h2>Stolovi po redu/koloni:</h2>
-				<table>
+				<table border="1px">
 					<tr>
-						<td>Broj redova:</td>
+						<td>Naziv restorana:</td>
+						<td><input type="text" ng-model="restoran.naziv"></td>
+						<td><a ng-click="izmenaNazivaRestorana(restoran)" href="">Izmeni</a></td>
+					</tr>
+					<tr>
+						<td>Opis restorana:</td>
+						<td><input type="text" ng-model="restoran.opis"></td>
+						<td><a ng-click="izmenaOpisaRestorana(restoran)" href="">Izmeni</a></td>
+					</tr>
+				</table><br>
+				
+				<table border="1px">
+					<tr>
+						<th colspan="5">Jelovnik</th>
+					</tr>
+					<tr>
+						<th>Naziv</th>
+						<th>Opis</th>
+						<th>Cena</th>
+						<th></th>
+						<th></th>
+					</tr>
+					<tr ng-repeat="jelo in jela">
+						<td><input type="text" ng-model="jelo.naziv"></td>
+						<td><input type="text" ng-model="jelo.opis"></td>
+						<td><input type="number" min="0" ng-model="jelo.cena"></td>
+						<td><a ng-click="izmenaJela(jelo.id)" href="">Izmeni</a></td>
+						<td><a ng-click="odbrisiJelo(jelo.id)" href="">Obrisi</a></td>
+					</tr>
+				</table><br>
+
+				<table border="1px">
+					<tr>
+						<th colspan="2">Dodaj novo jelo</th>
+					<tr>
+					<tr>
+						<td>Naziv:</td>
+						<td><input type=text ng-model="nazivJela"></td>
+					<tr>
+					<tr>
+						<td>Opis:</td>
+						<td><input type=text ng-model="opisJela"></td>
+					<tr>
+					<tr>
+						<td>Cena:</td>
+						<td><input type="number" min="0" ng-model="cenaJela"></td>
+					<tr>
+					<tr>
+						<td>Tip:</td>
+						<td><select ng-model = "tipJela" ng-options="x for x in tipoviJela"></select></td>
+					<tr>
+				</table>
+				<button ng-click="dodajJelo(restoran)">Dodaj</button></br></br>
+				
+				<table border="1px">
+					<tr>
+						<th colspan="5">Karta pica</th>
+					</tr>
+					<tr>
+						<th>Naziv</th>
+						<th>Opis</th>
+						<th>Cena</th>
+						<th></th>
+						<th></th>
+					</tr>
+					<tr ng-repeat="pice in pica">
+						<td><input type="text" ng-model="pice.naziv"></td>
+						<td><input type="text" ng-model="pice.opis"></td>
+						<td><input type="number" min="0" ng-model="pice.cena"></td>
+						<td><a ng-click="izmenaPice(pice.id)" href="">Izmeni</a></td>
+						<td><a ng-click="odbrisiPice(pice.id)" href="">Obrisi</a></td>
+					</tr>
+				</table><br>
+
+				<table border="1px">
+					<tr>
+						<th colspan="2">Dodaj novo pice</th>
+					<tr>
+					<tr>
+						<td>Naziv:</td>
+						<td><input type=text ng-model="nazivPica"></td>
+					<tr>
+					<tr>
+						<td>Opis:</td>
+						<td><input type=text ng-model="opisPica"></td>
+					<tr>
+					<tr>
+						<td>Cena:</td>
+						<td><input type="number" min="0" ng-model="cenaPica"></td>
+					<tr>
+				</table>
+				<button ng-click="dodajPice(restoran)">Dodaj</button></br></br>
+				
+				
+				
+				<h2>Konfiguracija sedenja: </h2>
+				<table border="1px">
+					<tr>
+						<th colspan="2">Stolovi po redu/koloni</th>
+					</tr>
+					<tr>
+						<td>Broj redova</td>
 						<td><input type="number" min="0" ng-model="brojRedova"></td>
 					</tr>
-					
 					<tr>
-						<td>Broj kolona:</td>
+						<td>Broj kolona</td>
 						<td><input type="number" min="0" ng-model="brojKolona"></td>
 					</tr>
 				</table>
 				<button ng-click="napraviKonfiguraciju(restoran)">Kreiraj</button>
 				
 				<div>
-					<h2>Raspored stolova:</h2>
-					<table border="1">
+					<h3>Raspored stolova:</h3>
+					<table border="1px">
 						<tr ng-repeat="n1 in brRedova">
 							<td ng-repeat="n2 in brKolona">
 								<button ng-click="prikaziInformacije(n1*brojKolona+n2, restoran)">{{n1}}-{{n2}}</button>
@@ -97,8 +145,10 @@
 						</tr>
 					</table>
 					<div ng-show="isVisible(prikaz)" ng-model="prikaz">
-       					<h2>Sto sa oznakom {{sto.oznaka}}</h2>
-       					<table>
+       					<table border="1px">
+       						<tr>
+								<th colspan="2">Sto sa oznakom {{sto.oznaka}}</th>
+							</tr>
 	       					<tr>
 	       						<td>Odaberite segment: </td>
 								<td>
@@ -119,10 +169,12 @@
 						<button ng-click="izmeniSto()">Izmeni</button>
        				</div>
 				</div>
-				
+				<br><br>
 				<div>
-					<h2>Smene:</h2>
-					<table>
+					<table border="1px">
+						<tr>
+							<th colspan="3">Smene</th>
+						</tr>
 						<tr>
 							<th>Od</th>
 							<th>Do</th>
@@ -135,7 +187,10 @@
 						</tr>
 					</table><br>
 					
-					<table>
+					<table border="1px">
+						<tr>
+							<th colspan="2">Dodaj smenu</th>
+						</tr>
 						<tr>
 							<td>Vreme od</td>
 							<td><input type="time" ng-model="vremeSmeneOd"></td>
@@ -150,12 +205,14 @@
 			</div>
 
 			<div ng-show="isSet(1)">
-				 <div>
-					<h2>Dodaj radnika</h2>
-					<table>
+				 <div><br>
+					<table border="1px">
+						<tr>
+							<th colspan="2">Dodaj radnika</th>
+						<tr>
 						<tr>
 							<td>Tip:</td>
-							<td><select ng-model="tipRadnikad">	<!-- Vec postoji tipRadnika... Proveri sta ce se desiti.. -->
+							<td><select ng-model="tipRadnikaDodaj">
 									<option value="konobar">Konobar</option>
 									<option value="kuvar">Kuvar</option>
 									<option value="sanker">Sanker</option>
@@ -171,7 +228,7 @@
 						<tr>
 						<tr>
 							<td>Email:</td>
-							<td><input type=text ng-model="emailRadnika"></td>
+							<td><input type="email" ng-model="emailRadnika"></td>
 						<tr>
 						<tr>
 							<td>Lozinka:</td>
@@ -183,11 +240,11 @@
 						<tr>
 						<tr>
 							<td>Konfekcijski broj:</td>
-							<td><input type=text ng-model="konfBrRadnika"></td>
+							<td><input type="number" ng-model="konfBrRadnika"></td>
 						<tr>
 						<tr>
 							<td>Velicina obuce:</td>
-							<td><input type=text ng-model="velObRadnika"></td>
+							<td><input type="number" ng-model="velObRadnika"></td>
 						<tr>
 					</table>
 					<button ng-click="dodajRadnika()">Dodaj</button>
@@ -212,10 +269,10 @@
 						<td>
 							<select ng-model = "tipRadnika" ng-options="x for x in radniciTip" ng-change = "promenjenTip()"></select>
 							<div ng-show="selektovanTip == 'Konobar'">
-								<table border="1">
+								<table>
 									<tr ng-repeat="n1 in brRedova">
 										<td ng-repeat="n2 in brKolona">
-											<button ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button> <!-- Ako nije sto, zabraniti da se klikne i naznaciti (obojati) -->
+											<button style = "width:30px" ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button> <!-- Ako nije sto, zabraniti da se klikne i naznaciti (obojati) -->
 										</td>
 									</tr>
 								</table>
@@ -245,7 +302,7 @@
 				       					<table border="1px">
 				       						<tr>
 												<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-												<td><select ng-model = "smenaKonobarPon" ng-options="x.vremeod for x in dostupneSmenePon" ng-change="promenaSmeneKonobar()"></select></td>
+												<td><select ng-model = "smenaKonobarPon" ng-options="x.smena as x.vremeod + '-' + x.vremedo for x in dostupneSmenePon" ng-change="promenaSmeneKonobar()"></select></td>
 											</tr>
 											<tr>
 												<td>Dostupni konobari</td>
@@ -286,7 +343,7 @@
 									</tr>
 									<tr>
 										<td>Smena</td>									<!-- Vreme od - do? Kad se skrati... -->
-										<td><select ng-model = "smenaKuvarPon" ng-options="x.vremeod for x in smeneRestorana"></select></td>
+										<td><select ng-model = "smenaKuvarPon" ng-options="x.smena as x.vremeod + '-' + x.vremedo for x in smeneRestorana"></select></td>
 									</tr>
 								</table>
 								<button ng-click = "dodajKuvaraUSmenuDana()">Dodaj</button>
@@ -340,7 +397,7 @@
 								<table border="1">
 									<tr ng-repeat="n1 in brRedova">
 										<td ng-repeat="n2 in brKolona">
-											<button ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button> <!-- Ako nije sto, zabraniti da se klikne i naznaciti (obojati) -->
+											<button style = "width:30px" ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button> <!-- Ako nije sto, zabraniti da se klikne i naznaciti (obojati) -->
 										</td>
 									</tr>
 								</table>
@@ -463,7 +520,7 @@
 								<table border="1">
 									<tr ng-repeat="n1 in brRedova">
 										<td ng-repeat="n2 in brKolona">
-											<button ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button> <!-- Ako nije sto, zabraniti da se klikne i naznaciti (obojati) -->
+											<button style = "width:30px" ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button> <!-- Ako nije sto, zabraniti da se klikne i naznaciti (obojati) -->
 										</td>
 									</tr>
 								</table>
@@ -586,7 +643,7 @@
 								<table border="1">
 									<tr ng-repeat="n1 in brRedova">
 										<td ng-repeat="n2 in brKolona">
-											<button ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button> <!-- Ako nije sto, zabraniti da se klikne i naznaciti (obojati) -->
+											<button style = "width:30px" ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button> <!-- Ako nije sto, zabraniti da se klikne i naznaciti (obojati) -->
 										</td>
 									</tr>
 								</table>
@@ -709,7 +766,7 @@
 								<table border="1">
 									<tr ng-repeat="n1 in brRedova">
 										<td ng-repeat="n2 in brKolona">
-											<button ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button> <!-- Ako nije sto, zabraniti da se klikne i naznaciti (obojati) -->
+											<button style = "width:30px" ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button> <!-- Ako nije sto, zabraniti da se klikne i naznaciti (obojati) -->
 										</td>
 									</tr>
 								</table>
@@ -832,7 +889,7 @@
 								<table border="1">
 									<tr ng-repeat="n1 in brRedova">
 										<td ng-repeat="n2 in brKolona">
-											<button ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button> <!-- Ako nije sto, zabraniti da se klikne i naznaciti (obojati) -->
+											<button style = "width:30px" ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button> <!-- Ako nije sto, zabraniti da se klikne i naznaciti (obojati) -->
 										</td>
 									</tr>
 								</table>
@@ -955,7 +1012,7 @@
 								<table border="1">
 									<tr ng-repeat="n1 in brRedova">
 										<td ng-repeat="n2 in brKolona">
-											<button ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button> <!-- Ako nije sto, zabraniti da se klikne i naznaciti (obojati) -->
+											<button style = "width:30px" ng-click="prikaziStoloveKonobara(n1*brojKolona+n2)">{{n1}}-{{n2}}</button> <!-- Ako nije sto, zabraniti da se klikne i naznaciti (obojati) -->
 										</td>
 									</tr>
 								</table>

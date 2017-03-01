@@ -2,6 +2,8 @@ package com.isa.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +33,7 @@ public class PonudjacKontroler {
 	public PorudzbinaMenadzeraServis porudzbinaMenadzeraServis;
 	
 	@RequestMapping(value = "/izmeniPonudjaca", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Ponudjac> izmeniPonudjaca(@RequestBody Ponudjac ponudjac) {
+	public ResponseEntity<Ponudjac> izmeniPonudjaca(@RequestBody Ponudjac ponudjac, HttpSession session) {
 		Ponudjac originalPonudjac = ponudjacServis.findOne(ponudjac.getId());
 		
 		originalPonudjac.setIme(ponudjac.getIme());
@@ -40,7 +42,7 @@ public class PonudjacKontroler {
 		originalPonudjac.setSifra(ponudjac.getSifra());
 		
 		originalPonudjac = ponudjacServis.save(originalPonudjac);
-		
+		session.setAttribute("ulogovanKorisnik", originalPonudjac);
 		return new ResponseEntity<Ponudjac>(originalPonudjac, HttpStatus.OK);
 	}
 	

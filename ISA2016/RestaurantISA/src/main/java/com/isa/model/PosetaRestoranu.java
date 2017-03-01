@@ -25,9 +25,10 @@ public class PosetaRestoranu {
 	
 	@ManyToOne(optional = true)
 	private Restoran restoran;
-	
+
 	@ManyToOne(optional = true)
 	private Sto sto;
+
 	
 	@Column(name = "obavljena")
 	private boolean obavljena;
@@ -38,15 +39,16 @@ public class PosetaRestoranu {
 	@Column(name = "termin")
 	private String termin;
 
-
 	@Column(name = "br_sati")
 	private int brSati;
-
 	
+	@Column(name = "isAccepted")
+	private Boolean isAccepted;
+
 	public PosetaRestoranu() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public Gost getGost() {
 		return gost;
 	}

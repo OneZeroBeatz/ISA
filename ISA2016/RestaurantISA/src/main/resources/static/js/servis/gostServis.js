@@ -59,7 +59,9 @@ gostServis.factory('izmeniGostaServis', function($http) {
 		return $http.post('/gostKontroler/otkaziZahtev', obj);
 	}
 	
-	
+	temp.rezervisiRestoran = function(obj) {
+		return $http.post('/gostKontroler/rezervisiRestoran', obj);
+	}
 	
 	
 	// SASA 

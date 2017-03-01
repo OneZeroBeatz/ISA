@@ -54,7 +54,7 @@ public class LogRegKontroler {
 			
 			newGuest.setIsActivated(false);
 			servis.save(newGuest);	
-			SendMail sm = new SendMail("nikola9n@gmail.com", "http://localhost:9000/contr/activate/"+newGuest.getEmail()+"/");
+			SendMail sm = new SendMail("nikola9n@gmail.com","Aktivirajte nalog klikom na link: " + "http://localhost:9000/contr/activate/"+newGuest.getEmail()+"/");
 			
 			return new ResponseEntity<Poruka>(new Poruka("Registrovan", newGuest), HttpStatus.ACCEPTED);	
 		}else{
@@ -108,7 +108,7 @@ public class LogRegKontroler {
 				Korisnik otherKoris = korServis.findByEmail(newGuest.getEmail());
 				if(otherKoris != null && otherKoris.getSifra().equals(newGuest.getSifra())){
 					//model.addAttribute("korisnik", otherKoris);
-					session.setAttribute("ulogovanKorisnik", korisnik);
+					session.setAttribute("ulogovanKorisnik", otherKoris);
 					return new ResponseEntity<Poruka>(new Poruka("Ulogovan", otherKoris), HttpStatus.ACCEPTED);
 				}
 			}

@@ -1,6 +1,9 @@
 package com.isa.services;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -214,6 +217,40 @@ public class RestoranServisImpl implements RestoranServis{
 
 	@Override
 	public void dodajSmenu(Smena smena) {
+		String odSmena = smena.getVremeod();
+		String doSmena = smena.getVremedo();
+
+		odSmena = odSmena.split("T")[1];
+		doSmena = doSmena.split("T")[1];
+		
+		odSmena = odSmena.substring(0, 5);
+		doSmena = doSmena.substring(0, 5);
+		int temp1 = Integer.parseInt(odSmena.split(":")[0]);
+		if(temp1+1 > 23){
+			temp1 = 0;
+		}else{
+			temp1++;
+		}
+		int temp2 = Integer.parseInt(doSmena.split(":")[0]);
+		if(temp2+1 > 23){
+			temp2 = 0;
+		}else{
+			temp2++;
+		}
+		String temp1String = String.valueOf(temp1);
+		String temp2String = String.valueOf(temp2);
+		if(temp1String.length() == 1){
+			temp1String = 0 + temp1String;
+		}
+		if(temp2String.length() == 1){
+			temp2String = 0 + temp2String;
+		}
+		odSmena = temp1String + odSmena.substring(2);
+		doSmena = temp2String + doSmena.substring(2);	
+		
+		smena.setVremedo(doSmena);
+		smena.setVremeod(odSmena);
+		
 		smenaSkladiste.save(smena);
 	}
 
@@ -375,6 +412,11 @@ public class RestoranServisImpl implements RestoranServis{
 		s.setSegment(sto.getSegment());
 		stoSkladiste.save(s);
 		return s;
+	}
+
+	@Override
+	public List<Sto> izlistajStoloveSmene(SmenaUDanu smenaKonobara) {
+		return stoSkladiste.findBySmenaudanu(smenaKonobara);
 	}
 
 }

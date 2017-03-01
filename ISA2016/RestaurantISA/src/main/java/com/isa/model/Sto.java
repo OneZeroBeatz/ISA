@@ -41,7 +41,7 @@ public class Sto implements Serializable {
 	private Set<Porudzbina> porudzbine;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sto")
-	private Set<PosetaRestoranu> poseteRestoranu;
+	private Set<PosetaRestoranu> posete;
 	
 	//@JsonIgnore
 	@ManyToMany(mappedBy = "sto", cascade = CascadeType.ALL)

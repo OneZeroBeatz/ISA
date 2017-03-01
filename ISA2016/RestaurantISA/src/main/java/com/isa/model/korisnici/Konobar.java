@@ -17,7 +17,7 @@ import com.isa.model.SmenaUDanu;
 @DiscriminatorValue("KN")
 public class Konobar extends Korisnik{
 
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = true, cascade = CascadeType.MERGE)
 	private Restoran restoran;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "konobar")

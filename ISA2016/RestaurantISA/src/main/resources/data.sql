@@ -3,12 +3,6 @@ insert into korisnik(ime, prezime, sifra, ctype, email, tip, is_activated) value
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, is_activated) values ('Djura', 'Djuric', 'djura123', 'G','djura@djura.com', 'GOST', true);
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, is_activated) values ('Verka', 'Verkic', 'verka123', 'G','verka@verka.com', 'GOST', true);
 
---insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('Aca', 'aaa', 'a', 'PN','a@a.a', 'PONUDJAC');
---insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('B', 'bbb', 'b', 'PN','b', 'PONUDJAC');
-
---insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('C', 'ccc', 'c', 'MENRES','c@c.c', 'MENADZER_RESTRORANA');
---insert into korisnik(ime, prezime, sifra, ctype, email, tip) values ('D', 'ddddd', 'd', 'MENRES','d', 'MENADZER_RESTRORANA');
-
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, glavni) values ('Kero', 'Kerica', 's', 'MENSIS','s', 'MENADZER_SISTEMA', true);
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, glavni) values ('Kero1', 'Kerica1', 'f', 'MENSIS','f', 'MENADZER_SISTEMA', false);
 
@@ -17,21 +11,6 @@ insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values
 
 insert into restoran(naziv, opis) values ('Restoran 2', 'Opis Restorana 2');
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values ('Z', 'zzz', 'z', 'MENRES','z', 'MENADZER_RESTRORANA', (select id from restoran where naziv='Restoran 2'));
-
-
---insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (11, 'segment 1', false, 6, (select id from restoran where naziv='Restoran 1'));
---insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (12, 'segment 2', false, 6, (select id from restoran where naziv='Restoran 1'));
---insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (13, 'segment 3', false, 6, (select id from restoran where naziv='Restoran 1'));
---insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (13, 'segment 4', false, 6, (select id from restoran where naziv='Restoran 1'));
---insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (12, 'segment 5', false, 6, (select id from restoran where naziv='Restoran 1'));
---insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (21, 'segment 6', false, 6, (select id from restoran where naziv='Restoran 1'));
-
---insert into porudzbina(vremeprimanja, vremenaplate, restoran_id, spremna_jela, spremna_pica, spremno_bar_jedno_jelo, sto_id) values ("2014-01-12 11:39:11", "2014-01-12 11:42:11", (select id from restoran where naziv='Restoran 1'), false, false, false, 1);
---insert into porudzbina(vremeprimanja, vremenaplate, restoran_id, spremna_jela, spremna_pica, spremno_bar_jedno_jelo, sto_id) values ("2014-02-12 11:49:34", "2014-01-12 11:45:12", (select id from restoran where naziv='Restoran 1'), false, false, false, 2);
-
---insert into pice(naziv, porudzbinamenadzer_id) values ('Pice 1', (select id from porudzbina_menadzer where od='2015-01-01' and do='2016-01-03'));
-
-
 
 insert into jelo(naziv, opis, cena, restoran_id, tipkuvara) values ('Jelo 1', 'Opis Jela 1', 200, (select id from restoran where naziv='Restoran 1'), 'ZA_SALATE');
 insert into jelo(naziv, opis, cena, restoran_id, tipkuvara) values ('Jelo 2', 'Opis Jela 2', 250, (select id from restoran where naziv='Restoran 1'), 'ZA_SALATE');
@@ -58,7 +37,6 @@ insert into pice(naziv, opis, cena, restoran_id) values ('Pice 3', 'Opis Pica 3'
 
 
 
-
 insert into lista_prijatelja(email_gosta, email_prijatelja) values ('pera@pera.com', 'sima@sima.com');
 insert into lista_prijatelja(email_gosta, email_prijatelja) values ('pera@pera.com', 'djura@djura.com');
 insert into lista_prijatelja(email_gosta, email_prijatelja) values ('sima@sima.com', 'pera@pera.com');
@@ -77,6 +55,7 @@ insert into zahtev_za_prijateljstvo(email_gosta, email_prijatelja) values ('pera
 --insert into namirnica(naziv, porudzbinamenadzer_id) values ('Nam 1', (select id from porudzbina_menadzer where od='2015-01-01' and do='2016-01-03'));
 --insert into namirnica(naziv, porudzbinamenadzer_id) values ('Nam 2', (select id from porudzbina_menadzer where menadzerrestorana_id in (select id from korisnik where sifra='d' and email='d')));
 
+
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, tipkuvara) values ('Kuvar1', 'KuvriS', 'ks1', 'KUV','ks1', 'KUVAR', (select id from restoran where naziv='Restoran 1'), 'ZA_SALATE');
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, tipkuvara) values ('Kuvar2', 'KuvriK', 'kk1', 'KUV','kk1', 'KUVAR', (select id from restoran where naziv='Restoran 1'), 'ZA_KUVANA_JELA');
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, tipkuvara) values ('Kuvar3', 'KuvriP', 'kp1', 'KUV','kp1', 'KUVAR', (select id from restoran where naziv='Restoran 1'), 'ZA_PECENA_JELA');
@@ -92,6 +71,7 @@ insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id) values
 
 insert into smena(vremeod, vremedo, restoran_id) values ('07:00', '15:00', (select id from restoran where naziv='Restoran 1'));
 insert into smena(vremeod, vremedo, restoran_id) values ('15:00', '23:00', (select id from restoran where naziv='Restoran 1'));
+
 
 insert into smenaudanu (dan, kuvar_id, smena_id, restoran_id) values ('PONEDELJAK', (select id from korisnik where ime ='Kuvar1'), 1, (select id from restoran where naziv = 'Restoran 1'));
 insert into smenaudanu (dan, kuvar_id, smena_id, restoran_id) values ('UTORAK', (select id from korisnik where ime ='Kuvar1'), 1, (select id from restoran where naziv = 'Restoran 1'));
@@ -141,3 +121,4 @@ insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br
 insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati) values (2,2,true, -1, '2013-01-12 11:32:11', 5);
 insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati) values (1,2,false, -1, '2011-01-12 11:49:11', 7);
 insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati) values (1,1,true, -1, '2014-01-12 11:59:11', 8);
+
