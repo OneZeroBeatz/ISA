@@ -11,6 +11,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.joda.time.DateTime;
+
 import com.isa.model.korisnici.Gost;
 
 @Entity
@@ -56,9 +58,8 @@ public class PosetaRestoranu {
 	private int brSati;
 	
 	@Column(name = "isAccepted")
-	private Boolean isAccepted;
-
-
+	private Boolean accepted;
+	
 	public PosetaRestoranu() {
 		// TODO Auto-generated constructor stub
 	}
@@ -155,4 +156,15 @@ public class PosetaRestoranu {
 	public void setOcenaUsluge(int ocenaUsluge) {
 		this.ocenaUsluge = ocenaUsluge;
 	}
+	
+	public Boolean getAccepted() {
+		return accepted;
+	}
+
+	public void setAccepted(Boolean accepted) {
+		this.accepted = accepted;
+	}
+
+	
+	
 }

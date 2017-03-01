@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.isa.model.PosetaRestoranu;
+import com.isa.model.Restoran;
+import com.isa.model.Sto;
 import com.isa.model.ZahtevZaPrijateljstvo;
 import com.isa.model.korisnici.Gost;
 import com.isa.model.korisnici.Korisnik;
@@ -51,5 +53,9 @@ public interface GostServis {
 	public int zahteviCount(GostPrijatelj gostPrij, Pageable pageable);
 
 	void activateAccount(String email);
+
+	List<PosetaRestoranu> svePosete();
+
+	List<PosetaRestoranu> poseteRestoranAndSto(Restoran rest, Sto sto);
 
 }
