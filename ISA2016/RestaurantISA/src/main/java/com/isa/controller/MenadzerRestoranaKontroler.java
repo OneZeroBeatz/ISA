@@ -210,6 +210,7 @@ public class MenadzerRestoranaKontroler {
 	@RequestMapping(value = "/registrujIDodajPonudjaca", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void registrujIDodajPonudjaca(@RequestBody RestoranPonudjac restPon) {	
 		restPon.getPonudjac().setTipKorisnika(TipKorisnika.PONUDJAC);		// TODO: Aca ~ proveriti..
+		restPon.getPonudjac().setLogovaoSe(false);
 		Ponudjac ponudjac = restoranServirs.save(restPon.getPonudjac());
 		restoranServirs.dodajPonudjacaURestoran(restPon.getRestoran(), ponudjac);
 
@@ -354,8 +355,13 @@ public class MenadzerRestoranaKontroler {
 		Poruka poruka = new Poruka();
 		Sto retSto = restoranServirs.izmeniSto(sto);
 		
-		poruka.setMessage(retSto.getSegment());
-		poruka.setObj(retSto);
+		if(retSto == null){
+			poruka.setMessage("false");
+		}else{
+			poruka.setMessage(retSto.getSegment());
+			poruka.setObj(retSto);
+		}
+		
 		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
 	}
 	
@@ -492,6 +498,22 @@ public class MenadzerRestoranaKontroler {
 		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
 	}
 	
+
+	@RequestMapping(value = "/izlistajBojuStola1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Poruka> izlistajBojuStola1(@RequestBody Sto sto) {
+		Poruka poruka = new Poruka();
+		Sto sto2 = restoranServirs.izlistajSto(sto);
+		
+		if(sto2.getSegment().equals("nijesto") || sto2.getSegment() == null){
+			poruka.setMessage("nijesto");
+		}else {
+			poruka.setMessage("nepusacki");
+		}
+		
+		poruka.setObj(sto.getOznaka());
+		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/izvestajZaKonobara", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Poruka> izvestajZaKonobara(@RequestBody IzvestajKonobar izvestajKonobar) {
 		Poruka poruka = new Poruka();
@@ -518,7 +540,7 @@ public class MenadzerRestoranaKontroler {
 		ArrayList<Double> procenti = new ArrayList<>();
 		
 		if(posecenostIzvestaj.getNivo().equals("dnevni")){
-			//procenti
+			procenti = restoranServirs.izracunaPosecenostDnevno(posecenostIzvestaj);
 		}else{
 			procenti = restoranServirs.izracunaPosecenostNedelja(posecenostIzvestaj);
 		}

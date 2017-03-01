@@ -34,4 +34,5 @@ public interface PoseteSkladiste extends JpaRepository<PosetaRestoranu, Serializ
 
 	List<PosetaRestoranu> findByRestoranAndDatumrezAndDatumrezBefore(Restoran restoran, Date datumOd, Date danasnjiDan);
 	
+	List<PosetaRestoranu> findByRestoranAndSto(Restoran restoran, Sto sto);
 }
