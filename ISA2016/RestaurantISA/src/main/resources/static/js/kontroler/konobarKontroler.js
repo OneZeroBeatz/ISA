@@ -376,6 +376,11 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 			
 			// za izmeenu podataka
 			$scope.izmeniKonobaraPodaci = function(){
+				
+				if($scope.emailIzmena == null){
+					alert("Neispravan email!");
+					return;
+				}
 				var gost = {
 					ime : $scope.imeIzmena,
 					prezime : $scope.prezimeIzmena,
@@ -386,6 +391,8 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 				izmeniKonobarServis.izmeni(str).success(function(data) {
 						$scope.ulogovanKonobar = data;
 						$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
+						alert("Uspesno promenjeni podaci");
+						$scope.setTab(0);
 					}).error(function(data) {
 						alert("Neuspesne izmene!");
 					});
@@ -621,7 +628,7 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 						$scope.novaLozinkaPotvrda = "";
 						$scope.ulogovanKonobar = data;
 						alert("Uspesno promenjena lozinka");
-						$location.path('/konobar');
+						$scope.setTab(0);
 					}).error(function (data){
 						alert("Neuspesne izmene!");
 					});
