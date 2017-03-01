@@ -4,7 +4,6 @@ insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, logova
 insert into restoran(naziv, opis) values ('Restoran 2', 'Opis Restorana 2');
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, logovao_se) values ('Z', 'zzz', 'z', 'MENRES','z', 'MENADZER_RESTRORANA', (select id from restoran where naziv='Restoran 2'), true);
 
-
 --insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (11, 'segment 1', false, 6, (select id from restoran where naziv='Restoran 1'));
 --insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (12, 'segment 2', false, 6, (select id from restoran where naziv='Restoran 1'));
 --insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (13, 'segment 3', false, 6, (select id from restoran where naziv='Restoran 1'));
