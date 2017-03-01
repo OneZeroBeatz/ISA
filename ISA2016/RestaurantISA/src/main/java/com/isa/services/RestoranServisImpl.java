@@ -166,6 +166,8 @@ public class RestoranServisImpl implements RestoranServis{
 		return stoSkladiste.findByRestoranAndOznaka(rest, sto.getOznaka());
 	}
 
+	
+	
 	@Override
 	public Page<Sto> izlistajStolove(Restoran restoran, Pageable pageable) {
 		return stoSkladiste.findByRestoran(restoran, pageable);
@@ -517,10 +519,10 @@ public class RestoranServisImpl implements RestoranServis{
 	@Override
 	public String sima(DanUNedelji dan, Sto sto, Konobar konobar, Restoran restoran) {
 		Sto s = stoSkladiste.findByRestoranAndOznaka(restoran, sto.getOznaka());
-		if (sto.getSegment().equals("nijesto") || sto == null){
+		if (s.getSegment().equals("nijesto") || s == null){
 			return "nijeSto";
 		}
-		SmenaUDanu smenaUDanu = smeneUDanuSkladiste.findByKonobarAndDanUNedeljiAndRestoranAndSto(sto, konobar, restoran, dan);
+		SmenaUDanu smenaUDanu = smeneUDanuSkladiste.findByKonobarAndDanUNedeljiAndRestoranAndSto(konobar, dan, restoran, s);
 		System.out.println("smena u danu = "  + smenaUDanu);
 		if(smenaUDanu == null) {
 			return "jeSto";

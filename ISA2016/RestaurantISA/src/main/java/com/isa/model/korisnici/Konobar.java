@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.isa.model.Porudzbina;
 import com.isa.model.Restoran;
@@ -25,6 +27,7 @@ public class Konobar extends Korisnik {
 	@Column(name = "velobuce", columnDefinition = "int default 0")
 	private int velobuce;
 
+	@Temporal(TemporalType.DATE)
 	@Column(name = "datumrodj", nullable = true)
 	private Date datumrodj;
 

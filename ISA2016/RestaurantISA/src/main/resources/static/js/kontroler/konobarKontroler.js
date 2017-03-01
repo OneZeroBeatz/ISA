@@ -11,7 +11,6 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 		
 	}
 	
-
 	$scope.vratiNaDodavanje = function(){
 		$scope.izmena = false;
 		$scope.smeDaBriseJela = true;
@@ -43,6 +42,24 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 				if($scope.ulogovanKonobar.logovaoSe == false){
 					$scope.tab = 4;
 					return;
+				}
+				if (newTab == 1){
+					for(q=0; q<$scope.brojRedova*$scope.brojKolona; q++){
+						tempSto = [{oznaka : q, restoran : $scope.ulogovanKonobar.restoran}];		// Mozda 1 i <=
+						
+						var smenaDan = {
+							sto : tempSto,
+							konobar: $scope.ulogovanKonobar
+						}
+						var str = JSON.stringify(smenaDan);
+						izmeniKonobarServis.izlistajDostupneSmeneKonobarDan(str).success(function(aaa) {
+							$scope.pokusaj[aaa.obj] = aaa.message;
+							
+						}).error(function(data) {
+							console.log(data);
+							$scope.pokusaj[data.obj] = "nijesto";
+						});
+					}
 				}
 				if (newTab == 2){
 					izmeniKonobarServis.izlistajJela($scope.ulogovanKonobar).success(function(data){
@@ -283,31 +300,6 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 		    	console.log("brise pica = "+ izmeniPorudzbinuPrikaz.smeDaBrisePica);
 		    	console.log("doda jela = "+ izmeniPorudzbinuPrikaz.smeDaDodaJela);
 		    	console.log("doda pica = "+ izmeniPorudzbinuPrikaz.smeDaDodaPica);
-		    	
-		    	
-		    	for(q=0; q<$scope.brojRedova*$scope.brojKolona; q++){
-					tempSto = [{oznaka : q, restoran : $scope.restoran}];		// Mozda 1 i <=
-					
-					var smenaDan = {
-						sto : tempSto,
-						konobar: $scope.ulogovanKonobar
-					}
-					var str = JSON.stringify(smenaDan);
-					menRestoranaServisS.izlistajDostupneSmeneKonobarDan(str).success(function(aaa) {
-						if(aaa.message == "Nije sto"){
-							$scope.pokusaj[aaa.obj[0]] = "nijesto";
-						}else if(aaa.message == "Popunjane smene"){
-							$scope.pokusaj[aaa.obj[0]] = "popnunjen";
-						}else if(aaa.message == "Nisu popunjene smene"){
-							$scope.pokusaj[aaa.obj[0]] = "nijePopunjen";
-						}
-					}).error(function(data) {
-						$scope.pokusaj[aaa.obj[0]] = "nijesto";
-					});
-				}
-		    	
-		    	
-		    	
 		    	
 				izmeniKonobarServis.potvrdiIzmene(izmeniPorudzbinuPrikaz).success(function (data){
 		    		$scope.porudzbine = data;
@@ -573,7 +565,7 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 						
 						for (var i = 0; i < $scope.stolovi.length; i++){
 							var parametar = {
-									konobar: $scope.ulovanKonobar,
+									konobar: $scope.ulogovanKonobar,
 									sto: $scope.stolovi[i]
 								}
 							if ($scope.stolovi[i].oznaka === oznaka){

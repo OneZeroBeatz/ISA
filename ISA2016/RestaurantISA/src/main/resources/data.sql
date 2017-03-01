@@ -12,14 +12,14 @@ insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, logova
 --insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (15, 'segment 5', false, 6, (select id from restoran where naziv='Restoran 1'));
 --insert into sto (oznaka, segment, zauzetost, brojmesta, restoran_id) values (16, 'segment 6', false, 6, (select id from restoran where naziv='Restoran 1'));
 
-insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, tipkuvara, logovao_se) values ('Kuvar1', 'KuvriS', 'ks1', 'KUV','ks1', 'KUVAR', (select id from restoran where naziv='Restoran 1'), 'ZA_SALATE', false);
-insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, tipkuvara, logovao_se) values ('Kuvar2', 'KuvriK', 'kk1', 'KUV','kk1', 'KUVAR', (select id from restoran where naziv='Restoran 1'), 'ZA_KUVANA_JELA', false);
-insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, tipkuvara, logovao_se) values ('Kuvar3', 'KuvriP', 'kp1', 'KUV','kp1', 'KUVAR', (select id from restoran where naziv='Restoran 1'), 'ZA_PECENA_JELA', false);
-insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, tipkuvara, logovao_se) values ('Kuvar4', 'KuvriS', 'ks2', 'KUV','ks2', 'KUVAR', (select id from restoran where naziv='Restoran 1'), 'ZA_SALATE', false);
-insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, tipkuvara, logovao_se) values ('Kuvar5', 'KuvriK', 'kk2', 'KUV','kk2', 'KUVAR', (select id from restoran where naziv='Restoran 1'), 'ZA_KUVANA_JELA', false);
-insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, tipkuvara, logovao_se) values ('Kuvar6', 'KuvriP', 'kp2', 'KUV','kp2', 'KUVAR', (select id from restoran where naziv='Restoran 1'), 'ZA_PECENA_JELA', false);
-insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, logovao_se) values ('Kono1', 'Konoric1', 'k1', 'KN','k1', 'KONOBAR', (select id from restoran where naziv='Restoran 1'), false);
-insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, logovao_se) values ('Kono2', 'Konoric2', 'k2', 'KN','k2', 'KONOBAR', (select id from restoran where naziv='Restoran 1'), false);
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, tipkuvara, logovao_se) values ('Kuvar1', 'KuvriS', 'ks1', 'KUV','ks1', 'KUVAR', (select distinct  id from restoran where naziv='Restoran 1'), 'ZA_SALATE', false);
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, tipkuvara, logovao_se) values ('Kuvar2', 'KuvriK', 'kk1', 'KUV','kk1', 'KUVAR', (select distinct  id from restoran where naziv='Restoran 1'), 'ZA_KUVANA_JELA', false);
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, tipkuvara, logovao_se) values ('Kuvar3', 'KuvriP', 'kp1', 'KUV','kp1', 'KUVAR', (select distinct  id from restoran where naziv='Restoran 1'), 'ZA_PECENA_JELA', false);
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, tipkuvara, logovao_se) values ('Kuvar4', 'KuvriS', 'ks2', 'KUV','ks2', 'KUVAR', (select distinct  id from restoran where naziv='Restoran 1'), 'ZA_SALATE', false);
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, tipkuvara, logovao_se) values ('Kuvar5', 'KuvriK', 'kk2', 'KUV','kk2', 'KUVAR', (select distinct  id from restoran where naziv='Restoran 1'), 'ZA_KUVANA_JELA', false);
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, tipkuvara, logovao_se) values ('Kuvar6', 'KuvriP', 'kp2', 'KUV','kp2', 'KUVAR', (select distinct  id from restoran where naziv='Restoran 1'), 'ZA_PECENA_JELA', false);
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, logovao_se) values ('Kono1', 'Konoric1', 'k1', 'KN','k1', 'KONOBAR', (select distinct  id from restoran where naziv='Restoran 1'), false);
+insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, logovao_se) values ('Kono2', 'Konoric2', 'k2', 'KN','k2', 'KONOBAR', (select distinct  id from restoran where naziv='Restoran 1'), false);
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, logovao_se) values ('Kono3', 'Konoric3', 'k3', 'KN','k3', 'KONOBAR', (select id from restoran where naziv='Restoran 1'), false);
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, logovao_se) values ('Kono4', 'Konoric4', 'k4', 'KN','k4', 'KONOBAR', (select id from restoran where naziv='Restoran 1'), false);
 insert into korisnik(ime, prezime, sifra, ctype, email, tip, restoran_id, logovao_se) values ('Sano', 'Sankic', 'sa', 'SNK','sa', 'SANKER', (select id from restoran where naziv='Restoran 1'), false);
@@ -111,12 +111,12 @@ insert into smena(vremeod, vremedo, restoran_id) values ('10:00', '23:00', (sele
 --insert into smenadan_sto (smenaudanu_id, sto_id) values (9, (select id from sto where oznaka = 13));
 
 -- SMENA SANKERA
-insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('UTORAK', (select id from korisnik where ime ='Sano'), 1, (select id from restoran where naziv = 'Restoran 1'));
-insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('SREDA', (select id from korisnik where ime ='Sano'), 1, (select id from restoran where naziv = 'Restoran 1'));
-insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('CETVRTAK', (select id from korisnik where ime ='Sano'), 2, (select id from restoran where naziv = 'Restoran 1'));
-insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('PETAK', (select id from korisnik where ime ='Sano'), 1, (select id from restoran where naziv = 'Restoran 1'));
-insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('SUBOTA', (select id from korisnik where ime ='Sano'), 2, (select id from restoran where naziv = 'Restoran 1'));
-insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('NEDELJA', (select id from korisnik where ime ='Sano'), 2, (select id from restoran where naziv = 'Restoran 1'));
+--insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('UTORAK', (select id from korisnik where ime ='Sano'), 1, (select id from restoran where naziv = 'Restoran 1'));
+--insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('SREDA', (select id from korisnik where ime ='Sano'), 1, (select id from restoran where naziv = 'Restoran 1'));
+--insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('CETVRTAK', (select id from korisnik where ime ='Sano'), 2, (select id from restoran where naziv = 'Restoran 1'));
+--insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('PETAK', (select id from korisnik where ime ='Sano'), 1, (select id from restoran where naziv = 'Restoran 1'));
+--insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('SUBOTA', (select id from korisnik where ime ='Sano'), 2, (select id from restoran where naziv = 'Restoran 1'));
+--insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('NEDELJA', (select id from korisnik where ime ='Sano'), 2, (select id from restoran where naziv = 'Restoran 1'));
 
 
 
