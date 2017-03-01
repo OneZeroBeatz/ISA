@@ -1,6 +1,6 @@
 var menRestoranaKontroler = angular.module('restoranApp.menRestoranaKontroler', []);
 
-menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStranaServis, $scope, menRestoranaServisS, $window, izmeniKonobarServis) {
+menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStranaServis, $scope, menRestoranaServisS, $window) {
 	$scope.radniciTip = ["", "Konobar", "Kuvar", "Sanker"];
 	$scope.tipRadnika = "";
 	$scope.tipoviJela = ["Peceno", "Kuvano", "Salata"];
@@ -14,8 +14,14 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 	//$scope.popnunjen = {};
 	//$scope.nijePopunjen = {};
 	$scope.pokusaj = [];
-	$scope.pojedSto = []
-	
+	$scope.pojedSto = [];
+	$scope.ponN = [];
+	$scope.utoN = [];
+	$scope.sreN = [];
+	$scope.cetN = [];
+	$scope.petN = [];
+	$scope.subN = [];
+	$scope.nedN = [];
 	
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 		$scope.brRedova = [];
@@ -807,7 +813,6 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 		}
 		var str = JSON.stringify(ponRest);
 		menRestoranaServisS.dodajPonudjaca(str);
-		
 	}
 	
 	$scope.registrujIDodajPonudjaca = function(){
@@ -1024,6 +1029,7 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 		});
 		
 	}
+	$scope.nedTrue = false;
 	
 	// Graf prikaz poseta
 	$scope.prikaziGrafikPosecenosti = function(){
@@ -1039,13 +1045,38 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 				// obj[0] - broj smena
 				// obj[1] - lista pocenata za svaku smenu
 			}else if($scope.naKomNivou == "nedeljni"){
-				// obj - lista procenata za svaki dan
+				for(i=0; i<data.obj[0]; i++){
+					$scope.ponN.push(i);
+				}
+				for(i=0; i<data.obj[1]; i++){
+					$scope.utoN.push(i);
+				}
+				for(i=0; i<data.obj[2]; i++){
+					$scope.sreN.push(i);
+				}
+				for(i=0; i<data.obj[3]; i++){
+					$scope.cetN.push(i);
+				}
+				for(i=0; i<data.obj[4]; i++){
+					$scope.petN.push(i);
+				}
+				for(i=0; i<data.obj[5]; i++){
+					$scope.subN.push(i);
+				}
+				for(i=0; i<data.obj[6]; i++){
+					$scope.nedN.push(i);
+				}
+
+				$scope.nedTrue = true;
 			}
-			
-			//$scope.prihodKonobara = data.obj;		//message staviti ako konobar ne postoji...
+
 		}).error(function(data) {
 			
 		});
+	}
+	
+	$scope.prikaNedeljni = function() {
+		return $scope.nedTrue;
 	}
 	
 	$scope.kuvarSelek = false;

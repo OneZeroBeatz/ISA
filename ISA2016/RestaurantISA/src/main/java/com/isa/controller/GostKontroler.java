@@ -36,6 +36,7 @@ import com.isa.pomocni.GostPrijatelj;
 import com.isa.pomocni.OcenaPoseta;
 import com.isa.pomocni.Poruka;
 import com.isa.pomocni.PretragaPrijatelja;
+import com.isa.pomocni.PromeniSifru;
 import com.isa.pomocni.SendMail;
 import com.isa.services.GostServis;
 import com.isa.services.MenadzerSistemaServis;
@@ -81,6 +82,26 @@ public class GostKontroler {
 		session.setAttribute("ulogovanKorisnik", originalGost);
 		
 		return new ResponseEntity<Gost>(originalGost, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value = "/izmeniGostaSifra", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Poruka> izmeniGostaSifra(@RequestBody PromeniSifru promeniSifru, HttpSession session) {		
+		Gost gost = (Gost) session.getAttribute("ulogovanKorisnik");
+		Gost gost2 = (Gost) gostServis.findOne(gost.getId());
+		
+		if(gost2.getSifra().equals(promeniSifru.getStaraSifra())){			
+			if(promeniSifru.getNovaSifra().equals(promeniSifru.getNovaSifra2())){
+				gost.setSifra(promeniSifru.getNovaSifra());
+				gostServis.save(gost);
+				
+				return new ResponseEntity<Poruka>(new Poruka("Promenjena", null), HttpStatus.OK);
+			}else{
+				return new ResponseEntity<Poruka>(new Poruka("NisuIste", null), HttpStatus.OK);
+			}	
+		}else{
+			return new ResponseEntity<Poruka>(new Poruka("NijeStara", null), HttpStatus.OK);
+		}
 	}
 
 	@RequestMapping(value = "/izlistajPrijateljeNeprijatelje", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -568,6 +589,7 @@ public class GostKontroler {
 		
 		return new ResponseEntity<List<Restoran>>(returnedList, HttpStatus.OK);
 	}
+	
 	
 	// SASA
 	

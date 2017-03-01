@@ -90,4 +90,13 @@ menSistemaKontroler.controller('menSistemaCtrl', function (gostGlavnaStranaServi
 			alert("Neuspesno registrovanje, moguce da postoji korisnik sa tim email-om")
 		});		
 	}
+	
+	$scope.logOut = function(){
+		gostGlavnaStranaServis.logOut().success(function(data) {
+			if(data.message == "Izlogovan"){
+				$window.location.href = '/';
+			}else{
+			}
+		});
+	}
 });

@@ -10,9 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.isa.RestaurantIsaApplication;
+import com.isa.model.Jelo;
 import com.isa.model.Restoran;
-import com.isa.model.korisnici.Konobar;
+import com.isa.repository.JeloSkladiste;
 import com.isa.services.RestoranServis;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,6 +22,8 @@ public class RestoranServisTest {
 
 	@Autowired
 	private RestoranServis restoranServis;
+	@Autowired
+	private JeloSkladiste jeloSkladiste;
 	
 	@Test
 	public void testSave() {
@@ -63,6 +65,16 @@ public class RestoranServisTest {
         Restoran ucitan = (Restoran) restoranServis.findOne(restoran.getId());
         Assert.assertNull(ucitan);
     }
+    
+	@Test
+	public void saveTest() {
+		Jelo jelo = new Jelo();
+		jelo.setNaziv("ime");
+		restoranServis.save(jelo);
+		
+		List<Jelo> jela = jeloSkladiste.findByNaziv("ime");
+		Assert.assertNotEquals(jela.size(),0);
+	}
     
 
 	

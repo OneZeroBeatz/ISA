@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.isa.model.Jelo;
 import com.isa.model.PosetaRestoranu;
 import com.isa.model.Restoran;
 import com.isa.model.Sto;
@@ -33,6 +34,17 @@ public interface PoseteSkladiste extends JpaRepository<PosetaRestoranu, Serializ
 	List<PosetaRestoranu> findByRestoranAndDatumrez(Restoran restoran, Date datumOd);
 
 	List<PosetaRestoranu> findByRestoranAndDatumrezAndDatumrezBefore(Restoran restoran, Date datumOd, Date danasnjiDan);
+
+	List<PosetaRestoranu> findByRestoranAndJeloAndOcenaObrokaNot(Restoran restoran, Jelo jelo, int i);
+
+	List<PosetaRestoranu> findByRestoranAndJeloAndOcenaObrokaNotAndDatumrezBefore(Restoran restoran, Jelo jelo, int i,
+			Date datumdo);
+
+	List<PosetaRestoranu> findByRestoranAndJeloAndOcenaObrokaNotAndDatumrezAfter(Restoran restoran, Jelo jelo, int i,
+			Date datumod);
+
+	List<PosetaRestoranu> findByRestoranAndJeloAndOcenaObrokaNotAndDatumrezBetween(Restoran restoran, Jelo jelo, int i,
+			Date datumod, Date datumdo);
 	
 	List<PosetaRestoranu> findByRestoranAndSto(Restoran restoran, Sto sto);
 }

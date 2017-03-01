@@ -67,6 +67,10 @@ gostServis.factory('izmeniGostaServis', function($http) {
 		return $http.post ('/gostKontroler/pretraziRestorane', obj)
 	}
 	
+	temp.izmeniGostaSifra = function (objekat){
+		return $http.post('/gostKontroler/izmeniGostaSifra', objekat);
+	}
+	
 	// SASA 
 	temp.ucitajPoseteGosta = function (gost){
 		return $http.post('/gostKontroler/ucitajPoseteGosta', gost);

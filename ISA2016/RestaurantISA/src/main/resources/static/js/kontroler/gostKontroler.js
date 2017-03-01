@@ -52,6 +52,7 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 					alert("Neuspelo ucitavanje poseta");
 				});
 				
+				
 			}else{
 				$window.location.href = '/';
 			}
@@ -543,6 +544,29 @@ gostKontroler.controller('gostCtrl', function($scope, $location, gostGlavnaStran
 			} else {
 				$scope.show = item.id;
 			}
+			
+		}
+		
+		$scope.izmeniGostaSifra = function (){
+			
+			var objekat = {
+				staraSifra : $scope.staraLozinka,
+				novaSifra :	$scope.novaLozinka,
+				novaSifra2 : $scope.novaLozinkaPotvrda
+			}
+			
+			izmeniGostaServis.izmeniGostaSifra(objekat).success(function(data){
+				if(data.message == "Promenjena"){
+					alert("Sifra uspesno promenjena");
+				}else if(data.message == "NisuIste"){
+					alert("Lozinke moraju da se poklapaju");
+				}else if(data.message == "NijeStara"){
+					alert("Uneli ste pogresnu staru sifru")
+				}else{
+					alert("Greska prilikom promene lozinke")					
+				}
+			}).error(function (data){
+			});
 			
 		}
 		

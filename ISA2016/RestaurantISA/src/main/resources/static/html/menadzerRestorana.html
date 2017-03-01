@@ -1308,20 +1308,6 @@
 							<td>{{izvestajJelo.jelo.naziv}}</td>
 							<td>{{izvestajJelo.ocena}}</td>
 						</tr>
-						<tr>
-							<td colspan="2"></td>
-						</tr>
-						<tr>
-							<td colspan="2">Ocena kuvar za {{izvestajJelo.jelo.naziv}}</td>
-						</tr>
-						<tr>
-							<td>Email kuvara</td>
-							<td>Prosecna ocena</td>
-						</tr>
-						<tr ng-repeat="kuvIzv in izvestajJelo.izvestajKuvarJelo">
-							<td>kuvIzv.kuvar.email</td>
-							<td>kuvIzv.prosecnaOcena</td>
-						</tr>
 					</table>
 				</div>
 				<br>
@@ -1364,7 +1350,53 @@
 						</td>
 						<td><button ng-click="prikaziGrafikPosecenosti()">Kreiraj</button></td>
 					</tr>
-				</table><!-- style = "width:30px" -->
+				</table>
+				<div ng-show="prikaNedeljni()">
+					<table>
+						<p>Ponedeljak: </p>
+						<tr style = "width:30px;">
+							<td ng-repeat="n in ponN" style = "width:1px; background-color:blue">
+								<p>Pon: </p><div style = "width:1px; background-color:blue"></div>
+							</td>
+						</tr>
+					</table>
+					<table>
+						<p>Utorak: </p>
+						<tr style = "height:30px;"><td  ng-repeat="n in utoN" style = "width:1px; background-color:blue">
+							<div style = "width:1px; background-color:blue"></div>
+						</td></tr>
+					</table>
+					<table>
+						<p>Sreda: </p>
+						<tr style = "height:30px;"><td ng-repeat="n in sreN" style = "width:1px; background-color:blue">
+							 <div style = "width:1px; background-color:blue"></div>
+						</td></tr>
+					</table>
+					<table>
+						<p>Cetvrtak: </p>
+						<tr style = "height:30px;"><td  ng-repeat="n in cetN" style = "width:1px; background-color:blue">
+							<div style = "width:1px; background-color:blue"></div>
+						</td></tr>
+					</table>
+					<table>
+						<p>Petak: </p>
+						<tr style = "height:30px;"><td  ng-repeat="n in petN" style = "width:1px; background-color:blue">
+							<div style = "width:1px; background-color:blue"></div>
+						</td></tr>
+					</table>
+					<table>
+						<p>Subota: </p>
+						<tr style = "height:30px;"><td  ng-repeat="n in subN" style = "width:1px; background-color:blue">
+							<div style = "width:1px; background-color:blue"></div>
+						</td></tr>
+					</table>
+					<table>
+						<p>Nedelja: </p>
+						<tr style = "height:30px;"><td  ng-repeat="n in nedN" style = "width:1px; background-color:blue">
+							<div style = "width:1px; background-color:blue"></div>
+						</td></tr>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>
