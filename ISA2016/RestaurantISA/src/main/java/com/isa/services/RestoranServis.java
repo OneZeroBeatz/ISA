@@ -18,6 +18,7 @@ import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Kuvar;
 import com.isa.model.korisnici.Ponudjac;
 import com.isa.model.korisnici.Sanker;
+import com.isa.pomocni.IzvestajRestoran;
 
 public interface RestoranServis {
 
@@ -101,6 +102,14 @@ public interface RestoranServis {
 
 	IzvestajJelo izlistajIzvestajZaJelo(IzvestajJelo izvestajJelo);
 
-	int izlistajOcenuRestorana(Restoran restoran);
+	double izlistajOcenuRestorana(IzvestajRestoran izvestajRestoran);
+
+	double izlistajPrihodRestorana(IzvestajRestoran izvestajRestoran);
+
+	Konobar registrujKonobara(Konobar konobar);
+
+	Kuvar registrujKuvara(Kuvar kuvar);
+
+	Sanker registrujeSankera(Sanker sanker);
 
 }

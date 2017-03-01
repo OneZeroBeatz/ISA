@@ -10,6 +10,8 @@ import com.isa.model.korisnici.Sanker;
 
 public interface SankerSkladiste extends JpaRepository<Sanker, Long> {
 	
+	Sanker save(Sanker sanker);
+	
 	List<Korisnik> findById(Long gid);
 	
 	List<Korisnik> findByEmail(String email);

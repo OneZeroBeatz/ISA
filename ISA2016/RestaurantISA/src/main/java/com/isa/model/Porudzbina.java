@@ -1,5 +1,6 @@
 package com.isa.model;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.model.korisnici.Konobar;
@@ -70,6 +73,10 @@ public class Porudzbina {
 	@Column(name = "vremenaplate")
 	private String vremeNaplate;
 
+	@Column(name = "datumizrade", nullable = true)
+	@Temporal(TemporalType.DATE)
+	private Date datumizrade;
+	
 	public Porudzbina() {
 
 	}
@@ -172,5 +179,11 @@ public class Porudzbina {
 		this.porudzbinaPrihvacena = porudzbinaPrihvacena;
 	}
 	
+	public Date getDatumizrade() {
+		return datumizrade;
+	}
 
+	public void setDatumizrade(Date datumizrade) {
+		this.datumizrade = datumizrade;
+	}
 }

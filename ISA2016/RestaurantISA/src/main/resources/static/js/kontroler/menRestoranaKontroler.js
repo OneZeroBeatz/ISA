@@ -10,14 +10,18 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 	$scope.odabranaPorudz = null;
 	
 	// Pokusaj
-	$scope.nijesto = {};
-	$scope.popnunjen = {};
-	$scope.nijePopunjen = {};
+	//$scope.nijesto = {};
+	//$scope.popnunjen = {};
+	//$scope.nijePopunjen = {};
+	$scope.pokusaj = [];
+	$scope.pojedSto = []
 	
 	gostGlavnaStranaServis.koJeNaSesiji().success(function(data) {
 		$scope.brRedova = [];
 		$scope.brKolona = [];
 		$scope.listaStavki = [];
+		$scope.brojRedova = 0;
+		$scope.brojKolona = 0;
 		
 		if(data.message == "NekoNaSesiji"){
 			var menRest = {
@@ -65,6 +69,21 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 						
 					});
 					*/
+					for(q=0; q<$scope.brojRedova*$scope.brojKolona; q++){
+						tempSto = [{oznaka : q, restoran : $scope.restoran}];		// Mozda 1 i <=
+						
+						var smenaDan = {
+							sto : tempSto,
+							restoran : $scope.restoran,
+						}
+						var str = JSON.stringify(smenaDan);
+						menRestoranaServisS.izlistajBojuStola(str).success(function(aaa) {
+							$scope.pojedSto[aaa.obj] = aaa.message;
+						}).error(function(data) {
+							$scope.pojedSto[aaa.obj] = "nijesto";
+						});
+					}
+					
 					for(i=0; i<$scope.brojRedova; i++){
 						$scope.brRedova.push(i);
 					}
@@ -97,7 +116,7 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 				menRestoranaServisS.dodajSmenu(str);
 			}
 			
-			$scope.promenjenTip = function(){
+			$scope.promenjenTip = function(){	//aaa
 				$scope.selektovanTip = $scope.tipRadnika;
 				
 				if($scope.prikaziDan == 1){
@@ -174,10 +193,9 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 					}).error(function(data) {
 					});
 				}else if($scope.selektovanTip == "Konobar"){
-					$scope.obojiSto = function(kriterijumOznaka){
-						// TODO:....
+					for(q=0; q<$scope.brojRedova*$scope.brojKolona; q++){
+						tempSto = [{oznaka : q, restoran : $scope.restoran}];		// Mozda 1 i <=
 						
-						/*tempSto = [{oznaka : oznakaStola, restoran : $scope.restoran}];
 						var smenaDan = {
 							sto : tempSto,
 							restoran : $scope.restoran,
@@ -185,20 +203,18 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 						}
 						var str = JSON.stringify(smenaDan);
 						menRestoranaServisS.izlistajDostupneSmeneKonobarDan(str).success(function(aaa) {
-							if(aaa.message == "Nije sto" && kriterijum == "nijesto"){*/
-								return true;
-								/*	}else if(aaa.message == "Popunjane smene" && kriterijum == "popnunjen"){
-								return true;
-							}else if(aaa.message == "Nisu popunjene smene" && kriterijum == "nijePopunjen"){
-								return true;
-							}else{
-								return false;
+							if(aaa.message == "Nije sto"){
+								$scope.pokusaj[aaa.obj[0]] = "nijesto";
+							}else if(aaa.message == "Popunjane smene"){
+								$scope.pokusaj[aaa.obj[0]] = "popnunjen";
+							}else if(aaa.message == "Nisu popunjene smene"){
+								$scope.pokusaj[aaa.obj[0]] = "nijePopunjen";
 							}
 						}).error(function(data) {
-						});*/
+							$scope.pokusaj[aaa.obj[0]] = "nijesto";
+						});
 					}
 				}
-
 			}
 			
 			$scope.dodajKuvaraUSmenuDana = function(){
@@ -283,8 +299,8 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 			// Konobar
 			var tempSto = null;
 			$scope.prikaziStoloveKonobara = function(oznaka){
-				$scope.dostupniKonPonedeljak = null;
-				$scope.dostupneSmenePon = null;
+				$scope.dostupniKonPonedeljak = {};
+				$scope.dostupneSmenePon = {};
 				$scope.prikaz = true;
 				
 				tempSto = [{oznaka : oznaka, restoran : $scope.restoran}];
@@ -300,21 +316,21 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 				});
 				
 				menRestoranaServisS.izlistajDostupneSmeneKonobarDan(str).success(function(data2) {
-					if(data2.obj != null){
+					if(data2.obj[1] != null){
 						if($scope.prikaziDan == 1){
-							$scope.dostupneSmenePon = data2.obj;
+							$scope.dostupneSmenePon = data2.obj[1];
 						}else if($scope.prikaziDan == 2){
-							$scope.dostupneSmeneUto = data2.obj;
+							$scope.dostupneSmeneUto = data2.obj[1];
 						}else if($scope.prikaziDan == 3){
-							$scope.dostupneSmeneSre = data2.obj;
+							$scope.dostupneSmeneSre = data2.obj[1];
 						}else if($scope.prikaziDan == 4){
-							$scope.dostupneSmeneCet = data2.obj;
+							$scope.dostupneSmeneCet = data2.obj[1];
 						}else if($scope.prikaziDan == 5){
-							$scope.dostupneSmenePet = data2.obj;
+							$scope.dostupneSmenePet = data2.obj[1];
 						}else if($scope.prikaziDan == 6){
-							$scope.dostupneSmeneSub = data2.obj;
+							$scope.dostupneSmeneSub = data2.obj[1];
 						}else if($scope.prikaziDan == 0){
-							$scope.dostupneSmeneNed = data2.obj;
+							$scope.dostupneSmeneNed = data2.obj[1];
 						}
 					}
 				}).error(function(data) {
@@ -816,20 +832,64 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 		var tipRad = "";
 		if($scope.tipRadnikaDodaj == "konobar"){
 			tipRad = "KONOBAR";
+			var radnik = {
+				restoran : $scope.restoran,
+				ime : $scope.imeRadnika,
+				prezime : $scope.prezimeRadnika,
+				email : $scope.emailRadnika,
+				sifra : $scope.lozinkaRadnika,
+				tipKorisnika : tipRad,
+				konfbroj : $scope.konfBrRadnika,
+				velobuce : $scope.velObRadnika,
+				datumrodj : $scope.datumRadnika
+			}
+			
+			menRestoranaServisS.registrujKonobara(radnik).success(function(data) {
+				// TODO: Osvezi stranicu	
+			}).error(function(data) {
+				
+			});
 		}else if($scope.tipRadnikaDodaj == "kuvar"){
 			tipRad = "KUVAR";
+			var radnik = {
+				restoran : $scope.restoran,
+				ime : $scope.imeRadnika,
+				prezime : $scope.prezimeRadnika,
+				email : $scope.emailRadnika,
+				sifra : $scope.lozinkaRadnika,
+				tipKorisnika : tipRad,
+				konfbroj : $scope.konfBrRadnika,
+				velobuce : $scope.velObRadnika,
+				datumrodj : $scope.datumRadnika,
+				tipKuvara : $scope.tipKuvaraDodaj
+			}
+			
+			menRestoranaServisS.registrujKuvara(radnik).success(function(data) {
+					
+			}).error(function(data) {
+				
+			});
 		}else if($scope.tipRadnikaDodaj == "sanker"){
 			tipRad = "SANKER";
+			var radnik = {
+				restoran : $scope.restoran,
+				ime : $scope.imeRadnika,
+				prezime : $scope.prezimeRadnika,
+				email : $scope.emailRadnika,
+				sifra : $scope.lozinkaRadnika,
+				tipKorisnika : tipRad,
+				konfbroj : $scope.konfBrRadnika,
+				velobuce : $scope.velObRadnika,
+				datumrodj : $scope.datumRadnika
+			}
+			
+			menRestoranaServisS.registrujSankera(radnik).success(function(data) {
+				
+			}).error(function(data) {
+				
+			});
 		}
-		
-		var radnik = {
-			restoran : $scope.restoran,
-			ime : $scope.imeRadnika,
-			prezime : $scope.prezimeRadnika,
-			sifra : $scope.emailRadnika,
-			email : $scope.lozinkaRadnika,
-			tipKorisnika : tipRad
-		}
+
 	}
 	
 	$scope.daPrikaze = function(porudz){
@@ -860,20 +920,45 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 		});
 	}
 	
+	$scope.obojiSto = function(kriterijum, oznaka){
+		return kriterijum == $scope.pokusaj[oznaka];
+	}
+	
+	$scope.obojiStoPrav = function(kriterijum, oznaka){
+		return kriterijum == $scope.pojedSto[oznaka];
+	}
 	
 	// IZVESTAJI
 	
-		// RESTORAN
+		// RESTORAN ~ staviti gore da izlista kada se ucita
+			
 	$scope.izlistajOcenuRestorana = function(){
-		menRestoranaServisS.izvestajZaRestoran($scope.restoran).success(function(data) {
+		var izvRest = {
+			restoran : $scope.restoran,
+			odDatum : $scope.datumOdOcenaRest,
+			doDatum : $scope.datumDoOcenaRest
+		}
+		// Ocena
+		menRestoranaServisS.izvestajZaRestoran(izvRest).success(function(data) {
 			$scope.ocenaRestorana = data.obj;		//message staviti ako jelo ne postoji...
 		}).error(function(data) {
 			
 		});
+		
+		// Prihod
+		menRestoranaServisS.izvestajPrihodaRestorana(izvRest).success(function(data) {
+			$scope.prihodRestorana = data.obj;		//message staviti ako jelo ne postoji...
+		}).error(function(data) {
+			
+		});
+		
 	}
 	
 		// JELO
+	$scope.prikazIzvJ = false;
+	
 	$scope.prikaziIzvestajJelo = function(){
+		$scope.prikazIzvJ = true;
 		var jeloTemp = {
 			restoran : $scope.restoran,
 			naziv : $scope.nazivJela
@@ -891,8 +976,23 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 		}).error(function(data) {
 			
 		});
-		
-		
 	}
 	
+	$scope.prikazIzvJela = function(){
+		return $scope.prikazIzvJ;
+	}
+	
+	$scope.kuvarSelek = false;
+	
+	$scope.promenaTipa = function(){
+		if($scope.tipRadnikaDodaj == "kuvar"){
+			$scope.kuvarSelek = true;
+		}else{
+			$scope.kuvarSelek = false;
+		}
+	}
+	
+	$scope.selKuvar = function(){
+		return $scope.kuvarSelek;
+	}
 });

@@ -52,6 +52,8 @@ public class PosetaRestoranu {
 	@Column(name = "br_sati")
 	private int brSati;
 
+	// TODO: many to many sa jelom (picem?)
+	
 	public Gost getGost() {
 		return gost;
 	}
