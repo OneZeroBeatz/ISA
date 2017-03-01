@@ -50,5 +50,17 @@ public class MenadzerSistemaServisImpl implements MenadzerSistemaServis {
 		
 	}
 
+
+	@Override
+	public MenadzerSistema findOne(Long id) {
+		return menadzerSistemaSkladiste.findOne(id);
+	}
+
+
+	@Override
+	public Restoran pronadjiRestoran(Long id) {
+		return restoranSkladiste.findOne(id);
+	}
+
 	
 }

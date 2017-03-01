@@ -96,7 +96,7 @@ public class KonobarKontroler {
 	
 	
 	@RequestMapping(value = "/dodajPorudzbinu", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Porudzbina>> ucitajPicaKonobara(@RequestBody JelaPica jelaPica)  {
+	public ResponseEntity<List<Porudzbina>> dodajPorudzbinu(@RequestBody JelaPica jelaPica)  {
 		
 		// Dodata porudzbina
 		Porudzbina porudzbina = new Porudzbina();
@@ -159,7 +159,7 @@ public class KonobarKontroler {
 		}
 
 
-		return new ResponseEntity<List<Porudzbina>>(vratiPorudzbineKonobara((Konobar)konobarServis.findOne(jelaPica.getKonobar().getId())), HttpStatus.OK);
+		return new ResponseEntity<List<Porudzbina>>(vratiPorudzbineKonobara((Konobar)konobarServis.findOne(jelaPica.getKonobar().getId())), HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/potvrdiIzmene", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -370,8 +370,7 @@ public class KonobarKontroler {
 				piceUPorudzbini.setPice(temp);
 				piceUPorudzbini.setPorudzbina(parametar.getPorudzbina());
 				
-				// TODO: DA SIGNALIZIRAM SANKERU DA JE DOSLO DO PROMENE, AKO MOGU DA INKREMENTUJEM AKO VEC IMA
-				
+	
 				List<PiceUPorudzbini> picaUP = konobarServis.izlistajPicaPorudzbineIPica(parametar.getPorudzbina(),piceUPorudzbini.getPice(), new PageRequest(0,10)).getContent();
 				if(!picaUP.isEmpty()){
 					picaUP.get(0).setKolicina(picaUP.get(0).getKolicina() + piceUPorudzbini.getKolicina());
@@ -461,9 +460,7 @@ public class KonobarKontroler {
 				piceUPorudzbini.setKolicina(Collections.frequency(picaL, temp));
 				piceUPorudzbini.setPice(temp);
 				piceUPorudzbini.setPorudzbina(parametar.getPorudzbina());
-				
-				// TODO: DA SIGNALIZIRAM SANKERU DA JE DOSLO DO PROMENE, AKO MOGU DA INKREMENTUJEM AKO VEC IMA
-				
+
 				List<PiceUPorudzbini> picaUP = konobarServis.izlistajPicaPorudzbineIPica(parametar.getPorudzbina(),piceUPorudzbini.getPice(), new PageRequest(0,10)).getContent();
 				if(!picaUP.isEmpty()){
 					picaUP.get(0).setKolicina(picaUP.get(0).getKolicina() + piceUPorudzbini.getKolicina());
@@ -543,7 +540,6 @@ public class KonobarKontroler {
 				piceUPorudzbini.setPice(temp);
 				piceUPorudzbini.setPorudzbina(parametar.getPorudzbina());
 
-				System.out.println("sacuvao pice puta " + piceUPorudzbini.getKolicina());
 				konobarServis.savePiceUPorudzbini(piceUPorudzbini);
 				parametar.getPorudzbina().setSpremnaPica(false);
 			}

@@ -50,17 +50,7 @@ public class KuvarKontroler {
 		return new ResponseEntity<List<Porudzbina>> (izbaciNeprihvacene(porudzbine.getContent()), HttpStatus.OK);
 	}
 	
-	private ArrayList<Porudzbina> izbaciNeprihvacene(List<Porudzbina> parametar){
-		ArrayList<Porudzbina> retVal = new ArrayList<Porudzbina>();
-		
-		for(int i = 0; i < parametar.size(); i++){
-			if(parametar.get(i).isPorudzbinaPrihvacena()){
-				retVal.add(parametar.get(i));
-			}
-		}
-		
-		return retVal;
-	}
+
 	
 	@RequestMapping(value = "/ucitajPorudzbineKlasifikovane", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<MogucePrihvacene> ucitajPorudzbineKlasifikovane(@RequestBody Kuvar kuvar){
@@ -118,6 +108,20 @@ public class KuvarKontroler {
 		
 		Page<Porudzbina> porudzbine = sankerServis.izlistajPorudzbine(restoran, new PageRequest(0, 10));
 		return new ResponseEntity<MogucePrihvacene> (vratiPorudzbine(porudzbine, poSa.getKuvar()), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/ucitajKuvareRestorana", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Kuvar>> ucitajKonobareRestorana(@RequestBody Kuvar kuvar){
+		Restoran restoran = kuvarServis.izlistajRestoran(kuvar);
+		List<Kuvar> retVal = restoranServis.izlistajKuvare(restoran);
+		return new ResponseEntity<List<Kuvar>>(retVal, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/ucitajKalendarKuvara", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<SmenaUDanu>> ucitajKalendarKuvara(@RequestBody Kuvar parametar){
+		Kuvar kuvar = (Kuvar) kuvarServis.findOne(parametar.getId());
+		List<SmenaUDanu> retVal = restoranServis.izlistajSmenePoDanimaKuvara(kuvar);
+		return new ResponseEntity<List<SmenaUDanu>>(retVal, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/zavrsiPorudzbinu", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -216,20 +220,18 @@ public class KuvarKontroler {
 		return moPri;
 	}
 	
-	@RequestMapping(value = "/ucitajKuvareRestorana", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Kuvar>> ucitajKonobareRestorana(@RequestBody Kuvar kuvar){
-		Restoran restoran = kuvarServis.izlistajRestoran(kuvar);
-		List<Kuvar> retVal = restoranServis.izlistajKuvare(restoran);
-		return new ResponseEntity<List<Kuvar>>(retVal, HttpStatus.OK);
-	}
 	
-	@RequestMapping(value = "/ucitajKalendarKuvara", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<SmenaUDanu>> ucitajKalendarKuvara(@RequestBody Kuvar parametar){
-		Kuvar kuvar = (Kuvar) kuvarServis.findOne(parametar.getId());
-		List<SmenaUDanu> retVal = restoranServis.izlistajSmenePoDanimaKuvara(kuvar);
-		return new ResponseEntity<List<SmenaUDanu>>(retVal, HttpStatus.OK);
+	private ArrayList<Porudzbina> izbaciNeprihvacene(List<Porudzbina> parametar){
+		ArrayList<Porudzbina> retVal = new ArrayList<Porudzbina>();
+		
+		for(int i = 0; i < parametar.size(); i++){
+			if(parametar.get(i).isPorudzbinaPrihvacena()){
+				retVal.add(parametar.get(i));
+			}
+		}
+		
+		return retVal;
 	}
-	
 	
 	
 

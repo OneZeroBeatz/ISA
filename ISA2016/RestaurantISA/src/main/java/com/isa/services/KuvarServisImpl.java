@@ -34,13 +34,11 @@ public class KuvarServisImpl implements KuvarServis{
 
 	@Override
 	public Korisnik findOne(Long id) {
-		System.out.println("prvo pronasao kuvara po ID-u");
 		return kuvarSkladiste.findOne(id);
 	}
 
 	@Override
 	public Kuvar save(Kuvar kuvar) {
-		System.out.println("sacuvao kuvara po imenu " + kuvar.getIme());
 		return kuvarSkladiste.save(kuvar);
 	}
 
