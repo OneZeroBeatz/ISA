@@ -703,7 +703,7 @@ public class KonobarKontroler {
 	public ResponseEntity<RacunKonobar> kreirajRacun(@RequestBody PorudzbinaKonobar porKon){
 		Page<PiceUPorudzbini> picaUPorudzbini = konobarServis.izlistajPicaPorudzbine(porKon.getPorudzbina(), new PageRequest(0, 10));
 		Page<JeloUPorudzbini> jelaUPorudzbini = konobarServis.izlistajJelaPorudzbine(porKon.getPorudzbina(), new PageRequest(0, 10));
-			
+		
 		float ukupno = 0;
 		
 		for (int i = 0; i < picaUPorudzbini.getContent().size(); i++){

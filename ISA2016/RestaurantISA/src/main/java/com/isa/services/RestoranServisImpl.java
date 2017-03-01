@@ -1,9 +1,6 @@
 package com.isa.services;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.isa.model.DanUNedelji;
+import com.isa.model.IzvestajJelo;
 import com.isa.model.Jelo;
 import com.isa.model.Pice;
 import com.isa.model.Restoran;
@@ -24,6 +22,8 @@ import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Kuvar;
 import com.isa.model.korisnici.Ponudjac;
 import com.isa.model.korisnici.Sanker;
+import com.isa.repository.IzvestajJeloSkladiste;
+import com.isa.repository.IzvestajKuvarJeloSkladiste;
 import com.isa.repository.JeloSkladiste;
 import com.isa.repository.JeloUPorudzbiniSkladiste;
 import com.isa.repository.KonobarSkladiste;
@@ -31,6 +31,7 @@ import com.isa.repository.KuvarSkladiste;
 import com.isa.repository.PiceSkladiste;
 import com.isa.repository.PiceUPorudzbiniSkladiste;
 import com.isa.repository.PonudjacSkladiste;
+import com.isa.repository.PoseteSkladiste;
 import com.isa.repository.RestoranSkladiste;
 import com.isa.repository.SankerSkladiste;
 import com.isa.repository.SmenaSkladiste;
@@ -76,6 +77,14 @@ public class RestoranServisImpl implements RestoranServis{
 	@Autowired
 	SankerSkladiste sankerSkladiste;
 
+	@Autowired
+	PoseteSkladiste poseteSkladiste;
+	
+	@Autowired
+	IzvestajJeloSkladiste izvJeloSkladiste;
+	
+	@Autowired
+	IzvestajKuvarJeloSkladiste izveKuvarJeloSkladiste;
 	
 	@Override
 	public List<Restoran> findAll() {
@@ -417,6 +426,17 @@ public class RestoranServisImpl implements RestoranServis{
 	@Override
 	public List<Sto> izlistajStoloveSmene(SmenaUDanu smenaKonobara) {
 		return stoSkladiste.findBySmenaudanu(smenaKonobara);
+	}
+
+	@Override
+	public IzvestajJelo izlistajIzvestajZaJelo(IzvestajJelo izvestajJelo) {
+		// izlistati sve ocene za jela datum od-do... izracunati...
+		return null;
+	}
+
+	@Override
+	public int izlistajOcenuRestorana(Restoran restoran) {
+		return 0;
 	}
 
 }

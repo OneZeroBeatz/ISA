@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.isa.model.IzvestajKuvarJelo;
 import com.isa.model.JeloUPorudzbini;
 import com.isa.model.Porudzbina;
 import com.isa.model.Restoran;
@@ -32,6 +33,9 @@ public class Kuvar extends Korisnik{
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "kuvar")
 	private Set<SmenaUDanu> smenaudanu;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "kuvar")
+	private Set<IzvestajKuvarJelo> izvestajKuvar;
 	
 	public Kuvar(){
 		
