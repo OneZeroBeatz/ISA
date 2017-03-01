@@ -1,11 +1,16 @@
 package com.isa.model;
 
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,7 +31,7 @@ public class PosetaRestoranu {
 
 	@ManyToOne(optional = true)
 	private Gost pozivalac;
-	
+
 	@ManyToOne(optional = true)
 	private Restoran restoran;
 
@@ -41,10 +46,10 @@ public class PosetaRestoranu {
 
 	@Column(name = "ocena_usluge")
 	private int ocenaUsluge;
-	
+
 	@Column(name = "ocena_obroka")
 	private int ocenaObroka;
-	
+
 	@Column(name = "termin")
 	private String termin;
 
@@ -54,13 +59,17 @@ public class PosetaRestoranu {
 
 	@Column(name = "br_sati")
 	private int brSati;
-	
+
 	@Column(name = "isAccepted")
 	private Boolean isAccepted;
 
+	@ManyToMany(targetEntity = Jelo.class, cascade = { CascadeType.ALL })
+	@JoinTable(name = "poseterestoranu_jelo", joinColumns = {
+			@JoinColumn(name = "poseta_restoranu_id") }, inverseJoinColumns = { @JoinColumn(name = "jelo_id") })
+	private Set<Jelo> jelo;
 
 	public PosetaRestoranu() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public Gost getGost() {
@@ -142,17 +151,29 @@ public class PosetaRestoranu {
 	public void setDatumrez(Date datumrez) {
 		this.datumrez = datumrez;
 	}
-	
+
 	public int getOcenaObroka() {
 		return ocenaObroka;
 	}
+
 	public int getOcenaUsluge() {
 		return ocenaUsluge;
 	}
+
 	public void setOcenaObroka(int ocenaObroka) {
 		this.ocenaObroka = ocenaObroka;
 	}
+
 	public void setOcenaUsluge(int ocenaUsluge) {
 		this.ocenaUsluge = ocenaUsluge;
 	}
+
+	public Set<Jelo> getJelo() {
+		return jelo;
+	}
+
+	public void setJelo(Set<Jelo> jelo) {
+		this.jelo = jelo;
+	}
+
 }

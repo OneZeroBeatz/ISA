@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import com.isa.model.DanUNedelji;
 import com.isa.model.IzvestajJelo;
+import com.isa.model.IzvestajKuvarJelo;
 import com.isa.model.Jelo;
+import com.isa.model.JeloUPorudzbini;
 import com.isa.model.Pice;
 import com.isa.model.Porudzbina;
 import com.isa.model.PosetaRestoranu;
@@ -443,21 +445,38 @@ public class RestoranServisImpl implements RestoranServis{
 	public IzvestajJelo izlistajIzvestajZaJelo(IzvestajJelo izvestajJelo) {
 		// izlistati sve ocene za jela datum od-do... izracunati...
 		Restoran restoran = restoranSkladiste.findOne(izvestajJelo.getJelo().getRestoran().getId());
-		Jelo jelo = jeloSkladiste.findById(izvestajJelo.getJelo().getId());
+		Jelo jelo = jeloSkladiste.findByRestoranAndNaziv(restoran, izvestajJelo.getJelo().getNaziv());
 		List<PosetaRestoranu> posete = null;
 		if(izvestajJelo.getDatumod() == null && izvestajJelo.getDatumdo() == null){
-			//posete = poseteSkladiste.findByRestoranAndJeloAndOcena_obrokaNot(restoran, jelo, -1);
+			posete = poseteSkladiste.findByRestoranAndJeloAndOcenaObrokaNot(restoran, jelo, -1);
 		}else if(izvestajJelo.getDatumod() == null){
-			//posete = poseteSkladiste.findByRestoranAndJeloAndOcena_obrokaNotAndDatumrezBefore(restoran, jelo, -1, izvestajJelo.getDatumdo());
+			posete = poseteSkladiste.findByRestoranAndJeloAndOcenaObrokaNotAndDatumrezBefore(restoran, jelo, -1, izvestajJelo.getDatumdo());
 		}else if(izvestajJelo.getDatumdo() == null){
-			//posete = poseteSkladiste.findByRestoranAndJeloAndOcena_obrokaNotAndDatumrezAfter(restoran, jelo, -1, izvestajJelo.getDatumod());
+			posete = poseteSkladiste.findByRestoranAndJeloAndOcenaObrokaNotAndDatumrezAfter(restoran, jelo, -1, izvestajJelo.getDatumod());
 		}else{
-			//posete = poseteSkladiste.findByRestoranAndJeloAndOcena_obrokaNotAndDatumrezBetween(restoran, jelo, -1, izvestajJelo.getDatumod(), izvestajJelo.getDatumdo());
+			posete = poseteSkladiste.findByRestoranAndJeloAndOcenaObrokaNotAndDatumrezBetween(restoran, jelo, -1, izvestajJelo.getDatumod(), izvestajJelo.getDatumdo());
 		}
 		
+		//List<IzvestajKuvarJelo> tempKuvarJelo = new ArrayList<>();
+		//List<IzvestajKuvarJelo> izvestajKuvarJelo = new ArrayList<>();
+		//List<Kuvar> kuvari = new ArrayList<>();
 		
+		double ocena = 0;
 		
-		return null;
+		for(PosetaRestoranu p : posete){
+			//List<Porudzbina> porudz = porudzbinaSkladiste.findByRestoranAndDatumizradeAndSto(restoran, p.getDatumrez(), p.getSto());
+			//JeloUPorudzbini jup = jeloUPorudzbiniSkladiste.findByPorudzbinaAndJelo(porudz, jelo);
+			//if(!kuvari.contains(jup.getKuvar()))
+			//	kuvari.add(jup.getKuvar());
+			
+			//tempKuvarJelo.add(new IzvestajKuvarJelo(p.getOcenaObroka(), jup.getKuvar()));
+			
+			ocena += p.getOcenaObroka();
+		}
+		
+		izvestajJelo.setOcena(((double)ocena)/posete.size());
+		//izvestajJelo.setIzvestajKuvarJelo(izvestajKuvarJelo);
+		return izvestajJelo;
 	}
 
 	@Override

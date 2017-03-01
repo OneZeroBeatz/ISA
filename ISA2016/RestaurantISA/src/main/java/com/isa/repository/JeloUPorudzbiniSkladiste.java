@@ -21,4 +21,6 @@ public interface JeloUPorudzbiniSkladiste extends JpaRepository<JeloUPorudzbini,
 	void deleteById(Long id);
 
 	Page<JeloUPorudzbini> findByPorudzbinaAndJelo(Porudzbina porudzbina, Jelo jelo, Pageable pageable);
+
+	JeloUPorudzbini findByPorudzbinaAndJelo(Porudzbina porudz, Jelo jelo);
 }

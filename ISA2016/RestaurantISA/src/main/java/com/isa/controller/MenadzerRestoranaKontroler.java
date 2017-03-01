@@ -521,6 +521,7 @@ public class MenadzerRestoranaKontroler {
 	@RequestMapping(value = "/prikaziGrafikPosecenosti", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Poruka> prikaziGrafikPosecenosti(@RequestBody PosecenostIzvestaj posecenostIzvestaj) {
 		Poruka poruka = new Poruka();
+		List<Object> listaObjekata = new ArrayList<>();
 		ArrayList<Double> procenti = new ArrayList<>();
 		
 		if(posecenostIzvestaj.getNivo().equals("dnevni")){
@@ -530,7 +531,11 @@ public class MenadzerRestoranaKontroler {
 		}
 		//double prihod = restoranServirs.izlistajPrihodKonobara(izvestajKonobar);
 		
-		poruka.setObj(procenti);
+		for(Double p : procenti){
+			listaObjekata.add(p);
+		}
+		
+		poruka.setObj(listaObjekata);
 		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
 	}
 }

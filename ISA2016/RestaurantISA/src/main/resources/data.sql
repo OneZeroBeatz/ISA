@@ -106,14 +106,18 @@ insert into smenadan_sto (smenaudanu_id, sto_id) values (9, (select id from sto 
 --insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('SUBOTA', (select id from korisnik where ime ='Sano'), 2, (select id from restoran where naziv = 'Restoran 1'));
 --insert into smenaudanu (dan, sanker_id, smena_id, restoran_id) values ('NEDELJA', (select id from korisnik where ime ='Sano'), 2, (select id from restoran where naziv = 'Restoran 1'));
 
-
-
 insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati, sto_id, ocena_obroka, ocena_usluge, datumrez) values (16,1,true, -1, '2017-03-28 08:00:00', 10, 1, 4, 3, '2017-03-28');
 insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati, sto_id, ocena_obroka, ocena_usluge, datumrez) values (16,1,true, 5, '2017-02-28 08:00:00', 9, 2, 2, 4, '2017-02-28');
 insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati, sto_id, ocena_obroka, ocena_usluge, datumrez) values (15,1,false, -1, '2017-03-01 08:00:00', 2, 3, 4, 5, '2017-03-01');
 insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati, sto_id, ocena_obroka, ocena_usluge, datumrez) values (16,1,true, 2, '2017-01-28 08:30:00', 7, 4, 5, 3, '2017-02-26');
 insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati, sto_id, ocena_obroka, ocena_usluge, datumrez) values (16,2,true, 1, '2017-02-25 08:30:00', 2, 5, 5, 2, '2017-02-25');
 insert into poseta_restoranu (gost_id, restoran_id, obavljena, ocena, termin, br_sati, sto_id, ocena_obroka, ocena_usluge, datumrez) values (15,2,true, 4, '2017-02-28 11:30:00', 5, 3, 3, 1, '2017-02-28');
+
+insert into poseterestoranu_jelo(poseta_restoranu_id, jelo_id) values (1, 1);
+insert into poseterestoranu_jelo(poseta_restoranu_id, jelo_id) values (2, 1);
+insert into poseterestoranu_jelo(poseta_restoranu_id, jelo_id) values (3, 2);
+insert into poseterestoranu_jelo(poseta_restoranu_id, jelo_id) values (2, 4);
+insert into poseterestoranu_jelo(poseta_restoranu_id, jelo_id) values (1, 5);
 
 insert into porudzbina(vremeprimanja, vremenaplate, restoran_id, spremna_jela, spremna_pica, spremno_bar_jedno_jelo, sto_id, konobar_id, porudzbina_prihvacena, datumizrade) values ("2017-02-28 09:39:11", "2014-01-12 11:42:11", (select id from restoran where naziv='Restoran 1'), true, false, true, 3, (select id from korisnik where email='k1'), true, '2017-03-28');
 insert into porudzbina(vremeprimanja, vremenaplate, restoran_id, spremna_jela, spremna_pica, spremno_bar_jedno_jelo, sto_id, konobar_id, porudzbina_prihvacena, datumizrade) values ("2017-02-28 09:49:34", "2014-01-12 11:45:12", (select id from restoran where naziv='Restoran 1'), true, false, true, 4, (select id from korisnik where email='k1'), true, '2017-02-26');

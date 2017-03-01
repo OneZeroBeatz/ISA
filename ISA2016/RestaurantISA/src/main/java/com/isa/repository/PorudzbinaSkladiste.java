@@ -1,6 +1,7 @@
 package com.isa.repository;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.isa.model.Jelo;
 import com.isa.model.Porudzbina;
 import com.isa.model.Restoran;
 import com.isa.model.Sto;
@@ -40,5 +42,9 @@ public interface PorudzbinaSkladiste extends JpaRepository<Porudzbina, Serializa
 	List<Porudzbina> findByKonobarAndDatumizradeAfter(Konobar konobar, Date odDatum);
 
 	List<Porudzbina> findByKonobarAndDatumizradeBetween(Konobar konobar, Date odDatum, Date doDatum);
+
+	List<Porudzbina> findByRestoranAndDatumizradeAndStoAndJelovnik(Restoran restoran, Date datumrez, Sto sto, Jelo jelo);
+
+	List<Porudzbina> findByRestoranAndDatumizradeAndSto(Restoran restoran, Date datumrez, Sto sto);
 
 }

@@ -25,8 +25,6 @@ public class JeloUPorudzbini {
 	@ManyToOne(optional = false)
 	private Porudzbina porudzbina;
 	
-
-	
 	@Column(name = "kolicina")
 	private int kolicina;
 

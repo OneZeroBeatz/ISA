@@ -172,6 +172,22 @@ ponudjacKontroler.controller('ponudjacCtrl', function($location, gostGlavnaStran
 		});
 	}
 	
+	// za izmeenu podataka
+	$scope.izmeniKonobaraPodaci = function(){
+		var gost = {
+			ime : $scope.imeIzmena,
+			prezime : $scope.prezimeIzmena,
+			email : $scope.emailIzmena,
+			id : $scope.ulogovanKonobar.id,
+		}
+		var str = JSON.stringify(gost);
+		izmeniKonobarServis.izmeni(str).success(function(data) {
+				$scope.ulogovanKonobar = data;
+			}).error(function(data) {
+				alert("Neuspesne izmene!");
+			});
+	}
+	
 	$scope.izmeniLozinku = function (){
 		if($scope.novaLozinka == $scope.novaLozinkaPotvrda){
 			var gost = {

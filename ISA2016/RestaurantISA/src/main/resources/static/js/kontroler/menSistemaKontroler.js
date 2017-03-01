@@ -78,4 +78,13 @@ menSistemaKontroler.controller('menSistemaCtrl', function (gostGlavnaStranaServi
 		
 		menSistemaServis.registrujMenadzeraSistema(str);		
 	}
+	
+	$scope.logOut = function(){
+		gostGlavnaStranaServis.logOut().success(function(data) {
+			if(data.message == "Izlogovan"){
+				$window.location.href = '/';
+			}else{
+			}
+		});
+	}
 });
