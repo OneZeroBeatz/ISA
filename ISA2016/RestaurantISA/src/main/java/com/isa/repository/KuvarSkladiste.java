@@ -13,6 +13,8 @@ import com.isa.model.korisnici.Kuvar;
 @Repository
 @Transactional
 public interface KuvarSkladiste extends JpaRepository<Kuvar, Long> {
+	
+	Kuvar save(Kuvar kuvar);
 
 	List<Korisnik> findById(Long gid);
 	

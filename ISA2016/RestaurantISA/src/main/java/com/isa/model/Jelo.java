@@ -38,9 +38,6 @@ public class Jelo implements Serializable{
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "jelo")
 	private Set<JeloUPorudzbini> jelovnik;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "jelo")
-	private Set<IzvestajJelo> izvestajJelo;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipkuvara")

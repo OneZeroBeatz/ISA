@@ -1,16 +1,45 @@
 package com.isa.model;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import com.isa.model.korisnici.Kuvar;
 
+public class IzvestajKuvarJelo {
+
+	private int prosecnaOcena;
+	private Kuvar kuvar;
+	private IzvestajJelo izvestajjelo;
+
+	public IzvestajKuvarJelo() {
+
+	}
+
+	public int getProsecnaOcena() {
+		return prosecnaOcena;
+	}
+
+	public void setProsecnaOcena(int prosecnaOcena) {
+		this.prosecnaOcena = prosecnaOcena;
+	}
+
+	public Kuvar getKuvar() {
+		return kuvar;
+	}
+
+	public void setKuvar(Kuvar kuvar) {
+		this.kuvar = kuvar;
+	}
+
+	public IzvestajJelo getIzvestajjelo() {
+		return izvestajjelo;
+	}
+
+	public void setIzvestajjelo(IzvestajJelo izvestajjelo) {
+		this.izvestajjelo = izvestajjelo;
+	}
+
+}
+
+
+/*
 @Entity
 @Table(name = "izvestajkuvarjelo")
 public class IzvestajKuvarJelo implements Serializable {
@@ -65,3 +94,4 @@ public class IzvestajKuvarJelo implements Serializable {
 	}
 
 }
+*/

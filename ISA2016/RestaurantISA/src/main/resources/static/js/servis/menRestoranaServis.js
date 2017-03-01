@@ -141,6 +141,10 @@ menRestoranaServis.factory('menRestoranaServisS', function($http) {
 		return $http.post('/menadzerRestoranaKontroler/izvestajZaRestoran', rest);
 	}
 	
+	temp.izvestajPrihodaRestorana = function(rest) {
+		return $http.post('/menadzerRestoranaKontroler/izvestajPrihodaRestorana', rest);
+	}
+	
 	temp.izlistajAktivnePorudzbine = function(menRest) {
 		return $http.post('/menadzerRestoranaKontroler/izlistajAktivnePorudzbine', menRest);
 	}
@@ -151,6 +155,22 @@ menRestoranaServis.factory('menRestoranaServisS', function($http) {
 	
 	temp.prihvatiPonudu = function(pon) {
 		return $http.post('/menadzerRestoranaKontroler/prihvatiPonudu', pon);
+	}
+	
+	temp.registrujKonobara = function(radnik) {
+		return $http.post('/menadzerRestoranaKontroler/registrujKonobara', radnik);
+	}
+	
+	temp.registrujKuvara = function(radnik) {
+		return $http.post('/menadzerRestoranaKontroler/registrujKuvara', radnik);
+	}
+	
+	temp.registrujSankera = function(radnik) {
+		return $http.post('/menadzerRestoranaKontroler/registrujSankera', radnik);
+	}
+	
+	temp.izlistajBojuStola = function(sto) {
+		return $http.post('/menadzerRestoranaKontroler/izlistajBojuStola', sto);
 	}
 	
 	return temp;

@@ -13,6 +13,9 @@ import com.isa.model.korisnici.Korisnik;
 @Repository
 @Transactional
 public interface KonobarSkladiste extends JpaRepository<Konobar, Long> {
+	
+	Konobar save(Konobar konobar);
+	
 	List<Korisnik> findById(Long gid);
 	
 	List<Korisnik> findByEmail(String email);

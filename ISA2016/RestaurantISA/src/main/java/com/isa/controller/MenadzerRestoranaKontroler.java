@@ -30,6 +30,7 @@ import com.isa.model.korisnici.MenadzerRestorana;
 import com.isa.model.korisnici.Ponudjac;
 import com.isa.model.korisnici.Sanker;
 import com.isa.model.korisnici.TipKorisnika;
+import com.isa.pomocni.IzvestajRestoran;
 import com.isa.pomocni.ListaStavki;
 import com.isa.pomocni.Poruka;
 import com.isa.pomocni.RestoranPonudjac;
@@ -304,11 +305,12 @@ public class MenadzerRestoranaKontroler {
 	public ResponseEntity<Poruka> izlistajDostupneSmeneKonobarDan(@RequestBody SmenaUDanu smenaUDanu) {
 		List<Smena> smene = null;
 		Poruka poruka = new Poruka();
+		List<Object> listaObjekata = new ArrayList<>();
 		while(smenaUDanu.getSto().iterator().hasNext()){
 			Sto sto = smenaUDanu.getSto().iterator().next();
 			if(sto != null){
-				
-				if(restoranServirs.izlistajSto(sto).getSegment() == "nijesto"){
+				listaObjekata.add(sto.getOznaka());
+				if(restoranServirs.izlistajSto(sto).getSegment().equals("nijesto") || restoranServirs.izlistajSto(sto).getSegment() == null){
 					poruka.setMessage("Nije sto");
 				}else{
 					smene = restoranServirs.izlistajDostupneSmeneKonobarDan(smenaUDanu.getRestoran(), smenaUDanu.getDanUNedelji(), sto);
@@ -322,7 +324,9 @@ public class MenadzerRestoranaKontroler {
 				break;
 			}
 		}
-		poruka.setObj(smene);
+		listaObjekata.add(smene);
+		
+		poruka.setObj(listaObjekata);
 		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
 	}
 	
@@ -347,6 +351,8 @@ public class MenadzerRestoranaKontroler {
 		return new ResponseEntity<Sto>(retSto, HttpStatus.OK);
 	}
 	
+	
+	// izvestaji
 	@RequestMapping(value = "/izvestajZaJelo", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Poruka> izvestajZaJelo(@RequestBody IzvestajJelo izvestajJelo) {
 		Poruka poruka = new Poruka();
@@ -358,15 +364,26 @@ public class MenadzerRestoranaKontroler {
 	}
 	
 	@RequestMapping(value = "/izvestajZaRestoran", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Poruka> izvestajZaRestoran(@RequestBody Restoran restoran) {
+	public ResponseEntity<Poruka> izvestajZaRestoran(@RequestBody IzvestajRestoran izvestajRestoran) {
 		Poruka poruka = new Poruka();
 		
-		int ocena = restoranServirs.izlistajOcenuRestorana(restoran);
+		double ocena = restoranServirs.izlistajOcenuRestorana(izvestajRestoran);
 		
 		poruka.setObj(ocena);
 		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/izvestajPrihodaRestorana", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Poruka> izvestajPrihodaRestorana(@RequestBody IzvestajRestoran izvestajRestoran) {
+		Poruka poruka = new Poruka();
+		
+		double prihod = restoranServirs.izlistajPrihodRestorana(izvestajRestoran);
+		
+		poruka.setObj(prihod);
+		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
+	}
+	
+	// porudzbine
 	@RequestMapping(value = "/izlistajAktivnePorudzbine", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Poruka> izlistajAktivnePorudzbine(@RequestBody MenadzerRestorana menRest) {
 		Poruka poruka = new Poruka();
@@ -391,8 +408,6 @@ public class MenadzerRestoranaKontroler {
 	public ResponseEntity<Poruka> prihvatiPonudu(@RequestBody Ponuda ponuda) {
 		Poruka poruka = new Poruka();
 		
-		// TODO: Posalji poruku na mail...
-		
 		PorudzbinaMenadzer porudzb = menadzerRestoranaServis.izlistajPorudzbinu(ponuda.getPorudzbinamenadzer().getId());
 		List<Ponuda> ponude = menadzerRestoranaServis.izlistajPonude(porudzb);
 		for(Ponuda p : ponude){
@@ -411,10 +426,61 @@ public class MenadzerRestoranaKontroler {
 		
 		List<PorudzbinaMenadzer> preostalePorudzbine = menadzerRestoranaServis.prihvatiPonudu(ponuda);
 		
-		SendMail sm = new SendMail("acasm94@gmail.com", "Vasa ponuda restoranu " + ponuda.getPorudzbinamenadzer().getMenadzerrestorana().getRestoran().getNaziv() + 
-				" nije prihvacena!");
-		
 		poruka.setObj(preostalePorudzbine);
+		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
+	}
+	
+	// Reg. radnika
+	@RequestMapping(value = "/registrujKonobara", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Poruka> registrujKonobara(@RequestBody Konobar konobar) {
+		Poruka p = new Poruka();
+		konobar.setLogovaoSe(false);
+		Konobar k = restoranServirs.registrujKonobara(konobar);
+		
+		p.setObj(k);
+		return new ResponseEntity<Poruka>(p, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value = "/registrujKuvara", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Poruka> registrujKuvara(@RequestBody Kuvar kuvar) {
+		Poruka p = new Poruka();
+		kuvar.setLogovaoSe(false);
+		Kuvar k = restoranServirs.registrujKuvara(kuvar);
+		
+		p.setObj(k);
+		return new ResponseEntity<Poruka>(p, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value = "/registrujSankera", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Poruka> registrujSankera(@RequestBody Sanker sanker) {
+		Poruka p = new Poruka();
+		sanker.setLogovaoSe(false);
+		Sanker s = restoranServirs.registrujeSankera(sanker);
+		
+		p.setObj(s);	
+		return new ResponseEntity<Poruka>(p, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value = "/izlistajBojuStola", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Poruka> izlistajBojuStola(@RequestBody Sto sto) {
+		Poruka poruka = new Poruka();
+		Sto sto2 = restoranServirs.izlistajSto(sto);
+		
+		if(sto2.getSegment().equals("nijesto") || sto2.getSegment() == null){
+			poruka.setMessage("nijesto");
+		}else if(sto2.getSegment().equals("pusacki")){
+			poruka.setMessage("pusacki");
+		}else if(sto2.getSegment().equals("nepusacki")){
+			poruka.setMessage("nepusacki");
+		}else if(sto2.getSegment().equals("unutrasnji")){
+			poruka.setMessage("unutrasnji");
+		}else if(sto2.getSegment().equals("bastaOtv")){
+			poruka.setMessage("bastaOtv");
+		}else if(sto2.getSegment().equals("bastaZat")){
+			poruka.setMessage("bastaZat");
+		}
+		
+		poruka.setObj(sto.getOznaka());
 		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
 	}
 }
