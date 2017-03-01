@@ -103,4 +103,6 @@ public interface RestoranServis {
 
 	int izlistajOcenuRestorana(Restoran restoran);
 
+	String sima(DanUNedelji dan, Sto sto, Konobar konobar, Restoran restoran);
+
 }

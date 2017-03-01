@@ -35,7 +35,7 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 			$scope.ulogovanKonobar = data.obj;
 			$scope.osveziPrikazZaIzmenu($scope.ulogovanKonobar);
 			
-			
+			$scope.pokusaj = [];			
 			$scope.izmena = false;
 			$scope.smeDaDodaJela = true;
 			$scope.smeDaDodaPica = true;
@@ -284,6 +284,31 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 		    	console.log("doda jela = "+ izmeniPorudzbinuPrikaz.smeDaDodaJela);
 		    	console.log("doda pica = "+ izmeniPorudzbinuPrikaz.smeDaDodaPica);
 		    	
+		    	
+		    	for(q=0; q<$scope.brojRedova*$scope.brojKolona; q++){
+					tempSto = [{oznaka : q, restoran : $scope.restoran}];		// Mozda 1 i <=
+					
+					var smenaDan = {
+						sto : tempSto,
+						konobar: $scope.ulogovanKonobar
+					}
+					var str = JSON.stringify(smenaDan);
+					menRestoranaServisS.izlistajDostupneSmeneKonobarDan(str).success(function(aaa) {
+						if(aaa.message == "Nije sto"){
+							$scope.pokusaj[aaa.obj[0]] = "nijesto";
+						}else if(aaa.message == "Popunjane smene"){
+							$scope.pokusaj[aaa.obj[0]] = "popnunjen";
+						}else if(aaa.message == "Nisu popunjene smene"){
+							$scope.pokusaj[aaa.obj[0]] = "nijePopunjen";
+						}
+					}).error(function(data) {
+						$scope.pokusaj[aaa.obj[0]] = "nijesto";
+					});
+				}
+		    	
+		    	
+		    	
+		    	
 				izmeniKonobarServis.potvrdiIzmene(izmeniPorudzbinuPrikaz).success(function (data){
 		    		$scope.porudzbine = data;
 		    		$scope.show = -1;
@@ -352,6 +377,9 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 		    		alert("los klik na izmeni")
 		    	});
 		    }
+		    
+		    
+		    
 		    
 			
 			// za izmeenu podataka
@@ -575,6 +603,11 @@ konobarKontroler.controller('konobarCtrl', function($window, $scope, $location, 
 				
 
 			}
+			
+			$scope.obojiSto = function(kriterijum, oznaka){
+				return kriterijum == $scope.pokusaj[oznaka];
+			}
+			
 			
 
 			

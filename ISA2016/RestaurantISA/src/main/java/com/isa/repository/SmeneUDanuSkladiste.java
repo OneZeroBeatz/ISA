@@ -40,4 +40,6 @@ public interface SmeneUDanuSkladiste extends JpaRepository<SmenaUDanu, Long>{
 	
 	List<SmenaUDanu> findBySanker(Sanker sanker);
 
+	SmenaUDanu findByKonobarAndDanUNedeljiAndRestoranAndSto(Sto sto,Konobar konobar, Restoran restoran, DanUNedelji dan);
+
 }

@@ -1,4 +1,4 @@
-package test;
+package com.isa;
 
 import java.util.List;
 
@@ -11,60 +11,64 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.isa.RestaurantIsaApplication;
-import com.isa.model.korisnici.Kuvar;
+import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Korisnik;
 import com.isa.model.korisnici.TipKorisnika;
-import com.isa.services.KuvarServis;
+import com.isa.services.KonobarServis;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = RestaurantIsaApplication.class)
 @WebAppConfiguration
-public class KuvarServisTest {
+public class KonobarServisTest {
 
 	@Autowired
-	private KuvarServis kuvarServis;
+	KonobarServis konobarServis;
 	
 	@Test
 	public void testSave() {
-		Kuvar pera = new Kuvar();
+		Konobar pera = new Konobar();
 		pera.setEmail("pericaperic@gmail.com");
 		pera.setIme("Pera");
 		pera.setPrezime("Peric");
-		pera.setTipKorisnika(TipKorisnika.KUVAR);
+		pera.setTipKorisnika(TipKorisnika.KONOBAR);
 		pera.setSifra("sifra");
-		kuvarServis.save(pera);
+		konobarServis.save(pera);
 	
-		Kuvar kuvar = (Kuvar) kuvarServis.findOne(pera.getId());
+		Konobar konobar = (Konobar) konobarServis.findOne(pera.getId());
         Assert.assertNotNull(pera);
-        Assert.assertNotNull(kuvar);
-        Assert.assertEquals(pera.getId(), kuvar.getId());
+        Assert.assertNotNull(konobar);
+        Assert.assertEquals(pera.getId(), konobar.getId());
 	}
 	
 	@Test
 	public void testFindByEmail(){
 		// TODO: Promeniti na normalan email
-		Korisnik korisnik = kuvarServis.findByEmail("ks1");
+		Korisnik korisnik = konobarServis.findByEmail("k1");
 		Assert.assertNotNull(korisnik);
-		Assert.assertEquals(korisnik.getEmail(),"ks1");
+		Assert.assertEquals(korisnik.getEmail(),"k1");
 	}
 	
     @Test
     public void testFindAll() {
-        List<Kuvar> restaurants = kuvarServis.findAll();
-        Assert.assertNotNull(restaurants);
+        List<Konobar> konobari = konobarServis.findAll();
+        Assert.assertNotNull(konobari);
     }
     
     @Test
     public void testDelete() {
-        Kuvar kuvar = new Kuvar();
-        kuvar.setIme("Petar");
-        kuvar.setPrezime("Petrovic");
-        kuvar.setTipKorisnika(TipKorisnika.KUVAR);
-        kuvar.setEmail("kuvar@gmail.com");
-        kuvarServis.save(kuvar);
-        kuvarServis.delete(kuvar.getId());
-        Kuvar ucitan = (Kuvar) kuvarServis.findOne(kuvar.getId());
+        Konobar konobar = new Konobar();
+        konobar.setIme("Petar");
+        konobar.setPrezime("Petrovic");
+        konobar.setTipKorisnika(TipKorisnika.KONOBAR);
+        konobar.setEmail("konobar@gmail.com");
+        konobarServis.save(konobar);
+        konobarServis.delete(konobar.getId());
+        Konobar ucitan = (Konobar) konobarServis.findOne(konobar.getId());
         Assert.assertNull(ucitan);
     }
+	
+
+	
+
 	
 }
