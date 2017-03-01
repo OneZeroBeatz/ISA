@@ -48,8 +48,6 @@ public interface RestoranServis {
 	
 	Page<Sto> kreirajStolove(Restoran restoran, ArrayList<Integer> oznake, Pageable pageable);
 
-	Sto izlistajSto(Sto sto);
-
 	void dodajRedoveIKolone(Restoran rest);
 
 	List<Ponudjac> izlistajPonudjaceVanRestorana(Restoran restoran);
@@ -95,6 +93,8 @@ public interface RestoranServis {
 	List<SmenaUDanu> izlistajSmenePoDanimaSankera (Sanker sanker);
 
 	Sto izmeniSto(Sto sto);
+
+	Sto izlistajSto(Sto sto);
 
 	List<Sto> izlistajStoloveSmene(SmenaUDanu smenaKonobara);
 
