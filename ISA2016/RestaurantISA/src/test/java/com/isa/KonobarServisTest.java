@@ -42,7 +42,6 @@ public class KonobarServisTest {
 	
 	@Test
 	public void testFindByEmail(){
-		// TODO: Promeniti na normalan email
 		Korisnik korisnik = konobarServis.findByEmail("k1");
 		Assert.assertNotNull(korisnik);
 		Assert.assertEquals(korisnik.getEmail(),"k1");

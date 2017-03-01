@@ -1,8 +1,6 @@
 package com.isa;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -12,17 +10,16 @@ import javax.transaction.Transactional;
 
 import org.apache.http.HttpStatus;
 import org.hamcrest.CoreMatchers;
-import org.hamcrest.core.IsEqual;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
 
+import com.isa.model.Jelo;
+import com.isa.model.JeloUPorudzbini;
+import com.isa.model.Porudzbina;
+import com.isa.model.Restoran;
 import com.isa.model.korisnici.Konobar;
 import com.isa.repository.KonobarSkladiste;
 import com.isa.services.KonobarServis;
@@ -43,7 +40,9 @@ public class KonobarKontrolerIntegracioniTest {
 	RestoranServis restoranServis;
 	
 	@MockBean
-	KonobarSkladiste skladiste;
+	KonobarSkladiste konobarSkladiste;
+	
+	
 	
 	@Test
 	public void ucitajKonobareRestoranaTest() {
@@ -54,7 +53,7 @@ public class KonobarKontrolerIntegracioniTest {
 	
 	@Test
 	public void dodajPorudzbinuTest(){
-		/*Porudzbina porudzbina = new Porudzbina();
+		Porudzbina porudzbina = new Porudzbina();
 		java.util.Date dt = new java.util.Date();
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = sdf.format(dt);
@@ -79,56 +78,13 @@ public class KonobarKontrolerIntegracioniTest {
 		konobarServis.saveJeloUPorudzbini(jeloUPorudzbini);	
 		konobarServis.savePorudzbina(porudzbina);	
 		
-		RestAssured.given()
-        .body(porudzbina)
-        .contentType(ContentType.JSON)
-        .when()
-        .post("/dodajPorudzbinu")
-        .then()
-        .statusCode(HttpStatus.SC_CREATED)
-        .contentType(ContentType.JSON)
-        .body("vremePrimanja", CoreMatchers.equalTo(currentTime));*/
+		
+		
+		
 		List<Konobar> listaK = new ArrayList<>();
 		when(this.konobarServis.findAll()).thenReturn(listaK);
-		//given(this.konobarServis.findAll()).willReturn(null);
-        List<Konobar> newList = this.konobarServis.findAll();
-      //  assertThat(newList.size()).isEqualTo(0);
-        assertEquals(newList.size(), 0);
+		List<Konobar> newList = this.konobarServis.findAll();
+		assertEquals(newList.size(), 0);
 	}
-
-
-
-	/*
-	@Test
-    public void createCookTest(){
-        Cook cook = new Cook();
-        cook.setName("Milan");
-        cook.setSurname("Milanovic");
-        cook.setPassword("mico");
-        cook.setEmail("mico@gmail.com");
-        cook.setType(UserType.COOK);
-        cook.setPasswordChanged(true);
-        cook.setTypeCook("All");
-        Date date = new Date();
-        cook.setDate_of_birth(date);
-        cook.setDress_size(13);
-        cook.setShoe_size(13);
-        Restaurant r = restaurantService.findOne(1L);
-        cook.setRestaurant(r);
-
-
-        RestAssured.given()
-                .body(cook)
-                .contentType(ContentType.JSON)
-                .when()
-                .post("/addCook")
-                .then()
-                .statusCode(HttpStatus.SC_CREATED)
-                .contentType(ContentType.JSON)
-                .body("name", CoreMatchers.equalTo("Milan"));
-    }
-	*/
-    
-    
 }
 

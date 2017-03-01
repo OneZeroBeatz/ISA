@@ -38,11 +38,11 @@ public class Korisnik{
 	
 	private String sifraStara;
 	
-	@Column(name = "email")
+	@Column(name = "email")//, unique = true)
 	private String email;
 	
-	@Column(name = "logovao_se")
-	private boolean logovaoSe;
+	@Column(name = "logovao_se", columnDefinition = "boolean default false" )
+	private Boolean logovaoSe;
 	
 	
 	@Enumerated(EnumType.STRING)
@@ -128,11 +128,11 @@ public class Korisnik{
 		this.sifraStara = sifraStara;
 	}
 	
-	public boolean isLogovaoSe() {
+	public Boolean isLogovaoSe() {
 		return logovaoSe;
 	}
 	
-	public void setLogovaoSe(boolean logovaoSe) {
+	public void setLogovaoSe(Boolean logovaoSe) {
 		this.logovaoSe = logovaoSe;
 	}
 	

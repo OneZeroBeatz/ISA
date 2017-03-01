@@ -12,6 +12,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.isa.RestaurantIsaApplication;
 import com.isa.model.Restoran;
+import com.isa.model.korisnici.Konobar;
 import com.isa.services.RestoranServis;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -62,6 +63,7 @@ public class RestoranServisTest {
         Restoran ucitan = (Restoran) restoranServis.findOne(restoran.getId());
         Assert.assertNull(ucitan);
     }
-	
+    
+
 	
 }

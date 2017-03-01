@@ -43,19 +43,17 @@ public class KonobarServisImpl implements KonobarServis {
 	@Autowired
 	private JeloSkladiste jeloSkladiste;
 	@Autowired
-	private PiceSkladiste piceSkladiste;	
+	private PiceSkladiste piceSkladiste;
 	@Autowired
 	private PiceUPorudzbiniSkladiste piceUPorudzbiniSkladiste;
 	@Autowired
 	private JeloUPorudzbiniSkladiste jeloUPorudzbiniSkladiste;
 	@Autowired
-	private RacunSkladiste racunSkladiste;	
+	private RacunSkladiste racunSkladiste;
 	@Autowired
 	private PoseteSkladiste poseteSkladiste;
 	@Autowired
 	private SmeneUDanuSkladiste smeneUDanuSkladiste;
-	
-
 
 	@Override
 	public Korisnik findOne(Long id) {
@@ -70,19 +68,19 @@ public class KonobarServisImpl implements KonobarServis {
 	@Override
 	public Korisnik delete(Long id) {
 		Korisnik gost = konobarSkladiste.findOne(id);
-		if(gost == null){
+		if (gost == null) {
 			return null;
-		}else{
-			konobarSkladiste.delete((Konobar)gost);
+		} else {
+			konobarSkladiste.delete((Konobar) gost);
 			return gost;
 		}
 	}
 
 	@Override
 	public Korisnik findByEmail(String email) {
-		try{
+		try {
 			return konobarSkladiste.findByEmail(email).get(0);
-		}catch(Exception e){
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -141,13 +139,17 @@ public class KonobarServisImpl implements KonobarServis {
 	}
 
 	@Override
-	public Page<JeloUPorudzbini> izlistajJelaPorudzbineIJela(Porudzbina porudzbina, Jelo jelo, Pageable pageable) {
-		return jeloUPorudzbiniSkladiste.findByPorudzbinaAndJelo(porudzbina, jelo, pageable);
+	public Page<JeloUPorudzbini> izlistajJelaPorudzbineIJela(
+			Porudzbina porudzbina, Jelo jelo, Pageable pageable) {
+		return jeloUPorudzbiniSkladiste.findByPorudzbinaAndJelo(porudzbina,
+				jelo, pageable);
 	}
-	
+
 	@Override
-	public Page<PiceUPorudzbini> izlistajPicaPorudzbineIPica(Porudzbina porudzbina, Pice pice, Pageable pageable) {
-		return piceUPorudzbiniSkladiste.findByPorudzbinaAndPice(porudzbina, pice, pageable);
+	public Page<PiceUPorudzbini> izlistajPicaPorudzbineIPica(
+			Porudzbina porudzbina, Pice pice, Pageable pageable) {
+		return piceUPorudzbiniSkladiste.findByPorudzbinaAndPice(porudzbina,
+				pice, pageable);
 	}
 
 	@Override
@@ -168,15 +170,13 @@ public class KonobarServisImpl implements KonobarServis {
 	@Override
 	public SmenaUDanu izlistajSmenuUDanu(Konobar konobar, DanUNedelji dan) {
 		Restoran res = restoranSkladiste.findOne(konobar.getRestoran().getId());
-		return smeneUDanuSkladiste.findByRestoranAndDanUNedeljiAndKonobar(res, dan, konobar);
+		return smeneUDanuSkladiste.findByRestoranAndDanUNedeljiAndKonobar(res,
+				dan, konobar);
 	}
 
 	@Override
 	public List<Porudzbina> izlistajPorudzbineStola(Sto sto) {
 		return porudzbinaSkladiste.findBySto(sto);
 	}
-
-
-	
 
 }

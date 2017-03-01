@@ -50,8 +50,8 @@ public class KuvarServisTest {
 	
     @Test
     public void testFindAll() {
-        List<Kuvar> restaurants = kuvarServis.findAll();
-        Assert.assertNotNull(restaurants);
+        List<Kuvar> kuvari = kuvarServis.findAll();
+        Assert.assertNotNull(kuvari);
     }
     
     @Test

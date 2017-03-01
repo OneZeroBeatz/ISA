@@ -21,6 +21,7 @@ import com.isa.model.SmenaUDanu;
 import com.isa.model.korisnici.Kuvar;
 import com.isa.pomocni.MogucePrihvacene;
 import com.isa.pomocni.PorudzbinaKuvar;
+import com.isa.pomocni.SendMail;
 import com.isa.services.KonobarServis;
 import com.isa.services.KuvarServis;
 import com.isa.services.RestoranServis;
@@ -42,7 +43,6 @@ public class KuvarKontroler {
 	@RequestMapping(value = "/ucitajPorudzbine", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Porudzbina>> ucitajPorudzbine(@RequestBody Kuvar kuvar){
 		Restoran restoran = kuvar.getRestoran();
-		// Uzeo sam ovde sankera jer je vec implementirano
 		
 		Page<Porudzbina> porudzbine = sankerServis.izlistajPorudzbine(restoran, new PageRequest(0, 10));
 		
@@ -144,6 +144,9 @@ public class KuvarKontroler {
 		}
 		
 		porudzbina.setSpremnaJela(jelaSpremna(porudzbina));
+		if(porudzbina.isSpremnaJela() && porudzbina.isSpremnaPica()){
+			SendMail sm = new SendMail(porudzbina.getKonobar().getEmail(), "Porudzbina " + porudzbina.getId() + " je spremna");	
+		}
 		konobarServis.savePorudzbina(porudzbina);
 		
 		Restoran restoran = poKu.getKuvar().getRestoran();

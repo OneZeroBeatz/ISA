@@ -21,6 +21,7 @@ import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Sanker;
 import com.isa.pomocni.MogucePrihvacene;
 import com.isa.pomocni.PorudzbinaSanker;
+import com.isa.pomocni.SendMail;
 import com.isa.services.KonobarServis;
 import com.isa.services.RestoranServis;
 import com.isa.services.SankerServis;
@@ -83,6 +84,11 @@ public class SankerKontroler {
 	public ResponseEntity<MogucePrihvacene> zavrsiPorudzbinu(@RequestBody Porudzbina porudzbina1){
 		Porudzbina porudzbina = konobarServis.pronadjiPorudzbinu(porudzbina1.getId());
 		porudzbina.setSpremnaPica(true);
+		
+		if(porudzbina.isSpremnaJela() && porudzbina.isSpremnaPica()){
+			SendMail sm = new SendMail(porudzbina.getKonobar().getEmail(), "Porudzbina " + porudzbina.getId() + " je spremna");	
+		}
+		
 		konobarServis.savePorudzbina(porudzbina);	
 		Restoran restoran = porudzbina.getRestoran();
 		Page<Porudzbina> porudzbine = sankerServis.izlistajPorudzbine(restoran, new PageRequest(0, 10));

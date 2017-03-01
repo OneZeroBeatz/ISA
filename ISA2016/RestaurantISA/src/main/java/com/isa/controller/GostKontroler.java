@@ -587,7 +587,29 @@ public class GostKontroler {
 		List<PosetaRestoranu> posete = gostServis.ucitajPoseteGosta((Gost)gostServis.findOne(parametar.getPoseta().getGost().getId()));
 		return new ResponseEntity<List<PosetaRestoranu>>(getObavljene(posete), HttpStatus.OK);
 	
-	}		
+	}
+
+	@RequestMapping(value = "/oceniObrok", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<PosetaRestoranu>> oceniPosetuObrok(@RequestBody OcenaPoseta parametar) {		
+		PosetaRestoranu poseta = gostServis.pronadjiPosetu(parametar.getPoseta().getId());
+		poseta.setOcenaObroka(parametar.getOcena());
+		gostServis.sacuvajPosetu(poseta);
+		List<PosetaRestoranu> posete = gostServis.ucitajPoseteGosta((Gost)gostServis.findOne(parametar.getPoseta().getGost().getId()));
+		return new ResponseEntity<List<PosetaRestoranu>>(getObavljene(posete), HttpStatus.OK);
+	
+	}
+	@RequestMapping(value = "/oceniUslugu", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<PosetaRestoranu>> oceniPosetuUsluge(@RequestBody OcenaPoseta parametar) {		
+		PosetaRestoranu poseta = gostServis.pronadjiPosetu(parametar.getPoseta().getId());
+		poseta.setOcenaUsluge(parametar.getOcena());
+		gostServis.sacuvajPosetu(poseta);
+		List<PosetaRestoranu> posete = gostServis.ucitajPoseteGosta((Gost)gostServis.findOne(parametar.getPoseta().getGost().getId()));
+		return new ResponseEntity<List<PosetaRestoranu>>(getObavljene(posete), HttpStatus.OK);
+	
+	}
+
+	
+	
 	
 	private List<PosetaRestoranu> getObavljene(List<PosetaRestoranu> posete){
 		List<PosetaRestoranu> retVal = new ArrayList<PosetaRestoranu>();

@@ -48,7 +48,11 @@ menSistemaKontroler.controller('menSistemaCtrl', function (gostGlavnaStranaServi
 			opis: $scope.opisRes
 		}
 		var str = JSON.stringify(restoran);
-		menSistemaServis.registrujRestoran(str);
+		menSistemaServis.registrujRestoran(str).success(function (data){	
+			alert("Uspesno registrovanje restorana")
+		}).error(function (data){
+			//alert("Neuspesno registrovanje, moguce da postoji korisnik sa tim email-om")
+		});
 	}
 	
 	// REGISTROVANJE MENADZERA RESTORANA
@@ -63,7 +67,11 @@ menSistemaKontroler.controller('menSistemaCtrl', function (gostGlavnaStranaServi
 		
 		var str = JSON.stringify(korisnik);
 		
-		menSistemaServis.registrujMenadzeraRestorana(str);		
+		menSistemaServis.registrujMenadzeraRestorana(str).success(function (data){	
+			alert("Uspesno registrovanje menadzera restorana")
+		}).error(function (data){
+			alert("Neuspesno registrovanje, moguce da postoji korisnik sa tim email-om")
+		});	
 	}
 	
 	$scope.registrovanjeMenadzeraSistema = function(){
@@ -76,6 +84,10 @@ menSistemaKontroler.controller('menSistemaCtrl', function (gostGlavnaStranaServi
 		
 		var str = JSON.stringify(korisnik);
 		
-		menSistemaServis.registrujMenadzeraSistema(str);		
+		menSistemaServis.registrujMenadzeraSistema(str).success(function (data){	
+			alert("Uspesno registrovanje menadzera sistema")
+		}).error(function (data){
+			alert("Neuspesno registrovanje, moguce da postoji korisnik sa tim email-om")
+		});		
 	}
 });

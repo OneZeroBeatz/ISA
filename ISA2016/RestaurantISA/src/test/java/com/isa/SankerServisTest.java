@@ -50,8 +50,8 @@ public class SankerServisTest {
 	
     @Test
     public void testFindAll() {
-        List<Sanker> restaurants = sankerServis.findAll();
-        Assert.assertNotNull(restaurants);
+        List<Sanker> sankeri = sankerServis.findAll();
+        Assert.assertNotNull(sankeri);
     }
     
     @Test
