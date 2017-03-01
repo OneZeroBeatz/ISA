@@ -75,7 +75,7 @@ konobarServis.factory('izmeniKonobarServis', function($http) {
 	}	
 	
 	temp.izlistajDostupneSmeneKonobarDan = function (param){
-		return $http.post('/izlistajDostupneSmeneKonobarDan', porKon);
+		return $http.post('/konobarKontroler/izlistajDostupneSmeneKonobarDan', param);
 	}
 	
 	

@@ -10,8 +10,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +38,7 @@ import com.isa.pomocni.IzmeniPorudzbinuIzmeni;
 import com.isa.pomocni.IzmeniPorudzbinuPrikaz;
 import com.isa.pomocni.JelaPica;
 import com.isa.pomocni.PorudzbinaKonobar;
+import com.isa.pomocni.Poruka;
 import com.isa.services.KonobarServis;
 import com.isa.services.RestoranServis;
 
@@ -901,27 +900,25 @@ public class KonobarKontroler {
 
 
 	@RequestMapping(value = "/izlistajDostupneSmeneKonobarDan", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Konobar>> izlistajDostupneSmeneKonobarDan(@RequestBody SmenaUDanu smenaUDanu){
+	public ResponseEntity<Poruka> izlistajDostupneSmeneKonobarDan(@RequestBody SmenaUDanu smenaUDanu){
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());
 		int trenutniDanUNedelji = calendar.get(Calendar.DAY_OF_WEEK);
 		DanUNedelji dan = getDanUNedelji(trenutniDanUNedelji);
 		String string = "";
+		Sto sto = null;
 		Konobar konobar = (Konobar) konobarServis.findOne(smenaUDanu.getKonobar().getId());
 		while(smenaUDanu.getSto().iterator().hasNext()){
-			Sto sto = smenaUDanu.getSto().iterator().next();
+			sto = smenaUDanu.getSto().iterator().next();
 			if(sto != null){
 				string = restoranServis.sima(dan, sto, konobar, konobar.getRestoran());
 				break;
 			}
 		}
-
-		
-		
-		Restoran restoran = konobarServis.izlistajRestoran(konobar);
-		List<Konobar> retVal = restoranServis.izlistajKonobare(restoran);
-		
-		return new ResponseEntity<List<Konobar>>(retVal, HttpStatus.OK);
+		Poruka poruka = new Poruka();
+		poruka.setMessage(string);
+		poruka.setObj(sto.getOznaka());
+		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
 	}
 	
 	

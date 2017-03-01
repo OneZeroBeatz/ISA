@@ -22,4 +22,6 @@ public interface KonobarSkladiste extends JpaRepository<Konobar, Long> {
 
 	List<Konobar> findByRestoran(Restoran restoran);
 
+	Konobar findByRestoranAndEmail(Restoran restoran, String email);
+	
 }
