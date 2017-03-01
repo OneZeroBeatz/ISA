@@ -130,6 +130,8 @@
 					</tr>
 				</table>
 					
+				</hr>
+		
 				</div>
 			
 				<div ng-show="isKorak(1)">
@@ -194,7 +196,7 @@
 						<tr>
 						<tr>
 							<td>Email:</td>
-							<td><input type=text ng-model="emailIzmena"></td>
+							<td><input readonly type=text ng-model="emailIzmena"></td>
 						<tr>
 					</table>
 					<button ng-click="izmeniGostaPodaci()">Potvrdi izmene</button>
@@ -205,15 +207,15 @@
 					<table>
 						<tr>
 							<td>Unesite staru lozinku:</td>
-							<td><input type=text ng-model="staraLozinka"></td>
+							<td><input type=password ng-model="staraLozinka"></td>
 						<tr>
 						<tr>
 							<td>Unesite novu lozinku:</td>
-							<td><input type=text ng-model="novaLozinka"></td>
+							<td><input type=password ng-model="novaLozinka"></td>
 						<tr>
 						<tr>
 							<td>Potvrdite novu lozinku:</td>
-							<td><input type=text ng-model="novaLozinkaPotvrda"></td>
+							<td><input type=password ng-model="novaLozinkaPotvrda"></td>
 						<tr>
 					</table>
 					<button ng-click="izmeniGostaSifra()">Sacuvaj lozinku</button>
@@ -299,4 +301,5 @@
 	</div>
 
 </div>
+
 
