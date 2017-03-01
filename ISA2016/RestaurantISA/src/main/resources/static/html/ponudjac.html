@@ -12,6 +12,8 @@
 						href=""><span>Porudzbine </span></a></li>
 					<li ng-class="{active: isSet(1)}"><a ng-click="setTab(1)"
 						href=""><span>Licni podaci</span></a></li>
+					<li ng-class="{active: isSet(2)}"><a ng-click="setTab(2)"
+						href=""><span>Promena lozinke</span></a></li>
 				</ul>
 			</div>
 
@@ -128,6 +130,27 @@
 						<tr>
 					</table>
 					<button ng-click="izmeniPonudjaca()">Sacuvaj lozinku</button>
+				</div>
+			</div>
+		
+			<div ng-show="isSet(2)">
+				<div>
+					<h2>Izmenite lozinku:</h2>
+					<table>
+						<tr>
+							<td>Unesite staru lozinku:</td>
+							<td><input type=password ng-model="staraLozinka"></td>
+						<tr>
+						<tr>
+							<td>Unesite novu lozinku:</td>
+							<td><input type=password ng-model="novaLozinka"></td>
+						<tr>
+						<tr>
+							<td>Potvrdite novu lozinku:</td>
+							<td><input type=password ng-model="novaLozinkaPotvrda"></td>
+						<tr>
+					</table>
+					<button ng-click="izmeniLozinku()">Sacuvaj lozinku</button>
 				</div>
 			</div>
 		</div>

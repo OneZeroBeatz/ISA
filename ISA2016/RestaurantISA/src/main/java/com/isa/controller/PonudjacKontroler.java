@@ -19,6 +19,7 @@ import com.isa.model.Ponuda;
 import com.isa.model.PorudzbinaMenadzer;
 import com.isa.model.StavkaPorudzbineMenadzera;
 import com.isa.model.korisnici.Ponudjac;
+import com.isa.pomocni.Poruka;
 import com.isa.services.PonudjacServis;
 import com.isa.services.PorudzbinaMenadzeraServis;
 
@@ -85,9 +86,17 @@ public class PonudjacKontroler {
 	}
 	
 	@RequestMapping(value = "/izmeniPonudu", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void izmeniPonudu(@RequestBody Ponuda ponuda) {
+	public ResponseEntity<Poruka> izmeniPonudu(@RequestBody Ponuda ponuda) {
+		Poruka poruka = new Poruka();
 		
-		ponudjacServis.izmenaPonude(ponuda);
+		if(ponudjacServis.izmenaPonude(ponuda)){
+			poruka.setMessage("true");
+		}else{
+			poruka.setMessage("false");
+		}
+		
 
+		
+		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
 	}
 }

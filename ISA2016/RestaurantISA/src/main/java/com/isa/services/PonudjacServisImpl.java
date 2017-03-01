@@ -88,12 +88,17 @@ public class PonudjacServisImpl implements PonudjacServis{
 	}
 
 	@Override
-	public void izmenaPonude(Ponuda ponuda) {
+	public boolean izmenaPonude(Ponuda ponuda) {
 		Ponuda pon = ponudaSkladiste.findOne(ponuda.getId());
+		PorudzbinaMenadzer pm = porudzMenSkladiste.findByPonude(pon);
+		if(!pm.getAktivna()){
+			return false;
+		}
 		pon.setCena(ponuda.getCena());
 		pon.setGarancija(ponuda.getGarancija());
 		pon.setRokisporuke(ponuda.getRokisporuke());
 		ponudaSkladiste.save(pon);
+		return true;
 	}
 
 	@Override
