@@ -1,6 +1,8 @@
 package com.isa.services;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +18,7 @@ import com.isa.model.Jelo;
 import com.isa.model.Pice;
 import com.isa.model.Porudzbina;
 import com.isa.model.PosetaRestoranu;
+import com.isa.model.RacunKonobar;
 import com.isa.model.Restoran;
 import com.isa.model.Smena;
 import com.isa.model.SmenaUDanu;
@@ -24,7 +27,9 @@ import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Kuvar;
 import com.isa.model.korisnici.Ponudjac;
 import com.isa.model.korisnici.Sanker;
+import com.isa.pomocni.IzvestajKonobar;
 import com.isa.pomocni.IzvestajRestoran;
+import com.isa.pomocni.PosecenostIzvestaj;
 import com.isa.repository.JeloSkladiste;
 import com.isa.repository.JeloUPorudzbiniSkladiste;
 import com.isa.repository.KonobarSkladiste;
@@ -528,6 +533,106 @@ public class RestoranServisImpl implements RestoranServis{
 			return "mojSto";
 		}
 	
+	}
+
+	@Override
+	public double izlistajOcenuKonobara(IzvestajKonobar izvestajKonobar) {
+		Restoran restoran = restoranSkladiste.findOne(izvestajKonobar.getRestoran().getId());
+		Konobar konobar = konobarSkladiste.findByRestoranAndEmail(restoran, izvestajKonobar.getEmailKonobara());
+		List<Porudzbina> porudzbineKonobara = null; 
+		List<PosetaRestoranu> posete = null;
+		
+		if(izvestajKonobar.getOdDatum() == null && izvestajKonobar.getDoDatum() == null){
+			porudzbineKonobara = porudzbinaSkladiste.findByKonobar(konobar);
+		}else if(izvestajKonobar.getOdDatum() == null){
+			porudzbineKonobara = porudzbinaSkladiste.findByKonobarAndDatumizradeBefore(konobar, izvestajKonobar.getDoDatum());
+			//posete = poseteSkladiste.findByRestoranAndOcenaNotAndDatumrezBefore(restoran, -1, izvestajKonobar.getDoDatum());
+		}else if(izvestajKonobar.getDoDatum() == null){
+			porudzbineKonobara = porudzbinaSkladiste.findByKonobarAndDatumizradeAfter(konobar, izvestajKonobar.getOdDatum());
+			//posete = poseteSkladiste.findByRestoranAndOcenaNotAndDatumrezAfter(restoran, -1, izvestajKonobar.getOdDatum());
+		}else{
+			porudzbineKonobara = porudzbinaSkladiste.findByKonobarAndDatumizradeBetween(konobar, izvestajKonobar.getOdDatum(), izvestajKonobar.getDoDatum());
+			//posete = poseteSkladiste.findByRestoranAndOcenaNotAndDatumrezBetween(restoran, -1, izvestajKonobar.getOdDatum(), izvestajKonobar.getDoDatum());
+		}
+		
+		for(Porudzbina por : porudzbineKonobara){
+			Sto sto = por.getSto();
+			
+			if(posete == null)
+				posete = poseteSkladiste.findByRestoranAndOcenaUslugeNotAndDatumrezAndSto(restoran, -1, por.getDatumizrade(), sto);
+			else
+				posete.addAll(poseteSkladiste.findByRestoranAndOcenaUslugeNotAndDatumrezAndSto(restoran, -1, por.getDatumizrade(), sto));
+			
+		}
+		
+		double retVal = 0;
+		
+		for(PosetaRestoranu pr : posete){
+			retVal += pr.getOcenaUsluge();
+		}
+		
+		return (double)retVal/posete.size();
+	}
+
+	@Override
+	public double izlistajPrihodKonobara(IzvestajKonobar izvestajKonobar) {
+		Restoran restoran = restoranSkladiste.findOne(izvestajKonobar.getRestoran().getId());
+		Konobar konobar = konobarSkladiste.findByRestoranAndEmail(restoran, izvestajKonobar.getEmailKonobara());
+		List<Porudzbina> porudzbineKonobara = null; 
+		List<RacunKonobar> racuni = null;
+		
+		if(izvestajKonobar.getOdDatum() == null && izvestajKonobar.getDoDatum() == null){
+			porudzbineKonobara = porudzbinaSkladiste.findByRestoran(restoran);
+		}else if(izvestajKonobar.getOdDatum() == null){
+			porudzbineKonobara = porudzbinaSkladiste.findByRestoranAndDatumizradeBefore(restoran, izvestajKonobar.getDoDatum());
+		}else if(izvestajKonobar.getDoDatum() == null){
+			porudzbineKonobara = porudzbinaSkladiste.findByRestoranAndDatumizradeAfter(restoran, izvestajKonobar.getOdDatum());
+		}else{
+			porudzbineKonobara = porudzbinaSkladiste.findByRestoranAndDatumizradeBetween(restoran, izvestajKonobar.getOdDatum(), izvestajKonobar.getDoDatum());
+		}
+		
+		for(Porudzbina por : porudzbineKonobara){
+			if(racuni == null)
+				racuni = racunKonobarSkladiste.findByKonobarAndUkupnoNotAndPorudzbina(konobar, -1F, por);
+			else
+				racuni.addAll(racunKonobarSkladiste.findByKonobarAndUkupnoNotAndPorudzbina(konobar, -1F, por));
+			
+		}
+		
+		double retVal = 0;
+		
+		for(RacunKonobar rc : racuni){
+			retVal += rc.getUkupno();
+		}
+		
+		return retVal;
+		
+	}
+
+	@Override
+	public ArrayList<Double> izracunaPosecenostNedelja(PosecenostIzvestaj posecenostIzvestaj) {
+		ArrayList<Integer> temp = new ArrayList<>();
+		ArrayList<Double> retVal = new ArrayList<>();
+		int ukupno = 0;
+		Date datumOd = posecenostIzvestaj.getDatum();
+		Restoran restoran = restoranSkladiste.findOne(posecenostIzvestaj.getRestoran().getId());
+		
+		for(int i=0; i<7; i++){
+			int p = poseteSkladiste.findByRestoranAndDatumrezAndDatumrezBefore(restoran, datumOd, new Date()).size();
+			
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(datumOd);
+			calendar.add(Calendar.HOUR_OF_DAY, 24);
+			datumOd = calendar.getTime();
+			temp.add(p);
+			ukupno += p;
+		}
+		
+		for(Integer t : temp){
+			retVal.add(((double)t)/ukupno * 100);
+		}
+		
+		return retVal;
 	}
 
 }

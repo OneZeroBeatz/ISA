@@ -173,6 +173,18 @@ menRestoranaServis.factory('menRestoranaServisS', function($http) {
 		return $http.post('/menadzerRestoranaKontroler/izlistajBojuStola', sto);
 	}
 	
+	temp.izvestajZaKonobara = function(izvKon) {
+		return $http.post('/menadzerRestoranaKontroler/izvestajZaKonobara', izvKon);
+	}
+	
+	temp.izvestajPrihodaKonobara = function(izvKon) {
+		return $http.post('/menadzerRestoranaKontroler/izvestajPrihodaKonobara', izvKon);
+	}
+	
+	temp.prikaziGrafikPosecenosti = function(pos) {
+		return $http.post('/menadzerRestoranaKontroler/prikaziGrafikPosecenosti', pos);
+	}
+	
 	return temp;
 
 })

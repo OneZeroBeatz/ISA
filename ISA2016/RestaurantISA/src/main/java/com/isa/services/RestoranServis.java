@@ -18,7 +18,9 @@ import com.isa.model.korisnici.Konobar;
 import com.isa.model.korisnici.Kuvar;
 import com.isa.model.korisnici.Ponudjac;
 import com.isa.model.korisnici.Sanker;
+import com.isa.pomocni.IzvestajKonobar;
 import com.isa.pomocni.IzvestajRestoran;
+import com.isa.pomocni.PosecenostIzvestaj;
 
 public interface RestoranServis {
 
@@ -113,5 +115,11 @@ public interface RestoranServis {
 	Sanker registrujeSankera(Sanker sanker);
 
 	String sima(DanUNedelji dan, Sto sto, Konobar konobar, Restoran restoran);
+
+	double izlistajOcenuKonobara(IzvestajKonobar izvestajKonobar);
+
+	double izlistajPrihodKonobara(IzvestajKonobar izvestajKonobar);
+
+	ArrayList<Double> izracunaPosecenostNedelja(PosecenostIzvestaj posecenostIzvestaj);
 
 }

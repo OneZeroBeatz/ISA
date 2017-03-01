@@ -30,9 +30,11 @@ import com.isa.model.korisnici.MenadzerRestorana;
 import com.isa.model.korisnici.Ponudjac;
 import com.isa.model.korisnici.Sanker;
 import com.isa.model.korisnici.TipKorisnika;
+import com.isa.pomocni.IzvestajKonobar;
 import com.isa.pomocni.IzvestajRestoran;
 import com.isa.pomocni.ListaStavki;
 import com.isa.pomocni.Poruka;
+import com.isa.pomocni.PosecenostIzvestaj;
 import com.isa.pomocni.RestoranPonudjac;
 import com.isa.pomocni.SendMail;
 import com.isa.services.MenadzerRestoranaServis;
@@ -487,6 +489,42 @@ public class MenadzerRestoranaKontroler {
 		}
 		
 		poruka.setObj(sto.getOznaka());
+		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/izvestajZaKonobara", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Poruka> izvestajZaKonobara(@RequestBody IzvestajKonobar izvestajKonobar) {
+		Poruka poruka = new Poruka();
+		
+		double ocena = restoranServirs.izlistajOcenuKonobara(izvestajKonobar);
+		
+		poruka.setObj(ocena);
+		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/izvestajPrihodaKonobara", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Poruka> izvestajPrihodaKonobara(@RequestBody IzvestajKonobar izvestajKonobar) {
+		Poruka poruka = new Poruka();
+		
+		double prihod = restoranServirs.izlistajPrihodKonobara(izvestajKonobar);
+		
+		poruka.setObj(prihod);
+		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/prikaziGrafikPosecenosti", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Poruka> prikaziGrafikPosecenosti(@RequestBody PosecenostIzvestaj posecenostIzvestaj) {
+		Poruka poruka = new Poruka();
+		ArrayList<Double> procenti = new ArrayList<>();
+		
+		if(posecenostIzvestaj.getNivo().equals("dnevni")){
+			//procenti
+		}else{
+			procenti = restoranServirs.izracunaPosecenostNedelja(posecenostIzvestaj);
+		}
+		//double prihod = restoranServirs.izlistajPrihodKonobara(izvestajKonobar);
+		
+		poruka.setObj(procenti);
 		return new ResponseEntity<Poruka>(poruka, HttpStatus.OK);
 	}
 }

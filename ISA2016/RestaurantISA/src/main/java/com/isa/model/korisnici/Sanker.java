@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.isa.model.Porudzbina;
 import com.isa.model.Restoran;
@@ -25,6 +27,7 @@ public class Sanker extends Korisnik {
 	private int velobuce;
 
 	@Column(name = "datumrodj", nullable = true)
+	@Temporal(TemporalType.DATE)
 	private Date datumrodj;
 
 	@ManyToOne(optional = true)

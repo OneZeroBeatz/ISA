@@ -1328,19 +1328,44 @@
 				
 				<table border="1px">
 					<tr>
-						<td colspan="4">Izvestaj za konobara</td>
+						<th colspan="3">Izvestaj za konobara</th>
 					</tr>
 					<tr>
-						<td><input placeholder="email" type="text" ng-model="nazivKonobara"></td>
-						<td><input placeholder="od datuma" type="date" ng-model="datumOdOcenaPica"></td>
-						<td><input placeholder="do datuma" type="date" ng-model="datumDoOcenaPica"></td>
-						<td><button>Kreiraj</button></td>
+						<td>Period</td>
+						<td><input placeholder="od datuma" type="date" ng-model="datumOdOcenaKonobar"></td>
+						<td><input placeholder="do datuma" type="date" ng-model="datumDoOcenaKonobar"></td>
+					</tr>
+					<tr>
+						<td colspan="2"><input placeholder="email" type="text" ng-model="nazivKonobara"></td>
+						<td><button ng-click="prikaziIzvestajKonobar()">Kreiraj</button></td>
+					</tr>
+					<tr>
+						<td colspan="2">Ocena</td>
+						<td>{{ocenaKonobara}}</td>
+					</tr>
+					<tr>
+						<td colspan="2">Prihod</td>
+						<td>{{prihodKonobara}}</td>
+					</tr>
+				</table>
+				
+				<br>
+				<table border="1px">
+					<tr>
+						<th colspan="3">Graficki prikaz posecenosti</th>
+					</tr>
+					<tr>
+						<td><input placeholder="od datuma" type="date" ng-model="datumOdPosecenost"></td>
+						<td>
+							<select ng-model="naKomNivou">
+								<option value="dnevni">Dnevni</option>
+								<option value="nedeljni">Nedeljni</option>
+							</select>
+						</td>
+						<td><button ng-click="prikaziGrafikPosecenosti()">Kreiraj</button></td>
 					</tr>
 				</table>
 			</div>
-
 		</div>
-
 	</div>
-
 </div>

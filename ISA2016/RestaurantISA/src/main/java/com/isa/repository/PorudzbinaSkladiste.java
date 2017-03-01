@@ -33,4 +33,12 @@ public interface PorudzbinaSkladiste extends JpaRepository<Porudzbina, Serializa
 
 	List<Porudzbina> findByRestoranAndDatumizradeBetween(Restoran restoran, Date odDatum, Date doDatum);
 
+	List<Porudzbina> findByKonobar(Konobar konobar);
+
+	List<Porudzbina> findByKonobarAndDatumizradeBefore(Konobar konobar, Date doDatum);
+
+	List<Porudzbina> findByKonobarAndDatumizradeAfter(Konobar konobar, Date odDatum);
+
+	List<Porudzbina> findByKonobarAndDatumizradeBetween(Konobar konobar, Date odDatum, Date doDatum);
+
 }

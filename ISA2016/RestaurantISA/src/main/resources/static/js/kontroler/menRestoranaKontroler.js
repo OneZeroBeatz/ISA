@@ -944,7 +944,6 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 	// IZVESTAJI
 	
 		// RESTORAN ~ staviti gore da izlista kada se ucita
-			
 	$scope.izlistajOcenuRestorana = function(){
 		var izvRest = {
 			restoran : $scope.restoran,
@@ -993,6 +992,54 @@ menRestoranaKontroler.controller('menadzerRestoranaCtrl', function(gostGlavnaStr
 	
 	$scope.prikazIzvJela = function(){
 		return $scope.prikazIzvJ;
+	}
+	
+	// KONOBAR
+	$scope.prikaziIzvestajKonobar = function(){
+		var izvKon = {
+			emailKonobara : $scope.nazivKonobara,
+			restoran : $scope.restoran,
+			odDatum : $scope.datumOdOcenaKonobar,
+			doDatum : $scope.datumDoOcenaKonobar
+		}
+		// Ocena
+		var str = JSON.stringify(izvKon);
+		menRestoranaServisS.izvestajZaKonobara(str).success(function(data) {
+			$scope.ocenaKonobara = data.obj;		//message staviti ako konobar ne postoji...
+		}).error(function(data) {
+			
+		});
+		
+		// Prihod
+		menRestoranaServisS.izvestajPrihodaKonobara(str).success(function(data) {
+			$scope.prihodKonobara = data.obj;		//message staviti ako konobar ne postoji...
+		}).error(function(data) {
+			
+		});
+		
+	}
+	
+	// Graf prikaz poseta
+	$scope.prikaziGrafikPosecenosti = function(){
+		
+		var t= {
+			restoran : $scope.restoran,
+			nivo : $scope.naKomNivou,
+			datum : $scope.datumOdPosecenost
+		}
+		var str = JSON.stringify(t);
+		menRestoranaServisS.prikaziGrafikPosecenosti(str).success(function(data) {
+			if($scope.naKomNivou == "dnevni"){
+				// obj[0] - broj smena
+				// obj[1] - lista pocenata za svaku smenu
+			}else if($scope.naKomNivou == "nedeljni"){
+				// obj - lista procenata za svaki dan
+			}
+			
+			//$scope.prihodKonobara = data.obj;		//message staviti ako konobar ne postoji...
+		}).error(function(data) {
+			
+		});
 	}
 	
 	$scope.kuvarSelek = false;
